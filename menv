@@ -41,10 +41,6 @@ function menv {
 
   [ ! -f menv_deploy ] &&  ln -s menv menv_deploy &&
     echo "Created deploy file." || echo "Found deploy file."
-  
-  echo "Grabbing the latest menv."
-  ./menv_deploy
-
   [ ! -f menv_cleanup ] &&  ln -s menv menv_cleanup &&
     echo "Created cleanup file." || echo "Found cleanup file."
 
@@ -246,7 +242,7 @@ function motd {
   TC_GRD="[0;30;42m"
   TC_TEXT="[38;5;203m"
 
-  echo "${TC_SKY}
+  echo -n "${TC_SKY}
               ( \`   )_                                                         |
              (    )    \`)                                                      |
            (_   (_ .  _) _)                                                    |
