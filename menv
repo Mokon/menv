@@ -1,0 +1,291 @@
+#!/bin/bash
+
+################################################################################
+#
+# The following is a specialized script to setup a linux enviornment that has
+# everything setup just the way I like it. It is also self contained in that
+# a single wget and execution of the script should setup everything.
+#
+# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+#
+################################################################################
+
+mprofile_loc="https://raw.github.com/Mokon/menv/master/menv"
+
+function exists {
+    test -x "$(command -v "$1")"
+}
+
+################################################################################
+# A main function which determines how this program was called.
+function main {
+  case ${BASH_SOURCE[0]} in
+    *menv) menv ;;
+    *menv_deploy) menv_deploy ;;
+    *menv_cleanup) menv_cleanup ;;
+    *.bash_profile|*.profile) login ;;
+    *.bash_aliases) echo "No support for bash_aliases." ;;
+    *.bashrc) nonlogin ;;
+    *) echo "Unknown menv invocation" ;;
+  esac
+}
+
+##############################################################################t#
+# Sets up the environment from scratch.
+function menv {
+  echo "Setting up the Mokon Environment."
+  
+  pushd .
+
+  cd ~
+
+  [ ! -f menv_deploy ] &&  ln -s menv menv_deploy &&
+    echo "Created deploy file." || echo "Found deploy file."
+  
+  echo "Grabbing the latest menv."
+  ./menv_deploy
+
+  [ ! -f menv_cleanup ] &&  ln -s menv menv_cleanup &&
+    echo "Created cleanup file." || echo "Found cleanup file."
+
+  [ ! -f .bashrc ] &&  ln -s menv .bashrc &&
+    echo "Created bashrc file." || echo "Found bashrc file."
+  [ ! -f .bash_profile ] &&  ln -s menv .bash_profile &&
+    echo "Created bash_profile file." && echo "Found bash_profile file."
+
+  [ ! -f .vimrc ] &&  vimrc &> ~/.vimrc &&
+    echo "Created vimrc file." || echo "Found vimrc file."
+  [ ! -d trash ] &&  mkdir trash &&
+    echo "Created trash directory." || echo "Found trash directory"
+
+  if [ -f ~/menv_local_nonlogin ]; then
+    echo "Found ~/menv_local_nonlogin."
+  fi
+
+  if [ -f ~/menv_local_login ]; then
+    echo "Found ~/menv_local_login."
+  fi
+  popd
+}
+
+################################################################################
+# Attempts to deploy a basic menv setup on the system.
+function menv_deploy {
+  command -v wget >/dev/null 2>&1 || { echo >&2 "wget not found"; return ;}
+  wget --no-check-certificate ${mprofile_loc}
+}
+
+################################################################################
+# Attempts to cleanup menv
+function menv_cleanup {
+  function if_sym_delete {
+    if [ -L $1 ]; then 
+      /bin/rm -f $1
+    fi
+  }
+
+  pushd .
+  cd ~
+  if_sym_delete .bashrc
+  if_sym_delete .bash_profile
+  popd
+}
+
+################################################################################
+function login {
+  if [ -f ~/.bashrc ]; then
+	  source ~/.bashrc
+  fi
+
+  PATH=$PATH:$HOME/bin
+
+  export PATH
+
+  # Source a local login script if one exists.
+  if [ -f ~/menv_local_login ]; then
+  	source ~/menv_local_login
+  fi
+}
+
+################################################################################
+function nonlogin {
+  motd
+
+  # I like to keep my prompt simple...
+  PS1="i:"
+
+  umask 022
+
+  # Setup editor, vim perfered.
+  export EDITOR=ed
+  exists emacs && EDITOR=emacs;
+  exists vi && EDITOR=vi;
+  exists vim && EDITOR=vim;
+
+  # General util.
+  alias rm='mv --target-directory ~/trash'
+  alias delete_immediately='/bin/rm -Rf'
+  alias empty_trash='/bin/rm -rf ~/trash/*'
+  alias cp='cp -i'
+  alias mv='mv -i'
+  alias ps="ps -aux"
+  alias e="exit"
+  alias ex="exit"
+  alias exi="exit"
+  alias extract="tar -xzvf"
+  alias build-essentials="yum groupinstall 'Development Tools'"
+  alias ls="ls --color"
+
+  alias menv_info="ls -alt |grep \"bash\|menv\""
+
+  # Programming related
+  alias svn_add_dir_only="svn add --depth=empty"
+  alias xval="valgrind --track-origins=yes --leak-check=full --show-reachable=yes"
+  alias sval="xval --gen-suppressions=yes --demangle=no"
+  alias ct="cleartool"
+
+  export CSCOPE_DB=~/cscope.out
+  export GLOG_minloglevel=1
+
+  function lsdiff {
+    ls -R $1 |grep -v "\/" &> /tmp/ls1.diff
+    ls -R $2 |grep -v "\/" &> /tmp/ls2.diff
+    diff /tmp/ls1.diff /tmp/ls2.diff
+  }
+
+  # Gaming
+  alias mc="java -Xmx2048M -Xms512M -cp minecraft.jar net.minecraft.LauncherFrame"
+
+  #HISTCONTROL=ignoreboth
+  HISTSIZE=10000
+  #HISTFILE=~/.bash.log
+  #HISTFILESIZE=
+  #HISTTIMEFORMAT='%F %T%t'
+
+   LS_COLORS="rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=01;05;37;41:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lz=01;31:*.xz=01;31:*.bz2=01;31:*.tbz=01;31:*.tbz2=01;31:*.bz=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.rar=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.axv=01;35:*.anx=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=01;36:*.au=01;36:*.flac=01;36:*.mid=01;36:*.midi=01;36:*.mka=01;36:*.mp3=01;36:*.mpc=01;36:*.ogg=01;36:*.ra=01;36:*.wav=01;36:*.axa=01;36:*.oga=01;36:*.spx=01;36:*.xspf=01;36:*.c=01;31:*.h=08;36:"
+
+  count_c_files( ) {
+    HFILES=`find $1 -type f -name "*.h" `
+    CFILES=`find $1 -type f -name "*.c" `
+    HLC=`wc -l $HFILES 2> /dev/null | tail -1 | awk '{print $1}'`
+    CLC=`wc -l $CFILES 2> /dev/null | tail -1 | awk '{print $1}'`
+    TLC=`expr $HLC + $CLC`
+
+    echo "HCL = $HLC, CLC = $CLC, TLC = $TLC"
+  }
+
+  tree_list( ) {
+    ls -R $1 | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
+  }
+
+  mgrep( ) {
+    grep -rn $1 $2 |grep -v .svn |grep -v Binary
+  }
+
+
+  # Source a local nonlogin script if one exists.
+  if [ -f ~/menv_local_nonlogin ]; then
+  	source ~/menv_local_nonlogin
+  fi
+
+  # Source global definitions
+  if [ -f /etc/bashrc ]; then
+  	source /etc/bashrc
+  fi
+}
+
+function vimrc {
+echo "
+syntax enable
+set nocp
+autocmd FileType make setlocal noexpandtab
+set pastetoggle=<F2>
+set colorcolumn=80
+highlight ColorColumn ctermbg=lightgrey guibg=lightgrey
+highlight OverLength ctermbg=red ctermfg=white guibg=#592929
+match OverLength /\%81v.\+/
+\"highlight WhitespaceEOL ctermbg=red guibg=red
+\"match WhitespaceEOL /\s\+$/
+set tabstop=2 shiftwidth=2 expandtab
+
+function! <SID>StripTrailingWhitespace()
+    \" Preparation: save last search, and cursor position.
+    let _s=@/
+    let l = line(".")
+    let c = col(".")
+    \" Do the business:
+    %s/\s\+$//e
+    \" Clean up: restore previous search history, and cursor position
+    let @/=_s
+    call cursor(l, c)
+endfunction
+nmap <silent> <leader><space> :call <SID>StripTrailingWhitespace()<CR>
+"
+}
+
+################################################################################
+# Prints a nice message of the day with a whole bunch of useful information.
+function motd {
+
+  # Terminal colors, assuming 256 colors.
+  TC_RESET="[0m"
+  TC_SKY="[0;37;44m"
+  TC_GRD="[0;30;42m"
+  TC_TEXT="[38;5;203m"
+
+  echo "${TC_SKY}
+              ( \`   )_
+             (    )    \`)
+           (_   (_ .  _) _)
+                                          _
+                                         (  )
+          _ .                         ( \`  ) . )
+        (  _ )_                      (_, _(  ,_)_)
+      (_  _(_ ,)
+
+${TC_TEXT}[44m                ##     ##  #######  ##    ##  #######  ##    ##
+                ###   ### ##     ## ##   ##  ##     ## ###   ##
+                #### #### ##     ## ##  ##   ##     ## ####  ##
+                ## ### ## ##     ## #####    ##     ## ## ## ##
+                ##     ## ##     ## ##  ##   ##     ## ##  ####
+                ##     ## ##     ## ##   ##  ##     ## ##   ###
+                ##     ##  #######  ##    ##  #######  ##    ##
+${TC_SKY}
+               _  _
+              ( \`   )_
+             (    )    \`)
+           (_   (_ .  _) _)
+                                                        (  )
+                      _, _ .                         ( \`  ) . )
+                     ( (  _ )_                      (_, _(  ,_)_)
+                   (_(_  _(_ ,)
+
+${TC_GRD}"
+
+  echo -e "\n                           Welcome to Mokon's Linux!                           \n"
+
+  MEMT=`cat /proc/meminfo | grep MemTotal`
+  SWAT=`cat /proc/meminfo | grep '^SwapTotal:'`
+  PMODEL=`cat /proc/cpuinfo | grep '^model name' | awk '{print $4 $5 $6}' | head -1`
+  PMHZ=`cat /proc/cpuinfo | grep '^cpu MHz' | awk '{print $4}'| sed -e 's/\.[0-9]*//g' | head -1`
+  PVENDOR=`cat /proc/cpuinfo | grep '^vendor_id' | awk '{print $3}' | head -1`
+  PNUMS=`cat /proc/cpuinfo | grep '^processor' | wc -l | awk '{print $1}' | head -1`
+
+  echo "OS............: `uname -o`"
+  echo "Hostname......: `uname -n`"
+  echo "Address.......: `ifconfig | grep "inet" | grep -v '127.\|::1' | awk '{print $2}' | tr '\n' '\t'` "
+  echo "Kernel........: `uname -s ` `uname -r` `uname -v`"
+  echo "Machine HW....: `uname -m`"
+  echo "Uptime........:`uptime | sed 's/.*up ([^,]*), .*/1/'`"
+  echo "Memory........: `echo $MEMT | awk {'print $2'}` `echo $MEMT | awk {'print $3'}`"
+  echo "SWAP..........: `echo $SWAT | awk {'print $2'}` `echo $SWAT | awk {'print $3'}`"
+  echo "Username......: `whoami`"
+  echo "Processor(s)..: $PNUMS $PVENDOR ${PMHZ} MHz ${PMODEL}"
+
+  echo ${TC_RESET}
+}
+
+################################################################################
+# Execute the script.
+main
+
