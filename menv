@@ -72,7 +72,7 @@ function menv {
 # Attempts to deploy a basic menv setup on the system.
 function menv_deploy {
   command -v wget >/dev/null 2>&1 || { echo >&2 "wget not found"; return ;}
-  wget --no-check-certificate ${mprofile_loc}
+  wget -N --no-check-certificate ${mprofile_loc}
   chmod +x menv
 }
 
