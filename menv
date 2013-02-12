@@ -136,6 +136,11 @@ function nonlogin {
   alias build-essentials="yum groupinstall 'Development Tools'"
   alias ls="ls --color"
 
+  alias gits="git status -s"
+  alias gitic="git commit -m \"Initial Commit\""
+  alias gitc="git commit -m "
+  alias gitsync="git push origin master"
+
   alias menv_info="ls -alt |grep \"bash\|menv\""
 
   # Programming related
