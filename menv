@@ -89,6 +89,8 @@ function menv_cleanup {
   cd ~
   if_sym_delete .bashrc
   if_sym_delete .bash_profile
+  if_sym_delete menv_deploy
+  if_sym_delete menv_cleanup
   popd
 }
 
