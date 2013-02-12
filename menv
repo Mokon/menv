@@ -210,13 +210,16 @@ syntax enable
 set nocp
 autocmd FileType make setlocal noexpandtab
 set pastetoggle=<F2>
-set colorcolumn=80
+if exists('+colorcolumn')
+  set colorcolumn=80
+endif
 highlight ColorColumn ctermbg=lightgrey guibg=lightgrey
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 match OverLength /\%81v.\+/
 \"highlight WhitespaceEOL ctermbg=red guibg=red
 \"match WhitespaceEOL /\s\+$/
 set tabstop=2 shiftwidth=2 expandtab
+set autoread
 
 function! <SID>StripTrailingWhitespace()
     \" Preparation: save last search, and cursor position.
@@ -269,7 +272,7 @@ ${TC_SKY}                                                                       
                       _, _ .                         ( \`  ) . )                |
                      ( (  _ )_                      (_, _(  ,_)_)              |
                    (_(_  _(_ ,)                                                |
-
+                                                                               |
 ${TC_GRD}"
 
   echo -e "\n                           Welcome to Mokon's Linux!                           \n"
