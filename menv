@@ -140,7 +140,7 @@ function nonlogin {
 
   alias gits="git status -s"
   alias gitic="git commit -m \"Initial Commit\""
-  alias gitc="git commit -m "
+  alias gitc="git commit -am "
   alias gitsync="git push origin master"
 
   alias menv_info="ls -alt |grep \"bash\|menv\""
@@ -150,6 +150,8 @@ function nonlogin {
   alias xval="valgrind --track-origins=yes --leak-check=full --show-reachable=yes"
   alias sval="xval --gen-suppressions=yes --demangle=no"
   alias ct="cleartool"
+  alias cscopeinit="cscope -R"
+  alias cscopeopen="cscope -d"
 
   export CSCOPE_DB=~/cscope.out
   export GLOG_minloglevel=1
