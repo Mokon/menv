@@ -142,6 +142,9 @@ function nonlogin {
   alias gitic="git commit -m \"Initial Commit\""
   alias gitc="git commit -am "
   alias gitsync="git push origin master"
+  alias gitsetup="git config --global user.name \David Bond\" ; \
+                  git config --global user.email mokon@mokon.net ; \
+                  git commit --amend --reset-author"
 
   alias menv_info="ls -alt |grep \"bash\|menv\""
 
