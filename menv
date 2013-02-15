@@ -70,6 +70,7 @@ function menv_deploy {
   command -v wget >/dev/null 2>&1 || { echo >&2 "wget not found"; return ;}
   wget -N --no-check-certificate ${mprofile_loc}
   chmod +x menv
+  source ~/.bashrc
 }
 
 ################################################################################
@@ -288,7 +289,7 @@ ${TC_GRD}"
 
   echo "OS............: `uname -o`"
   echo "Hostname......: `uname -n`"
-  echo "Address.......: `ifconfig | grep "inet" | grep -v '127.\|::1' | awk '{print $2}' | tr '\n' '\t'` "
+  echo "Address.......: `/sbin/ifconfig | grep "inet" | grep -v '127.\|::1' | awk '{print $2}' | tr '\n' '\t'` "
   echo "Kernel........: `uname -s ` `uname -r` `uname -v`"
   echo "Machine HW....: `uname -m`"
   echo "Uptime........:`uptime | sed 's/.*up ([^,]*), .*/1/'`"
