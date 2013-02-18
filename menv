@@ -115,8 +115,8 @@ function nonlogin {
   motd
 
   # I like to keep my prompt simple...
-  TC_GRE="[0;32;40m"
-  TC_RESET="[0m"
+  TC_GRE="\[\033[0;32;40m\]"
+  TC_RESET="\[\033[0;0m\]"
   PS1="${TC_GRE}i:${TC_RESET}"
 
   umask 022
