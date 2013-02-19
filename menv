@@ -6,14 +6,34 @@
 # everything setup just the way I like it. It is also self contained in that
 # a single wget and execution of the script should setup everything.
 #
+# This script will setup things such as your bashrc file and bash_profile. It
+# also setups a .vimrc file and installs a bunch of plugins.
+#
+# The first time you install this file run:
+#   cd ~
+#   wget -q -N --no-check-certificate https://raw.github.com/Mokon/menv/master/menv
+#   chmod +x menv
+#   ./menv
+# From then on to update the script called:
+#   ~/menv_deploy
+# Never edit any of the menv files directly. Always edit in the git repo.
+#
 # (C) 2013 David 'Mokon' Bond, All Rights Reserved
 #
 ################################################################################
 
+# The location of this system on github.
 mprofile_loc="https://raw.github.com/Mokon/menv/master/menv"
 
+# Aux function to test if a command exists.
 function exists {
     test -x "$(command -v "$1")"
+}
+
+# Aux function to wget a file.
+function fetch {
+  command -v wget >/dev/null 2>&1 || { echo >&2 "wget not found"; return ;}
+  wget -q -N --no-check-certificate ${1}
 }
 
 ################################################################################
@@ -24,7 +44,8 @@ function main {
     *menv_deploy) menv_deploy ;;
     *menv_cleanup) menv_cleanup ;;
     *.bash_profile|*.profile) login ;;
-    *.bash_aliases) echo "No support for bash_aliases." ;;
+    *.bash_aliases)
+      echo "No support for bash_aliases. Aliases found in bashrc." ;;
     *.bashrc) nonlogin ;;
     *) echo "Unknown menv invocation" ;;
   esac
@@ -34,31 +55,50 @@ function main {
 # Sets up the environment from scratch.
 function menv {
   echo "Setting up the Mokon Environment."
-  
+
   pushd .
 
   cd ~
 
-  [ ! -f menv_deploy ] &&  ln -s menv menv_deploy &&
-    echo "Created deploy file." || echo "Found deploy file."
-  [ ! -f menv_cleanup ] &&  ln -s menv menv_cleanup &&
-    echo "Created cleanup file." || echo "Found cleanup file."
+  # Aux function to setup a menu symbolic link. Backing up w/e was there before.
+  function menv_link {
+    if [ -f $1 ] && { [ ! -L $1 ] || 
+        { [ -L $1 ] && [ `readlink $1` != "menv" ] ; } ; } ; then
+      echo "Found foreign ${1}. Backing up as ${1}_backup."
+       /bin/mv --backup=numbered $1 $1_backup
+    elif [ -f $1 ] ; then
+      echo "Found valid $1 file."
+    fi
+    if [ ! -f $1 ] ; then
+      ln -s menv $1
+      echo "Created $1 file."
+    fi
+  }
 
-  [ ! -f .bashrc ] &&  ln -s menv .bashrc &&
-    echo "Created bashrc file." || echo "Found bashrc file."
-  [ ! -f .bash_profile ] &&  ln -s menv .bash_profile &&
-    echo "Created bash_profile file." && echo "Found bash_profile file."
+  menv_link menv_deploy
+  menv_link menv_cleanup
+  menv_link .bashrc
+  menv_link .bash_profile
 
-  [ ! -f .vimrc ] &&  vimrc &> ~/.vimrc &&
-    echo "Created vimrc file." || echo "Found vimrc file."
+  grep "\"menv generated vimrc" .vimrc &> /dev/null
+  if [ $? == 0 ] ; then
+    echo "Found menv vimrc. Clearing."
+    /bin/rm -f .vimrc
+  elif [ -f .vimrc ] ; then
+    /bin/mv --backup=numbered .vimrc vimrc_backup
+    echo "Found foreign vimrc. Backing up as vimrc_backup."
+  fi
+  vimrc &> .vimrc
+  vimplugins
+
   [ ! -d trash ] &&  mkdir trash &&
     echo "Created trash directory." || echo "Found trash directory"
 
-  if [ -f ~/menv_local_nonlogin ]; then
+  if [ -f menv_local_nonlogin ]; then
     echo "Found ~/menv_local_nonlogin."
   fi
 
-  if [ -f ~/menv_local_login ]; then
+  if [ -f menv_local_login ]; then
     echo "Found ~/menv_local_login."
   fi
   popd
@@ -69,8 +109,7 @@ function menv {
 function menv_deploy {
   pushd .
   cd ~
-  command -v wget >/dev/null 2>&1 || { echo >&2 "wget not found"; return ;}
-  wget -N --no-check-certificate ${mprofile_loc}
+  fetch ${mprofile_loc}
   chmod +x menv
   source ~/.bashrc
   popd
@@ -80,21 +119,26 @@ function menv_deploy {
 # Attempts to cleanup menv
 function menv_cleanup {
   function if_sym_delete {
-    if [ -L $1 ]; then 
+    if [ -L $1 ]; then
       /bin/rm -f $1
     fi
   }
 
   pushd .
   cd ~
+
   if_sym_delete .bashrc
   if_sym_delete .bash_profile
   if_sym_delete menv_deploy
   if_sym_delete menv_cleanup
+
+  unalias -a
+
   popd
 }
 
 ################################################################################
+# Run on login this is essentially the bash_profile script.
 function login {
   if [ -f ~/.bashrc ]; then
 	  source ~/.bashrc
@@ -111,8 +155,12 @@ function login {
 }
 
 ################################################################################
+# Run on nonlogin and login this is essentially the bashrc script.
 function nonlogin {
   motd
+
+  # Unalias just in case we have aliases from another script run lying around.
+  unalias -a
 
   # I like to keep my prompt simple...
   TC_GRE="\[\033[0;32;40m\]"
@@ -131,7 +179,6 @@ function nonlogin {
   alias rm='mv --target-directory ~/trash'
   alias delete_immediately='/bin/rm -Rf'
   alias empty_trash='/bin/rm -rf ~/trash/*'
-  alias cp='cp -i'
   alias mv='mv -i'
   alias ps="ps -aux"
   alias e="exit"
@@ -141,6 +188,11 @@ function nonlogin {
   alias build-essentials="yum groupinstall 'Development Tools'"
   alias ls="ls --color"
   alias rpm_list_deps="rpm -qpR"
+  alias bx="source ~/.bashrc"
+
+  function vin {
+    vim +$2 $1
+  }
 
   alias gits="git status -s"
   alias gitic="git commit -m \"Initial Commit\""
@@ -150,6 +202,29 @@ function nonlogin {
                   git config --global user.email mokon@mokon.net ; \
                   git commit --amend --reset-author"
 
+  function githubf {
+    fetch https://github.com/$1
+  }
+
+  function githubc {
+    git clone https://github.com/$1
+  }
+
+  # Simple function for my dev box which has menv checked out in git. This
+  # allows me to test menv on the box before I push it to github.
+  if [ -d ~/git/menv ]; then
+    function menv_stage {
+      pushd .
+      cd ~/git/menv/
+
+      cp menv ~
+      source ~/menv
+      source ~/.bashrc
+
+      popd
+    }
+  fi
+
   alias menv_info="ls -alt |grep \"bash\|menv\""
 
   # Programming related
@@ -157,10 +232,17 @@ function nonlogin {
   alias xval="valgrind --track-origins=yes --leak-check=full --show-reachable=yes"
   alias sval="xval --gen-suppressions=yes --demangle=no"
   alias ct="cleartool"
-  alias cscopeinit="cscope -R"
-  alias cscopeopen="cscope -d"
+  alias cscopeR="cscope -R"
+  alias cscopeD="cscope -d"
 
-  export CSCOPE_DB=~/cscope.out
+  function cscopeinit {
+    find `realpath .` -name '*.c' -o -name '*.h' -o -name '*.cpp' -o -name '*.hpp' \
+      > ./cscope.files
+    cscope -b
+    CSCOPE_DB=`realpath cscope.out`
+    export CSCOPE_DB
+  }
+
   export GLOG_minloglevel=1
 
   function lsdiff {
@@ -210,22 +292,57 @@ function nonlogin {
   fi
 }
 
+################################################################################
+# This function creates a vimrc file. It is intending to be redirected into a
+# file.
 function vimrc {
-echo "
+  echo "
+\"imenv generated vimrc
+\" source http://amix.dk/vim/vimrc.html
+execute pathogen#infect()
+syntax on
+filetype plugin indent on
 syntax enable
-set nocp
 autocmd FileType make setlocal noexpandtab
 set pastetoggle=<F2>
 if exists('+colorcolumn')
   set colorcolumn=80
 endif
+set ai
 highlight ColorColumn ctermbg=lightgrey guibg=lightgrey
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 match OverLength /\%81v.\+/
 \"highlight WhitespaceEOL ctermbg=red guibg=red
 \"match WhitespaceEOL /\s\+$/
+autocmd VimEnter * NERDTree
+autocmd BufEnter * NERDTreeMirror
+autocmd VimEnter * wincmd w
+
+set nocp
 set tabstop=2 shiftwidth=2 expandtab
 set autoread
+set wildmenu
+set ruler
+set hid
+set cmdheight=2
+set smartcase
+set ignorecase
+set hlsearch
+set showmatch
+
+autocmd BufReadPost *
+     \ if line(\"'\\\"\") > 0 && line(\"'\\\"\") <= line(\"$\") |
+     \   exe \"normal! g\`\\\"\" |
+     \ endif
+set laststatus=2
+set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l
+
+map <leader>ss :setlocal spell!<cr>
+
+map <C-n> :NERDTreeToggle<CR>
+set number
+nnoremap <F3> :NumbersToggle<CR>
+nnoremap <F4> :NumbersOnOff<CR>
 
 function! <SID>StripTrailingWhitespace()
     \" Preparation: save last search, and cursor position.
@@ -239,7 +356,52 @@ function! <SID>StripTrailingWhitespace()
     call cursor(l, c)
 endfunction
 nmap <silent> <leader><space> :call <SID>StripTrailingWhitespace()<CR>
+
+\" Returns true if paste mode is enabled
+function! HasPaste()
+    if &paste
+      return 'PASTE MODE  '
+    en
+    return ''
+endfunction
 "
+}
+
+################################################################################
+# This function loads vimplugins.
+function vimplugins {
+
+  function githubz {
+    echo "Installing vim pathogen plugin $1."
+    /bin/rm -rf $1
+    githubf $1/archive/master.zip
+    unzip -qq master.zip
+    /bin/rm -f master.zip
+    mv "$(basename $1)-master" $(basename $1)
+  }
+
+  pushd .
+
+  /bin/rm -rf ~/.vim/autoload
+  /bin/rm -rf ~/.vim/bundle
+
+  echo "Install vim pathogen plugin handler."
+
+  mkdir -p ~/.vim/autoload ~/.vim/bundle
+  curl -Sso ~/.vim/autoload/pathogen.vim \
+   https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim
+
+  cd ~/.vim/bundle
+  githubz scrooloose/nerdtree
+  githubz myusuf3/numbers.vim
+
+  mkdir -p ~/.vim/plugins
+  cd ~/.vim/plugins
+
+  echo "Installing cscope plugin."
+  fetch http://cscope.sourceforge.net/cscope_maps.vim
+
+  popd
 }
 
 ################################################################################
@@ -285,19 +447,26 @@ ${TC_GRD}"
 
   MEMT=`cat /proc/meminfo | grep MemTotal`
   SWAT=`cat /proc/meminfo | grep '^SwapTotal:'`
-  PMODEL=`cat /proc/cpuinfo | grep '^model name' | awk '{print $4 $5 $6}' | head -1`
-  PMHZ=`cat /proc/cpuinfo | grep '^cpu MHz' | awk '{print $4}'| sed -e 's/\.[0-9]*//g' | head -1`
-  PVENDOR=`cat /proc/cpuinfo | grep '^vendor_id' | awk '{print $3}' | head -1`
-  PNUMS=`cat /proc/cpuinfo | grep '^processor' | wc -l | awk '{print $1}' | head -1`
+  PMODEL=`cat /proc/cpuinfo | \
+    grep '^model name' | awk '{print $4 $5 $6}' | head -1`
+  PMHZ=`cat /proc/cpuinfo | \
+    grep '^cpu MHz' | awk '{print $4}'| sed -e 's/\.[0-9]*//g' | head -1`
+  PVENDOR=`cat /proc/cpuinfo | \
+    grep '^vendor_id' | awk '{print $3}' | head -1`
+  PNUMS=`cat /proc/cpuinfo | \
+    grep '^processor' | wc -l | awk '{print $1}' | head -1`
 
   echo "OS............: `uname -o`"
   echo "Hostname......: `uname -n`"
-  echo "Address.......: `/sbin/ifconfig | grep "inet" | grep -v '127.\|::1' | awk '{print $2}' | tr '\n' '\t'` "
+  echo "Address.......: `/sbin/ifconfig | grep "inet" | grep -v '127.\|::1' \
+                                        | awk '{print $2}' | tr '\n' '\t'` "
   echo "Kernel........: `uname -s ` `uname -r` `uname -v`"
   echo "Machine HW....: `uname -m`"
   echo "Uptime........:`uptime | sed 's/.*up ([^,]*), .*/1/'`"
-  echo "Memory........: `echo $MEMT | awk {'print $2'}` `echo $MEMT | awk {'print $3'}`"
-  echo "SWAP..........: `echo $SWAT | awk {'print $2'}` `echo $SWAT | awk {'print $3'}`"
+  echo "Memory........: `echo $MEMT | awk {'print $2'}` `echo $MEMT \
+                                    | awk {'print $3'}`"
+  echo "SWAP..........: `echo $SWAT | awk {'print $2'}` `echo $SWAT \
+                                    | awk {'print $3'}`"
   echo "Username......: `whoami`"
   echo "Processor(s)..: $PNUMS $PVENDOR ${PMHZ} MHz ${PMODEL}"
 
