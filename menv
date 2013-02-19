@@ -411,7 +411,8 @@ function vimplugins {
 
   cd ~/.vim
   githubz Rip-Rip/clang_complete
-  /bin/mv -f clang_complete/* .
+  /bin/cp -R clang_complete/* .
+  /bin/rm -rf clang_complete
 
   mkdir -p ~/.vim/plugins
   cd ~/.vim/plugins
