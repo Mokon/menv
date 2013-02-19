@@ -299,7 +299,7 @@ function nonlogin {
 # file.
 function vimrc {
   echo "
-\"imenv generated vimrc
+\"menv generated vimrc
 \" source http://amix.dk/vim/vimrc.html
 
 \" First, lets start by loading some plugins.
