@@ -33,7 +33,7 @@ function exists {
 # Aux function to wget a file.
 function fetch {
   command -v wget >/dev/null 2>&1 || { echo >&2 "wget not found"; return ;}
-  wget -q -N --no-check-certificate ${1}
+  wget -O `basename ${1}` -q -N --no-check-certificate ${1}
 }
 
 ################################################################################
@@ -299,7 +299,19 @@ function vimrc {
   echo "
 \"imenv generated vimrc
 \" source http://amix.dk/vim/vimrc.html
+
+\" First, lets start by loading some plugins.
+
+\" pathogen plugins... We disable some if the version isn't high enough.
+let g:pathogen_disabled = []
+
+if v:version < '703' || !has('python')
+      call add(g:pathogen_disabled, 'numbers.vim')
+endif
+
 execute pathogen#infect()
+
+\" 
 syntax on
 filetype plugin indent on
 syntax enable
