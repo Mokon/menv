@@ -373,7 +373,6 @@ function vimplugins {
 
   function githubz {
     echo "Installing vim pathogen plugin $1."
-    /bin/rm -rf $1
     githubf $1/archive/master.zip
     unzip -qq master.zip
     /bin/rm -f master.zip
@@ -382,8 +381,7 @@ function vimplugins {
 
   pushd .
 
-  /bin/rm -rf ~/.vim/autoload
-  /bin/rm -rf ~/.vim/bundle
+  /bin/rm -rf ~/.vim
 
   echo "Install vim pathogen plugin handler."
 
@@ -394,6 +392,12 @@ function vimplugins {
   cd ~/.vim/bundle
   githubz scrooloose/nerdtree
   githubz myusuf3/numbers.vim
+  # githubz gmarik/vundle
+  # githubz valloric/YouCompleteMe
+
+  cd ~/.vim
+  githubz Rip-Rip/clang_complete
+  /bin/mv clang_complete/* .
 
   mkdir -p ~/.vim/plugins
   cd ~/.vim/plugins
