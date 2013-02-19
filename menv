@@ -36,6 +36,12 @@ function fetch {
   wget -O `basename ${1}` -q -N --no-check-certificate ${1}
 }
 
+# Aux functiont to fetch from github.
+function githubf {
+  fetch https://github.com/$1
+}
+
+
 ################################################################################
 # A main function which determines how this program was called.
 function main {
@@ -201,10 +207,6 @@ function nonlogin {
   alias gitsetup="git config --global user.name \David Bond\" ; \
                   git config --global user.email mokon@mokon.net ; \
                   git commit --amend --reset-author"
-
-  function githubf {
-    fetch https://github.com/$1
-  }
 
   function githubc {
     git clone https://github.com/$1
