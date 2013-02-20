@@ -41,7 +41,6 @@ function githubf {
   fetch https://github.com/$1
 }
 
-
 ################################################################################
 # A main function which determines how this program was called.
 function main {
@@ -68,7 +67,7 @@ function menv {
 
   # Aux function to setup a menu symbolic link. Backing up w/e was there before.
   function menv_link {
-    if [ -f $1 ] && { [ ! -L $1 ] || 
+    if [ -f $1 ] && { [ ! -L $1 ] ||
         { [ -L $1 ] && [ `readlink $1` != "menv" ] ; } ; } ; then
       echo "Found foreign ${1}. Backing up as ${1}_backup."
        /bin/mv --backup=numbered $1 $1_backup
@@ -97,8 +96,14 @@ function menv {
   vimrc &> .vimrc
   vimplugins
 
-  [ ! -d trash ] &&  mkdir trash &&
-    echo "Created trash directory." || echo "Found trash directory"
+  # Aux function to create a directory if it doesn't exist with nice printing
+  function menv_mkdir {
+    [ ! -d $1 ] &&  mkdir $1 &&
+      echo "Created $1 directory." || echo "Found $1 directory"
+  }
+
+  menv_mkdir trash
+  menv_mkdir backup
 
   if [ -f menv_local_nonlogin ]; then
     echo "Found ~/menv_local_nonlogin."
@@ -114,10 +119,13 @@ function menv {
 # Attempts to deploy a basic menv setup on the system.
 function menv_deploy {
   pushd .
+
   cd ~
   fetch ${mprofile_loc}
   chmod +x menv
-  source ~/.bashrc
+  ./menv
+  source .bashrc
+
   popd
 }
 
@@ -139,6 +147,8 @@ function menv_cleanup {
   if_sym_delete menv_cleanup
 
   unalias -a
+
+  # TODO Cleanup functions.
 
   popd
 }
@@ -195,6 +205,9 @@ function nonlogin {
   alias ls="ls --color"
   alias rpm_list_deps="rpm -qpR"
   alias bx="source ~/.bashrc"
+  alias mvbk="/bin/mv --backup=numbered"
+  alias cpbk="/bin/cp --backup=numbered"
+
 
   function vin {
     vim +$2 $1
@@ -256,6 +269,58 @@ function nonlogin {
   # Gaming
   alias mc="java -Xmx2048M -Xms512M -cp minecraft.jar net.minecraft.LauncherFrame"
 
+  export LD_LIBRARY_PATH="/lib/jvm/java-1.7.0-openjdk-1.7.0.9.x86_64/jre/lib/amd64/"
+
+  export MCHOME=~/.minecraft
+
+  function mclauncher {
+    echo "Downloading Minecraft jar."
+    wget -O minecraft.jar \
+      "https://s3.amazonaws.com/MinecraftDownload/launcher/minecraft.jar"
+    
+    # java -Xmx2048M -Xms512M -Duser.home=. -cp minecraft.jar net.minecraft.LauncherFrame
+  }
+
+  function mcdeploy {
+    /bin/rm -rf mc
+    mkdir mc
+    cd mc
+
+    echo "Downloading Single Player Commands Plugin."
+    wget -O spc.zip "http://bit.ly/13CXNeC"
+    mkdir spc
+    unzip -qq -d spc spc.zip
+    /bin/rm -f spc.zip
+
+    echo "Backing up MCHOME"
+    /bin/cp --backup=numbered -R ${MCHOME} ~/backup/
+
+    echo "Extracting minecraft.jar"
+    unzip -qq -d minecraftjar ${MCHOME}/bin/minecraft.jar 
+
+    echo "Creating new minecraft.jar"
+    /bin/rm -rf minecraftjar/META-INF
+    /bin/cp -R spc/com minecraftjar/com
+
+    cd minecraftjar
+    zip -q -r ../minecraft.jar *
+    cd ..
+
+    echo "Moving jar files to MCHOME."
+    cp spc/*.jar ${MCHOME}/bin/
+    cp minecraft.jar ${MCHOME}/bin/
+
+    cd ..
+    /bin/rm -rf mc 
+  }
+
+  function mcbkii {
+    ii="~/.minecraft/saves/Imperium Infinitus"
+
+    zip -q -r ii.zip "$ii"
+    /bin/mv --backup=numbered ii.zip ~/backup/
+  }
+
   #HISTCONTROL=ignoreboth
   HISTSIZE=10000
   #HISTFILE=~/.bash.log
@@ -313,7 +378,7 @@ endif
 
 execute pathogen#infect()
 
-\" 
+\"
 syntax on
 filetype plugin indent on
 syntax enable
@@ -378,6 +443,16 @@ function! HasPaste()
     en
     return ''
 endfunction
+
+\" Add highlighting on functions and classes for C++
+function! EnhanceCppSyntax()
+  syn match    cCustomParen    \"?=(\" contains=cParen,cCppParen
+  syn match    cCustomFunc     \"\w\+\s*(\@=\" contains=cCustomParen
+  syn match    cCustomScope    \"::\"
+  syn match    cCustomClass    \"\w\+\s*::\" contains=cCustomScope
+  hi def link cCustomClass Function
+endfunction
+au Syntax cpp call EnhanceCppSyntax()
 "
 }
 
