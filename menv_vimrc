@@ -1,0 +1,90 @@
+"menv generated vimrc
+
+" First, lets start by loading some plugins.
+
+" pathogen plugins... We disable some if the version isn't high enough.
+let g:pathogen_disabled = []
+
+if v:version < '703' || !has('python')
+      call add(g:pathogen_disabled, 'numbers.vim')
+endif
+
+execute pathogen#infect()
+
+"
+syntax on
+set mouse=a
+set hlsearch
+filetype plugin indent on
+syntax enable
+autocmd FileType make setlocal noexpandtab
+set pastetoggle=<F2>
+if exists('+colorcolumn')
+  set colorcolumn=80
+endif
+set ai
+highlight ColorColumn ctermbg=lightgrey guibg=lightgrey
+highlight OverLength ctermbg=red ctermfg=white guibg=#592929
+match OverLength /\%81v.\+/
+"highlight WhitespaceEOL ctermbg=red guibg=red
+"match WhitespaceEOL /\s\+$/
+" autocmd VimEnter * NERDTree
+autocmd BufEnter * NERDTreeMirror
+autocmd VimEnter * wincmd w
+
+set nocp
+set tabstop=2 shiftwidth=2 expandtab
+set autoread
+set wildmenu
+set ruler
+set hid
+set cmdheight=2
+set smartcase
+set ignorecase
+set hlsearch
+set showmatch
+
+autocmd BufReadPost *
+     \ if line("'\"") > 0 && line("'\"") <= line("$") |
+     \   exe "normal! g`\\"\" |
+     \ endif
+set laststatus=2
+set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l
+
+map <leader>ss :setlocal spell!<cr>
+
+map <C-n> :NERDTreeToggle<CR>
+set number
+nnoremap <F3> :NumbersToggle<CR>
+nnoremap <F4> :NumbersOnOff<CR>
+
+function! <SID>StripTrailingWhitespace()
+    " Preparation: save last search, and cursor position.
+    let _s=@/
+    let l = line(".")
+    let c = col(".")
+    " Do the business:
+    %s/\s\+$//e
+    " Clean up: restore previous search history, and cursor position
+    let @/=_s
+    call cursor(l, c)
+endfunction
+nmap <silent> <leader><space> :call <SID>StripTrailingWhitespace()<CR>
+
+" Returns true if paste mode is enabled
+function! HasPaste()
+    if &paste
+      return 'PASTE MODE  '
+    en
+    return ''
+endfunction
+
+" Add highlighting on functions and classes for C++
+function! EnhanceCppSyntax()
+  syn match    cCustomParen    "?=(" contains=cParen,cCppParen
+  syn match    cCustomFunc     "\w\+\s*(\@=" contains=cCustomParen
+  syn match    cCustomScope    "::\"
+  syn match    cCustomClass    "\w\+\s*::" contains=cCustomScope
+  hi def link cCustomClass Function
+endfunction
+au Syntax cpp call EnhanceCppSyntax()

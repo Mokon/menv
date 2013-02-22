@@ -7,58 +7,70 @@
 # a single wget and execution of the script should setup everything.
 #
 # This script will setup things such as your bashrc file and bash_profile. It
-# also setups a .vimrc file and installs a bunch of plugins.
+# also setups a .vimrc file and installs a bunch of plugins for vim.
 #
 # The first time you install this file run:
 #   cd ~
-#   wget -q -N --no-check-certificate https://raw.github.com/Mokon/menv/master/menv
+#   wget -q -N --no-check-certificate \
+#     https://raw.github.com/Mokon/menv/master/menv
 #   chmod +x menv
 #   ./menv
 # From then on to update the script called:
-#   ~/menv_deploy
+#   ~/menv_update
+# To uninstall the script call:
+#   ~/menv_uninstall
+#
 # Never edit any of the menv files directly. Always edit in the git repo.
 #
 # (C) 2013 David 'Mokon' Bond, All Rights Reserved
 #
 ################################################################################
 
+# A global array of functions used to unset funcs on cleanup.
+menv_funcs=()
+
 # The location of this system on github.
-mprofile_loc="https://raw.github.com/Mokon/menv/master/menv"
+menv_loc="https://raw.github.com/Mokon/menv/master/menv"
+vimrc_loc="https://raw.github.com/Mokon/menv/master/vimrc"
 
 # Aux function to test if a command exists.
-function exists {
+function cmdexists {
     test -x "$(command -v "$1")"
 }
+menv_funcs+=(cmdexists)
 
 # Aux function to wget a file.
 function fetch {
-  command -v wget >/dev/null 2>&1 || { echo >&2 "wget not found"; return ;}
+  command -v wget >/dev/null 2>&1 || { echo >&2 "wget not found" ; return ;}
   wget -O `basename ${1}` -q -N --no-check-certificate ${1}
 }
+menv_funcs+=(fetch)
 
 # Aux functiont to fetch from github.
 function githubf {
   fetch https://github.com/$1
 }
+menv_funcs+=(githubf)
 
 ################################################################################
 # A main function which determines how this program was called.
-function main {
+function menv_main {
   case ${BASH_SOURCE[0]} in
-    *menv) menv ;;
-    *menv_deploy) menv_deploy ;;
-    *menv_cleanup) menv_cleanup ;;
-    *.bash_profile|*.profile) login ;;
+    *menv|menv_install) menv_install ;;
+    *menv_update) menv_update ;;
+    *menv_cleanup) menv_uninstall ;;
+    *.bash_profile|*.profile) menv_login ;;
+    *.bashrc) menv_nonlogin ;;
     *.bash_aliases)
       echo "No support for bash_aliases. Aliases found in bashrc." ;;
-    *.bashrc) nonlogin ;;
     *) echo "Unknown menv invocation" ;;
   esac
 }
+menv_funcs+=(menv_main)
 
 ##############################################################################t#
 # Sets up the environment from scratch.
-function menv {
+function menv_install {
   echo "Setting up the Mokon Environment."
 
   pushd .
@@ -80,10 +92,13 @@ function menv {
     fi
   }
 
-  menv_link menv_deploy
-  menv_link menv_cleanup
+  menv_link menv_install
+  menv_link menv_update
+  menv_link menv_uninstall
   menv_link .bashrc
   menv_link .bash_profile
+
+  unset menv_link
 
   grep "\"menv generated vimrc" .vimrc &> /dev/null
   if [ $? == 0 ] ; then
@@ -93,7 +108,8 @@ function menv {
     /bin/mv --backup=numbered .vimrc vimrc_backup
     echo "Found foreign vimrc. Backing up as vimrc_backup."
   fi
-  vimrc &> .vimrc
+
+  curl ${vimrc_loc} &> .vimrc
   vimplugins
 
   # Aux function to create a directory if it doesn't exist with nice printing
@@ -105,6 +121,8 @@ function menv {
   menv_mkdir trash
   menv_mkdir backup
 
+  unset menv_mkdir
+
   if [ -f menv_local_nonlogin ]; then
     echo "Found ~/menv_local_nonlogin."
   fi
@@ -112,12 +130,15 @@ function menv {
   if [ -f menv_local_login ]; then
     echo "Found ~/menv_local_login."
   fi
+
   popd
 }
+menv_funcs+=(menv_install)
+
 
 ################################################################################
 # Attempts to deploy a basic menv setup on the system.
-function menv_deploy {
+function menv_update {
   pushd .
 
   cd ~
@@ -128,12 +149,13 @@ function menv_deploy {
 
   popd
 }
+menv_funcs+=(menv_update)
 
 ################################################################################
 # Attempts to cleanup menv
-function menv_cleanup {
+function menv_uninstall {
   function if_sym_delete {
-    if [ -L $1 ]; then
+    if [ -L $1 ] ; then
       /bin/rm -f $1
     fi
   }
@@ -146,34 +168,40 @@ function menv_cleanup {
   if_sym_delete menv_deploy
   if_sym_delete menv_cleanup
 
+  unset if_sym_delete
+
   unalias -a
 
-  # TODO Cleanup functions.
+  for menv_func in "${menv_funcs[@]}" ; do
+      unset "${menv_func}"
+  done
 
   popd
 }
+menv_funcs+=(menv_uninstall)
 
 ################################################################################
 # Run on login this is essentially the bash_profile script.
-function login {
+function menv_login {
   if [ -f ~/.bashrc ]; then
 	  source ~/.bashrc
   fi
 
-  PATH=$PATH:$HOME/bin
-
-  export PATH
+  export PATH=$PATH:$HOME/bin
 
   # Source a local login script if one exists.
   if [ -f ~/menv_local_login ]; then
   	source ~/menv_local_login
   fi
 }
+menv_funcs+=(menv_login)
 
 ################################################################################
 # Run on nonlogin and login this is essentially the bashrc script.
-function nonlogin {
-  motd
+function menv_nonlogin {
+  # ---------------------------------------------------------------------------
+  # Basic env.
+  menv_motd
 
   # Unalias just in case we have aliases from another script run lying around.
   unalias -a
@@ -183,14 +211,22 @@ function nonlogin {
   TC_RESET="\[\033[0;0m\]"
   PS1="${TC_GRE}i:${TC_RESET}"
 
+  # Proper umask
   umask 022
+  
+  # I like a large history size.
+  HISTSIZE=10000
 
   # Setup editor, vim perfered.
   export EDITOR=ed
   exists emacs && EDITOR=emacs;
   exists vi && EDITOR=vi;
   exists vim && EDITOR=vim;
+  
+  # Color scheme for LS.
+  LS_COLORS="rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=01;05;37;41:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lz=01;31:*.xz=01;31:*.bz2=01;31:*.tbz=01;31:*.tbz2=01;31:*.bz=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.rar=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.axv=01;35:*.anx=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=01;36:*.au=01;36:*.flac=01;36:*.mid=01;36:*.midi=01;36:*.mka=01;36:*.mp3=01;36:*.mpc=01;36:*.ogg=01;36:*.ra=01;36:*.wav=01;36:*.axa=01;36:*.oga=01;36:*.spx=01;36:*.xspf=01;36:*.c=01;31:*.h=08;36:"
 
+  # ---------------------------------------------------------------------------
   # General util.
   alias rm='mv --target-directory ~/trash'
   alias delete_immediately='/bin/rm -Rf'
@@ -207,11 +243,13 @@ function nonlogin {
   alias bx="source ~/.bashrc"
   alias mvbk="/bin/mv --backup=numbered"
   alias cpbk="/bin/cp --backup=numbered"
+  alias remote_terminal_share="wemux"
 
-
+  # Function that opens vim at a given line number.
   function vin {
     vim +$2 $1
   }
+  menv_funcs+=(vin)
 
   alias gits="git status -s"
   alias gitic="git commit -m \"Initial Commit\""
@@ -221,15 +259,18 @@ function nonlogin {
                   git config --global user.email mokon@mokon.net ; \
                   git commit --amend --reset-author"
 
+  # Function to clone from github.
   function githubc {
     git clone https://github.com/$1
   }
+  menv_funcs+=(githubc)
 
   # Simple function for my dev box which has menv checked out in git. This
   # allows me to test menv on the box before I push it to github.
   if [ -d ~/git/menv ]; then
     function menv_stage {
       pushd .
+
       cd ~/git/menv/
 
       cp menv ~
@@ -238,10 +279,22 @@ function nonlogin {
 
       popd
     }
+    menv_funcs+=(menv_stage)
   fi
+  
+  # A function to list a directory structure in a nice tree.
+  function tree_list {
+    ls -R $1 | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
+  }
+  menv_funcs+=(tree_list)
 
-  alias menv_info="ls -alt |grep \"bash\|menv\""
+  # A function to grep excluding something I normally don't care about.
+  function mgrep {
+    grep -rn $1 $2 |grep -v .svn |grep -v Binary
+  }
+  menv_funcs+=(mgrep)
 
+  # ---------------------------------------------------------------------------
   # Programming related
   alias svn_add_dir_only="svn add --depth=empty"
   alias xval="valgrind --track-origins=yes --leak-check=full --show-reachable=yes"
@@ -250,6 +303,7 @@ function nonlogin {
   alias cscopeR="cscope -R"
   alias cscopeD="cscope -d"
 
+  # Function to init a cscope database with absolute filenames.
   function cscopeinit {
     find `realpath .` -name '*.c' -o -name '*.h' -o -name '*.cpp' -o -name '*.hpp' \
       > ./cscope.files
@@ -257,31 +311,49 @@ function nonlogin {
     CSCOPE_DB=`realpath cscope.out`
     export CSCOPE_DB
   }
+  menv_funcs+=(cscopeinit)
 
   export GLOG_minloglevel=1
 
+  # Simple hack function to diff the file contents recursively of two folders.
   function lsdiff {
     ls -R $1 |grep -v "\/" &> /tmp/ls1.diff
     ls -R $2 |grep -v "\/" &> /tmp/ls2.diff
     diff /tmp/ls1.diff /tmp/ls2.diff
   }
+  menv_funcs+=(lsdiff)
 
+  function count_c_files {
+    HFILES=`find $1 -type f -name "*.h" `
+    CFILES=`find $1 -type f -name "*.c" `
+    HLC=`wc -l $HFILES 2> /dev/null | tail -1 | awk '{print $1}'`
+    CLC=`wc -l $CFILES 2> /dev/null | tail -1 | awk '{print $1}'`
+    TLC=`expr $HLC + $CLC`
+
+    echo "HCL = $HLC, CLC = $CLC, TLC = $TLC"
+  }
+  menv_funcs+=(count_c_files)
+
+  # ---------------------------------------------------------------------------
   # Gaming
+  export MCHOME=~/.minecraft
   alias mc="java -Xmx2048M -Xms512M -cp minecraft.jar net.minecraft.LauncherFrame"
 
+  # This just works for my epsom box... The only box I play minecraft on.
   export LD_LIBRARY_PATH="/lib/jvm/java-1.7.0-openjdk-1.7.0.9.x86_64/jre/lib/amd64/"
 
-  export MCHOME=~/.minecraft
-
+  # A function which downloads the minecraft jar launcher file.
   function mclauncher {
     echo "Downloading Minecraft jar."
     wget -O minecraft.jar \
-      "https://s3.amazonaws.com/MinecraftDownload/launcher/minecraft.jar"
-    
-    # java -Xmx2048M -Xms512M -Duser.home=. -cp minecraft.jar net.minecraft.LauncherFrame
+      "https://s3.amazonaws.com/MinecraftDownload/launcher/minecraft.jar" 
   }
+  menv_funcs+=(mclauncher)
 
-  function mcdeploy {
+  # NOTE: I can set the mc homedir with this arg: mc -Duser.home=$DIR
+
+  # Function to install single player commands into minecraft.
+  function mcspc {
     /bin/rm -rf mc
     mkdir mc
     cd mc
@@ -313,40 +385,18 @@ function nonlogin {
     cd ..
     /bin/rm -rf mc 
   }
+  menv_funcs+=(mcspc)
 
+  # Function to backup my ii map in mc.
   function mcbkii {
     ii="~/.minecraft/saves/Imperium Infinitus"
 
     zip -q -r ii.zip "$ii"
     /bin/mv --backup=numbered ii.zip ~/backup/
   }
+  menv_funcs+=(mcbkii)
 
-  #HISTCONTROL=ignoreboth
-  HISTSIZE=10000
-  #HISTFILE=~/.bash.log
-  #HISTFILESIZE=
-  #HISTTIMEFORMAT='%F %T%t'
-
-   LS_COLORS="rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=01;05;37;41:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lz=01;31:*.xz=01;31:*.bz2=01;31:*.tbz=01;31:*.tbz2=01;31:*.bz=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.rar=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.axv=01;35:*.anx=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=01;36:*.au=01;36:*.flac=01;36:*.mid=01;36:*.midi=01;36:*.mka=01;36:*.mp3=01;36:*.mpc=01;36:*.ogg=01;36:*.ra=01;36:*.wav=01;36:*.axa=01;36:*.oga=01;36:*.spx=01;36:*.xspf=01;36:*.c=01;31:*.h=08;36:"
-
-  count_c_files( ) {
-    HFILES=`find $1 -type f -name "*.h" `
-    CFILES=`find $1 -type f -name "*.c" `
-    HLC=`wc -l $HFILES 2> /dev/null | tail -1 | awk '{print $1}'`
-    CLC=`wc -l $CFILES 2> /dev/null | tail -1 | awk '{print $1}'`
-    TLC=`expr $HLC + $CLC`
-
-    echo "HCL = $HLC, CLC = $CLC, TLC = $TLC"
-  }
-
-  tree_list( ) {
-    ls -R $1 | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
-  }
-
-  mgrep( ) {
-    grep -rn $1 $2 |grep -v .svn |grep -v Binary
-  }
-
+  # ---------------------------------------------------------------------------
 
   # Source a local nonlogin script if one exists.
   if [ -f ~/menv_local_nonlogin ]; then
@@ -358,103 +408,7 @@ function nonlogin {
   	source /etc/bashrc
   fi
 }
-
-################################################################################
-# This function creates a vimrc file. It is intending to be redirected into a
-# file.
-function vimrc {
-  echo "
-\"menv generated vimrc
-\" source http://amix.dk/vim/vimrc.html
-
-\" First, lets start by loading some plugins.
-
-\" pathogen plugins... We disable some if the version isn't high enough.
-let g:pathogen_disabled = []
-
-if v:version < '703' || !has('python')
-      call add(g:pathogen_disabled, 'numbers.vim')
-endif
-
-execute pathogen#infect()
-
-\"
-syntax on
-filetype plugin indent on
-syntax enable
-autocmd FileType make setlocal noexpandtab
-set pastetoggle=<F2>
-if exists('+colorcolumn')
-  set colorcolumn=80
-endif
-set ai
-highlight ColorColumn ctermbg=lightgrey guibg=lightgrey
-highlight OverLength ctermbg=red ctermfg=white guibg=#592929
-match OverLength /\%81v.\+/
-\"highlight WhitespaceEOL ctermbg=red guibg=red
-\"match WhitespaceEOL /\s\+$/
-autocmd VimEnter * NERDTree
-autocmd BufEnter * NERDTreeMirror
-autocmd VimEnter * wincmd w
-
-set nocp
-set tabstop=2 shiftwidth=2 expandtab
-set autoread
-set wildmenu
-set ruler
-set hid
-set cmdheight=2
-set smartcase
-set ignorecase
-set hlsearch
-set showmatch
-
-autocmd BufReadPost *
-     \ if line(\"'\\\"\") > 0 && line(\"'\\\"\") <= line(\"$\") |
-     \   exe \"normal! g\`\\\"\" |
-     \ endif
-set laststatus=2
-set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l
-
-map <leader>ss :setlocal spell!<cr>
-
-map <C-n> :NERDTreeToggle<CR>
-set number
-nnoremap <F3> :NumbersToggle<CR>
-nnoremap <F4> :NumbersOnOff<CR>
-
-function! <SID>StripTrailingWhitespace()
-    \" Preparation: save last search, and cursor position.
-    let _s=@/
-    let l = line(".")
-    let c = col(".")
-    \" Do the business:
-    %s/\s\+$//e
-    \" Clean up: restore previous search history, and cursor position
-    let @/=_s
-    call cursor(l, c)
-endfunction
-nmap <silent> <leader><space> :call <SID>StripTrailingWhitespace()<CR>
-
-\" Returns true if paste mode is enabled
-function! HasPaste()
-    if &paste
-      return 'PASTE MODE  '
-    en
-    return ''
-endfunction
-
-\" Add highlighting on functions and classes for C++
-function! EnhanceCppSyntax()
-  syn match    cCustomParen    \"?=(\" contains=cParen,cCppParen
-  syn match    cCustomFunc     \"\w\+\s*(\@=\" contains=cCustomParen
-  syn match    cCustomScope    \"::\"
-  syn match    cCustomClass    \"\w\+\s*::\" contains=cCustomScope
-  hi def link cCustomClass Function
-endfunction
-au Syntax cpp call EnhanceCppSyntax()
-"
-}
+menv_funcs+=(menv_nonlogin)
 
 ################################################################################
 # This function loads vimplugins.
@@ -489,6 +443,8 @@ function vimplugins {
   /bin/cp -R clang_complete/* .
   /bin/rm -rf clang_complete
 
+  unset githubz
+
   mkdir -p ~/.vim/plugins
   cd ~/.vim/plugins
 
@@ -497,10 +453,11 @@ function vimplugins {
 
   popd
 }
+menv_funcs+=(vimplugins)
 
 ################################################################################
 # Prints a nice message of the day with a whole bunch of useful information.
-function motd {
+function menv_motd {
 
   # Terminal colors, assuming 256 colors.
   TC_RESET="[0m"
@@ -566,8 +523,9 @@ ${TC_GRD}"
 
   echo ${TC_RESET}
 }
+menv_funcs+=(menv_motd)
 
 ################################################################################
 # Execute the script.
-main
+menv_main
 
