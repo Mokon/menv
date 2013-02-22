@@ -31,7 +31,7 @@ menv_funcs=()
 
 # The location of this system on github.
 menv_loc="https://raw.github.com/Mokon/menv/master/menv"
-vimrc_loc="https://raw.github.com/Mokon/menv/master/vimrc"
+vimrc_loc="https://raw.github.com/Mokon/menv/master/menv_vimrc"
 
 # Aux function to test if a command exists.
 function cmdexists {
@@ -100,7 +100,7 @@ function menv_install {
 
   unset menv_link
 
-  grep "\"menv generated vimrc" .vimrc &> /dev/null
+  grep "\" menv generated vimrc" .vimrc &> /dev/null
   if [ $? == 0 ] ; then
     echo "Found menv vimrc. Clearing."
     /bin/rm -f .vimrc
