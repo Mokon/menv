@@ -247,6 +247,7 @@ function menv_nonlogin {
   alias remote_terminal_share="wemux"
   alias show_bash_functions="typeset -f"
   alias list_bash_functions="typeset -F"
+  alias tarball="tar cvzf"
 
   # Function that opens vim at a given line number.
   function vin {
@@ -401,7 +402,7 @@ function menv_nonlogin {
   function mcbkii {
     ii="~/.minecraft/saves/Imperium Infinitus"
 
-    zip -q -r ii.zip "${ii}"
+    tar cvzf ii.tgz "${ii}"
     /bin/mv --backup=numbered ii.zip ~/backup/
   }
   menv_funcs+=(mcbkii)
