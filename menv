@@ -56,9 +56,9 @@ menv_funcs+=(githubf)
 # A main function which determines how this program was called.
 function menv_main {
   case ${BASH_SOURCE[0]} in
-    *menv|menv_install) menv_install ;;
+    *menv|*menv_install) menv_install ;;
     *menv_update) menv_update ;;
-    *menv_cleanup) menv_uninstall ;;
+    *menv_uninstall) menv_uninstall ;;
     *.bash_profile|*.profile) menv_login ;;
     *.bashrc) menv_nonlogin ;;
     *.bash_aliases)
@@ -109,7 +109,7 @@ function menv_install {
     echo "Found foreign vimrc. Backing up as vimrc_backup."
   fi
 
-  curl ${vimrc_loc} &> .vimrc
+  curl -s ${vimrc_loc} &> .vimrc
   vimplugins
 
   # Aux function to create a directory if it doesn't exist with nice printing
@@ -142,7 +142,7 @@ function menv_update {
   pushd .
 
   cd ~
-  fetch ${mprofile_loc}
+  fetch ${menv_loc}
   chmod +x menv
   ./menv
   source .bashrc
@@ -165,8 +165,9 @@ function menv_uninstall {
 
   if_sym_delete .bashrc
   if_sym_delete .bash_profile
-  if_sym_delete menv_deploy
-  if_sym_delete menv_cleanup
+  if_sym_delete menv_install
+  if_sym_delete menv_update
+  if_sym_delete menv_uninstall
 
   unset if_sym_delete
 
@@ -219,9 +220,9 @@ function menv_nonlogin {
 
   # Setup editor, vim perfered.
   export EDITOR=ed
-  exists emacs && EDITOR=emacs;
-  exists vi && EDITOR=vi;
-  exists vim && EDITOR=vim;
+  cmdexists emacs && EDITOR=emacs;
+  cmdexists vi && EDITOR=vi;
+  cmdexists vim && EDITOR=vim;
   
   # Color scheme for LS.
   LS_COLORS="rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=01;05;37;41:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lz=01;31:*.xz=01;31:*.bz2=01;31:*.tbz=01;31:*.tbz2=01;31:*.bz=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.rar=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.axv=01;35:*.anx=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=01;36:*.au=01;36:*.flac=01;36:*.mid=01;36:*.midi=01;36:*.mka=01;36:*.mp3=01;36:*.mpc=01;36:*.ogg=01;36:*.ra=01;36:*.wav=01;36:*.axa=01;36:*.oga=01;36:*.spx=01;36:*.xspf=01;36:*.c=01;31:*.h=08;36:"
@@ -244,12 +245,20 @@ function menv_nonlogin {
   alias mvbk="/bin/mv --backup=numbered"
   alias cpbk="/bin/cp --backup=numbered"
   alias remote_terminal_share="wemux"
+  alias show_bash_functions="typeset -f"
+  alias list_bash_functions="typeset -F"
 
   # Function that opens vim at a given line number.
   function vin {
     vim +$2 $1
   }
   menv_funcs+=(vin)
+
+  function reset_tc {
+    TC_RESET="[0m"
+    echo ${TC_RESET}
+  }
+  menv_funcs+=(reset_tc)
 
   alias gits="git status -s"
   alias gitic="git commit -m \"Initial Commit\""
@@ -274,8 +283,9 @@ function menv_nonlogin {
       cd ~/git/menv/
 
       cp menv ~
-      source ~/menv
+      source ~/menv_install
       source ~/.bashrc
+      cp menv_vimrc .vimrc # Overwrite since normal menv grabs from github.
 
       popd
     }
@@ -391,7 +401,7 @@ function menv_nonlogin {
   function mcbkii {
     ii="~/.minecraft/saves/Imperium Infinitus"
 
-    zip -q -r ii.zip "$ii"
+    zip -q -r ii.zip "${ii}"
     /bin/mv --backup=numbered ii.zip ~/backup/
   }
   menv_funcs+=(mcbkii)
