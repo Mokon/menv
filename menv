@@ -400,9 +400,9 @@ function menv_nonlogin {
 
   # Function to backup my ii map in mc.
   function mcbkii {
-    ii="~/.minecraft/saves/Imperium\ Infinitus"
+    ii="${HOME}/.minecraft/saves/Imperium\ Infinitus"
 
-    tar cvzf ii.tgz "${ii}"
+    tar czf ii.tgz "${ii}"
     /bin/mv --backup=numbered ii.tgz ~/backup/
   }
   menv_funcs+=(mcbkii)
