@@ -246,6 +246,7 @@ function menv_nonlogin {
   alias cpbk="/bin/cp --backup=numbered"
   alias remote_terminal_share="wemux"
   alias show_bash_functions="typeset -f"
+  alias show_bash_function="type"
   alias list_bash_functions="typeset -F"
   alias tarball="tar cvzf"
 
@@ -400,7 +401,7 @@ function menv_nonlogin {
 
   # Function to backup my ii map in mc.
   function mcbkii {
-    ii="${HOME}/.minecraft/saves/Imperium\ Infinitus"
+    ii="${HOME}/.minecraft/saves/Imperium Infinitus"
 
     tar czf ii.tgz "${ii}"
     /bin/mv --backup=numbered ii.tgz ~/backup/
