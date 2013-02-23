@@ -403,7 +403,7 @@ function menv_nonlogin {
     ii="~/.minecraft/saves/Imperium Infinitus"
 
     tar cvzf ii.tgz "${ii}"
-    /bin/mv --backup=numbered ii.zip ~/backup/
+    /bin/mv --backup=numbered ii.tgz ~/backup/
   }
   menv_funcs+=(mcbkii)
 
