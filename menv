@@ -363,6 +363,12 @@ function menv_nonlogin {
   }
   menv_funcs+=(mclauncher)
 
+  alias mcdv="rm ${MCHOME}/bin/version"
+  alias mcjarspc="ln -S ${MCHOME}/bin/minecraft.jar \
+    ${MCHOME}/bin/minecraftspc.jar"
+  alias mcjarmc=" ln -S ${MCHOME}/bin/minecraft.jar \
+    ${MCHOME}/bin/minecraftmc.jar
+
   # NOTE: I can set the mc homedir with this arg: mc -Duser.home=$DIR
 
   # Function to install single player commands into minecraft.
