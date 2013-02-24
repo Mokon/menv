@@ -145,7 +145,7 @@ function menv_update {
   fetch ${menv_loc}
   chmod +x menv
   ./menv
-  source .bashrc
+  source .bash_profile
 
   popd
 }
@@ -367,7 +367,7 @@ function menv_nonlogin {
   alias mcjarspc="ln -S ${MCHOME}/bin/minecraft.jar \
     ${MCHOME}/bin/minecraftspc.jar"
   alias mcjarmc=" ln -S ${MCHOME}/bin/minecraft.jar \
-    ${MCHOME}/bin/minecraftmc.jar
+    ${MCHOME}/bin/minecraftmc.jar"
 
   # NOTE: I can set the mc homedir with this arg: mc -Duser.home=$DIR
 
