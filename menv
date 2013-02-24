@@ -350,6 +350,7 @@ function menv_nonlogin {
   # Gaming
   export MCHOME=~/.minecraft
   alias mc="java -Xmx2048M -Xms512M -cp minecraft.jar net.minecraft.LauncherFrame"
+  alias mcs="java -Xmx2048M -Xms1024M -jar minecraft_server.jar nogui"
 
   # This just works for my epsom box... The only box I play minecraft on.
   export LD_LIBRARY_PATH="/lib/jvm/java-1.7.0-openjdk-1.7.0.9.x86_64/jre/lib/amd64/"
