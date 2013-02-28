@@ -18,7 +18,7 @@ execute pathogen#infect()
 filetype plugin indent on " Enable lang dep. indenting
 syntax on " We want syntax coloring
 
-set mouse=a " Use the mouse in all modes.
+set mouse=v " Use the mouse in visual mode.
 set hlsearch " Highlight search.
 set ai " Auto indentation.
 set nocp " I don't care about compat with vi.
