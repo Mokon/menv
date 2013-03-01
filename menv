@@ -335,14 +335,33 @@ function menv_nonlogin {
   }
   menv_funcs+=(lsdiff)
 
-  function count_c_files {
-    HFILES=`find $1 -type f -name "*.h" `
-    CFILES=`find $1 -type f -name "*.c" `
-    HLC=`wc -l $HFILES 2> /dev/null | tail -1 | awk '{print $1}'`
-    CLC=`wc -l $CFILES 2> /dev/null | tail -1 | awk '{print $1}'`
-    TLC=`expr $HLC + $CLC`
+  function linecount {
+    function count_extension {
+      find -iname "*.$1" -exec wc -l {} \; | awk '{lines += $1 ; files += 1  }; END { print lines } '
+      # FILES=`find $2 -type f -name "*.$1" `
+      #if [ -n "${FILES}" ] ; then
+      #  echo $FILES |tail -1 &>/tmp$1
+      #  LC=`echo $FILES | tail -1 | awk '{print $1}'`
+      #  echo $LC
+      #else
+      #  echo 0
+      #fi
+    }
+    HLC=`count_extension h $1`
+    CLC=`count_extension c $1`
+    CPPLC=`count_extension cpp $1`
+    CUCLC=`count_extension C $1`
+    HPPLC=`count_extension hpp $1`
+    CSLC=`count_extension cs $1`
+    JAVALC=`count_extension java $1`
+    SMLLC=`count_extension sml $1`
+    unset count_extension 
 
-    echo "HCL = $HLC, CLC = $CLC, TLC = $TLC"
+    echo "HCL = $HLC, CLC = $CLC, CPPLC = $CPPLC, CUCLC = $CUCLC, HPPLC = $HPPLC,
+          CSLC = $CSLC, JAVALC = $JAVALC, SMLLC = $SMLLC"
+    TLC=`expr $HLC + $CLC + $CPPLC + $CUCLC + $HPPLC + $CSLC + $JAVALC + $SMLLC`
+    echo "TLC = $TLC"
+
   }
   menv_funcs+=(count_c_files)
 
