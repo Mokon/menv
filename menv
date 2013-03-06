@@ -314,6 +314,13 @@ function menv_nonlogin {
   alias ct="cleartool"
   alias cscopeR="cscope -R"
   alias cscopeD="cscope -d"
+  alias profvis="kcachegrind"
+  alias prof="valgrind --tool=callgrind"
+
+  function gprof {
+    gprof $1 gmon.out &> profileinfo.out 
+  }
+  menv_funcs+=(gprof)
 
   # Function to init a cscope database with absolute filenames.
   function cscopeinit {
@@ -325,7 +332,7 @@ function menv_nonlogin {
   }
   menv_funcs+=(cscopeinit)
 
-  export GLOG_minloglevel=1
+  export GLOG_minloglevel=0
 
   # Simple hack function to diff the file contents recursively of two folders.
   function lsdiff {
@@ -336,8 +343,8 @@ function menv_nonlogin {
   menv_funcs+=(lsdiff)
 
   function linecount {
-    function count_extension {
-      find -iname "*.$1" -exec wc -l {} \; | awk '{lines += $1 ; files += 1  }; END { print lines } '
+    function count_ext {
+      find . -not -name "*designer.cs" -and -name "*.$1" -exec wc -l {} \; | awk '{lines += $1 ; files += 1  }; END { print lines } '
       # FILES=`find $2 -type f -name "*.$1" `
       #if [ -n "${FILES}" ] ; then
       #  echo $FILES |tail -1 &>/tmp$1
@@ -347,15 +354,15 @@ function menv_nonlogin {
       #  echo 0
       #fi
     }
-    HLC=`count_extension h $1`
-    CLC=`count_extension c $1`
-    CPPLC=`count_extension cpp $1`
-    CUCLC=`count_extension C $1`
-    HPPLC=`count_extension hpp $1`
-    CSLC=`count_extension cs $1`
-    JAVALC=`count_extension java $1`
-    SMLLC=`count_extension sml $1`
-    unset count_extension 
+    HLC=`count_ext h $1`
+    CLC=`count_ext c $1`
+    CPPLC=`count_ext cpp $1`
+    CUCLC=`count_ext C $1`
+    HPPLC=`count_ext hpp $1`
+    CSLC=`count_ext cs $1`
+    JAVALC=`count_ext java $1`
+    SMLLC=`count_ext sml $1`
+    unset count_ext 
 
     echo "HCL = $HLC, CLC = $CLC, CPPLC = $CPPLC, CUCLC = $CUCLC, HPPLC = $HPPLC,
           CSLC = $CSLC, JAVALC = $JAVALC, SMLLC = $SMLLC"
