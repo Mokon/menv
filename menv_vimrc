@@ -65,6 +65,14 @@ function! <SID>StripTrailingWhitespace()
 endfunction
 nmap <silent> <leader><space> :call <SID>StripTrailingWhitespace()<CR>
 
+function! FindAndReplaceAllConfirm(from, to)
+  exe '%s/' . a:from . '/' . a:to . '/gc'
+endfunction
+
+function! FindAndReplaceAll(from, to)
+  exe '%s/' . a:from . '/' . a:to . '/g'
+endfunction
+
 " Update the status line to something better.
 set statusline=\ %m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l
 
