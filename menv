@@ -404,7 +404,7 @@ function menv_nonlogin {
     cd mc
 
     echo "Downloading Single Player Commands Plugin."
-    wget -O spc.zip "http://bit.ly/13CXNeC"
+    wget -O spc.zip "http://bit.ly/10ZwXQ5"
     mkdir spc
     unzip -qq -d spc spc.zip
     /bin/rm -f spc.zip
