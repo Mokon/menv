@@ -444,7 +444,7 @@ function menv_nonlogin {
 
     lwjgl-2.8.5
 
-    functio cptomc {
+    function cptomc {
       cp lwjgl-2.8.5/jar/$1 ${MCHOME}/bin/
     }
     unset cptomc
@@ -453,7 +453,7 @@ function menv_nonlogin {
     cptomc lwjgl.jar
     cptomc lwjgl_util.jar
 
-    functio cptomc {
+    function cptomc {
       cp lwjgl-2.8.5/native/linux/$1 ${MCHOME}/bin/natives/
     }
     unset cptomc
