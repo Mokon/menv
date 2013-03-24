@@ -417,20 +417,58 @@ function menv_nonlogin {
 
     echo "Creating new minecraft.jar"
     /bin/rm -rf minecraftjar/META-INF
-    /bin/cp -R spc/com minecraftjar/com
+    /bin/cp -R spc/com minecraftjar                                             
+    /bin/cp -R spc/*.class minecraftjar     
 
     cd minecraftjar
-    zip -q -r ../minecraft.jar *
+    zip -q -r ../minecraftspc.jar *
     cd ..
 
-    echo "Moving jar files to MCHOME."
+    echo "Moving jar files to ${MCHOME}."
     cp spc/*.jar ${MCHOME}/bin/
-    cp minecraft.jar ${MCHOME}/bin/
+    cp minecraftspc.jar ${MCHOME}/bin/minecraftspc.jar
 
     cd ..
     /bin/rm -rf mc 
   }
   menv_funcs+=(mcspc)
+
+  function mclib {
+    /bin/rm -rf mc
+    mkdir mc
+    cd mc
+
+    echo "Downloading Latest LWJGL."
+    wget -o lwjgl.zip http://sourceforge.net/projects/java-game-lib/files/Official%20Releases/LWJGL%202.8.5/lwjgl-2.8.5.zip/download
+    unzip lwjgl.zip
+
+    lwjgl-2.8.5
+
+    functio cptomc {
+      cp lwjgl-2.8.5/jar/$1 ${MCHOME}/bin/
+    }
+    unset cptomc
+    
+    cptomc jinput.jar
+    cptomc lwjgl.jar
+    cptomc lwjgl_util.jar
+
+    functio cptomc {
+      cp lwjgl-2.8.5/native/linux/$1 ${MCHOME}/bin/natives/
+    }
+    unset cptomc
+
+    cptomc libjinput-linux.so
+    cptomc libjinput-linux64.so
+    cptomc liblwjgl.so
+    cptomc liblwjgl64.so
+    cptomc libopenal.so
+    cptomc libopenal64.so
+
+    cd ..
+    /bin/rm -rf mc
+  }
+  menv_funcs+=(mclib)
 
   # Function to backup my ii map in mc.
   function mcbkii {
