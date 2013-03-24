@@ -439,7 +439,7 @@ function menv_nonlogin {
     cd mc
 
     echo "Downloading Latest LWJGL."
-    wget -o lwjgl.zip http://sourceforge.net/projects/java-game-lib/files/Official%20Releases/LWJGL%202.8.5/lwjgl-2.8.5.zip/download
+    wget -O lwjgl.zip http://sourceforge.net/projects/java-game-lib/files/Official%20Releases/LWJGL%202.8.5/lwjgl-2.8.5.zip/download
     unzip lwjgl.zip
 
     lwjgl-2.8.5
