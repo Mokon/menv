@@ -454,7 +454,7 @@ function menv_nonlogin {
     unset cptomc
 
     function cptomc {
-      cp lwjgl-2.8.5/native/linux/$1 ${MCHOME}/bin/natives/
+      cp "lwjgl-2.8.5/native/linux/${1}" ${MCHOME}/bin/natives/
     }
 
     cptomc libjinput-linux.so
