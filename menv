@@ -447,16 +447,15 @@ function menv_nonlogin {
     function cptomc {
       cp lwjgl-2.8.5/jar/$1 ${MCHOME}/bin/
     }
-    unset cptomc
     
     cptomc jinput.jar
     cptomc lwjgl.jar
     cptomc lwjgl_util.jar
+    unset cptomc
 
     function cptomc {
       cp lwjgl-2.8.5/native/linux/$1 ${MCHOME}/bin/natives/
     }
-    unset cptomc
 
     cptomc libjinput-linux.so
     cptomc libjinput-linux64.so
@@ -464,6 +463,7 @@ function menv_nonlogin {
     cptomc liblwjgl64.so
     cptomc libopenal.so
     cptomc libopenal64.so
+    unset cptomc
 
     cd ..
     /bin/rm -rf mc
