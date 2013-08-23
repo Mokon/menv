@@ -1,0 +1,10 @@
+1) Make a menv_package script which creates a portable tarball to install vim
+   files on a box without internet connectivity.
+2) Make menv_refresh called from a chron-job.
+3) Cleanup .vimrc and vim plugins on uninstall.
+4) Fix history options.
+5) Determine why this command doesn't work:
+     menv_alias cd='pushd . &> /dev/null ; cd'
+6) Prevent wierd coloring on login.
+7) Prevent error when clang not installed.
+8) Escape to/from in FindAllAndReplace* in the vimrc.
