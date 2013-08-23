@@ -1,59 +1,65 @@
 #!/bin/bash
-
-################################################################################
-#
-# The following is a specialized script to setup a linux enviornment that has
-# everything setup just the way I like it. It is also self contained in that
-# a single wget and execution of the script should setup everything.
-#
-# This script will setup things such as your bashrc file and bash_profile. It
-# also setups a .vimrc file and installs a bunch of plugins for vim.
-#
-# The first time you install this file run:
-#   cd ~
-#   wget -q -N --no-check-certificate \
-#     https://raw.github.com/Mokon/menv/master/menv
-#   chmod +x menv
-#   ./menv
-# From then on to update the script called:
-#   ~/menv_update
-# To uninstall the script call:
-#   ~/menv_uninstall
-#
-# Never edit any of the menv files directly. Always edit in the git repo.
 #
 # (C) 2013 David 'Mokon' Bond, All Rights Reserved
 #
-################################################################################
+# See README
+#
+
+# Ensure we are in a bash shell.
+if [[ "$SHELL" != *bash* ]] ; then
+  echo "menv requires a bash shell, bye"
+  exit -1
+fi
 
 # A global array of functions used to unset funcs on cleanup.
 menv_funcs=()
+# A global array of aliases used to unalias aliases on cleanup.
+menv_aliases=()
 
-# The location of this system on github.
+# A function which pushes an alias onto the menv array of aliases.
+function menv_alias {
+  alias "$*"
+  menv_aliases+=($1)
+}
+
+# A function which pushes a function onto the menv array of functions.
+function menv_function {
+  menv_funcs+=($1)
+}
+
+# The location of menv files on github.
+menv_git_loc="https://github.com/Mokon/menv.git"
 menv_loc="https://raw.github.com/Mokon/menv/master/menv"
 vimrc_loc="https://raw.github.com/Mokon/menv/master/menv_vimrc"
 
 # Aux function to test if a command exists.
+menv_function cmdexists
 function cmdexists {
     test -x "$(command -v "$1")"
 }
-menv_funcs+=(cmdexists)
 
-# Aux function to wget a file.
+# Aux function to wget a file. If the second param is set then this is the name
+# of the produced file.
+menv_function fetch
 function fetch {
-  command -v wget >/dev/null 2>&1 || { echo >&2 "wget not found" ; return ;}
-  wget -O `basename ${1}` -q -N --no-check-certificate ${1}
+  command -v wget >/dev/null 2>&1 || { echo >&2 "wget not found" ; return ; }
+  if [ -n "$2" ] ; then
+    fname=$2
+  else
+    fname=`basename ${1}`
+  fi
+  wget -O $fname -q -N --no-check-certificate ${1}
 }
-menv_funcs+=(fetch)
 
-# Aux functiont to fetch from github.
+# Aux function to fetch from github.
+menv_function githubf
 function githubf {
   fetch https://github.com/$1
 }
-menv_funcs+=(githubf)
 
 ################################################################################
 # A main function which determines how this program was called.
+menv_function menv_main
 function menv_main {
   case ${BASH_SOURCE[0]} in
     *menv|*menv_install) menv_install ;;
@@ -62,16 +68,17 @@ function menv_main {
     *.bash_profile|*.profile) menv_login ;;
     *.bashrc) menv_nonlogin ;;
     *.bash_aliases)
-      echo "No support for bash_aliases. Aliases found in bashrc." ;;
+      echo "No support for bash_aliases. " \
+           "Aliases are found in the .bashrc file." ;;
     *) echo "Unknown menv invocation" ;;
   esac
 }
-menv_funcs+=(menv_main)
 
 ##############################################################################t#
 # Sets up the environment from scratch.
+menv_function menv_install
 function menv_install {
-  echo "Setting up the Mokon Environment."
+  echo "Installing menv!"
 
   pushd .
 
@@ -133,12 +140,31 @@ function menv_install {
 
   popd
 }
-menv_funcs+=(menv_install)
-
 
 ################################################################################
 # Attempts to deploy a basic menv setup on the system.
+menv_function menv_update
 function menv_update {
+
+  echo "Updating menv"
+
+  ping -c1 -W1 github.com &> /dev/null
+  if [ $? ]; then
+    urldiff $menv_loc ~/menv &> /dev/null
+    menvs=$?
+    
+    urldiff $vimrc_loc ~/.vimrc &> /dev/null
+    vimrcs=$?
+
+    if [ $menvs && $vimrcs ] ; then
+      echo "menv is up to date."
+      return 0
+    fi
+  else
+    echo "Git Hub not reachable. Could not update."
+    return -1
+  fi
+
   pushd .
 
   cd ~
@@ -149,11 +175,17 @@ function menv_update {
 
   popd
 }
-menv_funcs+=(menv_update)
 
 ################################################################################
 # Attempts to cleanup menv
+menv_function menv_uninstall
 function menv_uninstall {
+
+  echo "Uninstalling menv"
+
+  empty_trash
+  /bin/rm -rf ~/trash
+
   function if_sym_delete {
     if [ -L $1 ] ; then
       /bin/rm -f $1
@@ -171,18 +203,22 @@ function menv_uninstall {
 
   unset if_sym_delete
 
-  unalias -a
+  for menv_alias in "${menv_aliases[@]}" ; do
+      unalias "${menv_alias}"
+  done
 
   for menv_func in "${menv_funcs[@]}" ; do
       unset "${menv_func}"
   done
 
+  echo "Leaving the menv backup directory, vimrc, and vim plugins."
+
   popd
 }
-menv_funcs+=(menv_uninstall)
 
 ################################################################################
 # Run on login this is essentially the bash_profile script.
+menv_function menv_login
 function menv_login {
   if [ -f ~/.bashrc ]; then
 	  source ~/.bashrc
@@ -195,17 +231,17 @@ function menv_login {
   	source ~/menv_local_login
   fi
 
-  # ---------------------------------------------------------------------------
-  # Basic env.
   menv_motd
 }
-menv_funcs+=(menv_login)
 
 ################################################################################
 # Run on nonlogin and login this is essentially the bashrc script.
+menv_function menv_nonlogin
 function menv_nonlogin {
   # Unalias just in case we have aliases from another script run lying around.
-  unalias -a
+  for menv_alias in "${menv_aliases[@]}" ; do
+      unalias "${menv_alias}"
+  done
 
   # I like to keep my prompt simple...
   TC_GRE="\[\033[0;32;40m\]"
@@ -214,8 +250,13 @@ function menv_nonlogin {
 
   # Proper umask
   umask 022
-  
-  # I like a large history size.
+
+  # Some history items. I like a large history size and I like a history that
+  # automatically saves itself after each command so if my shell exits I can
+  # still find my last command.
+  # TODO export HISTCONTROL=ignoredups:erasedups
+  #shopt -s histappend
+  #export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
   HISTSIZE=10000
 
   # Setup editor, vim perfered.
@@ -223,63 +264,18 @@ function menv_nonlogin {
   cmdexists emacs && EDITOR=emacs;
   cmdexists vi && EDITOR=vi;
   cmdexists vim && EDITOR=vim;
-  
+
   # Color scheme for LS.
   LS_COLORS="rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=01;05;37;41:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lz=01;31:*.xz=01;31:*.bz2=01;31:*.tbz=01;31:*.tbz2=01;31:*.bz=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.rar=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.axv=01;35:*.anx=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=01;36:*.au=01;36:*.flac=01;36:*.mid=01;36:*.midi=01;36:*.mka=01;36:*.mp3=01;36:*.mpc=01;36:*.ogg=01;36:*.ra=01;36:*.wav=01;36:*.axa=01;36:*.oga=01;36:*.spx=01;36:*.xspf=01;36:*.c=01;31:*.h=05;36:"
 
   # ---------------------------------------------------------------------------
-  # General util.
-  alias rm='mv --target-directory ~/trash'
-  alias delete_immediately='/bin/rm -Rf'
-  alias empty_trash='/bin/rm -rf ~/trash/*'
-  alias mv='mv -i'
-  alias ps="ps -aux"
-  alias e="exit"
-  alias ex="exit"
-  alias exi="exit"
-  alias extract="tar -xzvf"
-  alias build-essentials="yum groupinstall 'Development Tools'"
-  alias ls="ls --color"
-  alias rpm_list_deps="rpm -qpR"
-  alias bx="source ~/.bashrc"
-  alias mvbk="/bin/mv --backup=numbered"
-  alias cpbk="/bin/cp --backup=numbered"
-  alias remote_terminal_share="wemux"
-  alias show_bash_functions="typeset -f"
-  alias show_bash_function="type"
-  alias list_bash_functions="typeset -F"
-  alias tarball="tar cvzf"
-  alias delallswap="/bin/rm *.swp"
-
-  # Function that opens vim at a given line number.
-  function vin {
-    vim +$2 $1
-  }
-  menv_funcs+=(vin)
-
-  function reset_tc {
-    TC_RESET="[0m"
-    echo ${TC_RESET}
-  }
-  menv_funcs+=(reset_tc)
-
-  alias gits="git status -s"
-  alias gitic="git commit -m \"Initial Commit\""
-  alias gitc="git commit -am "
-  alias gitsync="git push origin master"
-  alias gitsetup="git config --global user.name \David Bond\" ; \
-                  git config --global user.email mokon@mokon.net ; \
-                  git commit --amend --reset-author"
-
-  # Function to clone from github.
-  function githubc {
-    git clone https://github.com/$1
-  }
-  menv_funcs+=(githubc)
+  # menv specific aliases and functions
+  menv_alias menv_refresh="source ~/.bash_profile"
 
   # Simple function for my dev box which has menv checked out in git. This
   # allows me to test menv on the box before I push it to github.
   if [ -d ~/git/menv ]; then
+    menv_function menv_stage
     function menv_stage {
       pushd .
 
@@ -287,79 +283,155 @@ function menv_nonlogin {
 
       cp menv ~
       source ~/menv_install
-      source ~/.bashrc
-      cp menv_vimrc .vimrc # Overwrite since normal menv grabs from github.
+      source ~/.bash_profile
+      cp menv_vimrc ~/.vimrc # Overwrite since normal menv grabs from github.
 
       popd
     }
-    menv_funcs+=(menv_stage)
   fi
-  
-  # A function to list a directory structure in a nice tree.
-  function tree_list {
-    ls -R $1 | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
+
+  # General utility aliases and functions
+  menv_alias ni="nodeinfo"
+  menv_alias rm='mv --target-directory ~/trash'
+  menv_alias delete_immediately='/bin/rm -Rf'
+  menv_alias di='/bin/rm -Rf'
+  menv_alias empty_trash='/bin/rm -rf ~/trash/*'
+  menv_alias empty_dl='/bin/rm -rf ~/Downloads/*'
+  menv_alias empty_all='/bin/rm -rf ~/trash/* ; /bin/rm -rf ~/Downloads/*'
+  menv_alias mv='mv -i'
+  menv_alias psa="ps -aux"
+  menv_alias e="exit"
+  menv_alias ex="exit"
+  menv_alias exi="exit"
+  menv_alias extract="tar -xzvf"
+  menv_alias ls="ls --color"
+  menv_alias bx="source ~/.bashrc"
+  menv_alias mvbk="/bin/mv --backup=numbered"
+  menv_alias cpbk="/bin/cp --backup=numbered"
+  menv_alias remote_terminal_share="wemux"
+  menv_alias show_bash_functions="typeset -f"
+  menv_alias show_bash_function="type"
+  menv_alias list_bash_functions="typeset -F"
+  menv_alias tarball="tar cvzf"
+  menv_alias delallswap="/bin/rm *.swp"
+  menv_alias fkill="sudo kill -9"
+  menv_alias cdmnt="pushd . &> /dev/null ; cd /run/media/mokon"
+  menv_alias less="less -R"
+  menv_alias grep="grep --color=always"
+
+  # Function that opens vim at a given line number.
+  menv_function vin
+  function vin {
+    vim +$2 $1
   }
-  menv_funcs+=(tree_list)
+
+  # A function to reset the terminal color.
+  menv_function reset_tc
+  function reset_tc {
+    TC_RESET="[0m"
+    echo ${TC_RESET}
+  }
+
+  # A function to list a directory structure in a nice tree.
+  menv_function tree_list
+  function tree_list {
+    ls -R $1 | grep ":$" \
+      | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
+  }
 
   # A function to grep excluding something I normally don't care about.
+  menv_function mgrep
   function mgrep {
-    grep -rn $1 $2 |grep -v .svn |grep -v Binary
+    grep -rn $1 $2 |grep -v .svn |grep -v Binary |grep -v .git
   }
-  menv_funcs+=(mgrep)
-  
+
+  # Finds a program in the path which contains part of the given string.
+  menv_function findprogram
   function findprogram {
     ls $(echo $PATH:/sbin:/usr/sbin | sed "s/:/\ /g") | grep "$1" \
       | sort --unique
   }
-  menv_funcs+=(findprogram)
 
-  # ---------------------------------------------------------------------------
-  # Programming related
-  alias svn_add_dir_only="svn add --depth=empty"
-  alias xval="valgrind --track-origins=yes --leak-check=full --show-reachable=yes"
-  alias sval="xval --gen-suppressions=yes --demangle=no"
-  alias ct="cleartool"
-  alias cscopeR="cscope -R"
-  alias cscopeD="cscope -d"
-  alias profvis="kcachegrind"
-  alias prof="valgrind --tool=callgrind"
+  # Pkg management aliases and functions
+  menv_alias dpkg_what_provides="sudo dpkg-query -S"
+  menv_alias dpkg_provides_what="sudo dpkg-query -L"
+  menv_alias rpm_list_deps="rpm -qpR"
+  menv_alias install-build-essentials="yum groupinstall 'Development Tools'"
 
-  function gprof {
-    gprof $1 gmon.out &> profileinfo.out 
+  # Source control aliases and functions
+  menv_alias gits="git status -s"
+  menv_alias gitic="git commit -m \"Initial Commit\""
+  menv_alias gitc="git commit -am "
+  menv_alias gitpush="git push origin master"
+  menv_alias gitsetup="git config --global user.name \"David Bond\" ; \
+                  git config --global user.email mokon@mokon.net"
+  menv_alias gitamendauthor="git commit --amend --reset-author"
+  menv_alias svn_add_dir_only="svn add --depth=empty"
+  menv_alias gitdo="git diff origin"
+  menv_alias gitdh="git diff HEAD"
+
+  # Function to clone from github.
+  menv_function githubc
+  function githubc {
+    git clone https://github.com/$1
   }
-  menv_funcs+=(gprof)
+
+  # Networking aliases and functions
+  menv_alias arp_flush="ip -s -s neigh flush all"
+  menv_alias amialone="ping 8.8.8.8"
+  menv_alias amialonedns="ping google.com"
+
+  # Programming related
+  menv_alias xval="valgrind --track-origins=yes --leak-check=full "\
+    "--show-reachable=yes"
+  menv_alias sval="xval --gen-suppressions=yes --demangle=no"
+  menv_alias ct="cleartool"
+  menv_alias cscopeR="cscope -R"
+  menv_alias cscopeD="cscope -d"
+  menv_alias profvis="kcachegrind"
+  menv_alias prof="valgrind --tool=callgrind"
+
+  menv_function gprof
+  function gprof {
+    gprof $1 gmon.out &> profileinfo.out
+  }
 
   # Function to init a cscope database with absolute filenames.
+  menv_function cscopeinit
   function cscopeinit {
-    find `realpath .` -name '*.c' -o -name '*.h' -o -name '*.cpp' -o -name '*.hpp' \
-      > ./cscope.files
+    find `realpath .` -name '*.c' -o -name '*.h' -o -name '*.cpp' \
+      -o -name '*.hpp' > ./cscope.files
     cscope -b
     CSCOPE_DB=`realpath cscope.out`
     export CSCOPE_DB
   }
-  menv_funcs+=(cscopeinit)
 
+  # A variable for google logging.
   export GLOG_minloglevel=0
 
   # Simple hack function to diff the file contents recursively of two folders.
+  menv_function lsdiff
   function lsdiff {
     ls -R $1 |grep -v "\/" &> /tmp/ls1.diff
     ls -R $2 |grep -v "\/" &> /tmp/ls2.diff
-    diff /tmp/ls1.diff /tmp/ls2.diff
+    tmp1=`mktemp`
+    tmp2=`mktemp`
+    diff $tmp1 $tmp2
+    /bin/rm $tmp1 $tmp2
   }
-  menv_funcs+=(lsdiff)
 
+  menv_function linecount
   function linecount {
     function count_ext {
-      find . -not -name "*designer.cs" -and -name "*.$1" -exec wc -l {} \; | awk '{lines += $1 ; files += 1  }; END { print lines } '
-      # FILES=`find $2 -type f -name "*.$1" `
-      #if [ -n "${FILES}" ] ; then
-      #  echo $FILES |tail -1 &>/tmp$1
-      #  LC=`echo $FILES | tail -1 | awk '{print $1}'`
-      #  echo $LC
-      #else
-      #  echo 0
-      #fi
+      ret=`find . -not -name "*designer.cs" -and -name "*.$1"\
+        -exec wc -l {} \; \
+        | awk '{lines += $1 ; files += 1  }; END { print lines } '`
+
+      if [[ $ret == "" ]] ; then
+        echo "0"
+      else
+        echo $ret
+      fi
     }
     HLC=`count_ext h $1`
     CLC=`count_ext c $1`
@@ -369,42 +441,72 @@ function menv_nonlogin {
     CSLC=`count_ext cs $1`
     JAVALC=`count_ext java $1`
     SMLLC=`count_ext sml $1`
-    unset count_ext 
+    unset count_ext
 
-    echo "HCL = $HLC, CLC = $CLC, CPPLC = $CPPLC, CUCLC = $CUCLC, HPPLC = $HPPLC,
-          CSLC = $CSLC, JAVALC = $JAVALC, SMLLC = $SMLLC"
+    echo -ne "Line Counts:\n
+      C headers = $HLC, C source = $CLC\n
+      C++ (CPP) source = $CPPLC, C++ (C) source = $CUCLC, C++ headers = $HPPLC\n
+      C# = $CSLC, java = $JAVALC, sml = $SMLLC\n"
     TLC=`expr $HLC + $CLC + $CPPLC + $CUCLC + $HPPLC + $CSLC + $JAVALC + $SMLLC`
-    echo "TLC = $TLC"
-
+    echo "Total Line Count: $TLC"
   }
-  menv_funcs+=(count_c_files)
+
+  # A function to download an rfc and store it on the localhost. If the -l
+  # option is given the rfc will be opened in lynx.
+  menv_function rfc
+  function rfc {
+    if [[ $2 == "-l" ]] ; then
+      lynx http://tools.ietf.org/rfc/rfc$1.txt
+    else
+      if [ ! -d ~/rfc/ ]; then
+        mkdir ~/rfc/
+      fi
+
+      if [ ! -f ~/rfc/$1.txt ]; then
+        wget -q http://tools.ietf.org/rfc/rfc$1.txt -O ~/rfc/$1.txt
+        if [[ $? != 0 ]]; then
+          echo $?
+          /bin/rm -f ~/rfc/$1.txt
+        fi
+      fi
+
+      if [ -f ~/rfc/$1.txt ]; then
+        cat ~/rfc/$1.txt | less
+      else
+        echo "RFC Not Found"
+      fi
+    fi
+  }
 
   # ---------------------------------------------------------------------------
   # Gaming
   export MCHOME=~/.minecraft
-  alias mc="java -Xmx2048M -Xms512M -cp minecraft.jar net.minecraft.LauncherFrame"
-  alias mcs="java -Xmx2048M -Xms1024M -jar minecraft_server.jar nogui"
+  menv_alias mc="java -Xmx2048M -Xms512M -cp i"\
+    "minecraft.jar net.minecraft.LauncherFrame"
+  menv_alias mcs="java -Xmx2048M -Xms1024M -jar i"\
+    "minecraft_server.jar nogui"
 
   # This just works for my epsom box... The only box I play minecraft on.
   export LD_LIBRARY_PATH="/lib/jvm/java-1.7.0-openjdk-1.7.0.9.x86_64/jre/lib/amd64/"
 
   # A function which downloads the minecraft jar launcher file.
+  menv_function mclauncher
   function mclauncher {
     echo "Downloading Minecraft jar."
     wget -O minecraft.jar \
-      "https://s3.amazonaws.com/MinecraftDownload/launcher/minecraft.jar" 
+      "https://s3.amazonaws.com/MinecraftDownload/launcher/minecraft.jar"
   }
-  menv_funcs+=(mclauncher)
 
-  alias mcdv="rm ${MCHOME}/bin/version"
-  alias mcjarspc="ln -s ${MCHOME}/bin/minecraftspc.jar \
+  menv_alias mcdv="rm ${MCHOME}/bin/version"
+  menv_alias mcjarspc="ln -s ${MCHOME}/bin/minecraftspc.jar \
     ${MCHOME}/bin/minecraft.jar"
-  alias mcjarmc=" ln -s ${MCHOME}/bin/minecraftmc.jar \
+  menv_alias mcjarmc=" ln -s ${MCHOME}/bin/minecraftmc.jar \
     ${MCHOME}/bin/minecraft.jar"
 
   # NOTE: I can set the mc homedir with this arg: mc -Duser.home=$DIR
 
   # Function to install single player commands into minecraft.
+  menv_function mcspc
   function mcspc {
     /bin/rm -rf mc
     mkdir mc
@@ -420,12 +522,12 @@ function menv_nonlogin {
     /bin/cp --backup=numbered -R ${MCHOME} ~/backup/
 
     echo "Extracting minecraft.jar"
-    unzip -qq -d minecraftjar ${MCHOME}/bin/minecraft.jar 
+    unzip -qq -d minecraftjar ${MCHOME}/bin/minecraft.jar
 
     echo "Creating new minecraft.jar"
     /bin/rm -rf minecraftjar/META-INF
-    /bin/cp -R spc/com minecraftjar                                             
-    /bin/cp -R spc/*.class minecraftjar     
+    /bin/cp -R spc/com minecraftjar
+    /bin/cp -R spc/*.class minecraftjar
 
     cd minecraftjar
     zip -q -r ../minecraftspc.jar *
@@ -436,10 +538,10 @@ function menv_nonlogin {
     cp minecraftspc.jar ${MCHOME}/bin/minecraftspc.jar
 
     cd ..
-    /bin/rm -rf mc 
+    /bin/rm -rf mc
   }
-  menv_funcs+=(mcspc)
 
+  menv_function mclib
   function mclib {
     /bin/rm -rf mc
     mkdir mc
@@ -452,7 +554,7 @@ function menv_nonlogin {
     function cptomc {
       cp "lwjgl-2.8.5/jar/${1}" ${MCHOME}/bin/
     }
-    
+
     cptomc jinput.jar
     cptomc lwjgl.jar
     cptomc lwjgl_util.jar
@@ -473,16 +575,15 @@ function menv_nonlogin {
     cd ..
     /bin/rm -rf mc
   }
-  menv_funcs+=(mclib)
 
   # Function to backup my ii map in mc.
+  menv_function mcbkii
   function mcbkii {
     ii="${HOME}/.minecraft/saves/Imperium Infinitus"
 
     tar czf ii.tgz "${ii}"
     /bin/mv --backup=numbered ii.tgz ~/backup/
   }
-  menv_funcs+=(mcbkii)
 
   # ---------------------------------------------------------------------------
 
@@ -496,10 +597,10 @@ function menv_nonlogin {
   	source /etc/bashrc
   fi
 }
-menv_funcs+=(menv_nonlogin)
 
 ################################################################################
 # This function loads vimplugins.
+menv_function vimplugins
 function vimplugins {
 
   function githubz {
@@ -541,12 +642,11 @@ function vimplugins {
 
   popd
 }
-menv_funcs+=(vimplugins)
 
 ################################################################################
 # Prints a nice message of the day with a whole bunch of useful information.
+menv_function menv_motd
 function menv_motd {
-
   # Terminal colors, assuming 256 colors.
   TC_RESET="[0m"
   TC_SKY="[0;37;44m"
@@ -584,6 +684,59 @@ ${TC_GRD}"
 
   echo -e "\n                           Welcome to Mokon's Linux!                           \n"
 
+  nodeinfo
+}
+
+menv_function urldiff
+function urldiff {
+  if [[ $1 == http* ]] ; then
+    file1=`mktemp`
+    fetch $1 $file1
+  else
+    file1=$1
+  fi
+
+  if [[ $2 == http* ]] ; then
+    file2=`mktemp`
+    fetch $2 $file2
+  else
+    file2=$2
+  fi
+
+  diff $file1 $file2
+
+  if [[ $1 == http* ]] ; then
+    /bin/rm $file1
+  fi
+
+  if [[ $2 == http* ]] ; then
+    /bin/rm $file2
+  fi
+}
+
+# A function to test if a connection exists to the given server.
+menv_function testconnection
+function testconnection {
+  server=$1
+  suc_msg=$2
+  err_msg=$3
+  dns_err_msg=$4
+  ping -c1 -W1 "$server" &> /dev/null
+  if [ $? ]; then
+    echo $suc_msg
+  else
+    host $?
+    if [ $? ]; then
+      echo $err_msg
+    else
+  	  echo $dns_err_msg
+    fi
+  fi
+}
+
+menv_function nodeinfo {
+function nodeinfo {
+  echo -n "${TC_GRD}"
   MEMT=`cat /proc/meminfo | grep MemTotal`
   SWAT=`cat /proc/meminfo | grep '^SwapTotal:'`
   PMODEL=`cat /proc/cpuinfo | \
@@ -597,8 +750,9 @@ ${TC_GRD}"
 
   echo "OS............: `uname -o`"
   echo "Hostname......: `uname -n`"
-  echo "Address.......: `/sbin/ifconfig | grep "inet" | grep -v '127.\|::1' \
-                                        | awk '{print $2}' | tr '\n' '\t'` "
+  echo "Address(es)...: `/sbin/ifconfig | grep "inet" \
+                           | grep -v '127.\|::1\|fe80::' | awk '{print $2}' \
+                           | sed ':a;N;$!ba;s/\n/\n..............: /g'` "
   echo "Kernel........: `uname -s ` `uname -r` `uname -v`"
   echo "Machine HW....: `uname -m`"
   echo "Uptime........:`uptime | sed 's/.*up ([^,]*), .*/1/'`"
@@ -609,9 +763,50 @@ ${TC_GRD}"
   echo "Username......: `whoami`"
   echo "Processor(s)..: $PNUMS $PVENDOR ${PMHZ} MHz ${PMODEL}"
 
+  echo "Reachability..:"
+  echo -n "..............: "
+  testconnection "8.8.8.8" "Google DNS Reachable" "Google DNS Not Reachable" ""
+
+  echo -n "..............: "
+  testconnection "google.com" "Google Reachable" "Google Not Reachable" \
+    "DNS Failure"
+
+  cmdexists git
+  if [ $? ] ; then
+    menv_version=`git ls-remote $menv_git_loc|grep HEAD|awk '{print $1}'`
+  else
+    menv_version="(unknown, install git to retrieve menv version)"
+  fi
+  echo "menv version..: $menv_version"
+
+  echo -n "..............: "
+  ping -c1 -W1 github.com &> /dev/null
+  if [ $? ]; then
+    urldiff $menv_loc ~/menv &> /dev/null
+    if [ $? ]; then
+      echo "menv script up to date."
+    else
+      echo "menv script different than github. Please upgrade."
+    fi
+
+    urldiff $vimrc_loc ~/.vimrc &> /dev/null
+    echo -n "..............: "
+    if [ $? ]; then
+      echo "menv vimrc up to date."
+    else
+      echo "menv vimrc different than github. Please upgrade."
+    fi
+  else
+    echo "Git Hub not reachable. Could not check if menv is up to date."
+  fi
+
   echo ${TC_RESET}
 }
-menv_funcs+=(menv_motd)
+
+menv_function menv_help
+function menv_help {
+  curl -s https://raw.github.com/Mokon/menv/master/README
+}
 
 ################################################################################
 # Execute the script.

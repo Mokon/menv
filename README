@@ -1,0 +1,65 @@
+(C) 2013 David 'Mokon' Bond, All Rights Reserved
+
+Welcome, to menv: a specialized script to setup a linux environment just the
+way I like it. With a single remote execution of a bash script menv will
+install itself. You can do this with:
+
+  bash <(curl -s https://raw.github.com/Mokon/menv/master/menv_remote_install)
+
+This script will setup things such as your bashrc file and bash_profile. It
+also setups a .vimrc file and installs a bunch of plugins for vim. It is
+basically a single bash script file which creates a bunch of links to the
+various dotfiles (or in the case of non-bash rc files it downloads a file from
+git).
+
+When you run the remote install script essentially it does a wget on the menv
+script and then runs that script. That in turn runs menv_install.
+
+From then on to update the script called:
+  ~/menv_update
+
+To uninstall the script call:
+  ~/menv_uninstall
+
+Sometimes I have private aliases for work or that just run on a single box. For
+these you can edit the files:
+  ~/menv_local_login
+and
+  ~/menv_local_nonlogin
+These will be sourced in the correct location (bashrc or bash_profile).
+
+There are also several useful functions relating to menv. The first is:
+  menv_stage
+This command works assuming you have menv cloned from github at ~/git/menv. It
+copies the files from that folder and installs them on the system. This allows
+me to test a script before I push it out to github.
+
+The command:
+  menv_help
+Displays this README file on the terminal.
+
+The command:
+  menv_refresh
+Executes ~/.bash_profile to execute any additions to the local menv files. This
+is useful to get the additions into you envirnment without having to relauch
+the terminal.
+
+menv does not require internet connectivity to run on a daily basis but to
+install or update it you do need the internet.
+
+menv tries to be a good citizen, backing up files not belonging to it and
+giving you a good way to uninstall it.
+
+Never edit any of the menv files directly. Always edit in the git repo.
+
+TODO
+1) Make a menv_package script which creates a portable tarball to install vim
+   files on a box without internet connectivity.
+2) Make menv_refresh called from a chron-job.
+3) Cleanup .vimrc and vim plugins on uninstall.
+4) Fix history options.
+5) Determine why this command doesn't work:
+     menv_alias cd='pushd . &> /dev/null ; cd'
+6) Prevent wierd coloring on login.
+7) Prevent error when clang not installed.
+8) Escape to/from in FindAllAndReplace* in the vimrc.

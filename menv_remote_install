@@ -1,0 +1,17 @@
+#!/bin/bash
+#
+# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+#
+# See README
+#
+
+pushd .
+
+cd ~
+wget -q -N --no-check-certificate \
+     https://raw.github.com/Mokon/menv/master/menv
+chmod +x menv
+./menv
+
+popd
+
