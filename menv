@@ -156,7 +156,7 @@ function menv_update {
     urldiff $vimrc_loc ~/.vimrc &> /dev/null
     vimrcs=$?
 
-    if [ $menvs && $vimrcs ] ; then
+    if [[ $menvs && $vimrcs ]] ; then
       echo "menv is up to date."
       return 0
     fi
