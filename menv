@@ -805,7 +805,7 @@ function nodeinfo {
 
 menv_function menv_help
 function menv_help {
-  curl -s https://raw.github.com/Mokon/menv/master/README
+  curl -s https://raw.github.com/Mokon/menv/master/README | less
 }
 
 ################################################################################
