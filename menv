@@ -720,6 +720,7 @@ function urldiff {
   fi
 
   diff $file1 $file2
+  ret=$?
 
   if [[ $1 == http* ]] ; then
     /bin/rm $file1
@@ -728,6 +729,8 @@ function urldiff {
   if [[ $2 == http* ]] ; then
     /bin/rm $file2
   fi
+
+  return $ret
 }
 
 # A function to test if a connection exists to the given server.
@@ -799,7 +802,7 @@ function nodeinfo {
   ping -c1 -W1 github.com &> /dev/null
   if [ $? ]; then
     urldiff $menv_loc ~/menv &> /dev/null
-    if [ $? ]; then
+    if [ $? == 0 ]; then
       echo "menv script up to date."
     else
       echo "menv script different than github. Please upgrade."
@@ -807,7 +810,7 @@ function nodeinfo {
 
     urldiff $vimrc_loc ~/.vimrc &> /dev/null
     echo -n "..............: "
-    if [ $? ]; then
+    if [ $? == 0 ]; then
       echo "menv vimrc up to date."
     else
       echo "menv vimrc different than github. Please upgrade."
