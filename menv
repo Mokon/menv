@@ -15,6 +15,13 @@ fi
 menv_funcs=()
 # A global array of aliases used to unalias aliases on cleanup.
 menv_aliases=()
+# A global array of exports used to unset exports on cleanup.
+menv_exports=()
+
+# A function which pushes a function onto the menv array of functions.
+function menv_function {
+  menv_funcs+=($1)
+}
 
 # A function which pushes an alias onto the menv array of aliases.
 function menv_alias {
@@ -22,9 +29,10 @@ function menv_alias {
   menv_aliases+=($1)
 }
 
-# A function which pushes a function onto the menv array of functions.
-function menv_function {
-  menv_funcs+=($1)
+# A function which pushes an export onto the menv array of exports.
+function menv_export {
+  export "$*"
+  menv_exports+=($1)
 }
 
 # The location of menv files on github.
@@ -202,6 +210,10 @@ function menv_uninstall {
   if_sym_delete menv_uninstall
 
   unset if_sym_delete
+  
+  for menv_export in "${menv_exports[@]}" ; do
+      unalias "${menv_export}"
+  done
 
   for menv_alias in "${menv_aliases[@]}" ; do
       unalias "${menv_alias}"
@@ -290,7 +302,7 @@ function menv_nonlogin {
     }
   fi
 
-  # General utility aliases and functions
+  # General utility aliases, exports, and functions
   menv_alias ni="nodeinfo"
   menv_alias rm='mv --target-directory ~/trash'
   menv_alias delete_immediately='/bin/rm -Rf'
@@ -318,7 +330,8 @@ function menv_nonlogin {
   menv_alias cdmnt="pushd . &> /dev/null ; cd /run/media/mokon"
   menv_alias less="less -R"
   menv_alias grep="grep --color=always"
-  #export PAGER=less
+
+  menv_export PAGER=less
 
   # Function that opens vim at a given line number.
   menv_function vin
@@ -404,11 +417,11 @@ function menv_nonlogin {
       -o -name '*.hpp' > ./cscope.files
     cscope -b
     CSCOPE_DB=`realpath cscope.out`
-    export CSCOPE_DB
+    menv_export CSCOPE_DB
   }
 
   # A variable for google logging.
-  export GLOG_minloglevel=0
+  menv_export GLOG_minloglevel=0
 
   # Simple hack function to diff the file contents recursively of two folders.
   menv_function lsdiff
@@ -496,14 +509,14 @@ function menv_nonlogin {
 
   # ---------------------------------------------------------------------------
   # Gaming
-  export MCHOME=~/.minecraft
+  menv_export MCHOME=~/.minecraft
   menv_alias mc="java -Xmx2048M -Xms512M -cp i"\
     "minecraft.jar net.minecraft.LauncherFrame"
   menv_alias mcs="java -Xmx2048M -Xms1024M -jar i"\
     "minecraft_server.jar nogui"
 
   # This just works for my epsom box... The only box I play minecraft on.
-  export LD_LIBRARY_PATH="/lib/jvm/java-1.7.0-openjdk-1.7.0.9.x86_64/jre/lib/amd64/"
+  menv_export LD_LIBRARY_PATH="/lib/jvm/java-1.7.0-openjdk-1.7.0.9.x86_64/jre/lib/amd64/"
 
   # A function which downloads the minecraft jar launcher file.
   menv_function mclauncher
@@ -700,7 +713,9 @@ ${TC_GRD}"
 
   echo -e "\n                           Welcome to Mokon's Linux!                           \n"
 
+  echo -n "${TC_GRD}"
   nodeinfo
+  echo ${TC_RESET}
 }
 
 menv_function urldiff
@@ -755,7 +770,6 @@ function testconnection {
 
 menv_function nodeinfo {
 function nodeinfo {
-  echo -n "${TC_GRD}"
   MEMT=`cat /proc/meminfo | grep MemTotal`
   SWAT=`cat /proc/meminfo | grep '^SwapTotal:'`
   PMODEL=`cat /proc/cpuinfo | \
@@ -818,8 +832,6 @@ function nodeinfo {
   else
     echo "Git Hub not reachable. Could not check if menv is up to date."
   fi
-
-  echo ${TC_RESET}
 }
 
 menv_function menv_help
