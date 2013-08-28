@@ -158,11 +158,9 @@ function menv_update {
 
   ping -c1 -W1 github.com &> /dev/null
   if [ $? ]; then
-    urldiff $menv_loc ~/menv &> /dev/null
-    menvs=$?
+    menvs=`urldiff $menv_loc ~/menv &> /dev/null`
     
-    urldiff $vimrc_loc ~/.vimrc &> /dev/null
-    vimrcs=$?
+    vimrcs=`urldiff $vimrc_loc ~/.vimrc &> /dev/null`
 
     if [[ $menvs && $vimrcs ]] ; then
       echo "menv is up to date."
