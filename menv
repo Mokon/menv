@@ -318,6 +318,7 @@ function menv_nonlogin {
   menv_alias cdmnt="pushd . &> /dev/null ; cd /run/media/mokon"
   menv_alias less="less -R"
   menv_alias grep="grep --color=always"
+  #export PAGER=less
 
   # Function that opens vim at a given line number.
   menv_function vin
@@ -455,26 +456,41 @@ function menv_nonlogin {
   # option is given the rfc will be opened in lynx.
   menv_function rfc
   function rfc {
+    ietf=http://tools.ietf.org
+    rfcdir=~/rfc
+    rfc=$1
+
     if [[ $2 == "-l" ]] ; then
-      lynx http://tools.ietf.org/rfc/rfc$1.txt
+      extension=html
+      url=$ietf/$extension/rfc$rfc
     else
-      if [ ! -d ~/rfc/ ]; then
-        mkdir ~/rfc/
-      fi
+      extension=txt
+      url=$ietf/rfc/rfc$rfc.$extension
+    fi
 
-      if [ ! -f ~/rfc/$1.txt ]; then
-        wget -q http://tools.ietf.org/rfc/rfc$1.txt -O ~/rfc/$1.txt
-        if [[ $? != 0 ]]; then
-          echo $?
-          /bin/rm -f ~/rfc/$1.txt
-        fi
-      fi
+    if [ ! -d $rfcdir ]; then
+      mkdir $rfcdir
+    fi
 
-      if [ -f ~/rfc/$1.txt ]; then
-        cat ~/rfc/$1.txt | less
+    if [ ! -f $rfcdir/$rfc.$extension ]; then
+      wget -q $url -O $rfcdir/$rfc.$extension
+      if [[ $? != 0 ]]; then
+        /bin/rm -f $rfcdir/$rfc.$extension
+      fi
+    fi
+
+    if [ -n $PAGER ] ; then
+      PAGER=less
+    fi
+
+    if [ -f $rfcdir/$rfc.$extension ]; then
+      if [[ $2 == "-l" ]] ; then
+        lynx $rfcdir/$rfc.$extension
       else
-        echo "RFC Not Found"
+        cat $rfcdir/$rfc.$extension | $PAGER
       fi
+    else
+      echo "RFC Not Found"
     fi
   }
 
