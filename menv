@@ -282,7 +282,7 @@ function menv_nonlogin {
 
   # ---------------------------------------------------------------------------
   # menv specific aliases and functions
-  menv_alias menv_refresh="source ~/.bash_profile"
+  menv_alias menv_local_refresh="source ~/.bash_profile"
 
   # Simple function for my dev box which has menv checked out in git. This
   # allows me to test menv on the box before I push it to github.
@@ -330,6 +330,8 @@ function menv_nonlogin {
   menv_alias cdmnt="pushd . &> /dev/null ; cd /run/media/mokon"
   menv_alias less="less -R"
   menv_alias grep="grep --color=always"
+  menv_alias search_history="history | grep "
+  menv_alias sh=search_history
 
   menv_export PAGER=less
 
@@ -383,6 +385,7 @@ function menv_nonlogin {
   menv_alias svn_add_dir_only="svn add --depth=empty"
   menv_alias gitdo="git diff origin"
   menv_alias gitdh="git diff HEAD"
+  menv_alias git-cleanup-repo="/bin/rm `git ls-files --other`"
 
   # Function to clone from github.
   menv_function githubc
