@@ -339,6 +339,16 @@ function menv_nonlogin {
     vim +$2 $1
   }
 
+  # A fucntion to swap two files.
+  menv_function swap
+  function swap()         
+  {
+    local TMPFILE=tmp.$$
+    mv "$1" $TMPFILE
+    mv "$2" "$1"
+    mv $TMPFILE "$2"
+  }
+
   # A function to reset the terminal color.
   menv_function reset_tc
   function reset_tc {
@@ -401,8 +411,9 @@ function menv_nonlogin {
     "--show-reachable=yes"
   menv_alias sval="xval --gen-suppressions=yes --demangle=no"
   menv_alias ct="cleartool"
-  menv_alias cscopeR="cscope -R"
-  menv_alias cscopeD="cscope -d"
+  menv_alias cscope="cscope -p100"
+  menv_alias cscopeR="cscope -R -p100"
+  menv_alias cscopeD="cscope -d -p100"
   menv_alias profvis="kcachegrind"
   menv_alias prof="valgrind --tool=callgrind"
 
