@@ -8,3 +8,5 @@
 6) Prevent wierd coloring on login.
 7) Prevent error when clang not installed.
 8) Escape to/from in FindAllAndReplace* in the vimrc.
+9) move rfc to cache dir.
+10) Use caching in ethertype function
