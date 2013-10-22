@@ -55,6 +55,36 @@ highlight ColorColumn ctermbg=lightgrey guibg=lightgrey
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 match OverLength /\%81v.\+/
 
+if $CODING_STYLE == "linuxkernel"
+  set wildignore+=*.ko,*.mod.c,*.order,modules.builtin
+
+  autocmd FileType c,cpp call s:LinuxKernelFormatting()
+  autocmd FileType diff,kconfig setlocal tabstop=8
+
+  function s:LinuxKernelFormatting()
+    setlocal tabstop=8
+    setlocal shiftwidth=8
+    setlocal softtabstop=8
+    setlocal textwidth=80
+    setlocal noexpandtab
+    setlocal cindent
+    setlocal formatoptions=tcqlron
+    setlocal cinoptions=:0,l1,t0,g0
+
+    syn keyword cOperator likely unlikely
+    syn keyword cType u8 u16 u32 u64 s8 s16 s32 s64
+
+    highlight default link LinuxError ErrorMsg
+
+    syn match LinuxError /^ \+/
+    syn match LinuxError / \+\ze\t/
+    syn match LinuxError /\s\+$/
+    syn match LinuxError /\%81v.\+/
+
+  endfunction
+elseif $CODING_STYLE == "mokon"
+endif
+
 " A nice function that strips trailing white space from a file. Mapped to
 " leader space.
 function! <SID>StripTrailingWhitespace()
@@ -86,7 +116,7 @@ highlight User5 guifg=Gray  guibg=NONE ctermfg=Gray  ctermbg=NONE
 
 " Update the status line to something better.
 set statusline =
-set statusline +=%1*%h\ %w\                   
+set statusline +=%1*%h\ %w\
 set statusline +=%2*%{&ff}                       " file format
 set statusline +=%1*%y                           " file type
 set statusline +=\ %2*%r%{getcwd()}              " cwd
@@ -126,4 +156,4 @@ nnoremap <F3> :NumbersToggle<CR>
 " autocmd VimEnter * NERDTree
 " autocmd BufEnter * NERDTreeMirror
 " autocmd VimEnter * wincmd w
-  
+
