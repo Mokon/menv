@@ -330,6 +330,7 @@ function menv_nonlogin {
   menv_alias grep="grep --color=always"
   menv_alias search_history="history | grep "
   menv_alias sh=search_history
+  menv_alias what_time_is_it="date +%I:%M"
 
   menv_export PAGER=less
 
@@ -337,6 +338,12 @@ function menv_nonlogin {
   menv_function vin
   function vin {
     vim +$2 $1
+  }
+
+  # Function that appends to the end of a file.
+  menv_function append_to_file
+  function append_to_file {
+    echo $1 >> $2  
   }
 
   # A fucntion to swap two files.
@@ -401,6 +408,17 @@ function menv_nonlogin {
     git clone https://github.com/$1
   }
 
+  # Function to git blame a sigal line.
+  menv_function gitblameline
+  function gitblameline {
+    git blame $1 -L $2,$2 -l
+  }
+
+  menv_function find_large_files
+  function find_large_files {
+    find / -type f -size +100000k -exec ls -lh {} \; | awk '{ print $9 ": " $5 }'
+  }
+
   # Networking aliases and functions
   menv_alias arp_flush="ip -s -s neigh flush all"
   menv_alias amialone="ping 8.8.8.8"
@@ -430,6 +448,40 @@ function menv_nonlogin {
     cscope -b
     CSCOPE_DB=`realpath cscope.out`
     menv_export CSCOPE_DB
+  }
+
+  menv_function cscope_help
+  function cscope_vim_help {
+     cat << HELP
+       The following is a little help file to remind me how to use cscope with
+       vim as I am always forgetting how to do it.
+
+       1) First ensure the cscope mapping files is loaded. menv should take care
+          of this.
+       2) Next create you cscope file. The alias cscopeinit will do this.
+          Essentially the mapping file will either load the cscope.out in the
+          local dir for the cscope file specified in CSCOPE_DB. This alias sets
+          this up using absolute file names so it will work from anywhere.
+       3) To open a tag (function etc) from the command line use 'vim -t main'
+       4) When in vim put your cursor over the desired tag and enter a hotkey
+          combo. Some useful ones include :
+            CTRL-\ t: to find all uses of a function, type, etc.
+            CTRL-\ g: to find the global definition of a function, type, etc.
+            CTRL-O: send you back to the location before the last search
+HELP
+  }
+
+  # Sets up ssh priv keys
+  menv_function add_priv_key
+  function add_priv_key {
+    remoteserver=$1
+    remoteuser=${2:-`whoami`}
+    pubkeyfile=~/.ssh/id_rsa.pub
+    authkeyfile=~/.ssh/authorized_keys
+    if [ ! -f $pubkeyfile ]; then
+      ssh-keygen -t rsa 4096 -N '' -f ~/.ssh/id_rsa 
+    fi
+    cat $pubkeyfile | ssh $remoteuser@$remoteserver "cat >> $authkeyfile"
   }
 
   # A variable for google logging.
@@ -498,8 +550,25 @@ function menv_nonlogin {
     IFS=$OLDIFS
   }
 
-  menv_function local_mcast_ip6_joins
-  function local_mcast_ip6_joins {
+  menv_alias mrc="cat /proc/net/ip_mr_cache"
+
+  menv_function mcast_ip6_join_ssm
+  function mcast_ip6_join {
+    interface=$1
+    group=$2
+    src=$3
+    vlc -vvv udp://[$src]@[$group] --miface=$interface
+  }
+  
+  menv_function mcast_ip6_join
+  function mcast_ip6_join {
+    interface=$1
+    group=$2
+    vlc -vvv udp://@[$group] --miface=$interface
+  }
+
+  menv_function mcast_ip6_joins
+  function mcast_ip6_joins {
     path=/proc/net/igmp6
     while read index intname address refcnt flags timer ; do
       # faddress=`perl -e "use Socket6;\$addr = inet_pton( \"AF_INET6\",
@@ -723,8 +792,8 @@ function vimplugins {
 
   unset githubz
 
-  mkdir -p ~/.vim/plugins
-  cd ~/.vim/plugins
+  mkdir -p ~/.vim/plugin
+  cd ~/.vim/plugin
 
   echo "Installing cscope plugin."
   fetch http://cscope.sourceforge.net/cscope_maps.vim
