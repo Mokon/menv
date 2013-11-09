@@ -3,6 +3,8 @@
 
 echo "Updating menv"
 
+menv_target_children update
+
 ping -c1 -W1 github.com &> /dev/null
 if [ $? ]; then
   menvs=0 # TODO 

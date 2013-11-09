@@ -78,6 +78,12 @@ function menv_target {
   local file=$1
   
   source $menv_targets_dir/$file
+}
+
+menv_function menv_target_children
+function menv_target_children {
+  local file=$1
+
   if [[ $(ls $menv_targets_dir/${file}.d ) ]] ; then
     for f in $menv_targets_dir/${file}.d/* ; do
       source $f

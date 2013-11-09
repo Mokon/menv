@@ -35,6 +35,8 @@ else
 
   popd
 
+  menv_target_children install
+
   echo "Done installing menv!"
 
   source $bash_profile
