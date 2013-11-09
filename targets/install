@@ -32,8 +32,8 @@ function menv_install {
   cd ~
   menv_symlink $bashrc $menv_target_handler
   menv_symlink $bash_profile $menv_target_handler
-  menv_symlink $tmux_conf $menv_dotfiles_dir
-  menv_symlink $vimrc $menv_dotfiles_dir
+  menv_symlink $tmux_conf $menv_dotfiles_dir/menv_.$tmux_conf
+  menv_symlink $vimrc $menv_dotfiles_dir/menv_.$vimrc
 
   echo "Installing vim plugins!."
   menv_vim_plugins_install
@@ -87,7 +87,7 @@ function menv_vim_plugins_install {
   $RM -rf clang_complete
   # TODO cleanup some of the example etc this installs.
 
-  MKDIR -p $vim_dir/plugin
+  $MKDIR -p $vim_dir/plugin
   cd $vim_dir/plugin
 
   echo "Installing cscope plugin."
