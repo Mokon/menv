@@ -5,7 +5,7 @@ pushd .
 
 cd ~
 
-local file=`/bin/mktemp`
+file=`/bin/mktemp`
 wget -O $file -q -N --no-check-certificate \
   https://github.com/mokon/menv/archive/master.tar.gz
     
