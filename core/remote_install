@@ -8,8 +8,8 @@ pushd .
 f=`/bin/mktemp`
 wget -O $f -q -N --no-check-certificate https://github.com/mokon/menv/archive/$f
     
-/bin/tar -xzf $file
-/bin/rm -f $file
+/bin/tar -xzf $f
+/bin/rm -f $f
 /bin/mv menv-master menv
 
 ~/menv/core/target_handler
