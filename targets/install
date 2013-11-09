@@ -1,10 +1,12 @@
 #!/bin/bash
 # (C) 2013 David 'Mokon' Bond, All Rights Reserved
 
-if [ -d $menv_dir ] ; then
+if [ -f $menv_dir/.$menv_gen_tag ] ; then
   echo "menv is already installed on this computer. Not installing."
 else 
   echo "Installing menv!"
+
+  touch $menv_dir/.$menv_gen_tag
   pushd .
 
   # Create some user commands.
