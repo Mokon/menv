@@ -3,11 +3,10 @@
 
 echo "Updating menv"
 
-# TODO store hash in file and diff that.
 ping -c1 -W1 github.com &> /dev/null
 if [ $? ]; then
-  menvs=`urldiff $menv_loc ~/menv &> /dev/null`
-   
+  menvs=0 # TODO 
+
   if [[ $menvs ]] ; then
     echo "menv is up to date."
     return 0
