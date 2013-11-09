@@ -1,6 +1,5 @@
 " (C) 2013 David 'Mokon' Bond, All Rights Reserved
 
-" =============================================================================
 " Load plugins
 
 " pathogen plugins that we need to disable on this host.
@@ -12,9 +11,6 @@ if v:version < '703' || !has('python')
 endif
 
 execute pathogen#infect()
-
-" =============================================================================
-" Basic settings.
 
 filetype plugin indent on " Enable lang dep. indenting
 syntax on " We want syntax coloring
@@ -38,9 +34,6 @@ set wildmenu
 autocmd FileType make setlocal noexpandtab " Makefiles need tabs. Don't convert
                                            " those to spaces.
 
-" =============================================================================
-" Some more complex settings.
-
 " If supported color the 80th colomn.
 if exists('+colorcolumn')
   set colorcolumn=80
@@ -51,8 +44,8 @@ highlight ColorColumn ctermbg=lightgrey guibg=lightgrey
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 match OverLength /\%81v.\+/
 
-if filereadable('$menv_dotfiles_dir/style/${CODING_STYLE}.vim')
-  source $menv_dotfiles_dir/style/${CODING_STYLE}.vim
+if filereadable($menv_dotfiles_dir . "/vimrc_style/" . ${CODING_STYLE} . ".vim")
+  source $menv_dotfiles_dir/vimrc_style/${CODING_STYLE}.vim
 endif
 
 " A nice function that strips trailing white space from a file. Mapped to
@@ -71,11 +64,11 @@ endfunction
 nmap <silent> <leader><space> :call <SID>StripTrailingWhitespace()<CR>
 
 function! FindAndReplaceAllConfirm(from, to)
-  exe '%s/' . a:from . '/' . a:to . '/gc'
+  exec '%s/' . a:from . '/' . a:to . '/gc'
 endfunction
 
 function! FindAndReplaceAll(from, to)
-  exe '%s/' . a:from . '/' . a:to . '/g'
+  exec '%s/' . a:from . '/' . a:to . '/g'
 endfunction
 
 highlight User1 guifg=Red   guibg=NONE ctermfg=Red   ctermbg=NONE
@@ -89,10 +82,9 @@ set statusline =
 set statusline +=%1*%h\ %w\
 set statusline +=%2*%{&ff}                       " file format
 set statusline +=%1*%y                           " file type
-set statusline +=\ %2*%r%{getcwd()}              " cwd
 set statusline +=%1*\ %<%F%*                     " full path
 set statusline +=%1*%m                           " modified flag
-set statusline +=%2*%m                           " readonly flag
+set statusline +=%2*%r                           " readonly flag
 set statusline +=\ %3*%l/%L                      " line
 set statusline +=\ %v                            " column number
 set statusline +=\ %2*0x%04B\                    " char under cursor

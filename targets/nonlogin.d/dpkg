@@ -1,6 +1,8 @@
 #!/bin/bash
 # (C) 2013 David 'Mokon' Bond, All Rights Reserved
 
-menv_alias dpkg_what_provides="sudo dpkg-query -S"
-menv_alias dpkg_provides_what="sudo dpkg-query -L"
+if [ $PKG_MGMT == "dpkg" ] ; then 
+  menv_alias dpkg_what_provides="sudo dpkg-query -S"
+  menv_alias dpkg_provides_what="sudo dpkg-query -L"
+fi
 

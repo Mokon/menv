@@ -13,7 +13,7 @@ wget -O $file -q -N --no-check-certificate \
 /bin/rm -f $file
 /bin/mv menv-master menv
 
-~/menv/core/target_handler
+bash ~/menv/core/target_handler
 
 popd
 

@@ -9,17 +9,17 @@ menv_alias amialonedns="ping google.com"
 # A function which looks up a ethertype
 menv_function ethertype
 function ethertype {
-  etypein_dec=`printf %d $1`
-  etypein_hex=`printf %03x $1`
+  local etypein_dec=`printf %d $1`
+  local etypein_hex=`printf %03x $1`
     
   # TODO
-  file=ethertype
+  local file=ethertype
   if [ ! -f $file ]; then
     url=https://www.iana.org/assignments/ieee-802-numbers/ieee-802-numbers-1.csv
     wget -O $file -q $url
   fi
 
-  OLDIFS=$IFS
+  local OLDIFS=$IFS
   IFS=,
   shopt -s nocasematch
   while read etype_dec etype_hex exp_enet_dec exp_enet_octal desc ref ; do
@@ -35,25 +35,25 @@ menv_alias mcast_route_cache="cat /proc/net/ip_mr_cache"
 
 menv_function mcast_ip6_join_ssm
 function mcast_ip6_join {
-  interface=$1
-  group=$2
-  src=$3
+  local interface=$1
+  local group=$2
+  local src=$3
+
   vlc -vvv udp://[$src]@[$group] --miface=$interface
 }
   
 menv_function mcast_ip6_join
 function mcast_ip6_join {
-  interface=$1
-  group=$2
+  local interface=$1
+  local group=$2
+
   vlc -vvv udp://@[$group] --miface=$interface
 }
 
 menv_function mcast_ip6_joins
 function mcast_ip6_joins {
-  path=/proc/net/igmp6
+  local path=/proc/net/igmp6
   while read index intname address refcnt flags timer ; do
-    # faddress=`perl -e "use Socket6;\$addr = inet_pton( \"AF_INET6\",
-    # \"$address\") ; print inet_ntop( \"AF_INET6\" \$addr ) , \"\n\""`
     echo "$intname is joined on group $address $refcnt times with flags $flags and timer $timer."
   done < $path
 }
@@ -62,16 +62,16 @@ function mcast_ip6_joins {
 # option is given the rfc will be opened in lynx.
 menv_function rfc
 function rfc {
-  ietf=http://tools.ietf.org
-  rfcdir=$menv_cache_dir/rfc
-  rfc=$1
+  local ietf=http://tools.ietf.org
+  local rfcdir=$menv_cache_dir/rfc
+  local rfc=$1
 
   if [[ $2 == "-l" ]] ; then
-    extension=html
-    url=$ietf/$extension/rfc$rfc
+    local extension=html
+    local url=$ietf/$extension/rfc$rfc
   else
-    extension=txt
-    url=$ietf/rfc/rfc$rfc.$extension
+    local extension=txt
+    local url=$ietf/rfc/rfc$rfc.$extension
   fi
 
   if [ ! -d $rfcdir ]; then
@@ -81,12 +81,8 @@ function rfc {
   if [ ! -f $rfcdir/$rfc.$extension ]; then
     wget -q $url -O $rfcdir/$rfc.$extension
     if [[ $? != 0 ]]; then
-      /bin/rm -f $rfcdir/$rfc.$extension
+      $RM -f $rfcdir/$rfc.$extension
     fi
-  fi
-
-  if [ -n $PAGER ] ; then
-    PAGER=less
   fi
 
   if [ -f $rfcdir/$rfc.$extension ]; then
@@ -103,10 +99,11 @@ function rfc {
 # A function to test if a connection exists to the given server.
 menv_function testconnection
 function testconnection {
-  server=$1
-  suc_msg=$2
-  err_msg=$3
-  dns_err_msg=$4
+  local server=$1
+  local suc_msg=$2
+  local err_msg=$3
+  local dns_err_msg=$4
+
   ping -c1 -W1 "$server" &> /dev/null
   if [ $? ]; then
     echo $suc_msg

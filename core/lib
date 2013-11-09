@@ -6,29 +6,26 @@ if [[ "$SHELL" != *bash* ]] ; then
   exit -1
 fi
 
-# A global array of functions used to unset funcs on cleanup.
+# A global array of functions used to unset funcs on cleanup and a function 
+# which pushes to said array.
 menv_funcs=()
-
-# A function which pushes a function onto the menv array of functions.
 function menv_function {
   menv_funcs+=($1)
 }
 menv_function menv_function
 
-# A global array of aliases used to unalias aliases on cleanup.
+# A global array of aliases used to unalias aliases on cleanup and a function
+# which pushes to said array.
 menv_aliases=()
-
-# A function which pushes an alias onto the menv array of aliases.
 menv_function menv_alias
 function menv_alias {
   alias "$*"
   menv_aliases+=($1)
 }
 
-# A global array of exports used to unset exports on cleanup.
+# A global array of exports used to unset exports on cleanup and a function
+# which pushes to said array.
 menv_exports=()
-
-# A function which pushes an export onto the menv array of exports.
 menv_function menv_export
 function menv_export {
   export "$*"
@@ -45,8 +42,6 @@ menv_export menv_core_dir=$menv_dir/core
 menv_export menv_local_dir=$menv_dir/local
 menv_export menv_dotfiles_dir=$menv_dir/dotfiles
 menv_export menv_targets_dir=${menv_dir}/targets
-
-menv_export vim_dir=~/.vim
 
 # A tag to use to specify menv created the item in question
 menv_export menv_gen_tag="menv_generated"
@@ -76,8 +71,6 @@ menv_export menv_target_handler=$menv_core_dir/target_handler
 menv_export bashrc=.bashrc
 menv_export bash_profile=.bash_profile
 menv_export bash_logout=.bash_logout
-menv_export vimrc=.vimrc
-menv_export tmux_conf=.tmux.conf
   
 # executes a target
 menv_function menv_target
@@ -138,12 +131,40 @@ function safe_symlink {
 }
 
 # A function to delete something if it is a symlink.
-menv_function if_sym_delete
-function if_sym_delete {
+menv_function if_symlink_rm
+function if_symlink_rm {
   local file=$1
 
   if [ -L $file ] ; then
     $RM -f $file
   fi
 }
+
+# A function to determine the distribution and pkg management tool
+menv_function determine_dist
+function determine_dist {
+  DIST=$(lsb_release -a |grep "Distributor ID" |awk {'print tolower($3)'})
+
+  if [ -z $DIST ] && [ -f /etc/redhat-release ] ; then
+    if grep -q Fedora /etc/redhat-release; then
+      DIST=fedora
+    fi
+  fi
+
+  if [ -z $DIST ] && [ -f /etc/debian_version ] ; then
+    DIST=debian
+  fi
+  
+  if [ -z $DIST ] && [ -f /etc/os-release ] ; then
+    DIST=""
+  fi
+
+  case $DIST in
+    *fedora*|*redhat*) PKG_MGMT=rpm ;;
+    *debian*|*ubuntu) PKG_MGMT=dpkg ;;
+    *) echo "Unknown Distribution" ;;
+  esac
+}
+
+determine_dist
 

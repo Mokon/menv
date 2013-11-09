@@ -6,6 +6,10 @@ TC_GRE="\[\033[0;32;40m\]"
 TC_RESET="\[\033[0;0m\]"
 PS1="${TC_GRE}i:${TC_RESET}"
 
+# TODO
+menv_alias gitsetup="git config --global user.name \"David Bond\" ; \
+                     git config --global user.email mokon@mokon.net"
+
 # Proper umask
 umask 022
   
@@ -22,31 +26,3 @@ bash_cmd_exists vim && EDITOR=vim;
 # A variable for google logging.
 menv_export GLOG_minloglevel=0
 
-# A function to reset the terminal color.
-menv_function reset_tc
-function reset_tc {
-  TC_RESET="[0m"
-  echo ${TC_RESET}
-}
-
-menv_alias menv_local_refresh="source ~/.bash_profile"
-
-# Simple function for my dev box which has menv checked out in git. This
-# allows me to test menv on the box before I push it to github.
-if [ -d ~/git/menv ]; then
-  menv_function menv_stage
-  function menv_stage {
-    pushd .
-
-    cd ~/git/menv/
-
-    rm ~/menv
-    cp -R  . ~
-  
-    # TODO does this work?
-    source ~/menv_install
-    source ~/.bash_profile
-
-    popd
-  }
-fi

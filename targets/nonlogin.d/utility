@@ -51,28 +51,28 @@ function swap() {
 menv_function urldiff
 function urldiff {
   if [[ $1 == http* ]] ; then
-    file1=`mktemp`
+    local file1=`mktemp`
     fetch $1 $file1
   else
-    file1=$1
+    local file1=$1
   fi
 
   if [[ $2 == http* ]] ; then
-    file2=`mktemp`
+    local file2=`mktemp`
     fetch $2 $file2
   else
-    file2=$2
+    local file2=$2
   fi
 
   diff $file1 $file2
-  ret=$?
+  local ret=$?
 
   if [[ $1 == http* ]] ; then
-    /bin/rm $file1
+    $RM $file1
   fi
 
   if [[ $2 == http* ]] ; then
-    /bin/rm $file2
+    $RM $file2
   fi
 
   return $ret
@@ -83,9 +83,9 @@ menv_function lsdiff
 function lsdiff {
   ls -R $1 |grep -v "\/" &> /tmp/ls1.diff
   ls -R $2 |grep -v "\/" &> /tmp/ls2.diff
-  tmp1=`mktemp`
-  tmp2=`mktemp`
+  local tmp1=`mktemp`
+  local tmp2=`mktemp`
   diff $tmp1 $tmp2
-  /bin/rm $tmp1 $tmp2
+  $RM $tmp1 $tmp2
 }
 

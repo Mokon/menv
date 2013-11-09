@@ -7,18 +7,11 @@ pushd .
 
 cd ~
 
-if_sym_delete $bashrc
-if_sym_delete $bash_profile
-if_sym_delete $tmux_conf
-if_sym_delete $vimrc
+if_symlink_rm $bashrc
+if_symlink_rm $bash_profile
+if_symlink_rm $bash_logout
   
-if [ -f $vim_dir/.$menv_gen_tag ] ; then
-  $RM -rf $vim_dir
-else
-  echo "vim folder was not menv generated, not deleting!"
-fi
-
-echo "Saving the menv backup and local directorties."
+echo "Saving the menv backup and local directories."
 $MV $menv_backup_dir ~
 $MV $menv_local_dir ~
 
@@ -40,7 +33,7 @@ for menv_func in "${menv_funcs[@]}" ; do
 done
 unset menv_funcs
 
-echo "menv uninstallation done"
+echo "Uninstalling menv done"
 
 popd
 

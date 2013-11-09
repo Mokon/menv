@@ -42,3 +42,8 @@ echo -n "${TC_GRD}"
 nodeinfo
 echo ${TC_RESET}
 
+unset $TC_RESET
+unset $TC_SKY
+unset $TC_GRD
+unset $TC_TEXT
+

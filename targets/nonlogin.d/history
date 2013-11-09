@@ -7,7 +7,7 @@
 # TODO export HISTCONTROL=ignoredups:erasedups
 #shopt -s histappend
 #export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
-HISTSIZE=10000
+menv_export HISTSIZE=10000
 
 menv_alias search_history="history | grep "
 menv_alias sh=search_history

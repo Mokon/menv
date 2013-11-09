@@ -23,3 +23,5 @@ bash <(curl -s https://raw.github.com/Mokon/menv/master/core/remote_install)
 
 popd
 
+echo "Updating menv done"
+

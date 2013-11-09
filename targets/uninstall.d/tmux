@@ -5,7 +5,7 @@ pushd .
 
 cd ~
 
-if_sym_delete $tmux_conf
+if_symlink_rm $tmux_conf
 
 popd
 

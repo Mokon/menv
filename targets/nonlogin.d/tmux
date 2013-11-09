@@ -4,9 +4,9 @@
 menv_function start
 function start {
   # TODO
-  SESSION=$USER
-  build_server="vbuild-deb7"
-  ssh_build_server="exec ssh mokon@${build_server} -t tmux"
+  local SESSION=$USER
+  local build_server="vbuild-deb7"
+  local ssh_build_server="exec ssh mokon@${build_server} -t tmux"
 
   sudo virsh start build-deb7
   tmux new-session -d -s $SESSION -n 'host'

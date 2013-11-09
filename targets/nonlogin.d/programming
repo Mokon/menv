@@ -10,6 +10,7 @@ menv_alias cscopeR="cscope -R -p100"
 menv_alias cscopeD="cscope -d -p100"
 menv_alias profvis="kcachegrind"
 menv_alias prof="valgrind --tool=callgrind"
+menv_alias remote_terminal_share="wemux"
 
 menv_function gprof
 function gprof {
@@ -22,8 +23,7 @@ function cscopeinit {
   find `realpath .` -name '*.c' -o -name '*.h' -o -name '*.cpp' \
     -o -name '*.hpp' > ./cscope.files
   cscope -b
-  CSCOPE_DB=`realpath cscope.out`
-  menv_export CSCOPE_DB
+  menv_export CSCOPE_DB=`realpath cscope.out`
 }
   
 menv_function cscope_help
@@ -50,7 +50,7 @@ HELP
 menv_function linecount
 function linecount {
   function count_ext {
-    ret=`find . -not -name "*designer.cs" -and -name "*.$1"\
+    local ret=`find . -not -name "*designer.cs" -and -name "*.$1"\
       -exec wc -l {} \; \
       | awk '{lines += $1 ; files += 1  }; END { print lines } '`
 
@@ -60,21 +60,22 @@ function linecount {
       echo $ret
     fi
   }
-  HLC=`count_ext h $1`
-  CLC=`count_ext c $1`
-  CPPLC=`count_ext cpp $1`
-  CUCLC=`count_ext C $1`
-  HPPLC=`count_ext hpp $1`
-  CSLC=`count_ext cs $1`
-  JAVALC=`count_ext java $1`
-  SMLLC=`count_ext sml $1`
+
+  local HLC=`count_ext h $1`
+  local CLC=`count_ext c $1`
+  local CPPLC=`count_ext cpp $1`
+  local CUCLC=`count_ext C $1`
+  local HPPLC=`count_ext hpp $1`
+  local CSLC=`count_ext cs $1`
+  local JAVALC=`count_ext java $1`
+  local SMLLC=`count_ext sml $1`
   unset count_ext
 
   echo -ne "Line Counts:\n
     C headers = $HLC, C source = $CLC\n
     C++ (CPP) source = $CPPLC, C++ (C) source = $CUCLC, C++ headers = $HPPLC\n
     C# = $CSLC, java = $JAVALC, sml = $SMLLC\n"
-  TLC=`expr $HLC + $CLC + $CPPLC + $CUCLC + $HPPLC + $CSLC + $JAVALC + $SMLLC`
+  local TLC=`expr $HLC + $CLC + $CPPLC + $CUCLC + $HPPLC + $CSLC + $JAVALC + $SMLLC`
   echo "Total Line Count: $TLC"
 }
 

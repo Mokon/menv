@@ -3,15 +3,15 @@
 
 menv_function nodeinfo {
 function nodeinfo {
-  MEMT=`cat /proc/meminfo | grep MemTotal`
-  SWAT=`cat /proc/meminfo | grep '^SwapTotal:'`
-  PMODEL=`cat /proc/cpuinfo | \
+  local MEMT=`cat /proc/meminfo | grep MemTotal`
+  local SWAT=`cat /proc/meminfo | grep '^SwapTotal:'`
+  local PMODEL=`cat /proc/cpuinfo | \
     grep '^model name' | awk '{print $4 $5 $6}' | head -1`
-  PMHZ=`cat /proc/cpuinfo | \
+  local PMHZ=`cat /proc/cpuinfo | \
     grep '^cpu MHz' | awk '{print $4}'| sed -e 's/\.[0-9]*//g' | head -1`
-  PVENDOR=`cat /proc/cpuinfo | \
+  local PVENDOR=`cat /proc/cpuinfo | \
     grep '^vendor_id' | awk '{print $3}' | head -1`
-  PNUMS=`cat /proc/cpuinfo | \
+  local PNUMS=`cat /proc/cpuinfo | \
     grep '^processor' | wc -l | awk '{print $1}' | head -1`
 
   echo "OS............: `uname -o`"
@@ -37,7 +37,7 @@ function nodeinfo {
   testconnection "google.com" "Google Reachable" "Google Not Reachable" \
     "DNS Failure"
 
-  bash_cmd_exists git
+  bash_cmd_exists git # TODO update
   if [ $? ] ; then
     menv_version=`git ls-remote $menv_git_loc|grep HEAD|awk '{print $1}'`
   else
@@ -52,15 +52,6 @@ function nodeinfo {
       echo "menv script up to date."
     else
       echo "menv script different than github. Please upgrade."
-    fi
-
-    # TODO
-    urldiff $vimrc_loc ~/.vimrc &> /dev/null
-    echo -n "..............: "
-    if [ $? == 0 ]; then
-      echo "menv vimrc up to date."
-    else
-      echo "menv vimrc different than github. Please upgrade."
     fi
   else
     echo "Git Hub not reachable. Could not check if menv is up to date."
