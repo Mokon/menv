@@ -18,7 +18,7 @@ fi
 
 pushd .
 
-$menv_dir/uninstall
+menv_uninstall
 bash <(curl -s https://raw.github.com/Mokon/menv/master/core/remote_install)
 
 popd

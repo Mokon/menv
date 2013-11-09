@@ -51,7 +51,7 @@ highlight ColorColumn ctermbg=lightgrey guibg=lightgrey
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 match OverLength /\%81v.\+/
 
-if filereadable("$menv_dotfiles_dir/style/${CODING_STYLE}.vim)
+if filereadable($menv_dotfiles_dir/style/${CODING_STYLE}.vim)
   source $menv_dotfiles_dir/style/${CODING_STYLE}.vim
 endif
 

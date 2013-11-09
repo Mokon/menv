@@ -35,17 +35,21 @@ function menv_export {
   menv_exports+=($1)
 }
 
+# Directories on the local machine
 menv_export menv_dir=~/menv
-
 menv_export menv_backup_dir=$menv_dir/backup
 menv_export menv_trash_dir=$menv_dir/trash
 menv_export menv_cache_dir=$menv_dir/cache
-
-menv_export menv_gen_tag="menv_generated"
+menv_export menv_bin_dir=$menv_dir/bin
+menv_export menv_core_dir=$menv_dir/core
+menv_export menv_local_dir=$menv_dir/local
+menv_export menv_dotfiles_dir=$menv_dir/dotfiles
+menv_export menv_targets_dir=${menv_dir}/targets
 
 menv_export vim_dir=~/.vim
-menv_export menv_lib_dir=lib
-menv_export menv_targets_dir=${menv_dir}/targets
+
+# A tag to use to specify menv created the item in question
+menv_export menv_gen_tag="menv_generated"
 
 # Absolute paths for lsb commands.
 menv_export MV=/bin/mv
@@ -55,25 +59,26 @@ menv_export CP=/bin/cp
 menv_export TAR=/bin/tar
 menv_export MKDIR=/bin/mkdir
 
+# Some github urls
 menv_export raw_gh_url="https://raw.github.com"
 menv_export menv_git_url="https://github.com/Mokon/menv.git"
 menv_export menv_url="${raw_gh_url}/Mokon/menv"
 menv_export menv_master_url="${menv_url}/master"
 menv_export menv_dotfiles_url="${menv_master_url}/dotfiles"
 
-menv_export menv_local_dir=$menv_dir/local
-menv_export menv_dotfiles_dir=$menv_dir/dotfiles
+# Some files on the local machine
 menv_export menv_local_login=$menv_local_dir/login
 menv_export menv_local_nonlogin=$menv_local_dir/nonlogin
-menv_export menv_target_handler=$menv_dir/core/target_handler
+menv_export menv_local_logout=$menv_local_dir/logout
+menv_export menv_target_handler=$menv_core_dir/target_handler
 
+# Some dotfile names
 menv_export bashrc=.bashrc
 menv_export bash_profile=.bash_profile
+menv_export bash_logout=.bash_logout
 menv_export vimrc=.vimrc
 menv_export tmux_conf=.tmux.conf
   
-################################################################################
-
 # executes a target
 menv_function menv_target
 function menv_target {
@@ -104,8 +109,8 @@ function fetch {
 }
 
 # An aux function to grab a git repo
-menv_function menv_github_fetch
-function menv_github_fetch {
+menv_function github_fetch
+function github_fetch {
   local repo=$1
 
   fetch https://github.com/$repo/archive/master.tar.gz
@@ -113,5 +118,33 @@ function menv_github_fetch {
   tar -xzf master.tar.gz
   $RM -f master.tar.gz
   $MV "$(basename $repo)-master" $(basename $repo)
+}
+
+# Aux function to setup a symbolic link. Backing up w/e was there before.
+menv_function safe_symlink
+function safe_symlink {
+  local file=$1
+  local to=$2
+
+  if [ -f $file ] && { [ ! -L $file ] || [`readlink $file` != "$to"] ; } ; then
+    echo "Found foreign ${file}. Backing up as ${menv_backup_dir}/${file}."
+    $MV --backup=numbered $file ${menv_backup_dir}/${file}
+  elif [ -L $from ] ; then
+    echo "Found valid $file symlink to ${to}."
+  fi
+
+  if [ ! -f $file ] ; then
+    $LN -s $to $file
+  fi
+}
+
+# A function to delete something if it is a symlink.
+menv_function if_sym_delete
+function if_sym_delete {
+  local file=$1
+
+  if [ -L $file ] ; then
+    $RM -f $file
+  fi
 }
 

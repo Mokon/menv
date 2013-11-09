@@ -1,4 +1,5 @@
 " (C) 2013 David 'Mokon' Bond, All Rights Reserved
+
 set wildignore+=*.ko,*.mod.c,*.order,modules.builtin
 
 autocmd FileType c,cpp call s:LinuxKernelFormatting()

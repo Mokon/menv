@@ -1,0 +1,17 @@
+#!/bin/bash
+# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+
+pushd .
+
+cd ~
+
+if_sym_delete $vimrc
+  
+if [ -f $vim_dir/.$menv_gen_tag ] ; then
+  $RM -rf $vim_dir
+else
+  echo "vim folder was not menv generated, not deleting!"
+fi
+
+popd
+

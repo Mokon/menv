@@ -1,0 +1,7 @@
+#!/bin/bash
+# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+
+if [ -f $menv_local_logout ]; then
+  source $menv_local_logout
+fi
+

@@ -1,0 +1,10 @@
+#!/bin/bash
+# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+
+pushd .
+cd ~
+  
+safe_symlink $tmux_conf $menv_dotfiles_dir/menv_$tmux_conf
+
+popd
+
