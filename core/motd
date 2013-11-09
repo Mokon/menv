@@ -2,10 +2,10 @@
 # (C) 2013 David 'Mokon' Bond, All Rights Reserved
 
 # Terminal colors, assuming 256 colors.
-local TC_RESET="[0m"
-local TC_SKY="[0;37;44m"
-local TC_GRD="[0;30;42m"
-local TC_TEXT="[38;5;203m"
+TC_RESET="[0m"
+TC_SKY="[0;37;44m"
+TC_GRD="[0;30;42m"
+TC_TEXT="[38;5;203m"
 
 echo -n "${TC_SKY}
               ( \`   )_                                                         |
