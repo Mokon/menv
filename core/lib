@@ -56,41 +56,41 @@ function menv_export {
 
 ################################################################################
 
-menv_aexport menv_dir ~/menv
+menv_aexport menv_dir=~/menv
 
-menv_export menv_backup_dir $menv_dir/backup
-menv_export menv_trash_dir $menv_dir/trash
-menv_export menv_cache_dir $menv_dir/cache
+menv_export menv_backup_dir=$menv_dir/backup
+menv_export menv_trash_dir=$menv_dir/trash
+menv_export menv_cache_dir=$menv_dir/cache
 
-menv_aexport menv_gen_tag "menv_generated"
+menv_aexport menv_gen_tag="menv_generated"
 
-menv_aexport vim_dir ~/.vim
-menv_aexport menv_lib_dir lib
-menv_aexport menv_targets_dir ${menv_dir}/targets
+menv_aexport vim_dir=~/.vim
+menv_aexport menv_lib_dir=lib
+menv_aexport menv_targets_dir=${menv_dir}/targets
 
 # Absolute paths for lsb commands.
-menv_aexport MV /bin/mv
-menv_aexport LN /bin/ln
-menv_aexport RM /bin/rm
-menv_aexport CP /bin/cp
-menv_aexport TAR /bin/tar
-menv_aexport MKDIR /bin/mkdir
+menv_aexport MV=/bin/mv
+menv_aexport LN=/bin/ln
+menv_aexport RM=/bin/rm
+menv_aexport CP=/bin/cp
+menv_aexport TAR=/bin/tar
+menv_aexport MKDIR=/bin/mkdir
 
-menv_aexport raw_gh_url "https://raw.github.com"
-menv_aexport menv_git_url "https://github.com/Mokon/menv.git"
-menv_aexport menv_url "${raw_gh_url}/Mokon/menv"
-menv_aexport menv_master_url "${menv_url}/master"
-menv_aexport menv_dotfiles_url "${menv_master_url}/dotfiles"
+menv_aexport raw_gh_url="https://raw.github.com"
+menv_aexport menv_git_url="https://github.com/Mokon/menv.git"
+menv_aexport menv_url="${raw_gh_url}/Mokon/menv"
+menv_aexport menv_master_url="${menv_url}/master"
+menv_aexport menv_dotfiles_url="${menv_master_url}/dotfiles"
 
-menv_aexport menv_local_dir $menv_dir/local
-menv_aexport menv_local_login $menv_local_dir/login
-menv_aexport menv_local_nonlogin $menv_local_dir/nonlogin
-menv_aexport menv_target_handler $menv_dir/core/target_handler
+menv_aexport menv_local_dir=$menv_dir/local
+menv_aexport menv_local_login=$menv_local_dir/login
+menv_aexport menv_local_nonlogin=$menv_local_dir/nonlogin
+menv_aexport menv_target_handler=$menv_dir/core/target_handler
 
-menv_aexport bashrc .bashrc
-menv_aexport bash_profile .bash_profile
-menv_aexport vimrc .vimrc
-menv_aexport tmux_conf .tmux.conf
+menv_aexport bashrc=.bashrc
+menv_aexport bash_profile=.bash_profile
+menv_aexport vimrc=.vimrc
+menv_aexport tmux_conf=.tmux.conf
   
 ################################################################################
 
