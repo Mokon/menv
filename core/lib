@@ -100,18 +100,20 @@ function menv_target {
   file=$1
 
   source $menv_targets_dir/$file
-  source $menv_targets_dir/${file}.d/* # TODO Have a module exclude pattern matcher
+  if [ $(ls -A $menv_targets_dir/${file}.d ) ] ; then
+    source $menv_targets_dir/${file}.d/* # TODO Have a module exclude pattern matcher
+  fi
 }
 
 # A function which cleansup all administrative functions.
 menv_afunction menv_exit
 function menv_exit {
   for menv_aexport in "${menv_aexports[@]}" ; do
-      unalias "${menv_aexport}"
+      unset "${menv_aexport}"
   done
 
   for menv_afunc in "${menv_afuncs[@]}" ; do
-      unset "${menv_afunc}"
+      unalias "${menv_afunc}"
   done
 }
 
