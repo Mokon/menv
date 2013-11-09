@@ -99,7 +99,7 @@ menv_aexport tmux_conf=.tmux.conf
 menv_afunction menv_target
 function menv_target {
   local file=$1
-
+echo $file
   source $menv_targets_dir/$file
   if [ $(ls $menv_targets_dir/${file}.d ) ] ; then
     source $menv_targets_dir/${file}.d/* # TODO Have a module exclude pattern matcher
