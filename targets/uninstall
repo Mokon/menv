@@ -1,68 +1,60 @@
 #!/bin/bash
 # (C) 2013 David 'Mokon' Bond, All Rights Reserved
 
-menv_afunction menv_uninstall
-function menv_uninstall {
+echo "Uninstalling menv"
 
-  echo "Uninstalling menv"
-
-  empty_trash
-
-  $RM -rf $menv_trash_dir
-  $RM -rf $menv_cache_dir
-
-  menv_afunction if_sym_delete
-  function if_sym_delete {
-    if [ -L $1 ] ; then
-      $RM -f $1
-    fi
-  }
-
-  pushd .
-
-  cd ~
-
-  if_sym_delete $bashrc
-  if_sym_delete $bash_profile
-  if_sym_delete $tmux_conf
-  if_sym_delete $vimrc
-  
-  cd $menv_dir
-  if_sym_delete $menv_target_install
-  if_sym_delete $menv_target_update
-  if_sym_delete $menv_target_uninstall
-
-  cd ~
-
-  if [ -f $vim_dir/.$menv_gen_tag ] ; then
-    $RM -rf $vim_dir
-  else
-    echo "vim folder was not menv generated, not deleting!"
+menv_function if_sym_delete
+function if_sym_delete {
+  if [ -L $1 ] ; then
+    $RM -f $1
   fi
- 
-  for menv_export in "${menv_exports[@]}" ; do
-      unalias "${menv_export}"
-  done
-
-  for menv_alias in "${menv_aliases[@]}" ; do
-      unalias "${menv_alias}"
-  done
-
-  for menv_func in "${menv_funcs[@]}" ; do
-      unset "${menv_func}"
-  done
-
-  echo "Saving the menv backup and local directorties."
-  $CP $menv_backup_dir ~
-  $CP $menv_local_dir ~
-
-  echo "Deleting the menv directory."
-  $RM $menv_dir
-
-  echo "menv uninstallation done"
-
-  popd
 }
 
-menv_uninstall
+pushd .
+
+cd ~
+
+if_sym_delete $bashrc
+if_sym_delete $bash_profile
+if_sym_delete $tmux_conf
+if_sym_delete $vimrc
+  
+cd $menv_dir
+if_sym_delete $menv_target_install
+if_sym_delete $menv_target_update
+if_sym_delete $menv_target_uninstall
+
+cd ~
+
+if [ -f $vim_dir/.$menv_gen_tag ] ; then
+  $RM -rf $vim_dir
+else
+  echo "vim folder was not menv generated, not deleting!"
+fi
+
+echo "Saving the menv backup and local directorties."
+$MV $menv_backup_dir ~
+$MV $menv_local_dir ~
+
+echo "Deleting the menv directory."
+$RM $menv_dir
+ 
+for menv_export in "${menv_exports[@]}" ; do
+  unset "${menv_export}"
+done
+unset menv_exports
+
+for menv_alias in "${menv_aliases[@]}" ; do
+  unalias "${menv_alias}"
+done
+unset menv_aliases
+
+for menv_func in "${menv_funcs[@]}" ; do
+  unset "${menv_func}"
+done
+unset menv_funcs
+
+echo "menv uninstallation done"
+
+popd
 

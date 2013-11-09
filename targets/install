@@ -58,7 +58,6 @@ function menv_install {
 # This function loads vimplugins.
 menv_function menv_vim_plugins_install
 function menv_vim_plugins_install {
-
   if [ -d $vim_dir ] ; then
     echo "A .vim folder already exists. Not installing vim plugins!"
     return

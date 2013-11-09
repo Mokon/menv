@@ -51,7 +51,9 @@ highlight ColorColumn ctermbg=lightgrey guibg=lightgrey
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 match OverLength /\%81v.\+/
 
-source ~/menv/dotfiles/style/${CODING_STYLE}.vim
+if filereadable("$menv_dotfiles_dir/style/${CODING_STYLE}.vim)
+  source $menv_dotfiles_dir/style/${CODING_STYLE}.vim
+endif
 
 " A nice function that strips trailing white space from a file. Mapped to
 " leader space.

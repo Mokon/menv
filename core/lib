@@ -35,8 +35,6 @@ function menv_export {
   menv_exports+=($1)
 }
 
-################################################################################
-
 menv_export menv_dir=~/menv
 
 menv_export menv_backup_dir=$menv_dir/backup
@@ -80,11 +78,14 @@ menv_export tmux_conf=.tmux.conf
 menv_function menv_target
 function menv_target {
   local file=$1
-echo $file
+  
   source $menv_targets_dir/$file
+  echo hi
   if [ $(ls $menv_targets_dir/${file}.d ) ] ; then
+  echo bye1
     source $menv_targets_dir/${file}.d/* # TODO Have a module exclude pattern matcher
   fi
+  echo bye2
 }
 
 # Aux function to wget a file. If the second param is set then this is the name
@@ -92,11 +93,12 @@ echo $file
 menv_function fetch
 function fetch {
   local url=$1
+
   command -v wget >/dev/null 2>&1 || { echo >&2 "wget not found" ; return ; }
   if [ -n "$2" ] ; then
-    fname=$2
+    local fname=$2
   else
-    fname=`basename ${url}`
+    local fname=`basename ${url}`
   fi
   wget -O $fname -q -N --no-check-certificate ${url}
 }
