@@ -6,7 +6,8 @@ pushd .
 /bin/cd ~
 
 f=`/bin/mktemp`
-wget -O $f -q -N --no-check-certificate https://github.com/mokon/menv/archive/$f
+wget -O $f -q -N --no-check-certificate \
+  https://github.com/mokon/menv/archive/master.tar.gz
     
 /bin/tar -xzf $f
 /bin/rm -f $f
