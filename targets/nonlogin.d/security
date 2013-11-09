@@ -1,0 +1,16 @@
+#!/bin/bash
+# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+
+# Sets up ssh priv keys
+menv_function add_priv_key
+function add_priv_key {
+  remoteserver=$1
+  remoteuser=${2:-`whoami`}
+  pubkeyfile=~/.ssh/id_rsa.pub
+  authkeyfile=~/.ssh/authorized_keys
+  if [ ! -f $pubkeyfile ]; then
+    ssh-keygen -t rsa 4096 -N '' -f ~/.ssh/id_rsa 
+  fi
+  cat $pubkeyfile | ssh $remoteuser@$remoteserver "cat >> $authkeyfile"
+}
+

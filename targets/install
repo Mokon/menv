@@ -1,0 +1,124 @@
+#!/bin/bash
+# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+
+menv_afunction menv_install
+function menv_install {
+  echo "Installing menv!"
+
+  if [ -d $menv_dir ] ; then
+    echo "menv is already installed on this computer. Not installing."
+    return
+  fi
+  
+  pushd .
+
+  cd ~
+  
+  echo "Setting up menv directories!"
+  menv_mkdir $menv_trash_dir
+  menv_mkdir $menv_cache_dir
+  menv_mkdir $menv_backup_dir
+  menv_mkdir $menv_local_dir
+
+  echo "Setting up menv target symlinks!"
+
+  cd $menv_dir
+  menv_symlink install $menv_target_handler
+  menv_symlink update $menv_target_handler
+  menv_symlink uninstall $menv_target_handler
+
+  cd ~
+  menv_symlink $bashrc $menv_target_handler
+  menv_symlink $bash_profile $menv_target_handler
+  menv_symlink $tmux_conf $menv_target_handler
+  menv_symlink $vimrc $meenv_target_handler
+
+  echo "Installing vim plugins!."
+  menv_vim_plugins_install
+
+  if [ -f $menv_local_nonlogin ]; then
+    echo "Found ${menv_local_nonlogin}."
+  else
+    echo "Didn't find ${menv_local_nonlogin}."
+  fi
+
+  if [ -f $menv_local_login ]; then
+    echo "Found ${menv_local_login}."
+  else
+    echo "Didn't find ${menv_local_login}."
+  fi
+
+  popd
+
+  echo "Done installing menv!"
+}
+
+# This function loads vimplugins.
+menv_afunction menv_vim_plugins_install
+function menv_vim_plugins_install {
+
+  if [ -d $vim_dir ] ; then
+    echo "A .vim folder already exists. Not installing vim plugins!"
+    return
+  else
+    touch $vim_dir/.$menv_gen_tag
+  fi
+
+  pushd .
+
+  cd ~
+
+  echo "Installing vim pathogen plugin handler."
+
+  MKDIR -p $vim_dir/autoload $vim_dir/bundle
+  curl -Sso $vim_dir/autoload/pathogen.vim \
+   $raw_gh_url/tpope/vim-pathogen/master/autoload/pathogen.vim
+
+  cd $vim_dir/bundle
+  menv_install_github_vim_pathogen_plugin scrooloose/nerdtree
+  menv_install_github_vim_pathogen_plugin myusuf3/numbers.vim
+
+  cd $vim_dir
+  menv_install_github_vim_pathogen_plugin Rip-Rip/clang_complete
+  $CP -R clang_complete/* .
+  $RM -rf clang_complete
+  # TODO cleanup some of the example etc this installs.
+
+  MKDIR -p $vim_dir/plugin
+  cd $vim_dir/plugin
+
+  echo "Installing cscope plugin."
+  fetch http://cscope.sourceforge.net/cscope_maps.vim
+
+  popd
+}
+
+# Aux function to create a directory if it doesn't exist with nice printing
+# on it previously existing.
+menv_afunction menv_mkdir
+function menv_mkdir {
+  [ ! -d $1 ] &&  mkdir $1 &&
+    echo "Created $1 directory." || echo "Found $1 directory"
+}
+
+# Aux function to setup a menv symbolic link. Backing up w/e was there before.
+menv_afunction menv_symlink
+function menv_symlink {
+  file=$1
+  to=$2
+
+  if [ -f $file ] && { [ ! -L $file ] || [`readlink $file` != "$to"] ; } ; then
+    echo "Found foreign ${file}. Backing up as ${menv_backup_dir}/${file}."
+    $MV --backup=numbered $file ${menv_backup_dir}/${file}
+  elif [ -L $from ] ; then
+    echo "Found valid $file symlink to ${to}."
+  fi
+
+  if [ ! -f $file ] ; then
+    $LN -s $to $file
+    echo "Created $file symlink to ${to}."
+  fi
+}
+
+menv_install
+

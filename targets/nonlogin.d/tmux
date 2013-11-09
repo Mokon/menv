@@ -1,0 +1,31 @@
+#!/bin/bash
+# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+
+menv_function start
+function start {
+  # TODO
+  SESSION=$USER
+  build_server="vbuild-deb7"
+  ssh_build_server="exec ssh mokon@${build_server} -t tmux"
+
+  sudo virsh start build-deb7
+  tmux new-session -d -s $SESSION -n 'host'
+  tmux send-keys  -t $SESSION:1 "cd ~" C-m
+
+  tmux new-window -t $SESSION:2 -n 'build' "$ssh_build_server"
+  tmux split-window -h "$ssh_build_server"
+  tmux new-window -t $SESSION:3 -n 'vr0' "cd ~/git/vv && sudo ./vv vtd 0 console"
+  tmux new-window -t $SESSION:4 -n 'vr1' "cd ~/git/vv && sudo ./vv vtd 1 console"
+  tmux new-window -t $SESSION:5 -n 'vr2' "cd ~/git/vv && sudo ./vv vtd 2 console"
+  tmux new-window -t $SESSION:6 -n 'vv'
+  tmux send-keys  -t $SESSION:6 "cd ~/git/vv" C-m
+  tmux new-window -t $SESSION:7 -n 'msger' "finch"
+  tmux new-window -t $SESSION:8 -n 'ietf'
+  tmux send-keys  -t $SESSION:8 "cd ~/ietf" C-m
+  tmux split-window -h
+  tmux send-keys  -t $SESSION:8 "cd ~/ietf" C-m
+
+  tmux select-window -t $SESSION:8
+  tmux attach-session -t $SESSION
+}
+

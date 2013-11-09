@@ -1,0 +1,16 @@
+#!/bin/bash
+# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+
+if [ -f ~/$bashrc ]; then
+ source ~/$bashrc
+fi
+
+export PATH=$PATH:$HOME/bin
+
+# Source a local login script if one exists.
+if [ -f $menv_local_login ]; then
+	source $menv_local_login
+fi
+
+source $menv_dir/core/motd
+

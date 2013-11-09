@@ -1,0 +1,18 @@
+#!/bin/bash
+# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+
+pushd .
+
+/bin/cd ~
+
+f=`/bin/mktemp`
+wget -O $f -q -N --no-check-certificate https://github.com/mokon/menv/archive/$f
+    
+/bin/tar -xzf $file
+/bin/rm -f $file
+/bin/mv menv-master menv
+
+~/menv/core/target_handler
+
+popd
+

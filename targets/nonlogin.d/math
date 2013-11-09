@@ -1,0 +1,21 @@
+#!/bin/bash
+# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+
+menv_function convert_base
+function convert_base {
+  from=$1
+  to=$2
+  number=$3
+  echo "obase=$to; ibase=$from; $number"|bc
+}
+
+menv_function calc
+function calc {
+  echo "$*" | bc
+}
+
+alias dec_to_binary="convert_base 10 2 "
+alias binary_to_dec="convert_base 2 10 "
+alias dec_to_hex="convert_base 10 16 "
+alias hex_to_dec="convert_base 16 10 "
+

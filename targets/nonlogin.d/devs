@@ -1,0 +1,7 @@
+#!/bin/bash
+# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+
+menv_alias ni="nodeinfo"
+menv_alias list_block_devices="lsblk"
+menv_alias hdinfo="lsscsi ; lsblk ; df -h"
+

@@ -1,0 +1,122 @@
+#!/bin/bash
+# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+
+# Networking aliases and functions
+menv_alias arp_flush="ip -s -s neigh flush all"
+menv_alias amialone="ping 8.8.8.8"
+menv_alias amialonedns="ping google.com"
+  
+# A function which looks up a ethertype
+menv_function ethertype
+function ethertype {
+  etypein_dec=`printf %d $1`
+  etypein_hex=`printf %03x $1`
+    
+  # TODO
+  file=ethertype
+  if [ ! -f $file ]; then
+    url=https://www.iana.org/assignments/ieee-802-numbers/ieee-802-numbers-1.csv
+    wget -O $file -q $url
+  fi
+
+  OLDIFS=$IFS
+  IFS=,
+  shopt -s nocasematch
+  while read etype_dec etype_hex exp_enet_dec exp_enet_octal desc ref ; do
+    if [[ $etype_dec == $etypein_dec || $etype_hex == $etypein_hex ]] ; then
+      echo $desc $ref
+    fi
+  done
+  shopt -u nocasematch
+  IFS=$OLDIFS
+}
+
+menv_alias mcast_route_cache="cat /proc/net/ip_mr_cache"
+
+menv_function mcast_ip6_join_ssm
+function mcast_ip6_join {
+  interface=$1
+  group=$2
+  src=$3
+  vlc -vvv udp://[$src]@[$group] --miface=$interface
+}
+  
+menv_function mcast_ip6_join
+function mcast_ip6_join {
+  interface=$1
+  group=$2
+  vlc -vvv udp://@[$group] --miface=$interface
+}
+
+menv_function mcast_ip6_joins
+function mcast_ip6_joins {
+  path=/proc/net/igmp6
+  while read index intname address refcnt flags timer ; do
+    # faddress=`perl -e "use Socket6;\$addr = inet_pton( \"AF_INET6\",
+    # \"$address\") ; print inet_ntop( \"AF_INET6\" \$addr ) , \"\n\""`
+    echo "$intname is joined on group $address $refcnt times with flags $flags and timer $timer."
+  done < $path
+}
+  
+# A function to download an rfc and store it on the localhost. If the -l
+# option is given the rfc will be opened in lynx.
+menv_function rfc
+function rfc {
+  ietf=http://tools.ietf.org
+  rfcdir=$menv_cache_dir/rfc
+  rfc=$1
+
+  if [[ $2 == "-l" ]] ; then
+    extension=html
+    url=$ietf/$extension/rfc$rfc
+  else
+    extension=txt
+    url=$ietf/rfc/rfc$rfc.$extension
+  fi
+
+  if [ ! -d $rfcdir ]; then
+    mkdir $rfcdir
+  fi
+
+  if [ ! -f $rfcdir/$rfc.$extension ]; then
+    wget -q $url -O $rfcdir/$rfc.$extension
+    if [[ $? != 0 ]]; then
+      /bin/rm -f $rfcdir/$rfc.$extension
+    fi
+  fi
+
+  if [ -n $PAGER ] ; then
+    PAGER=less
+  fi
+
+  if [ -f $rfcdir/$rfc.$extension ]; then
+    if [[ $2 == "-l" ]] ; then
+      lynx $rfcdir/$rfc.$extension
+    else
+      cat $rfcdir/$rfc.$extension | $PAGER
+    fi
+  else
+    echo "RFC Not Found"
+  fi
+}
+
+# A function to test if a connection exists to the given server.
+menv_function testconnection
+function testconnection {
+  server=$1
+  suc_msg=$2
+  err_msg=$3
+  dns_err_msg=$4
+  ping -c1 -W1 "$server" &> /dev/null
+  if [ $? ]; then
+    echo $suc_msg
+  else
+    host $?
+    if [ $? ]; then
+      echo $err_msg
+    else
+  	  echo $dns_err_msg
+    fi
+  fi
+}
+

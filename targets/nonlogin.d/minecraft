@@ -1,0 +1,109 @@
+#!/bin/bash
+# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+
+menv_export MCHOME=~/.minecraft
+menv_alias mc="java -Xmx2048M -Xms512M -cp i"\
+  "minecraft.jar net.minecraft.LauncherFrame"
+menv_alias mcs="java -Xmx2048M -Xms1024M -jar i"\
+  "minecraft_server.jar nogui"
+
+# This just works for my epsom box... The only box I play minecraft on.
+menv_export LD_LIBRARY_PATH="/lib/jvm/java-1.7.0-openjdk-1.7.0.9.x86_64/jre/lib/amd64/"
+
+# A function which downloads the minecraft jar launcher file.
+menv_function mclauncher
+function mclauncher {
+  echo "Downloading Minecraft jar."
+  wget -O minecraft.jar \
+    "https://s3.amazonaws.com/MinecraftDownload/launcher/minecraft.jar"
+}
+
+menv_alias mcdv="rm ${MCHOME}/bin/version"
+menv_alias mcjarspc="ln -s ${MCHOME}/bin/minecraftspc.jar \
+  ${MCHOME}/bin/minecraft.jar"
+menv_alias mcjarmc=" ln -s ${MCHOME}/bin/minecraftmc.jar \
+  ${MCHOME}/bin/minecraft.jar"
+
+# NOTE: I can set the mc homedir with this arg: mc -Duser.home=$DIR
+ 
+# Function to install single player commands into minecraft.
+menv_function mcspc
+function mcspc {
+  /bin/rm -rf mc
+  mkdir mc
+  cd mc
+
+  echo "Downloading Single Player Commands Plugin."
+  wget -O spc.zip "http://bit.ly/10ZwXQ5"
+  mkdir spc
+  unzip -qq -d spc spc.zip
+  /bin/rm -f spc.zip
+
+  echo "Backing up MCHOME"
+  /bin/cp --backup=numbered -R ${MCHOME} ~/backup/
+
+  echo "Extracting minecraft.jar"
+  unzip -qq -d minecraftjar ${MCHOME}/bin/minecraft.jar
+
+  echo "Creating new minecraft.jar"
+  /bin/rm -rf minecraftjar/META-INF
+  /bin/cp -R spc/com minecraftjar
+  /bin/cp -R spc/*.class minecraftjar
+
+  cd minecraftjar
+  zip -q -r ../minecraftspc.jar *
+  cd ..
+
+  echo "Moving jar files to ${MCHOME}."
+  /bin/cp spc/*.jar ${MCHOME}/bin/
+  /bin/cp minecraftspc.jar ${MCHOME}/bin/minecraftspc.jar
+
+  cd ..
+  /bin/rm -rf mc
+}
+
+menv_function mclib
+function mclib {
+  /bin/rm -rf mc
+  mkdir mc
+  cd mc
+
+  echo "Downloading Latest LWJGL."
+  wget -O lwjgl.zip http://sourceforge.net/projects/java-game-lib/files/Official%20Releases/LWJGL%202.8.5/lwjgl-2.8.5.zip/download
+  unzip lwjgl.zip
+
+  function cptomc {
+    cp "lwjgl-2.8.5/jar/${1}" ${MCHOME}/bin/
+  }
+
+  cptomc jinput.jar
+  cptomc lwjgl.jar
+  cptomc lwjgl_util.jar
+
+  unset cptomc
+
+  function cptomc {
+    cp "lwjgl-2.8.5/native/linux/${1}" ${MCHOME}/bin/natives/
+  }
+
+  cptomc libjinput-linux.so
+  cptomc libjinput-linux64.so
+  cptomc liblwjgl.so
+  cptomc liblwjgl64.so
+  cptomc libopenal.so
+  cptomc libopenal64.so
+  unset cptomc
+
+  cd ..
+  /bin/rm -rf mc
+}
+
+# Function to backup my ii map in mc.
+menv_function mcbkii
+  function mcbkii {
+  ii="${HOME}/.minecraft/saves/Imperium Infinitus"
+
+  tar czf ii.tgz "${ii}"
+  /bin/mv --backup=numbered ii.tgz ~/backup/
+}
+

@@ -1,0 +1,13 @@
+#!/bin/bash
+# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+
+# Source a local nonlogin script if one exists.
+if [ -f $menv_local_nonlogin ]; then
+	source $menv_local_nonlogin
+fi
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+	source /etc/bashrc
+fi
+

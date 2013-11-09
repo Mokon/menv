@@ -1,0 +1,91 @@
+#!/bin/bash
+# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+
+
+# A function to list a directory structure in a nice tree.
+menv_function tree_list
+function tree_list {
+  ls -R $1 | grep ":$" \
+    | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
+}
+
+# A function to grep excluding something I normally don't care about.
+menv_function mgrep
+function mgrep {
+  grep -rn $1 $2 |grep -v .svn |grep -v Binary |grep -v .git
+}
+
+# Finds a program in the path which contains part of the given string.
+menv_function findprogram
+function findprogram {
+  ls $(echo $PATH:/sbin:/usr/sbin | sed "s/:/\ /g") | grep "$1" \
+    | sort --unique
+}
+
+menv_function find_large_files
+function find_large_files {
+  find / -type f -size +100000k -exec ls -lh {} \; | awk '{ print $9 ": " $5 }'
+}
+
+# Function that opens vim at a given line number.
+menv_function vin
+function vin {
+  vim +$2 $1
+}
+
+# Function that appends to the end of a file.
+menv_function append_to_file
+function append_to_file {
+  echo $1 >> $2  
+}
+
+# A fucntion to swap two files.
+menv_function swap
+function swap() {
+  local tmp`mktemp`
+  mv "$1" $tmp
+  mv "$2" "$1"
+  mv $tmp "$2"
+}
+
+menv_function urldiff
+function urldiff {
+  if [[ $1 == http* ]] ; then
+    file1=`mktemp`
+    fetch $1 $file1
+  else
+    file1=$1
+  fi
+
+  if [[ $2 == http* ]] ; then
+    file2=`mktemp`
+    fetch $2 $file2
+  else
+    file2=$2
+  fi
+
+  diff $file1 $file2
+  ret=$?
+
+  if [[ $1 == http* ]] ; then
+    /bin/rm $file1
+  fi
+
+  if [[ $2 == http* ]] ; then
+    /bin/rm $file2
+  fi
+
+  return $ret
+}
+
+# Simple hack function to diff the file contents recursively of two folders.
+menv_function lsdiff
+function lsdiff {
+  ls -R $1 |grep -v "\/" &> /tmp/ls1.diff
+  ls -R $2 |grep -v "\/" &> /tmp/ls2.diff
+  tmp1=`mktemp`
+  tmp2=`mktemp`
+  diff $tmp1 $tmp2
+  /bin/rm $tmp1 $tmp2
+}
+

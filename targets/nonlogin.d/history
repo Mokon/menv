@@ -1,0 +1,14 @@
+#!/bin/bash
+# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+  
+# Some history items. I like a large history size and I like a history that
+# automatically saves itself after each command so if my shell exits I can
+# still find my last command.
+# TODO export HISTCONTROL=ignoredups:erasedups
+#shopt -s histappend
+#export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+HISTSIZE=10000
+
+menv_alias search_history="history | grep "
+menv_alias sh=search_history
+

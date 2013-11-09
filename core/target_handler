@@ -1,0 +1,18 @@
+#!/bin/bash
+# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+
+source ~/menv/core/lib
+
+# Multiplex to the correct menv target
+case ${BASH_SOURCE[0]} in
+  *target_handler|*install) menv_target install ;;
+  *update) menv_target update ;;
+  *uninstall) menv_target uninstall ;;
+  *.bash_profile|*.profile) menv_target login ;;
+  *.bashrc) menv_target nonlogin ;;
+  *.bash_aliases) echo "Unsupported target bash_aliases." ;;
+  *) echo "Unknown menv target" ;;
+esac
+
+menv_exit
+

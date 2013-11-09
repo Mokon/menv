@@ -1,0 +1,31 @@
+#!/bin/bash
+# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+
+menv_alias gits="git status -s"
+menv_alias gitic="git commit -m \"Initial Commit\""
+menv_alias gitc="git commit -am "
+menv_alias gitpush="git push origin master"
+menv_alias gitsetup="git config --global user.name \"David Bond\" ; \
+                     git config --global user.email mokon@mokon.net"
+menv_alias gitamendauthor="git commit --amend --reset-author"
+menv_alias gitdo="git diff origin"
+menv_alias gitdh="git diff HEAD"
+menv_alias git_cleanup_repo="/bin/rm \`git ls-files --other\`"
+
+# Function to clone from github.
+menv_function githubc
+function githubc {
+  repo=$1
+
+  git clone https://github.com/$repo
+}
+
+# Function to git blame a sigal line.
+menv_function git_blame_line
+function gitblameline {
+  file=$1
+  line=$2
+
+  git blame $file -L $line,$line -l
+}
+

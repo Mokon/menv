@@ -1,0 +1,40 @@
+#!/bin/bash
+# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+
+menv_afunction menv_update
+function menv_update {
+
+  echo "Updating menv"
+
+  # TODO store hash in file and diff that.
+  ping -c1 -W1 github.com &> /dev/null
+  if [ $? ]; then
+    menvs=`urldiff $menv_loc ~/menv &> /dev/null`
+   
+    if [[ $menvs ]] ; then
+      echo "menv is up to date."
+      return 0
+    fi
+  else
+    echo "Git Hub not reachable. Could not update."
+    return -1
+  fi
+
+  pushd .
+
+  # TODO update to new reqs.
+  cd ~
+  fetch ${menv_loc}
+  chmod +x menv
+  ./menv
+  source .bash_profile
+
+  popd
+}
+
+menv_update # TODO
+
+  # Unalias just in case we have aliases from another script run lying around.
+  for menv_alias in "${menv_aliases[@]}" ; do
+      unalias "${menv_alias}"
+  done

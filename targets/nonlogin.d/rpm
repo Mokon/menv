@@ -1,0 +1,6 @@
+#!/bin/bash
+# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+
+menv_alias rpm_list_deps="rpm -qpR"
+menv_alias install-build-essentials="yum groupinstall 'Development Tools'"
+
