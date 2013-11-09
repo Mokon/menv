@@ -1,0 +1,23 @@
+#!/bin/bash
+# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+
+pushd .
+
+cd ~/.vim/bundle
+github_fetch scrooloose/nerdtree
+github_fetch myusuf3/numbers.vim
+
+cd ~/.vim
+github_fetch Rip-Rip/clang_complete
+cd clang_complete
+make install
+cd ..
+$RM -rf clang_complete
+
+cd ~/.vim/plugin
+
+echo "Installing cscope plugin."
+fetch http://cscope.sourceforge.net/cscope_maps.vim
+
+popd
+

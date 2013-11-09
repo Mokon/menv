@@ -1,0 +1,24 @@
+#!/bin/bash
+# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+
+if [ -d ~/.vim ] ; then
+  if [ -f ~/.vim/.$menv_gen_tag ] ; then
+    $RM -rf ~/.vim
+  else
+    $MV --backup=numbered ~/.vim ${menv_backup_dir}/.vim
+  fi
+fi
+
+mkdir ~/.vim
+touch ~/.vim/.$menv_gen_tag
+
+$MKDIR -p ~/.vim/plugin
+
+pushd .
+
+cd ~
+
+safe_symlink .vimrc $menv_dotfiles_dir/vimrc
+
+popd
+

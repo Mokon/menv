@@ -1,0 +1,23 @@
+#!/bin/bash
+# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+
+menv_alias menv_help="cat ${menv_dir}/README | less"
+menv_alias menv_local_refresh="source ~/.bash_profile"
+
+# Simple function for my dev box which has menv checked out in git. This
+# allows me to test menv on the box before I push it to github.
+if [ -d ~/git/menv ]; then
+  menv_function menv_stage
+  function menv_stage {
+    pushd .
+  
+    menv_uninstall
+    
+    cp -R  ~/git/menv ~
+
+    bash ~/menv/core/target_handler
+
+    popd
+  }
+fi
+

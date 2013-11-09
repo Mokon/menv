@@ -1,0 +1,14 @@
+#!/bin/bash
+# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+
+pushd .
+
+cd ~
+
+echo "Installing vim pathogen plugin handler."
+$MKDIR -p ~/.vim/autoload ~/.vim/bundle
+curl -Sso ~/.vim/autoload/pathogen.vim \
+ $raw_gh_url/tpope/vim-pathogen/master/autoload/pathogen.vim
+
+popd
+
