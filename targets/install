@@ -11,10 +11,9 @@ else
 
   # Create some user commands.
   cd $menv_bin_dir
-  menv_symlink menv_install $menv_target_handler
-  menv_symlink menv_update $menv_target_handler
-  menv_symlink menv_uninstall $menv_target_handler
-  chmod +x *
+  safe_symlink menv_install $menv_target_handler
+  safe_symlink menv_update $menv_target_handler
+  safe_symlink menv_uninstall $menv_target_handler
 
   # Link the bash targets.
   cd ~
