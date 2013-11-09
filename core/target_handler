@@ -1,8 +1,6 @@
 #!/bin/bash
 # (C) 2013 David 'Mokon' Bond, All Rights Reserved
 
-set -x
-
 source ~/menv/core/lib
 
 # Multiplex to the correct menv target
