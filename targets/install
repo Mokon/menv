@@ -107,8 +107,8 @@ function menv_mkdir {
 # Aux function to setup a menv symbolic link. Backing up w/e was there before.
 menv_afunction menv_symlink
 function menv_symlink {
-  file=$1
-  to=$2
+  local file=$1
+  local to=$2
 
   if [ -f $file ] && { [ ! -L $file ] || [`readlink $file` != "$to"] ; } ; then
     echo "Found foreign ${file}. Backing up as ${menv_backup_dir}/${file}."
