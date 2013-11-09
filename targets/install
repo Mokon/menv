@@ -5,10 +5,12 @@ menv_afunction menv_install
 function menv_install {
   echo "Installing menv!"
 
-  if [ -d $menv_dir ] ; then
+  if [ -d $menv_dir/.${menv_gen_tag} ] ; then
     echo "menv is already installed on this computer. Not installing."
     return
   fi
+
+  touch $menv_dir/.${menv_gen_tag}
   
   pushd .
 

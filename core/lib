@@ -113,7 +113,7 @@ function menv_exit {
   done
 
   for menv_afunc in "${menv_afuncs[@]}" ; do
-      unalias "${menv_afunc}"
+    unset "${menv_afunc}"
   done
 }
 
