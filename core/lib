@@ -85,12 +85,11 @@ function menv_target {
   local file=$1
   
   source $menv_targets_dir/$file
-  echo hi
   if [[ $(ls $menv_targets_dir/${file}.d ) ]] ; then
-  echo bye1
-    source $menv_targets_dir/${file}.d/* # TODO Have a module exclude pattern matcher
+    for f in $menv_targets_dir/${file}.d/* ; do
+      source $f
+    done # TODO Have a module exclude pattern matcher
   fi
-  echo bye2
 }
 
 # Aux function to wget a file. If the second param is set then this is the name
