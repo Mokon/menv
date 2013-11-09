@@ -101,7 +101,7 @@ function menv_target {
   local file=$1
 
   source $menv_targets_dir/$file
-  if [ $(ls -A $menv_targets_dir/${file}.d ) ] ; then
+  if [ $(ls $menv_targets_dir/${file}.d ) ] ; then
     source $menv_targets_dir/${file}.d/* # TODO Have a module exclude pattern matcher
   fi
 }
