@@ -3,7 +3,7 @@
 
 pushd .
 
-/bin/cd ~
+cd ~
 
 f=`/bin/mktemp`
 wget -O $f -q -N --no-check-certificate \
