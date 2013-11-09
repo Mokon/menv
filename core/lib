@@ -83,6 +83,7 @@ menv_aexport menv_master_url="${menv_url}/master"
 menv_aexport menv_dotfiles_url="${menv_master_url}/dotfiles"
 
 menv_aexport menv_local_dir=$menv_dir/local
+menv_aexport menv_dotfiles_dir=$menv_dir/dotfiles
 menv_aexport menv_local_login=$menv_local_dir/login
 menv_aexport menv_local_nonlogin=$menv_local_dir/nonlogin
 menv_aexport menv_target_handler=$menv_dir/core/target_handler
@@ -139,8 +140,8 @@ function menv_github_fetch {
 
   fetch https://github.com/$repo/archive/master.tar.gz
     
-  tar -xzf master.tar.qz
-  $RM -f master.tar.qz
+  tar -xzf master.tar.gz
+  $RM -f master.tar.gz
   $MV "$(basename $repo)-master" $(basename $repo)
 }
 

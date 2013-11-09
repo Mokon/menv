@@ -32,8 +32,8 @@ function menv_install {
   cd ~
   menv_symlink $bashrc $menv_target_handler
   menv_symlink $bash_profile $menv_target_handler
-  menv_symlink $tmux_conf $menv_target_handler
-  menv_symlink $vimrc $menv_target_handler
+  menv_symlink $tmux_conf $menv_dotfiles_dir
+  menv_symlink $vimrc $menv_dotfiles_dir
 
   echo "Installing vim plugins!."
   menv_vim_plugins_install
