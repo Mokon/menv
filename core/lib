@@ -108,6 +108,7 @@ function menv_target {
 # A function which cleansup all administrative functions.
 menv_afunction menv_exit
 function menv_exit {
+echo "doing exit"
   for menv_aexport in "${menv_aexports[@]}" ; do
     unset "$(echo ${menv_aexport} | cut -f1 -d "=")"
   done
