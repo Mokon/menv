@@ -86,7 +86,7 @@ function menv_target {
   
   source $menv_targets_dir/$file
   echo hi
-  if [ $(ls $menv_targets_dir/${file}.d ) ] ; then
+  if [[ $(ls $menv_targets_dir/${file}.d ) ]] ; then
   echo bye1
     source $menv_targets_dir/${file}.d/* # TODO Have a module exclude pattern matcher
   fi
