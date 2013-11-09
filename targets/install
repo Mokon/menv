@@ -1,7 +1,7 @@
 #!/bin/bash
 # (C) 2013 David 'Mokon' Bond, All Rights Reserved
 
-menv_afunction menv_install
+menv_function menv_install
 function menv_install {
   echo "Installing menv!"
 
@@ -56,7 +56,7 @@ function menv_install {
 }
 
 # This function loads vimplugins.
-menv_afunction menv_vim_plugins_install
+menv_function menv_vim_plugins_install
 function menv_vim_plugins_install {
 
   if [ -d $vim_dir ] ; then
@@ -98,14 +98,14 @@ function menv_vim_plugins_install {
 
 # Aux function to create a directory if it doesn't exist with nice printing
 # on it previously existing.
-menv_afunction menv_mkdir
+menv_function menv_mkdir
 function menv_mkdir {
   [ ! -d $1 ] &&  mkdir $1 &&
     echo "Created $1 directory." || echo "Found $1 directory"
 }
 
 # Aux function to setup a menv symbolic link. Backing up w/e was there before.
-menv_afunction menv_symlink
+menv_function menv_symlink
 function menv_symlink {
   local file=$1
   local to=$2

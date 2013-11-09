@@ -6,49 +6,30 @@ if [[ "$SHELL" != *bash* ]] ; then
   exit -1
 fi
 
-# A global array of admin functions used to unset funcs on exit.
-menv_afuncs=()
-
-# A function which pushes a function onto the menv array of admin functions.
-function menv_afunction {
-  menv_afuncs+=($1)
-}
-menv_afunction menv_function
-
 # A global array of functions used to unset funcs on cleanup.
 menv_funcs=()
 
 # A function which pushes a function onto the menv array of functions.
-menv_afunction menv_function
 function menv_function {
   menv_funcs+=($1)
 }
+menv_function menv_function
 
 # A global array of aliases used to unalias aliases on cleanup.
 menv_aliases=()
 
 # A function which pushes an alias onto the menv array of aliases.
-menv_afunction menv_alias
+menv_function menv_alias
 function menv_alias {
   alias "$*"
   menv_aliases+=($1)
 }
 
 # A global array of exports used to unset exports on cleanup.
-menv_aexports=()
-
-# A function which pushes an export onto the menv array of admin exports.
-menv_afunction menv_aexport
-function menv_aexport {
-  export "$*"
-  menv_aexports+=($1)
-}
-
-# A global array of exports used to unset exports on cleanup.
 menv_exports=()
 
 # A function which pushes an export onto the menv array of exports.
-menv_afunction menv_export
+menv_function menv_export
 function menv_export {
   export "$*"
   menv_exports+=($1)
@@ -56,47 +37,47 @@ function menv_export {
 
 ################################################################################
 
-menv_aexport menv_dir=~/menv
+menv_export menv_dir=~/menv
 
 menv_export menv_backup_dir=$menv_dir/backup
 menv_export menv_trash_dir=$menv_dir/trash
 menv_export menv_cache_dir=$menv_dir/cache
 
-menv_aexport menv_gen_tag="menv_generated"
+menv_export menv_gen_tag="menv_generated"
 
-menv_aexport vim_dir=~/.vim
-menv_aexport menv_lib_dir=lib
-menv_aexport menv_targets_dir=${menv_dir}/targets
+menv_export vim_dir=~/.vim
+menv_export menv_lib_dir=lib
+menv_export menv_targets_dir=${menv_dir}/targets
 
 # Absolute paths for lsb commands.
-menv_aexport MV=/bin/mv
-menv_aexport LN=/bin/ln
-menv_aexport RM=/bin/rm
-menv_aexport CP=/bin/cp
-menv_aexport TAR=/bin/tar
-menv_aexport MKDIR=/bin/mkdir
+menv_export MV=/bin/mv
+menv_export LN=/bin/ln
+menv_export RM=/bin/rm
+menv_export CP=/bin/cp
+menv_export TAR=/bin/tar
+menv_export MKDIR=/bin/mkdir
 
-menv_aexport raw_gh_url="https://raw.github.com"
-menv_aexport menv_git_url="https://github.com/Mokon/menv.git"
-menv_aexport menv_url="${raw_gh_url}/Mokon/menv"
-menv_aexport menv_master_url="${menv_url}/master"
-menv_aexport menv_dotfiles_url="${menv_master_url}/dotfiles"
+menv_export raw_gh_url="https://raw.github.com"
+menv_export menv_git_url="https://github.com/Mokon/menv.git"
+menv_export menv_url="${raw_gh_url}/Mokon/menv"
+menv_export menv_master_url="${menv_url}/master"
+menv_export menv_dotfiles_url="${menv_master_url}/dotfiles"
 
-menv_aexport menv_local_dir=$menv_dir/local
-menv_aexport menv_dotfiles_dir=$menv_dir/dotfiles
-menv_aexport menv_local_login=$menv_local_dir/login
-menv_aexport menv_local_nonlogin=$menv_local_dir/nonlogin
-menv_aexport menv_target_handler=$menv_dir/core/target_handler
+menv_export menv_local_dir=$menv_dir/local
+menv_export menv_dotfiles_dir=$menv_dir/dotfiles
+menv_export menv_local_login=$menv_local_dir/login
+menv_export menv_local_nonlogin=$menv_local_dir/nonlogin
+menv_export menv_target_handler=$menv_dir/core/target_handler
 
-menv_aexport bashrc=.bashrc
-menv_aexport bash_profile=.bash_profile
-menv_aexport vimrc=.vimrc
-menv_aexport tmux_conf=.tmux.conf
+menv_export bashrc=.bashrc
+menv_export bash_profile=.bash_profile
+menv_export vimrc=.vimrc
+menv_export tmux_conf=.tmux.conf
   
 ################################################################################
 
 # executes a target
-menv_afunction menv_target
+menv_function menv_target
 function menv_target {
   local file=$1
 echo $file
@@ -104,18 +85,6 @@ echo $file
   if [ $(ls $menv_targets_dir/${file}.d ) ] ; then
     source $menv_targets_dir/${file}.d/* # TODO Have a module exclude pattern matcher
   fi
-}
-
-# A function which cleansup all administrative functions.
-menv_afunction menv_exit
-function menv_exit {
-  for menv_aexport in "${menv_aexports[@]}" ; do
-    unset "$(echo ${menv_aexport} | cut -f1 -d "=")"
-  done
-
-  for menv_afunc in "${menv_afuncs[@]}" ; do
-    unset "${menv_afunc}"
-  done
 }
 
 # Aux function to wget a file. If the second param is set then this is the name
@@ -133,7 +102,7 @@ function fetch {
 }
 
 # An aux function to grab a git repo
-menv_afunction menv_github_fetch
+menv_function menv_github_fetch
 function menv_github_fetch {
   local repo=$1
 
