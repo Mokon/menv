@@ -80,6 +80,7 @@ function menv_target {
   source $menv_targets_dir/$file
 }
 
+# Executes all the target.d children.
 menv_function menv_target_children
 function menv_target_children {
   local file=$1
