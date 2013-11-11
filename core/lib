@@ -79,8 +79,8 @@ function menv_target_children {
   local file=$1
   local files=$(find $menv_targets_dir/${file}.d \
     -type f -and -not -name .gitkeep | sort )
-echo $files
-  if [ -z "$files" ] ; then
+
+  if [ ! -z "$files" ] ; then
     for f in $files ; do 
       source $f
     done # TODO Have a module exclude pattern matcher
