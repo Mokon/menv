@@ -44,8 +44,9 @@ highlight ColorColumn ctermbg=lightgrey guibg=lightgrey
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 match OverLength /\%81v.\+/
 
-if filereadable($menv_dotfiles_dir . "/vimrc_style/" . ${CODING_STYLE} . ".vim")
-  source $menv_dotfiles_dir/vimrc_style/${CODING_STYLE}.vim
+let cs=$menv_dotfiles_dir."/vimrc_style/".${CODING_STYLE}.".vim"
+if filereadable(cs)
+  source cs
 endif
 
 " A nice function that strips trailing white space from a file. Mapped to
