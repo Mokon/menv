@@ -1,0 +1,20 @@
+# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+
+[user]
+  name = David Bond
+  email = mokon@mokon.net
+[core]
+  pager = less -FRSX
+  editor = vim
+[color]
+  filemode = false
+  diff = true
+  status = auto
+  branch = auto
+  pager = true
+[credential "https://github.com"]
+  helper = cache --timeout 3600
+  name = David Bond
+  email = mokon@mokon.net
+[credential]
+  helper = cache --timeout 3600
