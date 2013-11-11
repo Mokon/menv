@@ -15,7 +15,7 @@ if [ -d ~/git/menv ]; then
     
     cp -R  ~/git/menv ~
 
-    bash ~/menv/core/target_handler
+    source ~/menv/core/target_handler
 
     popd
   }

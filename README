@@ -4,7 +4,7 @@ Welcome, to menv: a specialized script to setup a linux environment just the
 way I like it. With a single remote execution of a bash script menv will
 install itself. You can do this with:
 
-  bash <(curl -s https://raw.github.com/Mokon/menv/master/core/remote_install)
+  source <(curl -s https://raw.github.com/Mokon/menv/master/core/remote_install)
 
 This script will setup things such as your bashrc file and bash_profile. It
 also setups a .vimrc file and installs a bunch of plugins for vim. It is
