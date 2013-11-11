@@ -4,7 +4,7 @@
 pushd .
 
 cd ~
-
+echo herepath
 echo "Installing vim pathogen plugin handler."
 $MKDIR -p ~/.vim/autoload ~/.vim/bundle
 curl -Sso ~/.vim/autoload/pathogen.vim \
