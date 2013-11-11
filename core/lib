@@ -10,7 +10,7 @@ fi
 # which pushes to said array.
 menv_funcs=()
 function menv_function {
-  menv_funcs+=($1)
+  menv_funcs+=("$1")
 }
 menv_function menv_function
 
@@ -20,7 +20,7 @@ menv_aliases=()
 menv_function menv_alias
 function menv_alias {
   alias "$*"
-  menv_aliases+=($1)
+  menv_aliases+=("$1")
 }
 
 # A global array of exports used to unset exports on cleanup and a function
@@ -29,7 +29,7 @@ menv_exports=()
 menv_function menv_export
 function menv_export {
   export "$*"
-  menv_exports+=($1)
+  menv_exports+=("$1")
 }
 
 # Directories on the local machine
