@@ -79,7 +79,7 @@ function menv_target_children {
   local file=$1
 
   if [[ $(ls $menv_targets_dir/${file}.d ) ]] ; then
-    for f in $(find . -type f $menv_targets_dir/${file}.d -and -not -name .gitkeep); do
+    for f in $(find $menv_targets_dir/${file}.d -type f -and -not -name .gitkeep); do
       source $f
     done # TODO Have a module exclude pattern matcher
   fi
