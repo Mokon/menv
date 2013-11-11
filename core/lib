@@ -77,7 +77,7 @@ function menv_target {
 menv_function menv_target_children
 function menv_target_children {
   local file=$1
-  local $files= $(find $menv_targets_dir/${file}.d \
+  local files=$(find $menv_targets_dir/${file}.d \
     -type f -and -not -name .gitkeep | sort )
 
   if [ -z $files ] ; then
