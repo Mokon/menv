@@ -158,7 +158,7 @@ function menv_version {
   op=$1
 
   case $op in
-    set) menv_latest_version &> ${menv_dir}/version 
+    set) menv_latest_version &> ${menv_dir}/version ;;
     get|*) cat ${menv_dir}/version ;;
   esac
 }
