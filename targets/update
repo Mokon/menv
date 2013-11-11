@@ -9,7 +9,7 @@ ping -c1 -W1 github.com &> /dev/null
 if [ $? ]; then
   menvs=0 # TODO 
 
-  if [[ $menvs ]] ; then
+  if [ "$(menv_version get)" == "$(menv_latest_version)" ] ; then
     echo "menv is up to date."
     return 0
   fi

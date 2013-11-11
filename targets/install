@@ -7,6 +7,7 @@ else
   echo "Installing menv!"
 
   touch $menv_dir/.$menv_gen_tag
+  menv_version set
   pushd .
 
   # Link the bash targets.

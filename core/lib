@@ -6,7 +6,7 @@ if [[ "$SHELL" != *bash* ]] ; then
   exit -1
 fi
 
-# A global array of functions used to unset funcs on cleanup and a function 
+# A global array of functions used to unset funcs on cleanup and a function
 # which pushes to said array.
 menv_funcs=()
 function menv_function {
@@ -64,12 +64,12 @@ menv_export menv_target_handler=$menv_core_dir/target_handler
 menv_export bashrc=.bashrc
 menv_export bash_profile=.bash_profile
 menv_export bash_logout=.bash_logout
-  
+
 # executes a target
 menv_function menv_target
 function menv_target {
   local file=$1
-  
+
   source $menv_targets_dir/$file
 }
 
@@ -81,7 +81,7 @@ function menv_target_children {
     -type f -and -not -name .gitkeep | sort )
 
   if [ ! -z "$files" ] ; then
-    for f in $files ; do 
+    for f in $files ; do
       source $f
     done # TODO Have a module exclude pattern matcher
   fi
@@ -108,7 +108,7 @@ function github_fetch {
   local repo=$1
 
   fetch https://github.com/$repo/archive/master.tar.gz
-    
+
   tar -xzf master.tar.gz
   $RM -f master.tar.gz
   $MV "$(basename $repo)-master" $(basename $repo)
@@ -142,6 +142,27 @@ function if_symlink_rm {
   fi
 }
 
+# A nasty little function which grabs the latest sha hash from github
+menv_function menv_latest_version
+function menv_latest_version {
+  j=`curl https://api.github.com/repos/mokon/menv/git/refs/heads/master | \
+    sed 's/\\\\\//\//g' | sed 's/[{}]//g' | \
+    awk -v k="text" '{n=split($0,a,","); for (i=1; i<=n; i++) print a[i]}' | \
+    sed 's/\"\:\"/\|/g' | sed 's/[\,]/ /g' | sed 's/\"//g' | grep -w sha`
+  echo ${j##*|} | awk {'print $3'}
+}
+
+# Shows the menv version or sets if set is the op.
+menv_function menv_version
+function menv_version {
+  op=$1
+
+  case $op in
+    set) menv_latest_version &> ${menv_dir}/version 
+    get|*) cat ${menv_dir}/version ;;
+  esac
+}
+
 # A function to determine the distribution and pkg management tool
 menv_function determine_dist
 function determine_dist {
@@ -156,7 +177,7 @@ function determine_dist {
   if [ -z $DIST ] && [ -f /etc/debian_version ] ; then
     DIST=debian
   fi
-  
+
   if [ -z $DIST ] && [ -f /etc/os-release ] ; then
     DIST=""
   fi

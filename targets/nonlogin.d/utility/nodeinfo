@@ -38,17 +38,11 @@ function nodeinfo {
     "DNS Failure"
 
   bash_cmd_exists git # TODO update
-  if [ $? ] ; then
-    menv_version=`git ls-remote $menv_git_loc|grep HEAD|awk '{print $1}'`
-  else
-    menv_version="(unknown, install git to retrieve menv version)"
-  fi
-  echo "menv version..: $menv_version"
+  echo "menv version..: $(menv_version)"
   echo -n "..............: "
   ping -c1 -W1 github.com &> /dev/null
   if [ $? ]; then
-    urldiff $menv_loc ~/menv &> /dev/null
-    if [ $? == 0 ]; then
+    if [ "$(menv_version get)" == "$(menv_latest_version)" ] ; then
       echo "menv script up to date."
     else
       echo "menv script different than github. Please upgrade."
