@@ -7,8 +7,9 @@ cd ~/.vim/bundle
 github_fetch scrooloose/nerdtree
 github_fetch myusuf3/numbers.vim
 github_fetch Rip-Rip/clang_complete
-$MV clang_complete/bin/* bin
-$MV clang_complete/plugin/* plugin
+cd ~/.vim
+$MV clang_complete/bin/* .
+$MV clang_complete/plugin/* .
 $RM -rf clang_complete
 
 cd ~/.vim/plugin

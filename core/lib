@@ -118,7 +118,6 @@ function safe_symlink {
   local file=$1
   local to=$2
 
-  ls -alt $file
   if [ -f $file ] && { [ ! -L $file ] || [`readlink $file` != "$to"] ; } ; then
     echo "Found foreign ${file}. Backing up as ${menv_backup_dir}/${file}."
     $MV --backup=numbered $file ${menv_backup_dir}/${file}
