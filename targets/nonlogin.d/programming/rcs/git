@@ -20,7 +20,7 @@ function githubc {
 
 # Function to git blame a sigal line.
 menv_function git_blame_line
-function gitblameline {
+function git_blame_line {
   local file=$1
   local line=$2
 

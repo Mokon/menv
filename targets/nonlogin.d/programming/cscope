@@ -14,7 +14,7 @@ function cscopeinit {
   menv_export CSCOPE_DB=`realpath cscope.out`
 }
   
-menv_function cscope_help
+menv_function cscope_vim_help
 function cscope_vim_help {
    cat << HELP
      The following is a little help file to remind me how to use cscope with
