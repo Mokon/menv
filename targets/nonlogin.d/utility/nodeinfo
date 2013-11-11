@@ -37,7 +37,6 @@ function nodeinfo {
   testconnection "google.com" "Google Reachable" "Google Not Reachable" \
     "DNS Failure"
 
-  bash_cmd_exists git # TODO update
   echo "menv version..: $(menv_version)"
   echo -n "..............: "
   ping -c1 -W1 github.com &> /dev/null

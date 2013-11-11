@@ -1,0 +1,19 @@
+#!/bin/bash
+# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+
+pushd .
+
+cd ~
+
+file="~/master.tar.gz"
+    
+/bin/tar -xzf $file
+/bin/rm -f $file
+/bin/mv menv-master menv
+
+bash ~/menv/core/target_handler
+
+source ~/.bash_profile
+
+popd
+

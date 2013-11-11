@@ -11,9 +11,11 @@ menv_function ethertype
 function ethertype {
   local etypein_dec=`printf %d $1`
   local etypein_hex=`printf %03x $1`
+
+  echo $etypein_dec
+  echo $etypein_hex
     
-  # TODO
-  local file=ethertype
+  local file=${menv_cache_dir}/ethertype
   if [ ! -f $file ]; then
     url=https://www.iana.org/assignments/ieee-802-numbers/ieee-802-numbers-1.csv
     wget -O $file -q $url
@@ -26,7 +28,7 @@ function ethertype {
     if [[ $etype_dec == $etypein_dec || $etype_hex == $etypein_hex ]] ; then
       echo $desc $ref
     fi
-  done
+  done < $file
   shopt -u nocasematch
   IFS=$OLDIFS
 }
