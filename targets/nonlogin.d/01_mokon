@@ -8,10 +8,6 @@ PS1="${TC_GRE}i:${TC_RESET}"
 unset TC_GRE
 unset TC_RESET
 
-# TODO
-menv_alias gitsetup="git config --global user.name \"David Bond\" ; \
-                     git config --global user.email mokon@mokon.net"
-
 # Proper umask
 umask 022
   
