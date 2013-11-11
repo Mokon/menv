@@ -1,0 +1,5 @@
+#!/bin/bash
+# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+
+menv_alias ct="cleartool"
+

@@ -1,21 +1,9 @@
 #!/bin/bash
 # (C) 2013 David 'Mokon' Bond, All Rights Reserved
 
-menv_alias xval="valgrind --track-origins=yes --leak-check=full "\
-  "--show-reachable=yes"
-menv_alias sval="xval --gen-suppressions=yes --demangle=no"
-menv_alias ct="cleartool"
 menv_alias cscope="cscope -p100"
 menv_alias cscopeR="cscope -R -p100"
 menv_alias cscopeD="cscope -d -p100"
-menv_alias profvis="kcachegrind"
-menv_alias prof="valgrind --tool=callgrind"
-menv_alias remote_terminal_share="wemux"
-
-menv_function gprof
-function gprof {
-  gprof $1 gmon.out &> profileinfo.out
-}
 
 # Function to init a cscope database with absolute filenames.
 menv_function cscopeinit
@@ -45,37 +33,5 @@ function cscope_vim_help {
           CTRL-\ g: to find the global definition of a function, type, etc.
           CTRL-O: send you back to the location before the last search
 HELP
-}
-
-menv_function linecount
-function linecount {
-  function count_ext {
-    local ret=`find . -not -name "*designer.cs" -and -name "*.$1"\
-      -exec wc -l {} \; \
-      | awk '{lines += $1 ; files += 1  }; END { print lines } '`
-
-    if [[ $ret == "" ]] ; then
-      echo "0"
-    else
-      echo $ret
-    fi
-  }
-
-  local HLC=`count_ext h $1`
-  local CLC=`count_ext c $1`
-  local CPPLC=`count_ext cpp $1`
-  local CUCLC=`count_ext C $1`
-  local HPPLC=`count_ext hpp $1`
-  local CSLC=`count_ext cs $1`
-  local JAVALC=`count_ext java $1`
-  local SMLLC=`count_ext sml $1`
-  unset count_ext
-
-  echo -ne "Line Counts:\n
-    C headers = $HLC, C source = $CLC\n
-    C++ (CPP) source = $CPPLC, C++ (C) source = $CUCLC, C++ headers = $HPPLC\n
-    C# = $CSLC, java = $JAVALC, sml = $SMLLC\n"
-  local TLC=`expr $HLC + $CLC + $CPPLC + $CUCLC + $HPPLC + $CSLC + $JAVALC + $SMLLC`
-  echo "Total Line Count: $TLC"
 }
 

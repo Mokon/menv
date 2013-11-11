@@ -9,12 +9,6 @@ else
   touch $menv_dir/.$menv_gen_tag
   pushd .
 
-  # Create some user commands.
-  cd $menv_bin_dir
-  safe_symlink menv_install $menv_target_handler
-  safe_symlink menv_update $menv_target_handler
-  safe_symlink menv_uninstall $menv_target_handler
-
   # Link the bash targets.
   cd ~
   safe_symlink $bashrc $menv_target_handler

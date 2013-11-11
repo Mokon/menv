@@ -48,6 +48,7 @@ function swap() {
   mv $tmp "$2"
 }
 
+# Diffs two urls/files.
 menv_function urldiff
 function urldiff {
   if [[ $1 == http* ]] ; then

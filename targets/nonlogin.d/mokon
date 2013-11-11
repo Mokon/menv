@@ -5,6 +5,8 @@
 TC_GRE="\[\033[0;32;40m\]"
 TC_RESET="\[\033[0;0m\]"
 PS1="${TC_GRE}i:${TC_RESET}"
+unset TC_GRE
+unset TC_RESET
 
 # TODO
 menv_alias gitsetup="git config --global user.name \"David Bond\" ; \

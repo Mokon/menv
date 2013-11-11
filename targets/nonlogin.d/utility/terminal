@@ -8,3 +8,5 @@ function reset_tc {
   echo ${TC_RESET}
 }
 
+menv_alias remote_terminal_share="wemux"
+

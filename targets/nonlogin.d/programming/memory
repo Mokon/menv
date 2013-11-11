@@ -1,0 +1,14 @@
+#!/bin/bash
+# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+
+menv_alias xval="valgrind --track-origins=yes --leak-check=full "\
+  "--show-reachable=yes"
+menv_alias sval="xval --gen-suppressions=yes --demangle=no"
+menv_alias profvis="kcachegrind"
+menv_alias prof="valgrind --tool=callgrind"
+
+menv_function gprof
+function gprof {
+  gprof $1 gmon.out &> profileinfo.out
+}
+

@@ -54,13 +54,6 @@ menv_export CP=/bin/cp
 menv_export TAR=/bin/tar
 menv_export MKDIR=/bin/mkdir
 
-# Some github urls
-menv_export raw_gh_url="https://raw.github.com"
-menv_export menv_git_url="https://github.com/Mokon/menv.git"
-menv_export menv_url="${raw_gh_url}/Mokon/menv"
-menv_export menv_master_url="${menv_url}/master"
-menv_export menv_dotfiles_url="${menv_master_url}/dotfiles"
-
 # Some files on the local machine
 menv_export menv_local_login=$menv_local_dir/login
 menv_export menv_local_nonlogin=$menv_local_dir/nonlogin
@@ -86,7 +79,7 @@ function menv_target_children {
   local file=$1
 
   if [[ $(ls $menv_targets_dir/${file}.d ) ]] ; then
-    for f in $menv_targets_dir/${file}.d/* ; do
+    for f in $(find . -type f $menv_targets_dir/${file}.d -and -not -name .gitkeep); do
       source $f
     done # TODO Have a module exclude pattern matcher
   fi
@@ -169,9 +162,12 @@ function determine_dist {
 
   case $DIST in
     *fedora*|*redhat*) PKG_MGMT=rpm ;;
-    *debian*|*ubuntu) PKG_MGMT=dpkg ;;
+    *debian*|*ubuntu*) PKG_MGMT=dpkg ;;
     *) echo "Unknown Distribution" ;;
   esac
+
+  menv_export DIST
+  menv_export PKG_MGMT
 }
 
 determine_dist
