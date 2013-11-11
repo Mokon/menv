@@ -5,7 +5,7 @@ pushd .
 
 cd ~
 
-if_symlink_rm $vimrc
+if_symlink_rm .vimrc
   
 if [ -f $vim_dir/.$menv_gen_tag ] ; then
   $RM -rf $vim_dir
