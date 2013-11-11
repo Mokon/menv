@@ -26,7 +26,7 @@ done
 unset menv_exports
 
 for menv_alias in "${menv_aliases[@]}" ; do
-  unalias "${menv_alias}"
+  unalias "$( echo $menv_alias | cut -f 1 -d "=")"
 done
 unset menv_aliases
 
