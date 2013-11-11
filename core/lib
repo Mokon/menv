@@ -137,7 +137,9 @@ menv_function if_symlink_rm
 function if_symlink_rm {
   local file=$1
 
+echo $file
   if [ -L $file ] ; then
+    echo rm
     $RM -f $file
   fi
 }

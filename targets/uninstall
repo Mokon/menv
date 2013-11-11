@@ -18,10 +18,10 @@ $MV $menv_backup_dir ~
 $MV $menv_local_dir ~
 
 echo "Deleting the menv directory."
-$RM $menv_dir
+$RM -rf $menv_dir
  
 for menv_export in "${menv_exports[@]}" ; do
-  unset "${menv_export}"
+  unset "$( echo $menv_export | cut -f1 -d "=")"
 done
 unset menv_exports
 

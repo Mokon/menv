@@ -5,9 +5,9 @@ source ~/menv/core/lib
 
 # Multiplex to the correct menv target
 case ${BASH_SOURCE[0]} in
+  *uninstall) menv_target uninstall ;;
   *target_handler|*install) menv_target install ;;
   *update) menv_target update ;;
-  *uninstall) menv_target uninstall ;;
   *.bash_profile|*.profile) menv_target login ;;
   *.bashrc) menv_target nonlogin ;;
   *.bash_logout) menv_target logout ;;
