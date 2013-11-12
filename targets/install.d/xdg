@@ -1,0 +1,13 @@
+#!/bin/bash
+# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+
+pushd .
+
+cd ~
+
+safe_symlink .config/user-dirs.conf $menv_dotfiles_dir/config/user-dirs.conf
+
+xdg-settings set default-web-browser google-chrome.desktop
+
+popd
+

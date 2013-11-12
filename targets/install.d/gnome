@@ -1,0 +1,22 @@
+#!/bin/bash
+# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+
+pushd .
+
+cd ${menv_local_dir}
+
+mpwp="http://mokonphotography.com/wp-content/uploads"
+background_urls=(
+  "$mpwp/2013/11/ca_2013_8_1-205.jpg"
+  "$mpwp/2013/11/hannah-emb.jpg"
+)
+background_url=${background_urls[$(($RANDOM % ${#background_urls[@]}))]}
+
+echo "Setting wallpaper to $background_url"
+
+fetch ${background_url} wallpaper.jpg
+
+gsettings set org.gnome.desktop.background picture-uri ${menv_local_dir}/wallpaper.jpg
+
+popd
+

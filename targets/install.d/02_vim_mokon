@@ -12,6 +12,10 @@ $MV clang_complete/bin .
 $MV clang_complete/plugin .
 $RM -rf clang_complete
 
+github_fetch tpope/vim-fugitive
+$MV vim-fugitive/plugin/* plugin/
+$RM -rf vim-fugitive
+
 cd ~/.vim/plugin
 
 echo "Installing cscope plugin."

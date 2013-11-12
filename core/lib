@@ -122,6 +122,7 @@ function safe_symlink {
 
   if [ -f $file ] && { [ ! -L $file ] || [`readlink $file` != "$to"] ; } ; then
     echo "Found foreign ${file}. Backing up as ${menv_backup_dir}/${file}."
+    $MKDIR -p `dirname ${menv_backup_dir}/${file}`
     $MV --backup=numbered $file ${menv_backup_dir}/${file}
   elif [ -L $file ] ; then
     echo "Found valid $file symlink to ${to}."
@@ -137,9 +138,7 @@ menv_function if_symlink_rm
 function if_symlink_rm {
   local file=$1
 
-echo $file
   if [ -L $file ] ; then
-    echo rm
     $RM -f $file
   fi
 }

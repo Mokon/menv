@@ -1,0 +1,14 @@
+#!/bin/bash
+RM="/bin/rm -R"
+$RM ~/.gntrc
+$RM ~/.gitconfig
+$RM ~/.config/user-dirs.conf
+$RM ~/.tmux.conf
+$RM ~/menv
+$RM ~/.bashrc
+$RM ~/.vimrc
+$RM ~/.vim
+$RM ~/.bash_profile
+$RM ~/.bash_logout
+$RM ~/backup
+$RM ~/local

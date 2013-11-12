@@ -16,6 +16,18 @@ else
   safe_symlink $bash_profile $menv_target_handler
   safe_symlink $bash_logout $menv_target_handler
 
+  if [ -d ~/backup ] ; then
+    echo "Restoring backup dir!"
+    $RM $menv_backup_dir
+    $MV ~/backup $menv_backup_dir ~
+  fi
+
+  if [ -d ~/local ] ; then
+    echo "Restoring local dir!"
+    $RM $menv_local_dir
+    $MV ~/local $menv_local_dir ~
+  fi
+
   if [ -f $menv_local_nonlogin ]; then
     echo "Found ${menv_local_nonlogin}."
   else

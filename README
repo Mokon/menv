@@ -8,7 +8,7 @@ install itself. You can do this with:
 
 This script will setup things such as your bashrc file and bash_profile. It
 also setups a .vimrc file and installs a bunch of plugins for vim. It is
-basically a single bash script file which creates a bunch of links to the
+basically a set of bash scripts which creates a bunch of links to the
 various dotfiles (or in the case of non-bash rc files it downloads a file from
 git). In general it is very modular and if you don't want to use vim (for
 instance if you are an emacs person) you can configure it to work how you want.

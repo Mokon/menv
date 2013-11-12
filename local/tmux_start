@@ -1,0 +1,17 @@
+#!/bin/bash
+# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+
+local build_server="vbuild-deb7"
+local ssh_build_server="exec ssh mokon@${build_server} -t tmux"
+
+sudo virsh start build-deb7
+sleep 10
+
+tmux new-window -t $SESSION:$((WI++)) -n 'build' "$ssh_build_server"
+tmux split-window -h "$ssh_build_server"
+tmux new-window -t $SESSION:$((WI++)) -n 'vr0' "cd ~/git/vv && sudo ./vv vtd 0 console"
+tmux new-window -t $SESSION:$((WI++)) -n 'vr1' "cd ~/git/vv && sudo ./vv vtd 1 console"
+tmux new-window -t $SESSION:$((WI++)) -n 'vr2' "cd ~/git/vv && sudo ./vv vtd 2 console"
+tmux new-window -t $SESSION:$((WI++)) -n 'vv'
+tmux send-keys  -t $SESSION:$((WI++)) "cd ~/git/vv" C-m
+
