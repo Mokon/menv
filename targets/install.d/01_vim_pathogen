@@ -1,7 +1,7 @@
 #!/bin/bash
 # (C) 2013 David 'Mokon' Bond, All Rights Reserved
 
-pushd .
+spushd .
 
 cd ~
 
@@ -10,5 +10,5 @@ $MKDIR -p ~/.vim/autoload ~/.vim/bundle
 curl -Sso ~/.vim/autoload/pathogen.vim \
  https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim
 
-popd
+spopd
 

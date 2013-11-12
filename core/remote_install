@@ -1,7 +1,7 @@
 #!/bin/bash
 # (C) 2013 David 'Mokon' Bond, All Rights Reserved
 
-pushd .
+pushd . &> /dev/null
 
 cd ~
 
@@ -17,5 +17,5 @@ source ~/menv/core/target_handler
 
 source ~/.bash_profile
 
-popd
+popd &> /dev/null
 

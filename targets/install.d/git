@@ -1,11 +1,11 @@
 #!/bin/bash
 # (C) 2013 David 'Mokon' Bond, All Rights Reserved
 
-pushd .
+spushd .
 
 cd ~
   
 safe_symlink .gitconfig $menv_dotfiles_dir/gitconfig
 
-popd
+spopd
 

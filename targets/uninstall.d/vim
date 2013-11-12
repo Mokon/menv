@@ -1,17 +1,17 @@
 #!/bin/bash
 # (C) 2013 David 'Mokon' Bond, All Rights Reserved
 
-pushd .
+spushd .
 
 cd ~
 
 if_symlink_rm .vimrc
   
-if [ -f $vim_dir/.$menv_gen_tag ] ; then
-  $RM -rf $vim_dir
+if [ -f ~/.vim/.$menv_gen_tag ] ; then
+  $RM -rf ~/.vim
 else
   echo "vim folder was not menv generated, not deleting!"
 fi
 
-popd
+spopd
 

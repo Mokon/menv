@@ -9,7 +9,7 @@ menv_alias menv_local_refresh="source ~/.bash_profile"
 if [ -d ~/git/menv ]; then
   menv_function menv_stage
   function menv_stage {
-    pushd .
+    spushd .
   
     menv_uninstall
     
@@ -17,7 +17,7 @@ if [ -d ~/git/menv ]; then
 
     source ~/menv/core/target_handler
 
-    popd
+    spopd
   }
 fi
 

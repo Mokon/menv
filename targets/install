@@ -8,7 +8,7 @@ else
 
   touch $menv_dir/.$menv_gen_tag
   menv_version set
-  pushd .
+  spushd .
 
   # Link the bash targets.
   cd ~
@@ -18,14 +18,14 @@ else
 
   if [ -d ~/backup ] ; then
     echo "Restoring backup dir!"
-    $RM $menv_backup_dir
-    $MV ~/backup $menv_backup_dir ~
+    $RM -rf $menv_backup_dir
+    $MV ~/backup $menv_backup_dir 
   fi
 
   if [ -d ~/local ] ; then
     echo "Restoring local dir!"
-    $RM $menv_local_dir
-    $MV ~/local $menv_local_dir ~
+    $RM -rf $menv_local_dir
+    $MV ~/local $menv_local_dir 
   fi
 
   if [ -f $menv_local_nonlogin ]; then
@@ -40,7 +40,7 @@ else
     echo "Didn't find ${menv_local_login}."
   fi
 
-  popd
+  spopd
 
   menv_target_children install
 

@@ -1,11 +1,11 @@
 #!/bin/bash
 # (C) 2013 David 'Mokon' Bond, All Rights Reserved
 
-pushd .
+spushd .
 
 cd ~
   
 safe_symlink .gntrc $menv_dotfiles_dir/gntrc
 
-popd
+spopd
 

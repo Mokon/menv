@@ -14,11 +14,11 @@ touch ~/.vim/.$menv_gen_tag
 
 $MKDIR -p ~/.vim/plugin
 
-pushd .
+spushd .
 
 cd ~
 
 safe_symlink .vimrc $menv_dotfiles_dir/vimrc
 
-popd
+spopd
 

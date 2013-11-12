@@ -65,6 +65,10 @@ menv_export bashrc=.bashrc
 menv_export bash_profile=.bash_profile
 menv_export bash_logout=.bash_logout
 
+# Silent pushd and popd
+menv_alias spushd="pushd $@ > /dev/null"
+menv_alias spopd="popd $@ > /dev/null"
+
 # executes a target
 menv_function menv_target
 function menv_target {

@@ -1,11 +1,11 @@
 #!/bin/bash
 # (C) 2013 David 'Mokon' Bond, All Rights Reserved
 
-pushd .
+spushd .
 
 cd ~
 
 if_symlink_rm .gitconfig
 
-popd
+spopd
 

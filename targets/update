@@ -16,12 +16,12 @@ else
   return -1
 fi
 
-pushd .
+spushd .
 
 menv_target uninstall
 source <(curl -s https://raw.github.com/Mokon/menv/master/core/remote_install)
 
-popd
+spopd
 
 echo "Updating menv done"
 
