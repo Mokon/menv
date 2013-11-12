@@ -67,7 +67,7 @@ menv_export bash_logout=.bash_logout
 
 menv_alias menv_install="source ${menv_core_dir}/install"
 menv_alias menv_uninstall="source ${menv_core_dir}/uninstall"
-menv_alais menv_update="source ${menv_core_dir}/update"
+menv_alias menv_update="source ${menv_core_dir}/update"
 
 # Silent pushd and popd
 menv_function spushd
