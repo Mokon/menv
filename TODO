@@ -5,3 +5,6 @@ Determine why this command doesn't work:
 Prevent wierd coloring on login.
 Prevent error when clang not installed.
 Escape to/from in FindAllAndReplace* in the vimrc.
+enable X11 forwarding in ssh
+install via rpm/yum or apt-get/deb
+Make a perl script that works with contact info.
