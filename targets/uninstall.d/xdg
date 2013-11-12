@@ -6,6 +6,7 @@ spushd .
 cd ~
 
 if_symlink_rm .config/user-dirs.conf
+if_symlink_rm .config/user-dirs.dirs
 
 spopd
 

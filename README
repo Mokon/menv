@@ -60,3 +60,9 @@ by the parent script. If you want to add your own aliases etc this is the place
 to do it. If you want to for instance exclude my git configuations these are the
 folders that the exclude patterns in your config will operate on.
 
+In general I like my home formated as follows:
+  menv
+  docs
+  git
+  pics
+

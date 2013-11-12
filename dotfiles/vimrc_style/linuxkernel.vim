@@ -20,6 +20,7 @@ function s:LinuxKernelFormatting()
 
   highlight default link LinuxError ErrorMsg
 
+  syn match LinuxError /  \+/    
   syn match LinuxError /^ \+/
   syn match LinuxError / \+\ze\t/
   syn match LinuxError /\s\+$/
