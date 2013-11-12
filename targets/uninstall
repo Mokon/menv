@@ -7,7 +7,7 @@ spushd .
 
 cd ~
 
-menv_target login # So we have the aliases etc in the menv arrays.
+menv_target login &> /dev/null # So we have the aliases etc in the menv arrays.
 
 menv_target_children uninstall
 
@@ -35,7 +35,6 @@ done
 unset menv_aliases
 
 for menv_func in "${menv_funcs[@]}" ; do
-  unset $menv_func
 echo "unset $menv_func"
 done
 unset menv_funcs
