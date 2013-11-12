@@ -35,7 +35,6 @@ done
 unset menv_aliases
 
 for menv_func in "${menv_funcs[@]}" ; do
-echo $menv_func
   unset $menv_func
 done
 unset menv_funcs

@@ -13,7 +13,7 @@ wget -O $file -q -N --no-check-certificate \
 /bin/rm -f $file
 /bin/mv menv-master menv
 
-source ~/menv/core/target_handler
+source ~/menv/core/install
 
 source ~/.bash_profile
 
