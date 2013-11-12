@@ -19,6 +19,8 @@ $MV $menv_local_dir ~
 
 echo "Deleting the menv directory."
 $RM -rf $menv_dir
+
+spopd
  
 for menv_export in "${menv_exports[@]}" ; do
   unset "$( echo $menv_export | cut -f1 -d "=")"
@@ -31,11 +33,11 @@ done
 unset menv_aliases
 
 for menv_func in "${menv_funcs[@]}" ; do
-  unset "$menv_func"
+  unset $menv_func
+echo "unset $menv_func"
 done
 unset menv_funcs
 
 echo "Uninstalling menv done"
 
-spopd
 

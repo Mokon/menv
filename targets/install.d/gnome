@@ -10,14 +10,14 @@ background_urls=(
   "$mpwp/2013/11/ca_2013_8_1-205.jpg"
   "$mpwp/2013/11/hannah-emb.jpg"
 )
-background_url=${background_urls[$(($RANDOM % ${#background_urls[@]}))]}
+i=$(($RANDOM % ${#background_urls[@]}))
+background_url=${background_urls[$i]}
 
 echo "Setting wallpaper to $background_url"
 
-fetch ${background_url} wallpaper.jpg
-ls 
+fetch ${background_url} wallpaper_${i}.jpg
 
-gsettings set org.gnome.desktop.background picture-uri ${menv_local_dir}/wallpaper.jpg
+gsettings set org.gnome.desktop.background picture-uri ${menv_local_dir}/wallpaper_${i}.jpg
 
 spopd
 
