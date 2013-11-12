@@ -3,14 +3,16 @@
 
 menv_function start
 function start {
+
+  unset TMUX
   local SESSION=$USER
-  local WI=1
+  local WI=0
   local SELECTED_WINDOW=1
 
   tmux new-session -d -s $SESSION -n 'host'
-  tmux send-keys  -t $SESSION:$((WI++)) "cd ~" C-m
+  tmux send-keys  -t $SESSION:$((++WI)) "cd ~" C-m
 
-  tmux new-window -t $SESSION:$((WI++)) -n 'msger' "finch"
+  tmux new-window -t $SESSION:$((++WI)) -n 'msger' "finch"
 
 
   if [ -f $menv_local_dir/tmux_start ] ; then
