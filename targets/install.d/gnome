@@ -15,6 +15,7 @@ background_url=${background_urls[$(($RANDOM % ${#background_urls[@]}))]}
 echo "Setting wallpaper to $background_url"
 
 fetch ${background_url} wallpaper.jpg
+ls 
 
 gsettings set org.gnome.desktop.background picture-uri ${menv_local_dir}/wallpaper.jpg
 
