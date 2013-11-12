@@ -7,6 +7,8 @@ spushd .
 
 cd ~
 
+menv_target login # So we have the aliases etc in the menv arrays.
+
 menv_target_children uninstall
 
 if_symlink_rm $bashrc
