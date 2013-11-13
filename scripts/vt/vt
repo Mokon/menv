@@ -1,0 +1,96 @@
+#!/bin/bash
+#
+# virtual topology script for automatic vm and vnet configuration of virtual
+# topologies.
+#
+# #############################################################################
+
+function usage {
+  echo "vt | vt|virtual-topology construct|enable|disable|destruct|restart|"\
+    "local_pkgs_reload|cmds_reload|list|map (<config-file>)"
+  echo "   | vtd|virtual-topology-device <vm name> console (<config-file>)"
+  echo "   | vd|virtual-device <vm name> console|start|stop|unplug|"\
+    "suspend|reboot|resume|nets"
+  echo "   | list"
+}
+
+if [ $UID != 0 ] ; then
+  echo "vt should probably be run as root not '`whoami`'."
+  usage
+  exit -1
+fi
+
+. $menv_scripts_dir/vt/vyatta_virtual.sh
+. $menv_scripts_dir/vt/vyatta_virtual_macros.sh
+
+# #############################################################################
+case $1 in
+  #############################################################################
+  # virtual topology commands
+  vt|virtual-topology)
+    echo "Starting loading of virtual topology configuration"
+    . ${3:-$menv_local_dir/vt_config}
+    echo "Done loading of virtual topology configuration"
+    case $2 in
+      construct) virtual_topology_construct ;;
+      enable) virtual_topology_enable ;;
+      disable) virtual_topology_disable ;;
+      destruct) virtual_topology_destruct ;;
+      restart) virtual_topology_disable ; virtual_topology_enable ;;
+      local_pkgs_reload) vt_load_local_packages_all_vms ;;
+      cmds_reload) vt_run_commands_all_vms ;;
+      list) virtual_topology_list ;;
+      map) . $menv_scripts_dir/vt/virtual_topology_map.sh ;
+           virtual_topology_generate_map ;;
+      *) echo "Unknown Invocation" ; usage ; exit -1 ;;
+    esac
+    ;;
+  
+  #############################################################################
+  # virtual topology device commands
+  vtd|virtual-topology-device)
+    echo "Starting loading of virtual topology configuration"
+    . ${4:-$menv_local_dir/vt_config}
+    vm=$2
+    vm=${branch}${cfgi}_vr$vm
+    echo "Done loading of virtual topology configuration"
+    case $3 in
+      console) vt_vm_type_execute $vm console ; virsh console $vm ;;
+      *) echo "Unknown Invocation" ; usage ; exit -1 ;;
+    esac
+    ;;
+
+  #############################################################################
+  # virsh single command wrappers
+  vd|virtual-device)
+    vm=$2
+    case $3 in
+      console) virsh console $vm ;;
+      start) virsh start $vm ;;
+      stop) virsh shutdown $vm ;;
+      unplug) virsh destroy $vm ;;
+      suspend) virsh suspend $vm ;;
+      reboot) virsh reboot $vm ;;
+      resume) virsh resume $vm ;;
+      nets) virsh domiflist $vm ;;
+      *) echo "Unknown Invocation" ; usage ; exit -1 ;;
+    esac
+    ;;
+
+  #############################################################################
+  # misc.
+  list) virsh_list ;;
+  setconf)
+    conf=$2
+    defconf=$menv_local_dir/vt_config
+    if [ -f $defconf ] && [ ! -L $defconf ] ; then
+      echo "$defconf exists and it is not a symlink. Please move it."
+    else
+      rm $defconf
+      ln -s $conf $defconf
+    fi
+    ;;
+  -h|--help|usage|-help) usage ;;
+  *) echo "Unknown Invocation" ; usage ; exit -1 ;;
+esac
+
