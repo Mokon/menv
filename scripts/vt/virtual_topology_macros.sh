@@ -114,9 +114,10 @@ function vt_vm_int_statuses {
 function vt_cmd {
   local cmd=$1
   local typ=$2
-
-  for vmsi in $(eval echo {0..${num_vms}}) ; do
-    if [ -z $typ -o $typ == ${vm_types[$vmsi]} ] ; then
+  
+  for vmsi in $(eval echo {0..$((num_vms-1))}) ; do
+    vtyp=${vm_types[$vmsi]}
+    if [[ -z $typ || "$typ" == "$vtyp" ]] ; then
       vt_cmds[$vmsi]+="$cmd"$'\n'
     fi
   done
@@ -140,8 +141,9 @@ function vt_int_cmd {
   local cmd=$2
   local typ=$3
 
-  for vmsi in $(eval echo {0..${num_vms}}) ; do
-    if [ -z $typ -o $typ == ${vm_types[$vmsi]} ] ; then
+  for vmsi in $(eval echo {0..$((num_vms-1))}) ; do
+    vtyp=${vm_types[$vmsi]}
+    if [[ -z $typ || "$typ" == "$vtyp" ]] ; then
       vt_int_cmds[$vmsi]+="${cmd/INTERFACE/${int_names[$interface]}}"$'\n'
     fi
   done
@@ -167,8 +169,9 @@ function virtual_topology_commands {
   local cfgi=$1
   local branch=$2
 
-  for vmsi in $(eval echo {0..${num_vms}}) ; do
-    cmds=`${vm_types[$vmsi]}_vm_commands $vmsi`
+  for vmsi in $(eval echo {0..$((num_vms-1))}) ; do
+    cmds=`eval "${vm_types[$vmsi]}_vm_commands $vmsi"`
+    echo $cmds
     vt_vm_commands ${branch}${cfgi}_vr${vmsi} "$cmds"
   done
 }

@@ -370,8 +370,6 @@ function virtual_topology_disable {
   for vm in "${vms[@]}" ; do
     if virsh_vm_is_created $vm ; then
       virsh destroy $vm
-    else 
-      echo no way
     fi
   done
 

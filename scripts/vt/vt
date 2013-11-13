@@ -20,8 +20,11 @@ if [ $UID != 0 ] ; then
   exit -1
 fi
 
-. $menv_scripts_dir/vt/vyatta_virtual.sh
-. $menv_scripts_dir/vt/vyatta_virtual_macros.sh
+menv_scripts_dir=~mokon/menv/scripts
+menv_local_dir=~mokon/menv/local
+
+. $menv_scripts_dir/vt/virtual_topology.sh
+. $menv_scripts_dir/vt/virtual_topology_macros.sh
 
 # #############################################################################
 case $1 in
