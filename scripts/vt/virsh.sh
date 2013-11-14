@@ -259,7 +259,7 @@ function virsh_vm_wait_until_pingable {
 
   while : ; do
     local vmip=$(perl -w $menv_scripts_dir/vt/virt-addr $vm $vnet)
-    if ! ping -c1 $vmip &> /dev/null ; then break ; fi
+    if ping -c1 $vmip &> /dev/null ; then break ; fi
   done 
 }
 

@@ -327,7 +327,7 @@ function virtual_topology_construct {
         local xml="${iso//qcow2/xml}" 
         local qcow2=$dir/$vm.qcow2
         local xmlt=`mktemp`
-        cp $iso $qcow2
+        rsync --progress $iso $qcow2
         cp $xml $xmlt
 
         xmlstarlet ed -L -u "//domain/devices/disk[@type='file']/source/@file" -v "$qcow2" $xmlt
