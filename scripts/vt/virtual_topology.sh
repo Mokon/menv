@@ -266,9 +266,16 @@ function vt_vm_local_pkgs {
 # #############################################################################
 function vt_local_pkgs {
   local local_package_list=$1
+  local typ=$2
 
   echo "Setting the global local packages."
-  export global_local_packages=$local_package_list
+  
+  for vmsi in $(eval echo {0..$((num_vms-1))}) ; do
+    local vtyp=${vm_types[$vmsi]}
+    if [[ -z $typ || "$typ" == "$vtyp" ]] ; then
+      local_packages[$vmsi]=$local_package_list
+    fi
+  done
 }
 
 # #############################################################################
@@ -287,9 +294,15 @@ function vt_vm_remote_pkgs {
 # #############################################################################
 function vt_remote_pkgs {
   local remote_package_list=$1
+  local typ=$2
 
   echo "Setting the global remote packages."
-  export global_remote_packages=$remote_package_list
+  for vmsi in $(eval echo {0..$((num_vms-1))}) ; do
+    local vtyp=${vm_types[$vmsi]}
+    if [[ -z $typ || "$typ" == "$vtyp" ]] ; then
+      remote_packages[$vmsi]=$remote_package_list
+    fi
+  done
 }
 
 # #############################################################################
@@ -310,10 +323,17 @@ function virtual_topology_construct {
     fi
     case $iso in
       *qcow2)
-        xml="${iso//qcow2/xml}" 
-        xmlstarlet ed -L -u "//domain/devices/disk[@type='file']/source/@file" -v "$iso" $xml
-        xmlstarlet ed -L -u "//domain/name" -v "$vm" $xml
-        virsh define $xml
+        local dir=${VIRTUAL_MACHINE_IMAGE_DIR:-$LIBVIRT_IMAGES}
+        local xml="${iso//qcow2/xml}" 
+        local qcow2=$dir/$vm.qcow2
+        local xmlt=`mktemp`
+        cp $iso $qcow2
+        cp $xml $xmlt
+
+        xmlstarlet ed -L -u "//domain/devices/disk[@type='file']/source/@file" -v "$qcow2" $xmlt
+        xmlstarlet ed -L -u "//domain/name" -v "$vm" $xmlt
+        virsh define $xmlt
+        /bin/rm $xmlt
         ;;
       *iso) virsh_define $vm $iso ;;
       *) echo "Unknown image type '$iso'" ;;
@@ -420,6 +440,10 @@ function virtual_topology_destruct {
     virsh undefine $vm
     if [ -f $dir/$vm.img ] ; then
       /bin/rm $dir/$vm.img
+    fi
+    
+    if [ -f $dir/$vm.qcow2 ] ; then
+      /bin/rm $dir/$vm.qcow2
     fi
   done
 
