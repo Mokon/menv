@@ -74,9 +74,10 @@ function vt_vm_type_define {
   local load_local_packages=$6
   local run_commands=$7
   local console=$8
+  local vm_commands=$9
   local s=$RECORD_SEP
 
-  vt_vm_type_funcs[$vmtype]="$install_image$s$mgt$s$load_config$s$load_remote_packages$s$load_local_packages$s$run_commands$s$console"
+  vt_vm_type_funcs[$vmtype]="$install_image$s$mgt$s$load_config$s$load_remote_packages$s$load_local_packages$s$run_commands$s$console$s$vm_commands"
 }
 
 # #############################################################################
@@ -104,6 +105,7 @@ function vt_vm_type_execute {
     local load_local_packages=$5
     local run_commands=$6
     local console=$7
+    local vm_commands=$8
     IFS=$OLDIFS
 
     # Execute the type.
@@ -115,6 +117,7 @@ function vt_vm_type_execute {
       load_local_packages) $load_local_packages $vm "$args" ;;
       run_commands) $run_commands $vm "$args" ;;
       console) $console $vm ;;
+      vm_commands) $vm_commands $vm "$args" ;;
       *) echo "Function Unknown" ;;
     esac
   else 
@@ -123,7 +126,7 @@ function vt_vm_type_execute {
 }
 
 # #############################################################################
-# Constructs the virtual topology in terms of vyatta.
+# Constructs the virtual topology.
 # #############################################################################
 function virtual_topology_construct_install {
   echo "-------------------------"
@@ -138,7 +141,7 @@ function virtual_topology_construct_install {
 }
 
 # #############################################################################
-# Installs the vyatta image on all vms in the virtual topology.
+# Installs the images on all vms in the virtual topology.
 # #############################################################################
 function vt_install_image_all_vms {
   echo "-------------------------"
@@ -293,6 +296,9 @@ function vt_remote_pkgs {
 # Constructs the virtual topology based on the virtual topology data structs.
 # #############################################################################
 function virtual_topology_construct {
+  if type virtual_topology_pre_construct_hook &> /dev/null ; then
+    virtual_topology_pre_construct_hook
+  fi
 
   echo "========================="
   echo "Creating all the virtual machines in the virtual topology."
@@ -302,7 +308,16 @@ function virtual_topology_construct {
     else
       local iso=$ISO
     fi
-    virsh_define $vm $iso
+    case $iso in
+      *qcow2)
+        xml="${iso//qcow2/xml}" 
+        xmlstarlet ed -L -u "//domain/devices/disk[@type='file']/source/@file" -v "$iso" $xml
+        xmlstarlet ed -L -u "//domain/name" -v "$vm" $xml
+        virsh define $xml
+        ;;
+      *iso) virsh_define $vm $iso ;;
+      *) echo "Unknown image type '$iso'" ;;
+    esac
   done
 
   echo "========================="
@@ -336,6 +351,10 @@ function virtual_topology_construct {
   done
 
   virtual_topology_construct_install
+
+  if type virtual_topology_post_construct_hook &> /dev/null ; then
+    virtual_topology_post_construct_hook
+  fi
 }
 
 # #############################################################################
@@ -399,7 +418,9 @@ function virtual_topology_destruct {
   echo "Destructing all virtual machines in the virtual topology."
   for vm in "${vms[@]}" ; do
     virsh undefine $vm
-    /bin/rm $dir/$vm.img
+    if [ -f $dir/$vm.img ] ; then
+      /bin/rm $dir/$vm.img
+    fi
   done
 
   echo "========================="

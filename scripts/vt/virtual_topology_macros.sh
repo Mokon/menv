@@ -10,7 +10,7 @@
 # well defined naming scheme.
 #
 # Virtual machines are named:
-#    ${branch}${cfgi}_vr${router number}
+#    ${branch}${cfgi}_vm${router number}
 # Virtual networks are named:
 #   ${branch}${cfgi}_n${network number}
 # MAC Addresses are assigned:
@@ -46,16 +46,23 @@ function virtual_topology_configure {
   let num_vms-=1
   let num_vnets-=1
 
-  vt_iso "${isodir}/${branch}_${isotag}.iso"
-
   # Create VMs
   for vmsi in $(eval echo {0..${num_vms}}) ; do
-    vt_vm ${branch}${cfgi}_vr${vmsi}
-    vt_vm_type ${branch}${cfgi}_vr${vmsi} ${vm_types[$vmsi]}
+    vm=${branch}${cfgi}_vm${vmsi}
+    vmt=${vm_types[$vmsi]}
+
+    vt_vm $vm
+    vt_vm_type $vm $vmt
+
+    if [ -f "${isodir}/${branch}_${isotag}_${vmt}.iso" ] ; then
+      vt_vm_iso $vm "${isodir}/${branch}_${isotag}_${vmt}.iso"
+    elif [ -f "${isodir}/${branch}_${isotag}_${vmt}.qcow2" ] ; then
+      vt_vm_iso $vm "${isodir}/${branch}_${isotag}_${vmt}.qcow2"
+    fi
 
     # Create VINTs
     for vneti in $(eval echo {0..${num_vnets}}) ; do
-      vt_vint ${branch}${cfgi}_vr${vmsi} ${branch}${cfgi}_n${vneti} \
+      vt_vint $vm ${branch}${cfgi}_n${vneti} \
         00:00:88:0${cfgi}:0${vneti}:0${vmsi} 1${vmsi} 0:1${vmsi}
     done
   done
@@ -104,7 +111,7 @@ function vt_vm_int_statuses {
     statuses+="'$int_status' "
   done
 
-  eval "${branch}${cfgi}_vr${vmsi}=($statuses)"
+  eval "${branch}${cfgi}_vm${vmsi}=($statuses)"
 }
 
 # #############################################################################
@@ -129,6 +136,7 @@ function vt_cmd {
 function vt_vm_cmd {
   local vm=$1
   local cmd=$2
+
   vt_cmds[$vm]+="$cmd"$'\n'
 }
 
@@ -142,7 +150,7 @@ function vt_int_cmd {
   local typ=$3
 
   for vmsi in $(eval echo {0..$((num_vms-1))}) ; do
-    vtyp=${vm_types[$vmsi]}
+    local vtyp=${vm_types[$vmsi]}
     if [[ -z $typ || "$typ" == "$vtyp" ]] ; then
       vt_int_cmds[$vmsi]+="${cmd/INTERFACE/${int_names[$interface]}}"$'\n'
     fi
@@ -170,9 +178,10 @@ function virtual_topology_commands {
   local branch=$2
 
   for vmsi in $(eval echo {0..$((num_vms-1))}) ; do
-    cmds=`eval "${vm_types[$vmsi]}_vm_commands $vmsi"`
-    echo $cmds
-    vt_vm_commands ${branch}${cfgi}_vr${vmsi} "$cmds"
+    local vm=${branch}${cfgi}_vm${vmsi}
+    local cmds="$(vt_vm_type_execute $vm vm_commands $vmsi)"
+
+    vt_vm_commands $vm "$cmds"
   done
 }
 

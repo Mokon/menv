@@ -24,3 +24,5 @@ bash_cmd_exists vim && EDITOR=vim;
 # A variable for google logging.
 menv_export GLOG_minloglevel=0
 
+menv_alias v="sudo -E $menv_scripts_dir/vt/v"
+

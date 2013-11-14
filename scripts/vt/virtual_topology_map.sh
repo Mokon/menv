@@ -21,8 +21,8 @@ function fp {
 # generation.
 # #############################################################################
 function virtual_topology_generate_map {
-  local in=vt.dot
-  local out=vt.png
+  local out=${1:-vt.png}
+  local in=`mktemp`
  
   fp $in "digraph virtual_topology {"
 

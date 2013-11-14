@@ -106,6 +106,7 @@ function virsh_net_define {
   echo "Creating a virtual network $vnet with ip subnet $vnet_ip.0/24 "\
     "and ipv6 subnet $vnet_ip6::0/64."
 
+  # TODO remove vyatta.com
   local tmpfile=`mktemp`
   cat <<- XML > $tmpfile
     <network>
@@ -137,11 +138,11 @@ XML
     local OLDIFS=$IFS
     IFS=$RECORD_SEP
     set $vint
-    rvm=$1
-    rvnet=$2
-    rvmac=$3
-    rvip=$4
-    rvip6=$5
+    local rvm=$1
+    local rvnet=$2
+    local rvmac=$3
+    local rvip=$4
+    local rvip6=$5
 
     if [[ $vnet == $rvnet ]] ; then
       xmlstarlet ed -L -s "//network/ip[not(@family='ipv6')]/dhcp" \
@@ -218,6 +219,10 @@ function virsh_vm_is_created {
 # #############################################################################
 function virsh_vm_wait_until_running {
   local vm=$1
+    
+  if ! virsh_vm_is_running $vm ; then
+    virsh start $vm
+  fi
 
   while : ; do
     if virsh_vm_is_running $vm ; then
@@ -228,7 +233,7 @@ function virsh_vm_wait_until_running {
 }
 
 # #############################################################################
-# Waits until the given vm is running.
+# Waits until the given vnetwork is active
 # #############################################################################
 function virsh_vnet_wait_until_active {
   local vnet=$1
@@ -241,5 +246,20 @@ function virsh_vnet_wait_until_active {
     fi
     sleep 1
   done
+}
+
+# #############################################################################
+# Waits until the given vm is pingable on the default (or given) network
+# #############################################################################
+function virsh_vm_wait_until_pingable {
+  local vm=$1
+  local vnet=${4:-"default"}
+
+  virsh_vm_wait_until_running $vm
+
+  while : ; do
+    local vmip=$(perl -w $menv_scripts_dir/vt/virt-addr $vm $vnet)
+    if ! ping -c1 $vmip &> /dev/null ; then break ; fi
+  done 
 }
 

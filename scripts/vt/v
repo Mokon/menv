@@ -6,12 +6,16 @@
 # #############################################################################
 
 function usage {
-  echo "vt | vt|virtual-topology construct|enable|disable|destruct|restart|"\
-    "local_pkgs_reload|cmds_reload|list|map (<config-file>)"
-  echo "   | vtd|virtual-topology-device <vm name> console (<config-file>)"
-  echo "   | vd|virtual-device <vm name> console|start|stop|unplug|"\
-    "suspend|reboot|resume|nets"
-  echo "   | list"
+  cat <<END
+  v | t|topology [TT] (<config_file>)
+    | td|topology-device <vm name> console (<config-file>)
+    | d|device <vm name> console|start|stop|unplug|suspend|reboot|resume|nets
+    | l|list
+    | setconf <config_file>
+
+  TT=construct|enable|disable|destruct|restart|local_pkgs_reload|cmds_reload
+    |list|map (<output_file after config_file>)
+END
 }
 
 if [ $UID != 0 ] ; then
@@ -20,9 +24,6 @@ if [ $UID != 0 ] ; then
   exit -1
 fi
 
-menv_scripts_dir=~mokon/menv/scripts
-menv_local_dir=~mokon/menv/local
-
 . $menv_scripts_dir/vt/virtual_topology.sh
 . $menv_scripts_dir/vt/virtual_topology_macros.sh
 
@@ -30,7 +31,7 @@ menv_local_dir=~mokon/menv/local
 case $1 in
   #############################################################################
   # virtual topology commands
-  vt|virtual-topology)
+  t|topology)
     echo "Starting loading of virtual topology configuration"
     . ${3:-$menv_local_dir/vt_config}
     echo "Done loading of virtual topology configuration"
@@ -43,7 +44,7 @@ case $1 in
       local_pkgs_reload) vt_load_local_packages_all_vms ;;
       cmds_reload) vt_run_commands_all_vms ;;
       list) virtual_topology_list ;;
-      map) . $menv_scripts_dir/vt/virtual_topology_map.sh ;
+      map) . $menv_scripts_dir/vt/virtual_topology_map.sh $4;
            virtual_topology_generate_map ;;
       *) echo "Unknown Invocation" ; usage ; exit -1 ;;
     esac
@@ -51,21 +52,21 @@ case $1 in
   
   #############################################################################
   # virtual topology device commands
-  vtd|virtual-topology-device)
+  td|topology-device)
     echo "Starting loading of virtual topology configuration"
     . ${4:-$menv_local_dir/vt_config}
     vm=$2
-    vm=${branch}${cfgi}_vr$vm
+    vm=${branch}${cfgi}_vm$vm
     echo "Done loading of virtual topology configuration"
     case $3 in
-      console) vt_vm_type_execute $vm console ; virsh console $vm ;;
+      console) vt_vm_type_execute $vm console ;;
       *) echo "Unknown Invocation" ; usage ; exit -1 ;;
     esac
     ;;
 
   #############################################################################
   # virsh single command wrappers
-  vd|virtual-device)
+  d|device)
     vm=$2
     case $3 in
       console) virsh console $vm ;;
@@ -82,7 +83,7 @@ case $1 in
 
   #############################################################################
   # misc.
-  list) virsh_list ;;
+  l|list) virsh_list ;;
   setconf)
     conf=$2
     defconf=$menv_local_dir/vt_config
@@ -93,7 +94,7 @@ case $1 in
       ln -s $conf $defconf
     fi
     ;;
-  -h|--help|usage|-help) usage ;;
+  h|help|-h|--help|usage|-help) usage ;;
   *) echo "Unknown Invocation" ; usage ; exit -1 ;;
 esac
 
