@@ -299,7 +299,6 @@ function vt_remote_pkgs {
   echo "Setting the global remote packages."
   for vmsi in $(eval echo {0..$((num_vms-1))}) ; do
     local vtyp=${vm_types[$vmsi]}
-    echo "vt is $vtyp and t is $typ"
     if [[ -z $typ || "$typ" == "$vtyp" ]] ; then
       remote_packages[${vms[$vmsi]}]=$remote_package_list
     fi
