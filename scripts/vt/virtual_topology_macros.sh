@@ -79,9 +79,10 @@ function virtual_topology_configure {
 # #############################################################################
 function virtual_topology_intnames {
   local intnames=$1
+  local vm_type=$2
 
   for pf in $intnames ; do
-    int_names+=($pf)
+    eval "int_names_$vm_type+=($pf)"
   done
 }
 
@@ -148,11 +149,13 @@ function vt_int_cmd {
   local interface=$1
   local cmd=$2
   local typ=$3
-
+  
   for vmsi in $(eval echo {0..$((num_vms-1))}) ; do
     local vtyp=${vm_types[$vmsi]}
     if [[ -z $typ || "$typ" == "$vtyp" ]] ; then
-      vt_int_cmds[$vmsi]+="${cmd/INTERFACE/${int_names[$interface]}}"$'\n'
+      local intnamearr=int_names_$vtyp
+      local intname=`eval echo \$\{$intnamearr\[$interface\]\}`
+      vt_int_cmds[$vmsi]+="${cmd/INTERFACE/$intname}"$'\n'
     fi
   done
 }
@@ -165,7 +168,9 @@ function vt_int_all_cmd {
   local cmd="$1"
   local typ=$2
 
-  for ((i=0;i<${#int_names[@]};++i)); do
+  local intnamearr=int_names_$typ
+  local intnum=`eval echo \$\{\#$intnamearr\[@\]\}`
+  for ((i=0;i<${intnum};++i)); do
     vt_int_cmd $i "$cmd" "$typ"
   done
 }

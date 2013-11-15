@@ -41,6 +41,10 @@ case $1 in
       disable) virtual_topology_disable ;;
       destruct) virtual_topology_destruct ;;
       restart) virtual_topology_disable ; virtual_topology_enable ;;
+      install_images) vt_install_image_all_vms ;;
+      mgt) vt_mgt_all_vms ;;
+      cfg_reload) vt_load_config_all_vms  ;;
+      remote_pkgs_reload) vt_load_remote_packages_all_vms ;;
       local_pkgs_reload) vt_load_local_packages_all_vms ;;
       cmds_reload) vt_run_commands_all_vms ;;
       list) virtual_topology_list ;;

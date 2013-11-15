@@ -117,11 +117,11 @@ function vt_vm_type_execute {
       load_local_packages) $load_local_packages $vm "$args" ;;
       run_commands) $run_commands $vm "$args" ;;
       console) $console $vm ;;
-      vm_commands) $vm_commands $vm "$args" ;;
+      vm_commands) $vm_commands "$args" ;;
       *) echo "Function Unknown" ;;
     esac
   else 
-    echo "Unknown VM Type"
+    echo "Unknown VM Type $vm"
   fi
 }
 
@@ -273,7 +273,7 @@ function vt_local_pkgs {
   for vmsi in $(eval echo {0..$((num_vms-1))}) ; do
     local vtyp=${vm_types[$vmsi]}
     if [[ -z $typ || "$typ" == "$vtyp" ]] ; then
-      local_packages[$vmsi]=$local_package_list
+      local_packages[${vms[$vmsi]}]=$local_package_list
     fi
   done
 }
@@ -283,10 +283,10 @@ function vt_local_pkgs {
 # #############################################################################
 function vt_vm_remote_pkgs {
   local vm=$1
-  local remote_package_list=$2
+  local remote_package_list="$2"
 
   echo "Setting the virtual topology vm $vm to load remote packages."
-  remote_packages[$vm]=$remote_package_list
+  remote_packages[$vm]="$remote_package_list"
 }
 
 # #############################################################################
@@ -294,13 +294,14 @@ function vt_vm_remote_pkgs {
 # #############################################################################
 function vt_remote_pkgs {
   local remote_package_list=$1
-  local typ=$2
+  local typ="$2"
 
   echo "Setting the global remote packages."
   for vmsi in $(eval echo {0..$((num_vms-1))}) ; do
     local vtyp=${vm_types[$vmsi]}
+    echo "vt is $vtyp and t is $typ"
     if [[ -z $typ || "$typ" == "$vtyp" ]] ; then
-      remote_packages[$vmsi]=$remote_package_list
+      remote_packages[${vms[$vmsi]}]=$remote_package_list
     fi
   done
 }

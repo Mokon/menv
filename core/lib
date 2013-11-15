@@ -37,6 +37,7 @@ menv_export menv_dir=~/menv
 menv_export menv_backup_dir=$menv_dir/backup
 menv_export menv_trash_dir=$menv_dir/trash
 menv_export menv_cache_dir=$menv_dir/cache
+menv_export menv_downloads_dir=$menv_cache_dir/downloads
 menv_export menv_bin_dir=$menv_dir/bin
 menv_export menv_core_dir=$menv_dir/core
 menv_export menv_local_dir=$menv_dir/local
