@@ -126,21 +126,6 @@ function vt_vm_type_execute {
 }
 
 # #############################################################################
-# Constructs the virtual topology.
-# #############################################################################
-function virtual_topology_construct_install {
-  echo "-------------------------"
-  echo "Virtual topology construct install."
-
-  vt_install_image_all_vms
-  vt_mgt_all_vms
-  vt_load_config_all_vms
-  vt_load_remote_packages_all_vms
-  vt_load_local_packages_all_vms
-  vt_run_commands_all_vms
-}
-
-# #############################################################################
 # Installs the images on all vms in the virtual topology.
 # #############################################################################
 function vt_install_image_all_vms {
@@ -309,10 +294,49 @@ function vt_remote_pkgs {
 # Constructs the virtual topology based on the virtual topology data structs.
 # #############################################################################
 function virtual_topology_construct {
+  virtual_topology_pre_construct | tee $menv_logs_dir/virtual_topology_pre_construct.log
+  virtual_topology_phy_construct | tee $menv_logs_dir/virtual_topology_phy_construct.log
+  virtual_topology_construct_install | tee $menv_logs_dir/virtual_topology_construct_install.log
+  virtual_topology_post_construct | tee $menv_logs_dir/virtual_topology_post_construct.log
+}
+
+# #############################################################################
+# A hook for pre the construction.
+# #############################################################################
+function virtual_topology_pre_construct {
   if type virtual_topology_pre_construct_hook &> /dev/null ; then
     virtual_topology_pre_construct_hook
   fi
+}
 
+# #############################################################################
+# A hook for post the construction.
+# #############################################################################
+function virtual_topology_post_construct {
+  if type virtual_topology_post_construct_hook &> /dev/null ; then
+    virtual_topology_post_construct_hook
+  fi
+}
+
+# #############################################################################
+# Constructs the virtual topology.
+# #############################################################################
+function virtual_topology_construct_install {
+  echo "-------------------------"
+  echo "Virtual topology construct install."
+
+  vt_install_image_all_vms | tee $menv_logs_dir/vt_install_image_all_vms.log
+  vt_mgt_all_vms | tee $menv_logs_dir/vt_mgt_all_vms.log
+  vt_load_config_all_vms | tee $menv_logs_dir/vt_load_config_all_vms.log
+  vt_load_remote_packages_all_vms | tee $menv_logs_dir/vt_load_remote_packages_all_vms.log
+  vt_load_local_packages_all_vms | tee $menv_logs_dir/vt_load_local_packages_all_vms.log
+  vt_run_commands_all_vms | tee $menv_logs_dir/vt_run_commands_all_vms.log
+}
+
+# #############################################################################
+# Creates the vms and networks for the virtual topology.
+# #############################################################################
+function virtual_topology_phy_construct {
   echo "========================="
   echo "Creating all the virtual machines in the virtual topology."
   for vm in "${vms[@]}" ; do
@@ -369,12 +393,6 @@ function virtual_topology_construct {
     virsh_attach_interface $vm $vnet $vmac
     IFS=$OLDIFS
   done
-
-  virtual_topology_construct_install
-
-  if type virtual_topology_post_construct_hook &> /dev/null ; then
-    virtual_topology_post_construct_hook
-  fi
 }
 
 # #############################################################################

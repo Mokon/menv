@@ -8,13 +8,15 @@
 function usage {
   cat <<END
   v | t|topology [TT] (<config_file>)
+    | t|topology map (<config_file>) (<output_map_png>)
     | td|topology-device <vm name> console (<config-file>)
     | d|device <vm name> console|start|stop|unplug|suspend|reboot|resume|nets
     | l|list
     | setconf <config_file>
 
-  TT=construct|enable|disable|destruct|restart|local_pkgs_reload|cmds_reload
-    |list|map (<output_file after config_file>)
+  TT=construct|enable|disable|destruct|restart|physical_construct
+      |install_images|mgt|cfg_reload|remote_pkgs_reload|local_pkgs_reload
+      |cmds_reload|list
 END
 }
 
@@ -36,20 +38,25 @@ case $1 in
     . ${3:-$menv_local_dir/vt_config}
     echo "Done loading of virtual topology configuration"
     case $2 in
-      construct) virtual_topology_construct ;;
-      enable) virtual_topology_enable ;;
-      disable) virtual_topology_disable ;;
-      destruct) virtual_topology_destruct ;;
-      restart) virtual_topology_disable ; virtual_topology_enable ;;
-      install_images) vt_install_image_all_vms ;;
-      mgt) vt_mgt_all_vms ;;
-      cfg_reload) vt_load_config_all_vms  ;;
-      remote_pkgs_reload) vt_load_remote_packages_all_vms ;;
-      local_pkgs_reload) vt_load_local_packages_all_vms ;;
-      cmds_reload) vt_run_commands_all_vms ;;
-      list) virtual_topology_list ;;
-      map) . $menv_scripts_dir/vt/virtual_topology_map.sh $4;
-           virtual_topology_generate_map ;;
+      c|construct)                  virtual_topology_construct ;;
+      e|enable)                     virtual_topology_enable ;;
+      di|disable)                   virtual_topology_disable ;;
+      d|destruct)                   virtual_topology_destruct ;;
+      re|restart)                   virtual_topology_disable ;
+                                    virtual_topology_enable ;;
+      0|prec)                       virtual_topology_pre_construct ;;
+      1|p|physical_construct)       virtual_topology_phy_construct;;
+      2|i|install_images)           vt_install_image_all_vms ;;
+      3|m|mgt)                      vt_mgt_all_vms ;;
+      4|cr|cfg_reload)              vt_load_config_all_vms  ;;
+      5|rr|remote_pkgs_reload)      vt_load_remote_packages_all_vms ;;
+      6|lr|local_pkgs_reload)       vt_load_local_packages_all_vms ;;
+      7|cmd|cmds_reload)            vt_run_commands_all_vms ;;
+      8|pc)                         virtual_topology_post_construct ;;
+
+      l|list)                       virtual_topology_list ;;
+      ma|map) . $menv_scripts_dir/vt/virtual_topology_map.sh $4;
+              virtual_topology_generate_map ;;
       *) echo "Unknown Invocation" ; usage ; exit -1 ;;
     esac
     ;;
@@ -63,7 +70,7 @@ case $1 in
     vm=${branch}${cfgi}_vm$vm
     echo "Done loading of virtual topology configuration"
     case $3 in
-      console) vt_vm_type_execute $vm console ;;
+      c|console) vt_vm_type_execute $vm console ;;
       *) echo "Unknown Invocation" ; usage ; exit -1 ;;
     esac
     ;;
@@ -73,14 +80,14 @@ case $1 in
   d|device)
     vm=$2
     case $3 in
-      console) virsh console $vm ;;
-      start) virsh start $vm ;;
-      stop) virsh shutdown $vm ;;
-      unplug) virsh destroy $vm ;;
-      suspend) virsh suspend $vm ;;
-      reboot) virsh reboot $vm ;;
-      resume) virsh resume $vm ;;
-      nets) virsh domiflist $vm ;;
+      c|console) virsh console $vm ;;
+      s|start) virsh start $vm ;;
+      sto|stop) virsh shutdown $vm ;;
+      u|unplug) virsh destroy $vm ;;
+      su|suspend) virsh suspend $vm ;;
+      r|reboot) virsh reboot $vm ;;
+      re|resume) virsh resume $vm ;;
+      n|nets) virsh domiflist $vm ;;
       *) echo "Unknown Invocation" ; usage ; exit -1 ;;
     esac
     ;;
@@ -88,7 +95,7 @@ case $1 in
   #############################################################################
   # misc.
   l|list) virsh_list ;;
-  setconf)
+  s|setconf)
     conf=$2
     defconf=$menv_local_dir/vt_config
     if [ -f $defconf ] && [ ! -L $defconf ] ; then
