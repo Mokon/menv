@@ -90,3 +90,15 @@ function lsdiff {
   $RM $tmp1 $tmp2
 }
 
+# Opens a file based on its extension or hashbang.
+menv_function mopen
+function mopen {
+  file=$1
+
+  case $file in
+    *.pdf) evince $file & ;;
+    *.ods) ooffice $file & ;;
+    *.png|*.jpg) shotwell $file & ;;
+    *) echo "I don't know how to open that." ;;
+  esac
+}

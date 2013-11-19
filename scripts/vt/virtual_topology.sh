@@ -356,6 +356,8 @@ function virtual_topology_phy_construct {
 
         xmlstarlet ed -L -u "//domain/devices/disk[@type='file']/source/@file" -v "$qcow2" $xmlt
         xmlstarlet ed -L -u "//domain/name" -v "$vm" $xmlt
+        xmlstarlet ed -L -u "//domain/uuid" -v `uuid` $xmlt
+        xmlstarlet ed -L -u "//domain/devices/interface/mac/@address" -v $build_mac $xmlt
         virsh define $xmlt
         /bin/rm $xmlt
         ;;
