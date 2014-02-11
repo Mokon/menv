@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
 
 # Networking aliases and functions
 menv_alias arp_flush="ip -s -s neigh flush all"
@@ -28,6 +28,35 @@ function ethertype {
   done < $file
   shopt -u nocasematch
   IFS=$OLDIFS
+}
+
+menv_function dec_to_ip
+function dec_to_ip {
+  local ip dec=$@
+  for e in {3..0} ; do
+    ((octet = dec / (256 ** e) ))
+    ((dec -= octet * 256 ** e))
+    ip+=$delim$octet
+    delim=.
+  done
+  printf '%s\n' "$ip"
+}
+
+menv_function ip_to_dec
+function ip_to_dec {
+  local a b c d ip=$@
+  IFS=. read -r a b c d <<< "$ip"
+  printf '%d\n' "$((a * 256 ** 3 + b * 256 ** 2 + c * 256 + d))"
+}
+
+menv_function hex_to_ip
+function hex_to_ip {
+  printf '%d.%d.%d.%d\n' `echo $@ | sed -r 's/(..)/0x\1 /g'`
+}
+
+menv_function hex_to_ip
+function ip_to_hex {
+  printf '%.2X%.2X%.2X%.2X\n' `echo $@ | sed -e 's/\./ /g'`
 }
 
 menv_alias mcast_route_cache="cat /proc/net/ip_mr_cache"

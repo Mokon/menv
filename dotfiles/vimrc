@@ -1,4 +1,4 @@
-" (C) 2013 David 'Mokon' Bond, All Rights Reserved
+" (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
 
 " Load plugins
 
@@ -98,6 +98,8 @@ map <leader>ss :setlocal spell!<cr>
 map <leader>n :NERDTreeToggle<CR>
 
 nnoremap <F3> :NumbersToggle<CR>
+
+set nocscopeverbose
 
 " =============================================================================
 " Some useful vimrc settings I don't want enabled by default.

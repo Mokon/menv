@@ -26,8 +26,8 @@ if [ $UID != 0 ] ; then
   exit -1
 fi
 
-. $menv_scripts_dir/vt/virtual_topology.sh
-. $menv_scripts_dir/vt/virtual_topology_macros.sh
+. $vt_install_dir/virtual_topology.sh
+. $vt_install_dir/virtual_topology_macros.sh
 
 # #############################################################################
 case $1 in
@@ -35,7 +35,7 @@ case $1 in
   # virtual topology commands
   t|topology)
     echo "Starting loading of virtual topology configuration"
-    . ${3:-$menv_local_dir/vt_config}
+    . ${3:-$vt_config_dir/vt_config}
     echo "Done loading of virtual topology configuration"
     case $2 in
       c|construct)                  virtual_topology_construct ;;
@@ -55,7 +55,7 @@ case $1 in
       8|pc)                         virtual_topology_post_construct ;;
 
       l|list)                       virtual_topology_list ;;
-      ma|map) . $menv_scripts_dir/vt/virtual_topology_map.sh $4;
+      ma|map) . $vt_install_dir/virtual_topology_map.sh $4;
               virtual_topology_generate_map ;;
       *) echo "Unknown Invocation" ; usage ; exit -1 ;;
     esac
@@ -65,7 +65,7 @@ case $1 in
   # virtual topology device commands
   td|topology-device)
     echo "Starting loading of virtual topology configuration"
-    . ${4:-$menv_local_dir/vt_config}
+    . ${4:-$vt_config_dir/vt_config}
     vm=$2
     vm=${branch}${cfgi}_vm$vm
     echo "Done loading of virtual topology configuration"
@@ -97,7 +97,7 @@ case $1 in
   l|list) virsh_list ;;
   s|setconf)
     conf=$2
-    defconf=$menv_local_dir/vt_config
+    defconf=$vt_config_dir/vt_config
     if [ -f $defconf ] && [ ! -L $defconf ] ; then
       echo "$defconf exists and it is not a symlink. Please move it."
     else

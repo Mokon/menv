@@ -1,4 +1,5 @@
 #!/bin/bash
+# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
 RM="/bin/rm -R"
 $RM ~/.gntrc
 $RM ~/.gitconfig
@@ -11,4 +12,4 @@ $RM ~/.vim
 $RM ~/.bash_profile
 $RM ~/.bash_logout
 $RM ~/backup
-$RM ~/local
+#TODO Update $RM ~/local

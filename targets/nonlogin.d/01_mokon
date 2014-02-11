@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
   
 # I like to keep my prompt simple...
 TC_GRE="\[\033[0;32;40m\]"
@@ -24,5 +24,8 @@ bash_cmd_exists vim && EDITOR=vim;
 # A variable for google logging.
 menv_export GLOG_minloglevel=0
 
-menv_alias v="sudo -E $menv_scripts_dir/vt/v"
+export vt_install_dir="$menv_pkgs_dir/vt"
+export vt_logs_dir="$menv_logs_dir"
+export vt_config_dir="$menv_local_dir"
+menv_alias v="sudo -E $menv_pkgs_dir/vt/v"
 

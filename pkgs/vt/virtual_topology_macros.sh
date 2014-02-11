@@ -38,7 +38,7 @@ function virtual_topology_configure {
   local num_vnets=${3:-2}
   local branch=${4:-master}
   local isotag=${5:-`date +%m_%d_%y`}
-  local isodir=${6:-"$menv_local_dir/iso"}
+  local isodir=${6:-"$vt_config_dir/iso"}
 
   echo "Creating a virtual topology with ${num_vms} vms and ${num_vnets}"\
     "vnets connected as a mesh."
@@ -155,6 +155,7 @@ function vt_int_cmd {
     if [[ -z $typ || "$typ" == "$vtyp" ]] ; then
       local intnamearr=int_names_$vtyp
       local intname=`eval echo \$\{$intnamearr\[$interface\]\}`
+      cmd=${cmd//vneti/$interface}
       vt_int_cmds[$vmsi]+="${cmd/INTERFACE/$intname}"$'\n'
     fi
   done

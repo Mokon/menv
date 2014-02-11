@@ -2,9 +2,8 @@ Make menv_refresh called from a chron-job.
 Fix history options.
 Determine why this command doesn't work:
      menv_alias cd='pushd . &> /dev/null ; cd'
-Prevent wierd coloring on login.
 Prevent error when clang not installed.
 Escape to/from in FindAllAndReplace* in the vimrc.
 enable X11 forwarding in ssh
-install via rpm/yum or apt-get/deb
-Make a perl script that works with contact info.
+todo implement cloud sync into menv
+install pkgs menv needs automaticallty

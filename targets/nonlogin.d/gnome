@@ -1,0 +1,16 @@
+#!/bin/bash
+# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
+
+menv_function gstart
+function gstart {
+  source $menv_local_dir/gnome_start
+}
+
+menv_function gnome_add_tab
+function gnome_add_tab {
+  WID=$(xprop -root | grep "_NET_ACTIVE_WINDOW(WINDOW)"| awk '{print $5}')
+  xdotool windowfocus $WID
+  xdotool key ctrl+shift+t
+  wmctrl -i -a $WID
+}
+

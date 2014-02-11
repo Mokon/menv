@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
 
 menv_alias sudo='sudo ' # Allow sudo to be used on aliases.
 menv_alias rm="$MV --target-directory ${menv_trash_dir}" # Safe delete
@@ -24,4 +24,5 @@ menv_alias what_time_is_it="date +%I:%M"
 menv_alias folders_sizes="du -sh *"
 menv_alias psa="ps -aux"
 menv_alias hosts="cat /etc/hosts"
+menv_alias edit_dns="sudo vim /etc/resolv.conf"
 

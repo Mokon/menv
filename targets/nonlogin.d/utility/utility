@@ -1,6 +1,5 @@
 #!/bin/bash
-# (C) 2013 David 'Mokon' Bond, All Rights Reserved
-
+# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
 
 # A function to list a directory structure in a nice tree.
 menv_function tree_list
@@ -96,9 +95,10 @@ function mopen {
   file=$1
 
   case $file in
-    *.pdf) evince $file & ;;
-    *.ods) ooffice $file & ;;
-    *.png|*.jpg) shotwell $file & ;;
+    *.pdf) evince $file &> /dev/null & ;;
+    *.ods) ooffice $file &> /dev/null & ;;
+    *.png|*.jpg) shotwell $file &> /dev/null & ;;
     *) echo "I don't know how to open that." ;;
   esac
 }
+

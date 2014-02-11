@@ -1,19 +1,18 @@
 #!/bin/bash
-# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
 
 menv_function start
 function start {
-
-  unset TMUX
   local SESSION=$USER
   local WI=0
   local SELECTED_WINDOW=1
 
+  unset TMUX
+
   tmux new-session -d -s $SESSION -n 'host'
   tmux send-keys  -t $SESSION:$((++WI)) "cd ~" C-m
 
-  tmux new-window -t $SESSION:$((++WI)) -n 'msger' "finch"
-
+  # tmux new-window -t $SESSION:$((++WI)) -n 'msger' "finch"
 
   if [ -f $menv_local_dir/tmux_start ] ; then
     source $menv_local_dir/tmux_start

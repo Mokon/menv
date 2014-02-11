@@ -1,0 +1,53 @@
+#!/bin/bash
+# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
+
+# A function to determine the distribution and pkg management tool
+menv_function determine_dist
+function determine_dist {
+  if tyep lsb_release &> /dev/null ; then 
+    DIST=$(lsb_release -a |grep "Distributor ID" |awk {'print tolower($3)'})
+  else
+    DIST=""
+  fi
+
+  if [ -z $DIST ] && [ -f /etc/redhat-release ] ; then
+    if grep -q Fedora /etc/redhat-release; then
+      DIST=fedora
+    fi
+  fi
+
+  if [ -z $DIST ] && [ -f /etc/debian_version ] ; then
+    DIST=debian
+  fi
+
+  if [ -z $DIST ] && [ -f /etc/os-release ] ; then
+    DIST="unknown"
+  fi
+
+  case $DIST in
+    *fedora*|*redhat*) PKG_TYPE=rpm ; PKG_MGMT=yum ;;
+    *debian*|*ubuntu*) PKG_TYPE=dpkg ; PKG_MGMT=apt ;;
+    *) PKG_TYPE=unknown ; PKG_MGMT=unknown ; echo "Unknown Distribution" ;;
+  esac
+
+  menv_export DIST
+  menv_export PKG_TYPE
+  menv_export PKG_MGMT
+}
+
+determine_dist
+
+menv_alias dist_install=${DIST}_install
+menv_alias ins=dist_install
+menv_alias ${DIST}_install=${PKG_MGMT}_install
+
+menv_alias yum_install="sudo yum install -y"
+menv_alias apt_install="sudo apt-get install -y"
+
+menv_function install_package
+function install_package {
+  dist_to_pkg=$1
+
+  dist_install $(eval "\${$dist_to_pkg[$DIST]}")
+}
+

@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
 
 echo "Uninstalling menv"
 
@@ -14,6 +14,11 @@ menv_target_children uninstall
 if_symlink_rm $bashrc
 if_symlink_rm $bash_profile
 if_symlink_rm $bash_logout
+
+if_symlink_rm ~/todo
+if_symlink_rm ~/cloud
+if_symlink_rm ~/docs
+if_symlink_rm ~/pics
   
 echo "Saving the menv backup and local directories."
 $MV $menv_backup_dir ~
@@ -40,5 +45,4 @@ done
 unset menv_funcs
 
 echo "Uninstalling menv done"
-
 

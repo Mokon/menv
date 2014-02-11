@@ -1,8 +1,8 @@
 #!/bin/bash
-# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
 
-if [ $PKG_MGMT == "rpm" ] ; then 
+if [ $PKG_TYPE == "rpm" ] ; then 
   menv_alias rpm_list_deps="rpm -qpR"
-  menv_alias install-build-essentials="yum groupinstall 'Development Tools'"
+  menv_alias rpm_what_provides="rpm -q --whatprovides"
 fi
 

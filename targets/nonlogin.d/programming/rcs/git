@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
 
 menv_alias gits="git status -s"
 menv_alias gitic="git commit -m \"Initial Commit\""

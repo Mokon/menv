@@ -1,4 +1,4 @@
-(C) 2013 David 'Mokon' Bond, All Rights Reserved
+(C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
 
 Welcome, to menv: a specialized script to setup a linux environment just the
 way I like it. With a single remote execution of a bash script menv will
@@ -16,8 +16,10 @@ instance if you are an emacs person) you can configure it to work how you want.
 When you run the remote install script essentially it does a wget on the menv
 repo and then runs an installation script.
 
-From then on to update the script called:
+From then on to update the script call:
   menv_update
+If you have internet connectivity whenever you login the menv script will
+update automatically.
 
 To uninstall the script call:
   menv_uninstall
@@ -33,7 +35,8 @@ There are also several useful functions relating to menv. The first is:
   menv_stage
 This command works assuming you have menv cloned from github at ~/git/menv. It
 copies the files from that folder and installs them on the system. This allows
-me to test a script before I push it out to github.
+me to test a script before I push it out to github. Once menv has been staged
+it will not be updated automatically with github.
 
 The command:
   menv_help
@@ -46,7 +49,8 @@ is useful to get the additions into you envirnment without having to relauch
 the terminal.
 
 menv does not require internet connectivity to run on a daily basis but to
-install or update it you do need the internet.
+install or update it you do need the internet. This means if you do not have
+internet connectivity menv will not automatically update.
 
 menv tries to be a good citizen, backing up files not belonging to it and
 giving you a good way to uninstall it.
@@ -60,9 +64,26 @@ by the parent script. If you want to add your own aliases etc this is the place
 to do it. If you want to for instance exclude my git configuations these are the
 folders that the exclude patterns in your config will operate on.
 
-In general I like my home formated as follows:
-  menv
-  docs
+In general I like my home laid out as follows:
+  cloud --> menv/cloud
+  docs --> menv/local/docs
   git
-  pics
+  menv
+  pics --> menv/local/pics
+
+The menv dir has the following layout:
+  menv/backup
+  menv/bin
+  menv/cache
+  menv/cache/downloads
+  menv/cache/logs
+  menv/cloud
+  menv/core
+  menv/dotfiles
+  menv/local
+  menv/local/docs
+  menv/local/pics
+  menv/pkgs
+  menv/targets
+  menv/trash
 

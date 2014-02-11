@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
 
 if [ -f $menv_dir/.$menv_gen_tag ] ; then
   echo "menv is already installed on this computer. Not installing."
@@ -39,6 +39,12 @@ else
   else
     echo "Didn't find ${menv_local_login}."
   fi
+
+  # Link some files and dirs to the user home.
+  safe_symlink ~/todo $menv_local_dir/todo 
+  safe_symlink ~/cloud $menv_dir/cloud
+  safe_symlink ~/docs $menv_local_dir/docs
+  safe_symlink ~/pics $menv_local_dir/pics
 
   spopd
 

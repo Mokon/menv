@@ -5,7 +5,7 @@
 # #############################################################################
 
 # Include the virsh wrappers.
-. ${menv_scripts_dir}/vt/virsh.sh
+. ${vt_install_dir}/virsh.sh
 
 # #############################################################################
 # This contains the data structures for the virtual topology.
@@ -232,6 +232,7 @@ function vt_vm_commands {
   local cmds=$2
 
   echo "Setting the virtual topology vm $vm to execute commands."
+  echo "$(printf '%s\n\n\n' "${cmds[@]}")" | tee $vt_logs_dir/vm_commands_${vm}.log
   commands[$vm]=$cmds
 }
 
@@ -294,10 +295,10 @@ function vt_remote_pkgs {
 # Constructs the virtual topology based on the virtual topology data structs.
 # #############################################################################
 function virtual_topology_construct {
-  virtual_topology_pre_construct | tee $menv_logs_dir/virtual_topology_pre_construct.log
-  virtual_topology_phy_construct | tee $menv_logs_dir/virtual_topology_phy_construct.log
-  virtual_topology_construct_install | tee $menv_logs_dir/virtual_topology_construct_install.log
-  virtual_topology_post_construct | tee $menv_logs_dir/virtual_topology_post_construct.log
+  virtual_topology_pre_construct | tee $vt_logs_dir/virtual_topology_pre_construct.log
+  virtual_topology_phy_construct | tee $vt_logs_dir/virtual_topology_phy_construct.log
+  virtual_topology_construct_install | tee $vt_logs_dir/virtual_topology_construct_install.log
+  virtual_topology_post_construct | tee $vt_logs_dir/virtual_topology_post_construct.log
 }
 
 # #############################################################################
@@ -325,12 +326,12 @@ function virtual_topology_construct_install {
   echo "-------------------------"
   echo "Virtual topology construct install."
 
-  vt_install_image_all_vms | tee $menv_logs_dir/vt_install_image_all_vms.log
-  vt_mgt_all_vms | tee $menv_logs_dir/vt_mgt_all_vms.log
-  vt_load_config_all_vms | tee $menv_logs_dir/vt_load_config_all_vms.log
-  vt_load_remote_packages_all_vms | tee $menv_logs_dir/vt_load_remote_packages_all_vms.log
-  vt_load_local_packages_all_vms | tee $menv_logs_dir/vt_load_local_packages_all_vms.log
-  vt_run_commands_all_vms | tee $menv_logs_dir/vt_run_commands_all_vms.log
+  vt_install_image_all_vms | tee $vt_logs_dir/vt_install_image_all_vms.log
+  vt_mgt_all_vms | tee $vt_logs_dir/vt_mgt_all_vms.log
+  vt_load_config_all_vms | tee $vt_logs_dir/vt_load_config_all_vms.log
+  vt_load_remote_packages_all_vms | tee $vt_logs_dir/vt_load_remote_packages_all_vms.log
+  vt_load_local_packages_all_vms | tee $vt_logs_dir/vt_load_local_packages_all_vms.log
+  vt_run_commands_all_vms | tee $vt_logs_dir/vt_run_commands_all_vms.log
 }
 
 # #############################################################################

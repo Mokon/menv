@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
 
 menv_function nodeinfo {
 function nodeinfo {
@@ -40,16 +40,5 @@ function nodeinfo {
     "DNS Failure"
 
   echo "menv version..: $(menv_version)"
-  echo -n "..............: "
-  ping -c1 -W1 github.com &> /dev/null
-  if [ $? ]; then
-    if [ "$(menv_version get)" == "$(menv_latest_version)" ] ; then
-      echo "menv script up to date."
-    else
-      echo "menv script different than github. Please upgrade."
-    fi
-  else
-    echo "Git Hub not reachable. Could not check if menv is up to date."
-  fi
 }
 

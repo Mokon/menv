@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
 
 menv_alias cscope="cscope -p100"
 menv_alias cscopeR="cscope -R -p100"
@@ -9,7 +9,7 @@ menv_alias cscopeD="cscope -d -p100"
 menv_function cscopeinit
 function cscopeinit {
   find `realpath .` -name '*.c' -o -name '*.h' -o -name '*.cpp' \
-    -o -name '*.hpp' > ./cscope.files
+    -o -name '*.hpp' > ./cscope.files 2> /dev/null
   cscope -b
   menv_export CSCOPE_DB=`realpath cscope.out`
 }

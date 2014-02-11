@@ -11,6 +11,17 @@ export LIBVIRT_XML_NETS=/etc/libvirt/qemu/networks
 export LIBVIRT_LOGS=/var/log/libvirt
 
 # #############################################################################
+# Query which vm a vnet is connected to.
+# #############################################################################
+function what_vm_does_vnet_connect_to {
+  vnet="vnet$1"
+  
+  for vm in $(virsh list | grep running | awk '{print $2}') ; do
+    virsh dumpxml $vm | grep -q "$vnet" && echo $vm
+  done
+}
+
+# #############################################################################
 # Sets the directory to store the vm images in.
 # #############################################################################
 function set_vm_img_dir {
@@ -106,13 +117,12 @@ function virsh_net_define {
   echo "Creating a virtual network $vnet with ip subnet $vnet_ip.0/24 "\
     "and ipv6 subnet $vnet_ip6::0/64."
 
-  # TODO remove vyatta.com
   local tmpfile=`mktemp`
   cat <<- XML > $tmpfile
     <network>
       <name>$vnet</name>
       <bridge name='v$vnet' stp='off' delay='0' />
-      <domain name='vyatta.com'/>
+      <domain name='$VT_DOMAIN_NAME'/>
       <ip address='X.X.X.1' netmask='255.255.255.0'>
         <dhcp>
           <range start='X.X.X.128' end='X.X.X.254' />
@@ -225,10 +235,12 @@ function virsh_vm_wait_until_running {
   fi
 
   while : ; do
+    sleep 1
     if virsh_vm_is_running $vm ; then
       break
+    else 
+      virsh start $vm
     fi
-    sleep 1
   done
 }
 
@@ -258,7 +270,7 @@ function virsh_vm_wait_until_pingable {
   virsh_vm_wait_until_running $vm
 
   while : ; do
-    local vmip=$(perl -w $menv_scripts_dir/vt/virt-addr $vm $vnet)
+    local vmip=$(perl -w $vt_install_dir/virt-addr $vm $vnet)
     if ping -c1 $vmip &> /dev/null ; then break ; fi
   done 
 }
