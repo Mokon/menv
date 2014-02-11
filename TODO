@@ -7,3 +7,4 @@ Escape to/from in FindAllAndReplace* in the vimrc.
 enable X11 forwarding in ssh
 todo implement cloud sync into menv
 install pkgs menv needs automaticallty
+need to add locking around uninstall/install/ and update...

@@ -14,11 +14,11 @@ if [ -f $menv_local_login ]; then
   source $menv_local_login
 fi
 
-# Check the script version and update if needed. Never update a staged version.
+# Check the script version and update if needed. Never update an ignore version.
 ping -c1 -W1 github.com &> /dev/null
 if [ $? ]; then
-  if [ "$(menv_version get)" == "staged" ] ; then
-    echo "menv script staged." &> $menv_logs_dir/menv_status
+  if [ "$(menv_version get)" == "ignore" ] ; then
+    echo "menv script ignored." &> $menv_logs_dir/menv_status
   elif [ "$(menv_version get)" == "$(menv_latest_version)" ] ; then
     echo "menv script up to date." &> $menv_logs_dir/menv_status
   else
