@@ -57,12 +57,13 @@ giving you a good way to uninstall it.
 
 Never edit any of the menv files directly. Always edit in the git repo. If you
 wish to use this I suggest forking my github repo and then editing the file
-menv/local/config to exclude the functionality you wish to exclude. In general
-for each of the target (install, login, update, logout, nonlogin, and uninstall)
-they have ${target}.d/ folder where all the files in this directory are included
-by the parent script. If you want to add your own aliases etc this is the place
-to do it. If you want to for instance exclude my git configuations these are the
-folders that the exclude patterns in your config will operate on.
+menv/local/menv_config to exclude the functionality you wish to exclude.
+In general for each of the target (install, login, update, logout, nonlogin,
+and uninstall) they have ${target}.d/ folder where all the files in this
+directory are included by the parent script. If you want to add your own
+aliases etc this is the place to do it. If you want to for instance exclude my
+git configuations these are the folders that the exclude patterns in your
+config will operate on.
 
 In general I like my home laid out as follows:
   cloud --> menv/cloud
