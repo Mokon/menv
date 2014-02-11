@@ -87,3 +87,6 @@ The menv dir has the following layout:
   menv/targets
   menv/trash
 
+The local and backup dirs are treated as sacred and should always be preserved
+even when menv is uninstalled.
+
