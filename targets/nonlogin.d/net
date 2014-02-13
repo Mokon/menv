@@ -5,7 +5,7 @@
 menv_alias arp_flush="ip -s -s neigh flush all"
 menv_alias amialone="ping 8.8.8.8"
 menv_alias amialonedns="ping google.com"
-  
+
 # A function which looks up a ethertype
 menv_function ethertype
 function ethertype {
@@ -69,7 +69,7 @@ function mcast_ip6_join {
 
   vlc -vvv udp://[$src]@[$group] --miface=$interface
 }
-  
+
 menv_function mcast_ip6_join
 function mcast_ip6_join {
   local interface=$1
@@ -85,7 +85,7 @@ function mcast_ip6_joins {
     echo "$intname is joined on group $address $refcnt times with flags $flags and timer $timer."
   done < $path
 }
-  
+
 # A function to download an rfc and store it on the localhost. If the -l
 # option is given the rfc will be opened in lynx.
 menv_function rfc
@@ -143,5 +143,25 @@ function testconnection {
   	  echo $dns_err_msg
     fi
   fi
+}
+
+menv_function convert_to_pcap
+function convert_to_pcap {
+  local file=$1
+  local encap=${2:-tcp}
+  local proto=${3-bgp}
+
+  case $encap in
+    tcp) encap="-T";;
+      *) ;;
+  esac
+
+  case $proto in
+    bgp) proto=179;;
+      *) ;;
+  esac
+
+  text2pcap $encap $proto,$proto $file ${file}.pcap
+  mopen ${file}.pcap
 }
 
