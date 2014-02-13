@@ -15,3 +15,10 @@ function add_priv_key {
   cat $pubkeyfile | ssh $remoteuser@$remoteserver "cat >> $authkeyfile"
 }
 
+menv_function magic_open
+function magic_open {
+  local dir=$1
+
+  sudo chmod -R 777 $dir
+}
+
