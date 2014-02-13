@@ -98,6 +98,7 @@ function mopen {
     *.pdf) evince $file &> /dev/null & ;;
     *.ods) ooffice $file &> /dev/null & ;;
     *.png|*.jpg) shotwell $file &> /dev/null & ;;
+    *.pcap|*.npcap) wireshark $file &> /dev/null & ;;
     *) echo "I don't know how to open that." ;;
   esac
 }
