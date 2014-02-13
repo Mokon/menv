@@ -31,6 +31,8 @@ set clipboard=unnamed
 set hid
 set wildmenu
 
+let g:html_indent_inctags = "html,body,head,tbody"
+
 autocmd FileType make setlocal noexpandtab " Makefiles need tabs. Don't convert
                                            " those to spaces.
 
