@@ -99,6 +99,7 @@ function mopen {
     *.ods) ooffice $file &> /dev/null & ;;
     *.png|*.jpg) shotwell $file &> /dev/null & ;;
     *.pcap|*.npcap) wireshark $file &> /dev/null & ;;
+    *.log|*.txt) gedit $file &> /dev/null & ;;
     *) echo "I don't know how to open that." ;;
   esac
 }
