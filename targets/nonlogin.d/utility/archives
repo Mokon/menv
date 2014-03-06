@@ -9,6 +9,7 @@ function extract {
     *.tar.gz) tar -xzvf $file ;;
     *.tar) tar -xvf $file ;;
     *.zip) unzip $file ;;
+    *.rar) unrar $file ;;
     *) echo "I don't know how to extract that file extension."
   esac
 }
