@@ -15,9 +15,26 @@ background_url=${background_urls[$i]}
 
 echo "Setting wallpaper to $background_url"
 
-fetch ${background_url} wallpaper_${i}.jpg
+if [ ! -f  wallpaper_${i}.jpg ] ; then
+  fetch ${background_url} wallpaper_${i}.jpg
+  gsettings set org.gnome.desktop.background picture-uri ${menv_local_dir}/wallpaper_${i}.jpg
+fi
 
-gsettings set org.gnome.desktop.background picture-uri ${menv_local_dir}/wallpaper_${i}.jpg
+cd ~
+
+FAV_APPS="['gnome-terminal.desktop', 'virt-manager.desktop', 'nautilus.desktop', 'skype.desktop', 'cheese.desktop', 'gedit.desktop', 'google-chrome.desktop', "
+function add_app {
+  local app="${1}.desktop"
+  safe_symlink .local/share/applications/${app} \
+    $menv_dotfiles_dir/local/share/applications/${app}
+  FAV_APPS="$FAV_APPS '${app}',"
+}
+
+add_app root-wireshark
+add_app gnome-start
+gsettings set org.gnome.shell favorite-apps "${FAV_APPS%?}]"
+
+unset add_app
 
 spopd
 

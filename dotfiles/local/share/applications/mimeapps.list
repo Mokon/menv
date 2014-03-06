@@ -1,0 +1,22 @@
+[Default Applications]
+x-scheme-handler/http=google-chrome.desktop
+text/html=google-chrome.desktop
+text/xml=google-chrome.desktop
+application/xhtml_xml=google-chrome.desktop
+image/webp=google-chrome.desktop
+x-scheme-handler/https=google-chrome.desktop
+x-scheme-handler/ftp=google-chrome.desktop
+x-scheme-handler/about=google-chrome.desktop
+x-scheme-handler/unknown=google-chrome.desktop
+x-scheme-handler/mailto=mozilla-thunderbird.desktop
+
+[Added Associations]
+text/html=google-chrome.desktop;
+text/xml=google-chrome.desktop;
+application/xhtml_xml=google-chrome.desktop;
+image/webp=google-chrome.desktop;
+x-scheme-handler/https=google-chrome.desktop;
+x-scheme-handler/ftp=google-chrome.desktop;
+x-scheme-handler/mailto=mozilla-thunderbird.desktop;
+video/3gpp=gnome-mplayer.desktop;
+application/octet-stream=wireshark.desktop;

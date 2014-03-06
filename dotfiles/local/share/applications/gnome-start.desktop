@@ -1,0 +1,7 @@
+[Desktop Entry]
+Comment=
+Terminal=true
+Name=gnome_start
+Exec=bash -c "source /home/mokon/menv/local/gnome_start"
+Type=Application
+Icon=gnome-panel-launcher

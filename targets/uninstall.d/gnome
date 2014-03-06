@@ -1,0 +1,20 @@
+#!/bin/bash
+# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
+
+spushd .
+
+cd ~
+
+function rm_app {
+  local app="${1}.desktop"
+  if_symlink_rm .local/share/applications/${app}
+}
+
+rm_app root-wireshark
+rm_app gnome-start
+gsettings set org.gnome.shell favorite-apps "['gnome-terminal.desktop']"
+
+unset rm_app
+
+spopd
+
