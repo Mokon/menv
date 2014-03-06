@@ -8,8 +8,8 @@ case ${BASH_SOURCE[0]} in
   *uninstall) menv_target uninstall ;;
   *target_handler|*install) menv_target install ;;
   *update) menv_target update ;;
-  *.bash_profile|*.profile) menv_target login ;;
-  *.bashrc) menv_target nonlogin ;;
+  *login|*.bash_profile|*.profile) menv_target login ;;
+  *nonlogin|*.bashrc) menv_target nonlogin ;;
   *.bash_logout) menv_target logout ;;
   *.bash_aliases) echo "Unsupported target bash_aliases." ;;
   *) echo "Unknown menv target" ;;
