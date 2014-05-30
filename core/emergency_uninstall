@@ -11,5 +11,3 @@ $RM ~/.vimrc
 $RM ~/.vim
 $RM ~/.bash_profile
 $RM ~/.bash_logout
-$RM ~/backup
-#TODO Update $RM ~/local
