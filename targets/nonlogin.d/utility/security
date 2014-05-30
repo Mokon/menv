@@ -10,7 +10,7 @@ function add_priv_key {
   local authkeyfile=~/.ssh/authorized_keys
 
   if [ ! -f $pubkeyfile ]; then
-    ssh-keygen -t rsa 4096 -N '' -f ~/.ssh/id_rsa 
+    ssh-keygen -t rsa -b 4096 -N '' -f ~/.ssh/id_rsa
   fi
   cat $pubkeyfile | ssh $remoteuser@$remoteserver "cat >> $authkeyfile"
 }
