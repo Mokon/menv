@@ -46,7 +46,7 @@ for menv_func in "${menv_funcs[@]}" ; do
 done
 unset menv_funcs
 
-$RM -f $menv_dir/.lock
+$RM -f ~/menv/.lock
 
 echo "Uninstalling menv done"
 
