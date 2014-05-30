@@ -35,5 +35,29 @@ gsettings set org.gnome.shell favorite-apps "${FAV_APPS%?}]"
 
 unset add_app
 
+PALETTE="'#070736364242', '#DCDC32322F2F', '#858599990000', '#B5B589890000', '#26268B8BD2D2', '#D3D336368282', '#2A2AA1A19898', '#EEEEE8E8D5D5', '#00002B2B3636', '#CBCB4B4B1616', '#58586E6E7575', '#65657B7B8383', '#838394949696', '#6C6C7171C4C4', '#9393A1A1A1A1', '#FDFDF6F6E3E3'"
+BG_COLOR="#00002B2B3636"
+FG_COLOR="#65657B7B8383"
+BD_COLOR="#9393a1a1a1a1"
+
+p="/org/gnome/terminal/legacy/profiles:/"
+profiles=($(dconf list $p | grep ^: | sed 's/\///g'))
+echo $profiles
+for i in ${!profiles[*]} ; do
+  if [[ "$(dconf read $p${profiles[i]}/visible-name)" == "'Default'" ]]
+    then uuid="${profiles[i]}"
+  fi
+done
+p="$p$uuid"
+dconf write $p/palette "[$PALETTE]"
+
+dconf write $p/bold-color "'$BD_COLOR'"
+dconf write $p/background-color "'$BG_COLOR'"
+dconf write $p/foreground-color "'$FG_COLOR'"
+
+dconf write $p/use-theme-colors "false"
+dconf write $p/use-theme-background "false"
+dconf write $p/bold-color-same-as-fg "false"
+
 spopd
 
