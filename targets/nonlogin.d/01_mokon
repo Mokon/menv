@@ -29,3 +29,14 @@ export vt_logs_dir="$menv_logs_dir"
 export vt_config_dir="$menv_local_dir"
 menv_alias v="sudo -E $menv_pkgs_dir/vt/v"
 
+menv_function login_to_vm
+function login_to_vm {
+  local vm=$1
+  local un=${2:-`logname`}
+  local pw=${3:-vyatta}
+
+  sudo -E bash -c ". ${vt_install_dir}/virsh.sh ; virsh_vm_wait_until_pingable $vm"
+  local vmip=$(sudo -E perl -w $vt_install_dir/virt-addr $vm "default")
+  sshpass -p$pw ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ConnectionAttempts=100 $un@$vmip
+}
+
