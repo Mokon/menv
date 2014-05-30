@@ -6,6 +6,8 @@ spushd .
 cd ~/.vim/bundle
 github_fetch scrooloose/nerdtree
 github_fetch myusuf3/numbers.vim
+github_fetch airblade/vim-gitgutter
+
 cd ~/.vim
 github_fetch Rip-Rip/clang_complete
 $MV clang_complete/bin .
@@ -20,6 +22,7 @@ cd ~/.vim/plugin
 
 echo "Installing cscope plugin."
 fetch http://cscope.sourceforge.net/cscope_maps.vim
+#fetch http://www.vim.org/scripts/download_script.php?src_id=19933 svndiff.vim
 
 spopd
 
