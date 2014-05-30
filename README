@@ -88,6 +88,19 @@ The menv dir has the following layout:
   menv/targets
   menv/trash
 
-The local and backup dirs are treated as sacred and should always be preserved
-even when menv is uninstalled.
+The local folder is where all the users data is stored. The backup folder is
+where various menv utilities store things that they don't think should be
+deleted. The local and backup dirs are treated as sacred and should always be
+preserved even when menv is uninstalled. In this way the user controls the
+contents of the local dir and the backup dir is auto generated but the user
+still has the final say on whether or not to delete them.
+
+The cache dir contains various temporary files that are safe to delete. The
+core, targets, pkgs, and dotfiles contains what really makes menv. pkgs are
+portions of code that are designed such that they don't rely on menv as a whole.
+The dotfiles are exzactly what the folder founds like. Normally these are sym
+linked in the correct program location.
+
+The trash is of course a trash directory. The bin dir is for user local compiled
+and installed programs.
 
