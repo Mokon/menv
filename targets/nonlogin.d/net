@@ -145,6 +145,19 @@ function testconnection {
   fi
 }
 
+menv_function update_host
+function update_host {
+  local hostname=$1
+  local ip=$2
+  local file=${3:-/etc/hosts}
+
+  # If the name exists in the host file delete it.
+  sudo sed -i "/ $hostname/d" $file
+
+  # Now append the new host entry to the file
+  sudo bash -c " echo '$ip $hostname' >> /etc/hosts"
+}
+
 menv_function convert_to_pcap
 function convert_to_pcap {
   local file=$1
