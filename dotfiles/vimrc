@@ -74,6 +74,17 @@ function! FindAndReplaceAll(from, to)
   exec '%s/' . a:from . '/' . a:to . '/g'
 endfunction
 
+function AddCPP()
+  let s:line=line(".")
+  call setline(s:line,"".expand("%:t:r")."( const ".expand("%:t:r")."& ) = delete ;")
+  call append(s:line,"")
+  call append(s:line+1,"".expand("%:t:r")."& operator=( const ".expand("%:t:r")."& ) = delete ;")
+  call append(s:line+2,"")
+  unlet s:line
+endfunction
+
+imap <F4> <Esc>:execute AddCPP()<CR>
+
 highlight User1 guifg=Red   guibg=NONE ctermfg=Red   ctermbg=NONE
 highlight User2 guifg=Blue  guibg=NONE ctermfg=Blue  ctermbg=NONE
 highlight User3 guifg=Green guibg=NONE ctermfg=Green ctermbg=NONE
