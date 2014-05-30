@@ -2,6 +2,7 @@
 # (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
 
 echo "Uninstalling menv"
+lockfile -r-1 $menv_dir/.lock
 
 spushd .
 
@@ -44,6 +45,8 @@ for menv_func in "${menv_funcs[@]}" ; do
   unset $menv_func
 done
 unset menv_funcs
+
+$RM $menv_dir/.lock
 
 echo "Uninstalling menv done"
 

@@ -5,6 +5,7 @@ if [ -f $menv_dir/.$menv_gen_tag ] ; then
   echo "menv is already installed on this computer. Not installing."
 else 
   echo "Installing menv!"
+  lockfile -r-1 $menv_dir/.lock
 
   touch $menv_dir/.$menv_gen_tag
   menv_version set
@@ -50,6 +51,7 @@ else
 
   menv_target_children install
 
+  $RM $menv_dir/.lock
   echo "Done installing menv!"
 
 fi
