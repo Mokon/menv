@@ -25,8 +25,7 @@ cd ~
 FAV_APPS="['gnome-terminal.desktop', 'virt-manager.desktop', 'nautilus.desktop', 'skype.desktop', 'cheese.desktop', 'gedit.desktop', 'google-chrome.desktop', "
 function add_app {
   local app="${1}.desktop"
-  safe_symlink .local/share/applications/${app} \
-    $menv_dotfiles_dir/local/share/applications/${app}
+  cp $menv_dotfiles_dir/local/share/applications/${app} .local/share/applications/${app}
   FAV_APPS="$FAV_APPS '${app}',"
 }
 

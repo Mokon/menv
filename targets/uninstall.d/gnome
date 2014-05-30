@@ -7,7 +7,7 @@ cd ~
 
 function rm_app {
   local app="${1}.desktop"
-  if_symlink_rm .local/share/applications/${app}
+  rm .local/share/applications/${app}
 }
 
 rm_app root-wireshark
