@@ -7,5 +7,15 @@ cd ~
   
 safe_symlink .gitconfig $menv_dotfiles_dir/gitconfig
 
+# Let's install these cool ruby scripts for working with git!
+#   http://git-wt-commit.rubyforge.org/
+wget -O gitwt.tar -q -N --no-check-certificate \
+  https://gitorious.org/willgit/mainline/archive-tarball/master
+tar -xvf gitwt.tar
+
+CP  willgit-mainline/bin/* ~/menv/bin
+RM -rf willgit-mainline
+RM gitwt.tar
+
 spopd
 
