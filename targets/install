@@ -51,7 +51,7 @@ else
 
   menv_target_children install
 
-  $RM $menv_dir/.lock
+  $RM -f $menv_dir/.lock
   echo "Done installing menv!"
 
 fi
