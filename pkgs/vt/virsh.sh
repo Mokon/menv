@@ -72,6 +72,7 @@ function virsh_define {
                --os-type=linux \
                --os-variant=debianwheezy \
                --cdrom=$iso \
+               --cpu host \
                --disk \
                  path=$dir/$name.img,size=$disk_size \
                --graphics none,keymap=en-us \
