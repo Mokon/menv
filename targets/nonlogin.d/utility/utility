@@ -78,6 +78,11 @@ function urldiff {
   return $ret
 }
 
+menv_function cat_all_files_in_dir
+function cat_all_files_in_dir {
+  find $1 -type f -exec /bin/cat '{}' \;
+}
+
 # Simple hack function to diff the file contents recursively of two folders.
 menv_function lsdiff
 function lsdiff {
