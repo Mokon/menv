@@ -59,5 +59,7 @@ dconf write $p/use-theme-colors "false"
 dconf write $p/use-theme-background "false"
 dconf write $p/bold-color-same-as-fg "false"
 
+dconf write $p/scrollback-unlimited "true"
+
 spopd
 
