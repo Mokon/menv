@@ -97,14 +97,14 @@ function lsdiff {
 # Opens a file based on its extension or hashbang.
 menv_function mopen
 function mopen {
-  file=$1
+  file="$1"
 
   case $file in
-    *.pdf) evince $file &> /dev/null & ;;
-    *.ods) ooffice $file &> /dev/null & ;;
-    *.png|*.jpg) shotwell $file &> /dev/null & ;;
-    *.pcap|*.npcap) wireshark $file &> /dev/null & ;;
-    *.log|*.txt) gedit $file &> /dev/null & ;;
+    *.pdf) evince "$file"&> /dev/null & ;;
+    *.ods) ooffice "$file" &> /dev/null & ;;
+    *.png|*.jpg|*.jpeg) shotwell "$file" &> /dev/null & ;;
+    *.pcap|*.npcap) wireshark "$file" &> /dev/null & ;;
+    *.log|*.txt) gedit "$file" &> /dev/null & ;;
     *) echo "I don't know how to open that." ;;
   esac
 }
