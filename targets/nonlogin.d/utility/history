@@ -4,11 +4,19 @@
 # Some history items. I like a large history size and I like a history that
 # automatically saves itself after each command so if my shell exits I can
 # still find my last command.
-# TODO export HISTCONTROL=ignoredups:erasedups
-#shopt -s histappend
-#export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
-menv_export HISTSIZE=10000
+menv_export HISTCONTROL=ignoredups:erasedups
+export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
+shopt -s histappend
 
+menv_export HISTSIZE=100000
+menv_export HISTFILESIZE=100000
 menv_alias search_history="history | grep "
 menv_alias sh=search_history
+
+menv_function cd
+function cd {
+   pushd . &> /dev/null ;
+   builtin cd $1
+}
 
