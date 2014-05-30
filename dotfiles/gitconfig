@@ -12,6 +12,8 @@
   status = auto
   branch = auto
   pager = true
+[push]
+  default = simple
 [credential "https://github.com"]
   helper = cache --timeout 3600
   name = David Bond
