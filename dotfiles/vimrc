@@ -111,6 +111,7 @@ map <leader>ss :setlocal spell!<cr>
 map <leader>n :NERDTreeToggle<CR>
 
 nnoremap <F3> :NumbersToggle<CR>
+nnoremap <F3> :set nonumber<CR>
 
 set nocscopeverbose
 
