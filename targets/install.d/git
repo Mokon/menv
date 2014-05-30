@@ -11,7 +11,7 @@ safe_symlink .gitconfig $menv_dotfiles_dir/gitconfig
 #   http://git-wt-commit.rubyforge.org/
 wget -O gitwt.tar -q -N --no-check-certificate \
   https://gitorious.org/willgit/mainline/archive-tarball/master
-tar -xvqf gitwt.tar
+tar -xvf gitwt.tar &> /dev/null
 
 $CP  willgit-mainline/bin/* ~/menv/bin
 $RM -rf willgit-mainline
