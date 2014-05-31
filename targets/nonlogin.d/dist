@@ -1,7 +1,7 @@
 #!/bin/bash
 # (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
 
-menv_alias what_provides=${DIST}_what_provides
+menv_alias what_provides=${PKG_TYPE}_what_provides
 menv_alias dist_empty_trash=${DIST}_empty_trash
 
 

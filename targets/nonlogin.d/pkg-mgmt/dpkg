@@ -2,7 +2,8 @@
 # (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
 
 if [ $PKG_TYPE == "dpkg" ] ; then 
-  menv_alias dpkg_what_provides="sudo dpkg-query -S"
+  menv_alias dpkg_what_provides="sudo dpkg --search"
+  #menv_alias dpkg_what_provides="sudo dpkg-query -S"
   menv_alias dpkg_provides_what="sudo dpkg-query -L"
 fi
 

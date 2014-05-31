@@ -1,0 +1,18 @@
+#!/bin/bash
+# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
+
+read -p "Do you want to install packages MENV might use? " -n 1 -r
+echo
+
+if [[ $REPLY =~ ^[Yy]$ ]] ; then
+  install_simple_package sed
+  install_simple_package wemux
+  install_simple_package wireshark
+  install_simple_package bc
+  install_simple_package wget
+  install_simple_package grep
+  install_simple_package vim
+  install_simple_package cscope
+  install_simple_package openssh-clients
+fi
+
