@@ -2,6 +2,7 @@
 # (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
 
 read -p "Do you want to install packages MENV might use? " -n 1 -r
+echo
 
 if [[ $REPLY =~ ^[Yy]$ ]] ; then
   install_simple_package sed
