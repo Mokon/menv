@@ -62,8 +62,8 @@ BD_COLOR="#9393a1a1a1a1"
 p="/org/gnome/terminal/legacy/profiles:/"
 profiles=($(dconf list $p | grep ^: | sed 's/\///g'))
 for i in ${!profiles[*]} ; do
-  if [[ "$(dconf read $p${profiles[i]}/visible-name)" == "'Default'" ]]
-    then uuid="${profiles[i]}"
+  if [[ "$(dconf read $p${profiles[i]}/visible-name)" == "'Default'" ]] ; then
+    uuid="${profiles[i]}"
   fi
 done
 p="$p$uuid"
