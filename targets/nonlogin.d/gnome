@@ -1,6 +1,10 @@
 #!/bin/bash
 # (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
 
+# Only run gnome for gnome <= 3.8.4
+gnomeVersion="$(expr "$(gnome-terminal --version)" : '.* \(.*[.].*[.].*\)$')"
+if version_ge $gnomeVersion "3.8.4" ; then
+
 menv_function gstart
 function gstart {
   source $menv_local_dir/gnome_start
@@ -13,4 +17,6 @@ function gnome_add_tab {
   xdotool key ctrl+shift+t
   wmctrl -i -a $WID
 }
+
+fi
 
