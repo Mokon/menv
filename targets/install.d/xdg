@@ -1,6 +1,10 @@
 #!/bin/bash
 # (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
 
+# Only run gnome for gnome <= 3.8.4
+gnomeVersion="$(expr "$(gnome-terminal --version)" : '.* \(.*[.].*[.].*\)$')"
+if version_ge $gnomeVersion "3.8.4" ; then
+
 spushd .
 
 cd ~
@@ -11,4 +15,6 @@ safe_symlink .config/user-dirs.dirs $menv_dotfiles_dir/config/user-dirs.dirs
 xdg-settings set default-web-browser google-chrome.desktop
 
 spopd
+
+fi
 
