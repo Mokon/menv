@@ -1,0 +1,9 @@
+#!/bin/bash
+# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
+  
+history -a
+menv_export HISTFILE=~/.bash_history
+
+cat "${menv_logs_dir}/bash_history.${BASHPID}" >> "$HISTFILE"
+rm ${menv_logs_dir}/bash_history.${BASHPID}
+
