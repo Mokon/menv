@@ -207,6 +207,52 @@ function menv_version {
   esac
 }
 
+menv_function version_compare
+function version_compare {
+  if [[ $1 == $2 ]] ; then
+    return 0
+  fi
+  local IFS=.
+  local i ver1=($1) ver2=($2)
+  for ((i=${#ver1[@]}; i<${#ver2[@]}; i++)) ;  do
+    ver1[i]=0
+  done
+  for ((i=0; i<${#ver1[@]}; i++)) ;  do
+    if [[ -z ${ver2[i]} ]] ; then
+      ver2[i]=0
+    fi
+    if ((10#${ver1[i]} > 10#${ver2[i]})) ; then
+      return 1
+    fi
+    if ((10#${ver1[i]} < 10#${ver2[i]})) ; then
+      return 2
+    fi
+  done
+  return 0
+}
+
+menv_function version_le
+function version_le {
+  version_compare $1 $2
+  case $? in
+    1)
+      return 1 ;;
+    0|2)
+      return 0 ;;
+  esac
+}
+
+menv_function version_ge
+function version_ge {
+  version_compare $1 $2
+  case $? in
+    2)
+      return 1 ;;
+    0|1)
+      return 0 ;;
+  esac
+}
+
 # Include and set the distro core functionality.
 source $menv_core_dir/dist
 
