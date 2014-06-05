@@ -1,0 +1,7 @@
+#!/bin/bash
+# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
+
+if [ $DIST == "debian" ] ; then 
+  menv_alias debian_empty_trash=''
+fi
+
