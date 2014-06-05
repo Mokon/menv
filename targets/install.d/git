@@ -6,6 +6,10 @@ spushd .
 cd ~
   
 safe_symlink .gitconfig $menv_dotfiles_dir/gitconfig
+gitVersion=$(git --version | awk -F"version " '{print $2}')
+if version_le $gitVersion "1.7.11" ; then
+  git config --global push.default upstream
+fi
 
 # Let's install these cool ruby scripts for working with git!
 #   http://git-wt-commit.rubyforge.org/
