@@ -34,8 +34,19 @@ menv_alias sh=search_history
 
 menv_function cd
 function cd {
-   # pushd here causes problems with scripts that require symmetry
-   # pushd . &> /dev/null ;
-   builtin cd $1
+  dir=`realpath ${1:-~}`
+  dirstack=("${dirstack[@]}" $(pwd))
+  builtin cd $dir
+}
+
+menv_function mpop
+function mpop {
+  builtin cd ${dirstack[@]:(-1)}
+  dirstack=(${dirstack[@]:0:$((${#dirstack[@]}-1))})
+}
+
+menv_function mdirs
+function mdirs {
+  echo ${dirstack[@]}
 }
 
