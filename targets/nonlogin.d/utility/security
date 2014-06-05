@@ -22,3 +22,38 @@ function magic_open {
   sudo chmod -R 777 $dir
 }
 
+menv_function vpn
+function vpn {
+  local username="$1"
+  local ovpn_cfg="$2"
+  local password=""
+
+  echo -n Password:
+  read -s password
+  echo
+
+  sudo expect << DONE
+    #!/usr/bin/expect -f
+
+    set username "$username"
+    set password "$password"
+
+    set timeout 10
+    spawn openvpn --config $ovpn_cfg
+    expect {
+      "Enter Auth Username:" {
+        send "\${username}\r"
+        exp_continue
+      }
+      "Enter Auth Password:" {
+        send "\${password}\r"
+        exp_continue
+      }
+      timeout {
+      }
+    }
+    set timeout -1
+    expect "errordne"
+    send_user "openvpn terminated"
+DONE
+}
