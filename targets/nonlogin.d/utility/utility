@@ -114,3 +114,20 @@ function mopen {
   esac
 }
 
+menv_function dot_to_png
+function dot_to_png {
+  in=$1
+  out=$2
+  dot $in -Tpng -o $2
+}
+
+menv_function convert_to_gif
+function convert_to_gif {
+  local files=$1
+   g.png
+  local output=$2
+  local delay=${3:-100}
+  local size=${4:-640x480}
+  mogrify -resize $size $files
+  convert -delay $delay -loop 0 $files $output
+}
