@@ -28,6 +28,7 @@ export vt_install_dir="$menv_pkgs_dir/vt"
 export vt_logs_dir="$menv_logs_dir"
 export vt_config_dir="$menv_local_dir"
 menv_alias v="sudo -E $menv_pkgs_dir/vt/v"
+menv_alias fin="mopen ~/docs/psl/Database.ods"
 
 menv_function login_to_vm
 function login_to_vm {
