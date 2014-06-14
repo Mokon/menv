@@ -22,6 +22,8 @@ function magic_open {
   sudo chmod -R 777 $dir
 }
 
+menv_alias kill_vpn="sudo pkill -9 openvpn"
+
 menv_function vpn
 function vpn {
   local username="$1"
