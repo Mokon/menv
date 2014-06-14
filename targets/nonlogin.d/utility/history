@@ -9,22 +9,25 @@
 # that file to the global history and delete the only session history. On exist
 # the session history is flushed to the global history. Global history is loaded
 # into the session history on first nonloign.
-shopt -s nullglob
-hs=${menv_logs_dir}/bash_history.*
-for h in $hs ; do
-  pid=${h##*.}
-  if ! kill -0 $pid &> /dev/null ; then
-    echo "menv session terminated without logout. Saving history!"
-    cat $h >> ~/.bash_history
-    rm $h
-  fi
-done
-shopt -u nullglob
+if [[ $- == *i* ]] ; then
+  shopt -s nullglob
+  hs=${menv_logs_dir}/bash_history.*
+  for h in $hs ; do
+    pid=${h##*.}
+    if ! kill -0 $pid &> /dev/null ; then
+      echo "menv session terminated without logout. Saving history!"
+      cat $h >> ~/.bash_history
+      rm $h
+    fi
+  done
+  shopt -u nullglob
+fi
 
 cp ~/.bash_history ${menv_logs_dir}/bash_history.${BASHPID}
 menv_export HISTCONTROL=ignoredups:erasedups
 menv_export HISTFILE=${menv_logs_dir}/bash_history.${BASHPID}
-export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
+menv_export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'} history -a; history -c; history -r"
+
 shopt -s histappend
 
 menv_export HISTSIZE=100000
