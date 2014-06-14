@@ -41,7 +41,7 @@ function vpn {
     set password "$password"
 
     set timeout 10
-    spawn openvpn --config $ovpn_cfg
+    spawn openvpn --config $ovpn_cfg --script-security 2 --user nobody
     expect {
       "Enter Auth Username:" {
         send "\${username}\r"
