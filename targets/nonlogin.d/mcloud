@@ -1,0 +1,109 @@
+#!/bin/bash
+# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
+
+menv_function install_gateone
+function install_gateone {
+  spushd .
+
+  cd ~
+  git clone https://github.com/liftoff/GateOne.git
+  cd GateOne
+  python setup.py install
+
+  case $DIST in
+    *fedora*|*redhat*)
+      sudo chkconfig --add gateone
+      sudo service gateone start
+      ;;
+    *debian*)
+      update-rc.d gateone defaults
+      sudo service gateone start
+      ;;
+    *ubuntu*)
+      sudo service gateone start
+      ;;
+    *)
+      echo "Unknown Distribution"
+      ;;
+  esac
+
+  spopd
+}
+
+menv_alias mcloud_vpn="vpn mokon $HOME/menv/local/sec/vpn.cloud.mokon.net.ovpn"
+
+menv_function mcloud_enroll
+function mcloud_enroll {
+  local myip=${1:-mobile.brocade.mokon.net}
+  local myname=${2:-`hostname`}
+  local mcloud_gateway=${3:-cloud.mokon.net}
+  local membership_cfg=".mcloud_membership"
+  local enrolled="false"
+  local user=`whoami`
+
+  sudo bash -c "echo \"/home/mokon/menv/local/export *(rw)\" >> /etc/exports"
+  sudo bash -c "echo \"files.cloud.mokon.net:/home/mokon/files /home/mokon/menv/cloud nfs defaults 0 0\" >> /etc/fstab"
+
+  # enroll in the cloud membership list. TODO this is a little fragile and
+  # should handle recusive checks to ensure sync between every mcloud member
+  # in case of clouds combing etc.
+  rm ${HOME}/$membership_cfg
+
+  ssh -t -t ${user}@${mcloud_gateway} "cat \${HOME}/$membership_cfg" > ${HOME}/$membership_cfg
+
+  local OLDIFS=$IFS
+  IFS="="
+  while read -r member ip ; do # enroll in each member
+    if [[ "$ip" =~ ^[[:space:]]*([^[:space:]].*[^[:space:]])[[:space:]]*$ ]] ; then
+          ip=${BASH_REMATCH[1]}
+    fi
+    ssh -t -t ${user}@${ip} "bash -s"<<SSHSCRIPT
+function add_priv_key {
+  local remoteserver=\$1
+  local remoteuser=\${2:-\`whoami\`}
+  local pubkeyfile=~/.ssh/id_rsa.pub
+  local authkeyfile=~/.ssh/authorized_keys
+
+  if [ ! -f \$pubkeyfile ]; then
+    ssh-keygen -t rsa -b 4096 -N '' -f ~/.ssh/id_rsa
+  fi
+  cat \$pubkeyfile | ssh \$remoteuser@\$remoteserver "cat >> \$authkeyfile"
+}
+
+function mcloud_enroll_local {
+  local myname=\$1
+  local myip=\$2
+
+  local OLDIFS=\$IFS
+  IFS="="
+  while read -r member ip ; do
+    if [ "\$myip" = "\$ip" ] ; then
+      echo "already enrolled"
+      return
+    fi
+  done < \${HOME}/$membership_cfg
+  IFS=\$OLDIFS
+
+  echo "\$myname=\"\$myip\"" >> \${HOME}/$membership_cfg
+
+  add_priv_key \$myip $user
+}
+mcloud_enroll_local $myname $myip
+exit
+SSHSCRIPT
+
+    add_priv_key $ip $user
+
+    if [ "$myip" = "$ip" ] ; then
+      echo "already enrolled"
+      enrolled="true"
+    fi
+
+  done < ${HOME}/$membership_cfg
+  IFS=$OLDIFS
+
+  if [ "$enrolled" = "false" ] ; then
+    echo "$myname=$myip" >> ${HOME}/$membership_cfg
+  fi
+}
+
