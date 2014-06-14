@@ -101,10 +101,15 @@ function mopen {
 
   case $file in
     *.pdf) evince "$file"&> /dev/null & ;;
+    *.odt) oowriter "$file" &> /dev/null & ;;
     *.ods) ooffice "$file" &> /dev/null & ;;
+    *.dot)
+      pngfile=`mktemp`
+      dot_to_png $file $pngfile
+      shotwell "$pngfile" &> /dev/null & ;;
     *.png|*.jpg|*.jpeg) shotwell "$file" &> /dev/null & ;;
     *.pcap|*.npcap) wireshark "$file" &> /dev/null & ;;
-    *.log|*.txt) gedit "$file" &> /dev/null & ;;
+    *.log|*.txt|*.rej|*.patch) gedit "$file" &> /dev/null & ;;
     *) echo "I don't know how to open that." ;;
   esac
 }
