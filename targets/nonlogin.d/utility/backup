@@ -17,6 +17,8 @@ function backup {
 
   rsync -ar ~/menv/local .
 
+  mkdir git
+  cd git
   mclone
 
   echo "Backup Completed"
