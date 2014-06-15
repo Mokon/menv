@@ -15,7 +15,7 @@ function backup {
   mkdir $backup_dir
   cd $backup_dir
 
-  rsync -ar ~/local .
+  rsync -ar ~/menv/local .
 
   mclone
 
