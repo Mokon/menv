@@ -37,7 +37,7 @@ function vin {
 # Function that appends to the end of a file.
 menv_function append_to_file
 function append_to_file {
-  echo $1 >> $2  
+  echo $1 >> $2
 }
 
 # A fucntion to swap two files.
