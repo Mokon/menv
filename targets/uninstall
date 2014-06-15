@@ -4,6 +4,8 @@
 echo "Uninstalling menv"
 lockfile -r-1 $menv_dir/.lock
 
+source ~/.bash_logout
+
 spushd .
 
 cd ~
@@ -22,7 +24,7 @@ if_symlink_rm ~/cloud
 if_symlink_rm ~/docs
 if_symlink_rm ~/git
 if_symlink_rm ~/pics
-  
+
 echo "Saving the menv backup and local directories."
 $MV $menv_backup_dir ~
 $MV $menv_local_dir ~
@@ -31,7 +33,7 @@ echo "Deleting the menv directory."
 $RM -rf $menv_dir
 
 spopd
- 
+
 for menv_export in "${menv_exports[@]}" ; do
   unset "$( echo $menv_export | cut -f1 -d "=")"
 done
