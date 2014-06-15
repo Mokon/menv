@@ -17,6 +17,8 @@ function backup {
 
   rsync -ar ~/local .
 
+  mclone
+
   echo "Backup Completed"
   spopd
 }
@@ -30,13 +32,13 @@ function mclone {
   git clone https://github.com/Mokon/mcommon.git
   git clone https://github.com/Mokon/mspe.git
   git clone https://github.com/Mokon/mai.git
-  git clone https://github.com/Mokon/mfin.git
+  #git clone https://github.com/Mokon/mfin.git
   
   # private
   git clone https://github.com/Mokon/qubiquid.git
-  git clone https://github.com/Mokon/cc.git
-  git clone https://github.com/Mokon/school.git
-  git clone https://github.com/Mokon/interviews.git
+  #git clone https://github.com/Mokon/cc.git
+  #git clone https://github.com/Mokon/school.git
+  #git clone https://github.com/Mokon/interviews.git
 }
 
 menv_function mk_private
