@@ -1,6 +1,8 @@
 #!/bin/bash
 # (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
 
+menv_alias count_files_in_directory_r="find . -type f | wc -l"
+
 # A function to list a directory structure in a nice tree.
 menv_function tree_list
 function tree_list {
