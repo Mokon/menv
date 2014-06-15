@@ -1,0 +1,51 @@
+#!/bin/bash
+# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
+
+menv_function backup
+function backup {
+  backup_location=${1:-/backup}
+
+  date=`date +"%m_%d_%Y"`
+  hostname=`hostname`
+  backup_dir=$backup_location/${date}_${hostname}/
+
+  spushd .
+  echo "Starting Backup"
+
+  mkdir $backup_dir
+  cd $backup_dir
+
+  rsync -ar ~/local .
+
+  echo "Backup Completed"
+  spopd
+}
+
+menv_function mclone
+function mclone {
+  # public
+  git clone https://github.com/Mokon/menv.git
+  git clone https://github.com/Mokon/mfit.git
+  git clone https://github.com/Mokon/genealogy.git
+  git clone https://github.com/Mokon/mcommon.git
+  git clone https://github.com/Mokon/mspe.git
+  git clone https://github.com/Mokon/mai.git
+  git clone https://github.com/Mokon/mfin.git
+  
+  # private
+  git clone https://github.com/Mokon/qubiquid.git
+  git clone https://github.com/Mokon/cc.git
+  git clone https://github.com/Mokon/school.git
+  git clone https://github.com/Mokon/interviews.git
+}
+
+menv_function mk_private
+function mk_private {
+  dir=$1
+
+  sudo chown -R root $dir
+  sudo chgrp -R root $dir
+  sudo chmod -R 700 $dir
+  sudo mv dir ~mokon/.private
+}
+
