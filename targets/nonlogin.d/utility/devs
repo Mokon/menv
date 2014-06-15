@@ -12,3 +12,11 @@ function cp_cd {
 
 menv_alias goto_usb="/run/media/`whoami`/"
 
+menv_function flash_image
+function flash_image {
+  image_file=$1
+  dev=${2:-/dev/sdb}
+
+  sudo dd if=$image_file of=$dev bs=1M
+}
+
