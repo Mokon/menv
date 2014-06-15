@@ -14,5 +14,6 @@ if [[ $REPLY =~ ^[Yy]$ ]] ; then
   install_simple_package vim
   install_simple_package cscope
   install_simple_package openssh-clients
+  install_simple_package python-fabulous
 fi
 
