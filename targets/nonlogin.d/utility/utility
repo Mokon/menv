@@ -133,3 +133,19 @@ function convert_to_gif {
   mogrify -resize $size $files
   convert -delay $delay -loop 0 $files $output
 }
+
+menv_function topen
+function topen {
+  file="$1"
+
+  case $file in
+    *.dot)
+      pngfile=`mktemp`
+      dot_to_png $file $pngfile
+      python -m fabulous.image "$pngfile" ;;
+    *.png|*.jpg|*.jpeg) python -m fabulous.image "$file"  ;;
+    *.log|*.txt|*.rej|*.patch|*.cpp|*.c|*.h|*.hpp) vim "$file"  ;;
+    *) echo "I don't know how to open that." ;;
+  esac
+}
+
