@@ -36,11 +36,11 @@ function mclone {
   git clone https://github.com/Mokon/mspe.git
   git clone https://github.com/Mokon/mai.git
   git clone https://github.com/Mokon/scrabble.git
-  #git clone https://github.com/Mokon/mfin.git
+  git clone https://github.com/Mokon/mfin.git
   
   # private
   git clone https://github.com/Mokon/qubiquid.git
-  #git clone https://github.com/Mokon/cc.git
+  git clone https://github.com/Mokon/cc.git
   git clone https://github.com/Mokon/code.git
 }
 
