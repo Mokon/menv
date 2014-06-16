@@ -22,6 +22,8 @@ function backup {
   cd git
   mclone
 
+  cp ~/.config/google-chrome/Default/Bookmarks .
+
   echo "Backup Completed"
   spopd
 }
