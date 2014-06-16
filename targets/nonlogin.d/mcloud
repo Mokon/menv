@@ -44,6 +44,12 @@ function mcloud_enroll {
   sudo bash -c "echo \"/home/mokon/menv/local/export *(rw)\" >> /etc/exports"
   sudo bash -c "echo \"files.cloud.mokon.net:/home/mokon/files /home/mokon/menv/cloud nfs defaults 0 0\" >> /etc/fstab"
 
+  spushd .
+  cd ~ && wget -O - "https://www.dropbox.com/download?plat=lnx.x86_64" | tar xzf -
+  wget -O $menv_bin_dir/dropbox https://www.dropbox.com/download?dl=packages/dropbox.py
+  ~/.dropbox-dist/dropboxd
+  spopd
+
   # enroll in the cloud membership list. TODO this is a little fragile and
   # should handle recusive checks to ensure sync between every mcloud member
   # in case of clouds combing etc.
