@@ -53,6 +53,6 @@ function mk_private {
   sudo chown -R root $dir
   sudo chgrp -R root $dir
   sudo chmod -R 700 $dir
-  sudo mv dir ~mokon/.private
+  sudo mv $dir ~mokon/.private
 }
 
