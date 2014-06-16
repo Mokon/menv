@@ -15,6 +15,7 @@ function backup {
   mkdir $backup_dir
   cd $backup_dir
 
+  # Add --info=progress2 once rsync in distos is 3.1.0
   rsync -ar ~/menv/local .
 
   mkdir git
@@ -34,13 +35,13 @@ function mclone {
   git clone https://github.com/Mokon/mcommon.git
   git clone https://github.com/Mokon/mspe.git
   git clone https://github.com/Mokon/mai.git
+  git clone https://github.com/Mokon/scrabble.git
   #git clone https://github.com/Mokon/mfin.git
   
   # private
   git clone https://github.com/Mokon/qubiquid.git
   #git clone https://github.com/Mokon/cc.git
-  #git clone https://github.com/Mokon/school.git
-  #git clone https://github.com/Mokon/interviews.git
+  git clone https://github.com/Mokon/code.git
 }
 
 menv_function mk_private
