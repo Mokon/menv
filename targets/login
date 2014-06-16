@@ -22,8 +22,15 @@ if [ $? ]; then
   elif [ "$(menv_version get)" == "$(menv_latest_version)" ] ; then
     echo "menv script up to date." &> $menv_logs_dir/menv_status
   else
-    echo "menv script different than github. Auto-updating." | tee $menv_logs_dir/menv_status
-    menv_target update
+    read -t 5 -p "menv script different than github. update? " -n 1 -r
+    echo
+
+    if [[ $REPLY =~ ^[Yy]$ ]] ; then
+      echo "menv script different than github. Auto-updating." | tee $menv_logs_dir/menv_status
+      menv_target update
+    else
+      echo "menv script different than github. Not-updating" | tee $menv_logs_dir/menv_status
+    fi
   fi
 else
   echo "Git Hub not reachable. Could not check if menv is up to date." | tee $menv_logs_dir/menv_status
