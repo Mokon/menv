@@ -21,6 +21,7 @@ function backup {
   mkdir git
   cd git
   mclone
+  cd ..
 
   cp ~/.config/google-chrome/Default/Bookmarks .
 
