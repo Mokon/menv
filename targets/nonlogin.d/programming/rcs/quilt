@@ -1,0 +1,11 @@
+#!/bin/bash
+# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
+
+menv_function quilt_graph
+function quilt_graph {
+  local graphdot=`mktemp --suffix=.dot`
+  quilt graph --all --lines &> $graphdot
+  mopen $graphdot
+  rm $graphdot
+}
+
