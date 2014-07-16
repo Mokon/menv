@@ -7,3 +7,10 @@ Host epsom
   ProxyCommand  ssh mokon@cloud.mokon.net nc %h %p 2> /dev/null
 ServerAliveInterval 30
 ServerAliveCountMax 4
+
+#RSAAuthentication yes
+#PubkeyAuthentication yes
+#Match User root
+#PasswordAuthentication no
+#Match Group sudoers
+#PasswordAuthentication no
