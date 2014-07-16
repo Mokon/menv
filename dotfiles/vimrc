@@ -83,13 +83,15 @@ function AddCPP()
   unlet s:line
 endfunction
 
-imap <F4> <Esc>:execute AddCPP()<CR>
+imap <F7> <Esc>:execute AddCPP()<CR>
 
 highlight User1 guifg=Red   guibg=NONE ctermfg=Red   ctermbg=NONE
 highlight User2 guifg=Blue  guibg=NONE ctermfg=Blue  ctermbg=NONE
 highlight User3 guifg=Green guibg=NONE ctermfg=Green ctermbg=NONE
 highlight User4 guifg=White guibg=NONE ctermfg=White ctermbg=NONE
 highlight User5 guifg=Gray  guibg=NONE ctermfg=Gray  ctermbg=NONE
+
+cmap w!! %!sudo tee > /dev/null %
 
 " Update the status line to something better.
 set statusline =
@@ -110,8 +112,8 @@ map <leader>ss :setlocal spell!<cr>
 "
 map <leader>n :NERDTreeToggle<CR>
 
-nnoremap <F3> :NumbersToggle<CR>
-nnoremap <F5> :set nonumber<CR>
+nnoremap <F5> :NumbersToggle<CR>
+nnoremap <F6> :set nonumber<CR>
 
 set nocscopeverbose
 
