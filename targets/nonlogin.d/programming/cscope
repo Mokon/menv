@@ -8,8 +8,8 @@ menv_alias cscopeD="cscope -d -p100"
 # Function to init a cscope database with absolute filenames.
 menv_function cscopeinit
 function cscopeinit {
-  find `realpath .` -name '*.c' -o -name '*.h' -o -name '*.cpp' \
-    -o -name '*.hpp' > ./cscope.files 2> /dev/null
+  find `realpath .` -path .pc -prune -o -name '*.c' -o -name '*.h' \
+    -o -name '*.cpp' -o -name '*.hpp' > ./cscope.files 2> /dev/null
   cscope -b
   menv_export CSCOPE_DB=`realpath cscope.out`
 }
