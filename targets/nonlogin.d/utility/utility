@@ -106,7 +106,7 @@ function mopen {
     *.odt) oowriter "$file" &> /dev/null & ;;
     *.ods) ooffice "$file" &> /dev/null & ;;
     *.dot)
-      pngfile=`mktemp`
+      pngfile=`mktemp --suffix==.png`
       dot_to_png $file $pngfile
       shotwell "$pngfile" &> /dev/null & ;;
     *.png|*.jpg|*.jpeg) shotwell "$file" &> /dev/null & ;;
