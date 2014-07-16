@@ -149,3 +149,10 @@ function topen {
   esac
 }
 
+menv_function list_root_owned_files
+function list_root_owned_files {
+  dir=${1:-~}
+
+  find $dir -uid 0
+}
+
