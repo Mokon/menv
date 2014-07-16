@@ -68,7 +68,7 @@ config will operate on.
 In general I like my home laid out as follows:
   cloud --> menv/cloud
   docs --> menv/local/docs
-  git --> menv/local/docs/git
+  git --> menv/local/git
   git
   menv
   pics --> menv/local/pics
@@ -85,7 +85,7 @@ The menv dir has the following layout:
   menv/dotfiles
   menv/local
   menv/local/docs
-  menv/local/docs/git
+  menv/local/git
   menv/local/pics
   menv/pkgs
   menv/targets

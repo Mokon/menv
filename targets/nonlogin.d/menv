@@ -6,14 +6,14 @@ menv_alias menv_local_refresh="source ~/.bash_profile"
 
 # Simple function for my dev box which has menv checked out in git. This
 # allows me to test menv on the box before I push it to github.
-if [ -d ~/menv/local/docs/git/menv ]; then
+if [ -d ~/menv/local/git/menv ]; then
   menv_function menv_stage
   function menv_stage {
     spushd .
 
     menv_uninstall
 
-    cp -R  ~/local/docs/git/menv ~
+    cp -R  ~/local/git/menv ~
 
     source ~/menv/core/target_handler
 
