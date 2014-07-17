@@ -3,11 +3,11 @@
 
 menv_function backup
 function backup {
-  backup_location=${1:-/backup}
+  local backup_location=${1:-/backup}
 
-  date=`date +"%m_%d_%Y"`
-  hostname=`hostname`
-  backup_dir=$backup_location/${date}_${hostname}/
+  local date=`date +"%m_%d_%Y"`
+  local hostname=`hostname`
+  local backup_dir=$backup_location/${date}_${hostname}/
 
   spushd .
   echo "Starting Backup"
@@ -32,19 +32,19 @@ function backup {
 menv_function mclone
 function mclone {
   # public
-  git clone https://github.com/Mokon/menv.git
-  git clone https://github.com/Mokon/mfit.git
-  git clone https://github.com/Mokon/genealogy.git
-  git clone https://github.com/Mokon/mcommon.git
-  git clone https://github.com/Mokon/mspe.git
-  git clone https://github.com/Mokon/mai.git
-  git clone https://github.com/Mokon/scrabble.git
-  git clone https://github.com/Mokon/mfin.git
-  
+  git clone https://Mokon@github.com/Mokon/menv.git
+  git clone https://Mokon@github.com/Mokon/mfit.git
+  git clone https://Mokon@github.com/Mokon/genealogy.git
+  git clone https://Mokon@github.com/Mokon/mcommon.git
+  git clone https://Mokon@github.com/Mokon/mspe.git
+  git clone https://Mokon@github.com/Mokon/mai.git
+  git clone https://Mokon@github.com/Mokon/scrabble.git
+  git clone https://Mokon@github.com/Mokon/mfin.git
+
   # private
-  git clone https://github.com/Mokon/qubiquid.git
-  git clone https://github.com/Mokon/cc.git
-  git clone https://github.com/Mokon/code.git
+  git clone https://Mokon@github.com/Mokon/qubiquid.git
+  git clone https://Mokon@github.com/Mokon/cc.git
+  git clone https://Mokon@github.com/Mokon/code.git
 }
 
 menv_function mk_private
