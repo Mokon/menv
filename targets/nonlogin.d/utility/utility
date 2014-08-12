@@ -166,3 +166,37 @@ function list_root_owned_files {
   find $dir -uid 0
 }
 
+# This function takes a patch file and splits it into new and exisiting
+# components. A new component is a sub patch which creates a new file. An
+# existing component is a sub patch which edits an existing file.
+menv_function split_patch_into_new_and_existing
+function split_patch_into_new_and_existing {
+  local patch=$1
+
+  local existing=`realpath ${patch/\.patch/}_existing.patch`
+  local new=`realpath ${patch/\.patch/}_new.patch`
+
+  touch $existing
+  touch $new
+
+  pushd .
+
+  local splitdir=`mktemp -d`
+  local patch_part=${1}.part
+
+  splitdiff -a $patch
+
+  for file in $patch_part* ; do
+    tmpfile=`mktemp`
+    if grep "\-\-\- /dev/null" $file &> /dev/null ; then
+      dst=$new
+    else
+      dst=$existing
+    fi
+    cat $file $dst &> $tmpfile
+    mv -f $tmpfile $dst
+  done
+
+  popd
+}
+
