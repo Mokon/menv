@@ -10,6 +10,7 @@ menv_alias gitdo="git diff origin"
 menv_alias gitdh="git diff HEAD"
 menv_alias git_cleanup_repo="$RM \`git ls-files --other\`"
 menv_alias gitcp="git cherry-pick -x"
+menv_alias gitcdiff="git diff --staged --color-words --word-diff-regex=\"[^[:space:]]|([[:alnum:]]|UTF_8_GUARD)+\""
 
 # Function to clone from github.
 menv_function githubc
