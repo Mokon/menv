@@ -109,14 +109,14 @@ function find_and_replace_all {
 # Opens a file based on its extension or hashbang.
 menv_function mopen
 function mopen {
-  file="$1"
+  local file="$1"
 
   case $file in
     *.pdf) evince "$file"&> /dev/null & ;;
     *.odt) oowriter "$file" &> /dev/null & ;;
     *.ods) ooffice "$file" &> /dev/null & ;;
     *.dot)
-      pngfile=`mktemp --suffix==.png`
+      local pngfile=`mktemp --suffix==.png`
       dot_to_png $file $pngfile
       shotwell "$pngfile" &> /dev/null & ;;
     *.png|*.jpg|*.jpeg) shotwell "$file" &> /dev/null & ;;
@@ -128,15 +128,14 @@ function mopen {
 
 menv_function dot_to_png
 function dot_to_png {
-  in=$1
-  out=$2
+  local in=$1
+  local out=$2
   dot $in -Tpng -o $2
 }
 
 menv_function convert_to_gif
 function convert_to_gif {
   local files=$1
-   g.png
   local output=$2
   local delay=${3:-100}
   local size=${4:-640x480}
@@ -146,11 +145,11 @@ function convert_to_gif {
 
 menv_function topen
 function topen {
-  file="$1"
+  local file="$1"
 
   case $file in
     *.dot)
-      pngfile=`mktemp`
+      local pngfile=`mktemp`
       dot_to_png $file $pngfile
       python -m fabulous.image "$pngfile" ;;
     *.png|*.jpg|*.jpeg) python -m fabulous.image "$file"  ;;
@@ -161,7 +160,7 @@ function topen {
 
 menv_function list_root_owned_files
 function list_root_owned_files {
-  dir=${1:-~}
+  local dir=${1:-~}
 
   find $dir -uid 0
 }
