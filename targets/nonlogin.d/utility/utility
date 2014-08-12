@@ -96,6 +96,16 @@ function lsdiff {
   $RM $tmp1 $tmp2
 }
 
+menv_function find_and_replace_all
+function find_and_replace_all {
+  local search_pattern=$1
+  local replace_pattern=$2
+  local dir=${3:-./}
+
+  find $dir -type f -and -not -path "*.git*" \
+    -exec sed -i -e 's/$search_pattern/$replace_pattern/g' {} \;
+}
+
 # Opens a file based on its extension or hashbang.
 menv_function mopen
 function mopen {
