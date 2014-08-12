@@ -29,3 +29,11 @@ function git_blame_line {
   git blame $file -L $line,$line -l
 }
 
+menv_function git_diff_moved_file
+function git_diff_moved_file {
+  local from=$1
+  local to=$2
+
+  git diff HEAD:$from $to
+}
+
