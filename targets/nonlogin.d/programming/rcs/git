@@ -11,6 +11,8 @@ menv_alias gitdh="git diff HEAD"
 menv_alias git_cleanup_repo="$RM \`git ls-files --other\`"
 menv_alias gitcp="git cherry-pick -x"
 menv_alias gitcdiff="git diff --staged --color-words --word-diff-regex=\"[^[:space:]]|([[:alnum:]]|UTF_8_GUARD)+\""
+menv_alias git_mk_branch="git checkout -b"
+menv_alias git_push_local_branch="git push -u origin"
 
 # Function to clone from github.
 menv_function githubc
@@ -35,5 +37,17 @@ function git_diff_moved_file {
   local to=$2
 
   git diff HEAD:$from $to
+}
+
+menv_function stash_cmdline_install
+function stash_cmdline_install {
+  gem install atlassian-stash
+  stash configure
+  # Create a pull request from 'myBranch' into 'master' with 'michael' as a reviewer
+  # stash pull-request myBranch master @michael
+
+  # Create a pull request from the current branch into 'master'
+  # stash pull-request master
+  # git create-pull-request master
 }
 
