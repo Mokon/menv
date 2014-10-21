@@ -37,6 +37,11 @@ function login_to_vm {
   local vm=$1
   local un=${2:-`logname`}
   local pw=${3:-vyatta}
+  local force=${4:-no}
+
+  if [ "$force" == "yes" ] ; then
+    sudo virsh destroy $vm
+  fi
 
   sudo -E bash -c ". ${vt_install_dir}/virsh.sh ; virsh_vm_wait_until_pingable $vm"
   local vmip=$(sudo -E perl -w $vt_install_dir/virt-addr $vm "default")
