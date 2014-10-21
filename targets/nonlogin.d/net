@@ -178,3 +178,16 @@ function convert_to_pcap {
   mopen ${file}.pcap
 }
 
+menv_function capture_on_interfaces
+function capture_on_interfaces {
+  interfaces=$1
+  trace_length=${2:-420}
+
+  for interface in ${interfaces} ; do
+    tshark_pcap=capture_${interface}.pcap
+    sudo tshark -q -i $interface -a duration:$trace_length -w /tmp/$tshark_pcap &
+  done
+
+  sleep $trace_length
+}
+
