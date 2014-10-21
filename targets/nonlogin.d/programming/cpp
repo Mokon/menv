@@ -1,0 +1,47 @@
+#!/bin/bash
+# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
+
+menv_function cpp_class
+function cpp_class {
+  local class=$1
+  
+  cat << EOF > ${class}.hpp
+/* Copyright (C) 2013-2014 David 'Mokon' Bond,  All Rights Reserved */
+
+#pragma once
+
+namespace TODO {
+
+  class $class {
+
+    public:
+
+      $class( ) = default ;
+
+      virtual ~$class( ) = default ;
+
+      $class( const $class& ) = delete ;
+
+      $class& operator=( const $class& ) = delete ;
+
+  } ;
+
+}
+
+EOF
+
+  cat << EOF > ${class}.cpp
+/* Copyright (C) 2013-2014 David 'Mokon' Bond,  All Rights Reserved */
+
+#include "${class}.hpp"
+
+namespace TODO {
+
+  $class::$class( ) {
+  }
+
+}
+
+EOF
+}
+
