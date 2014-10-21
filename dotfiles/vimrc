@@ -83,6 +83,23 @@ function AddCPP()
   unlet s:line
 endfunction
 
+function UpdateModifiable()
+  if !exists("b:setmodifiable")
+    let b:setmodifiable = 0
+  endif
+  if &readonly
+    if &modifiable
+      setlocal nomodifiable
+      let b:setmodifiable = 1
+    endif
+  else
+    if b:setmodifiable
+      setlocal modifiable
+    endif
+  endif
+endfunction
+autocmd BufReadPost * call UpdateModifiable()
+
 imap <F7> <Esc>:execute AddCPP()<CR>
 
 highlight User1 guifg=Red   guibg=NONE ctermfg=Red   ctermbg=NONE
