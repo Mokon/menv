@@ -16,6 +16,7 @@ if [[ $- == *i* ]] ; then
     pid=${h##*.}
     if ! kill -0 $pid &> /dev/null ; then
       echo "menv session terminated without logout. Saving history!"
+      echo >> ~/.bash_history
       cat $h >> ~/.bash_history
       rm $h
     fi
@@ -30,8 +31,8 @@ menv_export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'} history -a; 
 
 shopt -s histappend
 
-menv_export HISTSIZE=100000
-menv_export HISTFILESIZE=100000
+menv_export HISTSIZE=10000
+menv_export HISTFILESIZE=10000
 menv_alias search_history="history | grep "
 menv_alias sh=search_history
 
