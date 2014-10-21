@@ -21,4 +21,6 @@
   email = mokon@mokon.net
 [credential]
   helper = cache --timeout 3600
+[alias]
+  prstash = "!f() { git fetch $1 refs/pull-requests/$2/from:$3; } ; f"
 
