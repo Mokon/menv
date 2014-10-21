@@ -9,3 +9,37 @@ function quilt_graph {
   rm $graphdot
 }
 
+menv_function quilt_check_build_at_each_stage
+function quilt_check_build_at_each_stage {
+  local MAKE='debuild -uc -us -b -i -d'
+  local RC=0
+
+  mkdir -p logs/pass
+  mkdir -p logs/fail
+
+  local PATCH=${1}
+  while : ; do
+    /bin/rm debian/source/format
+
+    quilt push ${PATCH} >> logs/push.log
+    quilt push >> logs/push.log
+    RC=$?
+    [ ${RC} -ne 0 ] && echo "Quilt Push Complete or Failure" && break
+
+    PATCH=`quilt top`
+    local FPATCH=`basename ${PATCH}`
+    echo "Applied ${PATCH}"
+
+    ${MAKE} &> logs/${FPATCH}.log
+    RC=$?
+    if [ ${RC} -ne 0 ] ; then
+      mv logs/${FPATCH}.log logs/fail/${FPATCH}.log
+    else
+      mv logs/${FPATCH}.log logs/pass/${FPATCH}.log
+    fi
+    quilt pop -a >> logs/pop.log
+    git clean -dxf -e logs >> logs/clean.log
+  done;
+
+  echo "3.0 (quilt)" &> debian/source/format
+}
