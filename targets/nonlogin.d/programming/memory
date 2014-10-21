@@ -12,3 +12,25 @@ function gprof {
   gprof $1 gmon.out &> profileinfo.out
 }
 
+menv_function decode_stacktrace
+function decode_stacktrace {
+  local stacktrace=${1}
+  local symbol_file=${2}
+  local source_dir=${3}
+
+  while read line ; do
+    local regex="^(.*)\\(*0x([0-9a-fA-F]+)\\)\\[0x([0-9a-fA-F]+)\\]$"
+    if [[ "${line}" =~ ${regex} ]] ; then
+      local gdbscript=`mktemp`
+      cat << END > ${gdbscript}
+        directory ${source_dir}
+        file ${symbol_file}
+        info symbol 0x${BASH_REMATCH[2]}
+        list *0x${BASH_REMATCH[2]}
+        quit
+END
+      gdb -q -x ${gdbscript}
+    fi
+  done < ${stacktrace}
+}
+
