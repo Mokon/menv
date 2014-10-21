@@ -199,3 +199,7 @@ function split_patch_into_new_and_existing {
   popd
 }
 
+menv_function unix_epoch
+function unix_epoch {
+  date +%s
+}
