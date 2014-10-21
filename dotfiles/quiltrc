@@ -1,0 +1,4 @@
+QUILT_PATCHES="debian/patches"                                      
+QUILT_REFRESH_ARGS="--backup --diffstat --strip-trailing-whitespace --no-timestamps --no-index --sort -p1 -p ab"
+QUILT_DIFF_ARGS="--no-timestamps --sort --color=auto -p ab"         
+QUILT_DIFF_OPTS="-p --show-c-function"                              

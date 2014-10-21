@@ -1,0 +1,11 @@
+#!/bin/bash
+# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
+
+spushd .
+
+cd ~
+  
+safe_symlink .quiltrc $menv_dotfiles_dir/quiltrc
+
+spopd
+
