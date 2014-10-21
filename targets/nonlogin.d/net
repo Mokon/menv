@@ -136,7 +136,7 @@ function testconnection {
   if [ $? ]; then
     echo $suc_msg
   else
-    host $?
+    host -W1 $?
     if [ $? ]; then
       echo $err_msg
     else
