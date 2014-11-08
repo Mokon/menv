@@ -1,12 +1,13 @@
 # (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
 Host *
-   ForwardX11 yes
+  ForwardX11 yes
+  TCPKeepAlive yes
+  ServerAliveInterval 30
+  ServerAliveCountMax 4
 Host epsom
   User          mokon
   HostName      192.168.0.101
   ProxyCommand  ssh mokon@cloud.mokon.net nc %h %p 2> /dev/null
-ServerAliveInterval 30
-ServerAliveCountMax 4
 
 #RSAAuthentication yes
 #PubkeyAuthentication yes
