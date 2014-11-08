@@ -74,6 +74,10 @@ function! FindAndReplaceAll(from, to)
   exec '%s/' . a:from . '/' . a:to . '/g'
 endfunction
 
+function! DeleteAllWhiteSpaceLines()
+  exec 'g/^\s*$/d'
+endfunction
+
 function AddCPP()
   let s:line=line(".")
   call setline(s:line,"".expand("%:t:r")."( const ".expand("%:t:r")."& ) = delete ;")
