@@ -45,6 +45,7 @@ function login_to_vm {
 
   sudo -E bash -c ". ${vt_install_dir}/virsh.sh ; virsh_vm_wait_until_pingable $vm"
   local vmip=$(sudo -E perl -w $vt_install_dir/virt-addr $vm "default")
+  echo "IP is $vmip."
   sshpass -p$pw ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ConnectionAttempts=100 $un@$vmip
 }
 
