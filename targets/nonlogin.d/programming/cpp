@@ -45,3 +45,6 @@ namespace TODO {
 EOF
 }
 
+menv_alias fcgi_install="sudo make install && sudo service lighttpd restart"
+menv_alias remake="make clean-purge && ./bootstrap && ./configure && make"
+
