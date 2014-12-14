@@ -219,6 +219,6 @@ function unix_epoch {
 
 menv_function set_brightness
 function set_brightness {
-  brightness=${1:-100}
+  local brightness=${1:-100}
   sudo bash -c "echo $brightness > /sys/class/backlight/intel_backlight/brightness"
 }
