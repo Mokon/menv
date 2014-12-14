@@ -49,6 +49,7 @@ function install_package {
   dist_to_pkg=$1
 
   eval "local pkg=\${$dist_to_pkg[$DIST]}"
+  echo $pkg >> $menv_local_dir/installed
   dist_install $pkg
 }
 
