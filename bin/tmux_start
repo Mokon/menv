@@ -1,0 +1,22 @@
+#!/bin/bash
+# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+
+export vt_install_dir="$menv_pkgs_dir/vt"
+export vt_logs_dir="$menv_logs_dir"
+export vt_config_dir="$menv_local_dir"
+. $menv_pkgs_dir/vt/virtual_topology.sh
+. $menv_pkgs_dir/vt/virtual_topology_macros.sh
+. $menv_local_dir/vt_config
+
+for i in $(seq 0 $num_vms) ; do
+  if (( $i != $build_index )) ; then
+    tmux new-window -t $SESSION:$((++WI)) -n "vm$i" \
+      "sudo -E sh -c \"${menv_pkgs_dir}/vt/v td $i c\""
+  else
+    tmux new-window -t $SESSION:$((++WI)) -n 'build' \
+      "sudo -E sh -c \"${menv_pkgs_dir}/vt/v td $i c\""
+    tmux split-window -h "sudo -E sh -c \"${menv_pkgs_dir}/vt/v td $i c\""
+    SELECTED_WINDOW=$WI
+  fi
+done
+
