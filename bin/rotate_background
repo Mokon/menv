@@ -1,0 +1,44 @@
+#!/bin/bash
+# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
+
+gnomeVersion="$(expr "$(gnome-terminal --version)" : '.* \(.*[.].*[.].*\)$')"
+if version_ge $gnomeVersion "3.8.4" ; then
+
+spushd .
+cd ${menv_cache_dir}
+
+mpwp="http://mokonphotography.com/wp-content/uploads"
+background_urls=(
+  "$mpwp/2013/11/ca_2013_8_1-205.jpg"
+  "$mpwp/2013/11/hannah-emb.jpg"
+  "$mpwp/2013/11/Formal209.jpg"
+  "$mpwp/2013/11/camping-965.jpg"
+  "$mpwp/2013/11/misc-100.jpg"
+  "$mpwp/2013/11/hannah-geek4.jpg"
+  "$mpwp/2013/11/DSC_0188.jpg"
+  "$mpwp/2013/11/ca_2013_8_1-239.jpg"
+  "$mpwp/2013/11/img_0014.jpg"
+  "$mpwp/2013/11/ca_2013_8_1-217.jpg"
+  "$mpwp/2013/11/hannah-geek.jpg"
+  "$mpwp/2013/11/ca_2013_8_1-066.jpg"
+  "$mpwp/2013/11/ca_2013_8_1-177.jpg"
+)
+i=$(($RANDOM % ${#background_urls[@]}))
+background_url=${background_urls[$i]}
+
+echo "Setting wallpaper to $background_url"
+
+if [ ! -d wallpapers ] ; then
+  mkdir wallpapers
+fi
+
+if [ ! -f  wallpapers/${i}.jpg ] ; then
+  fetch ${background_url} wallpapers/${i}.jpg
+  gsettings set org.gnome.desktop.background picture-uri ${menv_cache_dir}/wallpapers/${i}.jpg
+fi
+
+spopd
+
+else
+  echo "Unsupported Gnome Version [$gnomeVersion] detected."
+fi

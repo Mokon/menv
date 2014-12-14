@@ -256,6 +256,12 @@ function version_ge {
   esac
 }
 
+menv_function append_cronjob
+function append_cronjob {
+  local cmd=$1
+  (crontab -l ; echo "$cmd") 2>&1 | grep -v "no crontab" | sort | uniq | crontab -
+}
+
 # Include and set the distro core functionality.
 source $menv_core_dir/dist
 
