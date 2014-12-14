@@ -28,10 +28,23 @@ function find_large_files {
   find / -type f -size +100000k -exec ls -lh {} \; | awk '{ print $9 ": " $5 }'
 }
 
+# Function that allows vim to open files given a :linenumber argument.
+menv_function vim
+function vim {
+  case $1 in
+    *:*)
+      vin ${1/:/ }
+      ;;
+    *)
+      /usr/bin/vim $@
+      ;;
+  esac
+}
+
 # Function that opens vim at a given line number.
 menv_function vin
 function vin {
-  vim +$2 $1
+  /usr/bin/vim +$2 $1
 }
 
 # Function that appends to the end of a file.
