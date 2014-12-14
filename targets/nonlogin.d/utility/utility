@@ -222,3 +222,13 @@ function set_brightness {
   local brightness=${1:-100}
   sudo bash -c "echo $brightness > /sys/class/backlight/intel_backlight/brightness"
 }
+
+menv_function pretty_print_json
+function pretty_print_json {
+  local json=$1
+  local tmp_file=`mktmp`
+
+  cat $json  | python -m json.tool &> $tmp_file
+  mv -b $tmp_file $json
+}
+
