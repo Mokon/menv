@@ -256,8 +256,8 @@ function version_ge {
   esac
 }
 
-menv_function append_cronjob
-function append_cronjob {
+menv_function append_crontab
+function append_crontab {
   local cmd=$1
   (crontab -l ; echo "$cmd") 2>&1 | grep -v "no crontab" | sort | uniq | crontab -
 }
