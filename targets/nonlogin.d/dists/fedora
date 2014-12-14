@@ -5,3 +5,5 @@ if [ $DIST == "fedora" ] ; then
   menv_alias fedora_empty_trash='/bin/rm -rf ~/.local/share/Trash/'
 fi
 
+menv_alias list_packages_i_installed="yumdb search reason user"
+
