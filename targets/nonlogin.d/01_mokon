@@ -49,3 +49,4 @@ function login_to_vm {
   sshpass -p$pw ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ConnectionAttempts=100 $un@$vmip
 }
 
+menv_alias fix_broken_chrome="/bin/rm -rf ~/.config/google-chrome/Default/Web\ Data"
