@@ -191,3 +191,24 @@ function capture_on_interfaces {
   sleep $trace_length
 }
 
+menv_function netbios_scan
+function netbios_scan {
+  local dns=${1}
+
+  sudo nbtscan -r $dns/24
+}
+
+menv_function netbios_ip
+function netbios_ip {
+  local dns=${1}
+
+  nmblookup $dns | cut -f 1 -d \" \"
+}
+
+menv_function netbios_ssh
+function netbios_ssh {
+  local dns=${1}
+  local username=${2:-mokon}
+
+  ssh $username@`netbios_ip $dns`
+}
