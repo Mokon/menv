@@ -2,6 +2,10 @@
 # (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
 
 menv_export QUILT_PATCHES="debian/patches"
+menv_export QUILT_REFRESH_ARGS="--backup --diffstat --strip-trailing-whitespace --no-timestamps --no-index --sort -p1 -p ab"
+menv_export QUILT_DIFF_ARGS="--no-timestamps --sort --color=auto -p ab"
+menv_export QUILT_DIFF_OPTS="-p --show-c-function"
+menv_export QUILT_MAIL_ARGS='--from "David Bond <mokon@mokon.net>" --sender mokon@mokon.net'
 
 menv_function quilt_graph
 function quilt_graph {
