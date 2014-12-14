@@ -5,9 +5,9 @@ history -a
 menv_export HISTFILE=~/.bash_history
 
 echo >> "$HISTFILE"
-cat "${menv_logs_dir}/bash_history.${BASHPID}" >> "$HISTFILE"
+cat "${menv_history_dir}/bash_history.${BASHPID}" >> "$HISTFILE"
 tmplog=`mktemp`
 cat "$HISTFILE" | tail -n $HISTSIZE > $tmplog ;
 mv -f $tmplog "$HISTFILE"
-rm ${menv_logs_dir}/bash_history.${BASHPID}
+rm ${menv_history_dir}/bash_history.${BASHPID}
 

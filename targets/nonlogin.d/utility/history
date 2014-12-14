@@ -11,7 +11,7 @@
 # into the session history on first nonloign.
 if [[ $- == *i* ]] ; then
   shopt -s nullglob
-  hs=${menv_logs_dir}/bash_history.*
+  hs=${menv_history_dir}/bash_history.*
   for h in $hs ; do
     pid=${h##*.}
     if ! kill -0 $pid &> /dev/null ; then
@@ -24,9 +24,9 @@ if [[ $- == *i* ]] ; then
   shopt -u nullglob
 fi
 
-cp ~/.bash_history ${menv_logs_dir}/bash_history.${BASHPID}
+cp ~/.bash_history ${menv_history_dir}/bash_history.${BASHPID}
 menv_export HISTCONTROL=ignoredups:erasedups
-menv_export HISTFILE=${menv_logs_dir}/bash_history.${BASHPID}
+menv_export HISTFILE=${menv_history_dir}/bash_history.${BASHPID}
 menv_export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'} history -a; history -c; history -r"
 
 shopt -s histappend
