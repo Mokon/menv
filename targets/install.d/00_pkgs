@@ -16,5 +16,6 @@ if [[ $REPLY =~ ^[Yy]$ ]] ; then
   install_simple_package openssh-clients
   install_simple_package python-fabulous
   install_simple_package bleachbit
+  install_simple_package gdmap
 fi
 
