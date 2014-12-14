@@ -7,7 +7,7 @@ if version_ge $gnomeVersion "3.8.4" ; then
 
 menv_function gstart
 function gstart {
-  source $menv_local_dir/gnome_start
+  source $menv_bin_dir/gnome_start
 }
 
 menv_function gnome_add_tab
