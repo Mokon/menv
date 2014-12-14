@@ -12,6 +12,7 @@ function gprof {
   gprof $1 gmon.out &> profileinfo.out
 }
 
+menv_alias interactive_decode="addr2line -e "
 menv_function decode_stacktrace
 function decode_stacktrace {
   local stacktrace=${1}
