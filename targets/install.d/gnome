@@ -7,7 +7,7 @@ if version_ge $gnomeVersion "3.8.4" ; then
 
 spushd .
 
-append_crongtab "1 1 * * * ~mokon/menv/bin/rotate_background"
+append_crontab "1 1 * * * ~mokon/menv/bin/rotate_background"
 
 ~mokon/menv/bin/rotate_background
 
