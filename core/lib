@@ -87,6 +87,8 @@ menv_alias menv_update="source ${menv_core_dir}/update"
 # Load menv_config
 if [ -f $menv_local_dir/menv_config ]; then
   source $menv_local_dir/menv_config
+elif [ -f $menv_core_dir/menv_config ]; then
+  source $menv_core_dir/menv_config
 fi 
 
 # Silent pushd and popd
