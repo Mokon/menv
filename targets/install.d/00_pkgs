@@ -5,7 +5,21 @@ read -t 5 -p "Do you want to install packages MENV might use? " -n 1 -r
 echo
 
 if [[ $REPLY =~ ^[Yy]$ ]] ; then
+
+  cat << EOF | sudo tee /etc/yum.repos.d/google-chrome.repo
+[google-chrome]
+name=google-chrome-\$basearch
+baseurl=http://dl.google.com/linux/chrome/rpm/stable/\$basearch
+enabled=1
+gpgcheck=1
+gpgkey=https://dl-ssl.google.com/linux/linux_signing_key.pub
+EOF
+
+  sudo yum update
+
+  install_simple_package procmail
   install_simple_package sed
+  install_simple_package vim
   install_simple_package wemux
   install_simple_package wireshark
   install_simple_package bc
@@ -17,5 +31,6 @@ if [[ $REPLY =~ ^[Yy]$ ]] ; then
   install_simple_package python-fabulous
   install_simple_package bleachbit
   install_simple_package gdmap
+  install_simple_package google-chrome-stable
 fi
 
