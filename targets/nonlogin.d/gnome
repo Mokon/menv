@@ -18,5 +18,15 @@ function gnome_add_tab {
   wmctrl -i -a $WID
 }
 
+menv_function gnome_list_all_settings
+function gnome_list_all_settings {
+  for schema in $(gsettings list-schemas | sort) ; do
+    for key in $(gsettings list-keys $schema | sort) ; do
+      value="$(gsettings range $schema $key | tr "\n" " ")"
+      echo "$schema :: $key :: $value"
+    done
+  done
+}
+
 fi
 
