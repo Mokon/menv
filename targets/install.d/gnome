@@ -11,6 +11,16 @@ append_crontab "1 1 * * * ~mokon/menv/bin/rotate_background"
 
 ~mokon/menv/bin/rotate_background
 
+avatar=david_bond_social_media.jpg
+fetch http://mokonphotography.com/wp-content/uploads/2013/11/$avatar
+
+dbus-send --system --dest=org.freedesktop.Accounts  \
+    --type=method_call --print-reply \
+    /org/freedesktop/Accounts/User$(id -u) \
+    org.freedesktop.Accounts.User.SetIconFile \
+    string:"$avatar" &> /dev/null
+$RM $avatar
+
 cd ~
 
 FAV_APPS="['gnome-terminal.desktop', 'virt-manager.desktop', 'nautilus.desktop', 'skype.desktop', 'cheese.desktop', 'gedit.desktop', 'google-chrome.desktop', "
