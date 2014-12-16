@@ -42,17 +42,17 @@ for i in ${!profiles[*]} ; do
   fi
 done
 p="$p$uuid"
-dconf write $p/palette "[$PALETTE]"
+dconf write ${p}palette "[$PALETTE]"
 
-dconf write $p/bold-color "'$BD_COLOR'"
-dconf write $p/background-color "'$BG_COLOR'"
-dconf write $p/foreground-color "'$FG_COLOR'"
+dconf write ${p}bold-color "'$BD_COLOR'"
+dconf write ${p}background-color "'$BG_COLOR'"
+dconf write ${p}foreground-color "'$FG_COLOR'"
 
-dconf write $p/use-theme-colors "false"
-dconf write $p/use-theme-background "false"
-dconf write $p/bold-color-same-as-fg "false"
+dconf write ${p}use-theme-colors "false"
+dconf write ${p}use-theme-background "false"
+dconf write ${p}bold-color-same-as-fg "false"
 
-dconf write $p/scrollback-unlimited "true"
+dconf write ${p}scrollback-unlimited "true"
 
 spopd
 else
