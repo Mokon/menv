@@ -6,6 +6,13 @@ menv_alias arp_flush="ip -s -s neigh flush all"
 menv_alias amialone="ping 8.8.8.8"
 menv_alias amialonedns="ping google.com"
 
+menv_function find_subnet_devices
+function find_subnet_devices {
+  local subnet=${1:-192.168.1.0/24}
+
+  nmap -v -sn $subnet |grep -B 1 --no-group-separator "Host is up"
+}
+
 # A function which looks up a ethertype
 menv_function ethertype
 function ethertype {
