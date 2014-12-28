@@ -42,7 +42,6 @@ else
   fi
 
   # Link some files and dirs to the user home.
-  safe_symlink ~/todo $menv_local_dir/todo 
   safe_symlink ~/cloud $menv_dir/cloud
   safe_symlink ~/docs $menv_local_dir/docs
   safe_symlink ~/git $menv_local_dir/git

@@ -72,7 +72,6 @@ In general I like my home laid out as follows:
   git
   menv
   pics --> menv/local/pics
-  todo --> menv/local/todo
 
 The menv dir has the following layout:
   menv/backup
