@@ -29,6 +29,24 @@ function backup {
   spopd
 }
 
+menv_function restore_backup
+function restore_backup {
+  local date=${1:-`date +"%m_%d_%Y"`}
+  local backup_location=${2:-/backup}
+
+  local hostname=`hostname`
+  local backup_dir=$backup_location/${date}_${hostname}/
+
+  spushd .
+  echo "Starting Resoration of Backup"
+
+  mkdir $backup_dir
+  rsync -ar $backup_dir ~/menv/local
+
+  echo "Restoration of Backup Complete"
+  spopd
+}
+
 menv_function mclone
 function mclone {
   # public
