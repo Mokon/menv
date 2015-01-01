@@ -1,0 +1,13 @@
+#!/bin/bash
+# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
+
+spushd .
+
+# TODO remove on uninstall.
+if grep backup /etc/fstab &> /dev/null ; then
+  echo "Backup already in fstab."
+else
+  echo "LABEL=/backup           /backup                 ext4    defaults        1 2" | sudo tee -a /etc/fstab
+fi
+
+spopd
