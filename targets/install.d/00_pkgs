@@ -83,5 +83,6 @@ EOF
   install_simple_package vlc
   install_simple_package google-chrome-stable
   install_simple_package cmatrix
+  install_simple_pacakge eclipse-jdt
 fi
 
