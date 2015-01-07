@@ -4,11 +4,6 @@
 read -t 5 -p "Do you want to install packages MENV might use? " -n 1 -r
 echo
 
-menv_function install_java
-function install_java {
-
-}
-
 if [[ $REPLY =~ ^[Yy]$ ]] ; then
 
   cat << EOF | sudo tee /etc/yum.repos.d/google-chrome.repo
@@ -86,3 +81,7 @@ EOF
   install_simple_pacakge eclipse-jdt
 fi
 
+menv_function install_java
+function install_java {
+
+}
