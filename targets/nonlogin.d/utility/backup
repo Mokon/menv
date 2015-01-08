@@ -127,12 +127,15 @@ p
 w
 END
 
+    partprobe
+    umount /dev/${device}1
+
     case $os in
       linux)
-        sudo mkfs.ext4 -L "David_Bond_${drive_type}_DISK_${drive_id}" /dev/${device}1
+        sudo mkfs.ext4 -L "Mokon_${drive_type}_${drive_id}" /dev/${device}1
         ;;
       windows)
-        sudo mkfs.ntfs -L "David_Bond_${drive_type}_DISK_${drive_id}" /dev/${device}1
+        sudo mkfs.ntfs -L "Mokon_${drive_type}_${drive_id}" /dev/${device}1
         ;;
     esac
   fi
