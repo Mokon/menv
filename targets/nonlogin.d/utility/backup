@@ -78,8 +78,8 @@ function mk_private {
 alias shred="echo 'Are you sure you meant to shred? Call shred explicitly.'"
 alias scrub="echo 'Are you sure you meant to scrub? Call scrub explicitly.'"
 
-menv_function whip_and_format_drive
-function whip_and_format_drive {
+menv_function wipe_and_format_drive
+function wipe_and_format_drive {
   local device=$1
   local drive_id=`printf "%03d" $2`
   local drive_type=${3:-SATA}
@@ -103,7 +103,7 @@ function whip_and_format_drive {
 
   read -t 5 -p "You are about to format a device. I have just printed a summary"\
     " about the device. Please confirm this is in fact the device you want to"\
-    " whip. After this process is done no data will be recoverable from this"\
+    " wipe. After this process is done no data will be recoverable from this"\
     "device." -n 1 -r
 echo
 
