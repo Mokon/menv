@@ -1,7 +1,7 @@
 #!/bin/bash
 # (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
 
-if [[ "$SHELL" != *bash* ]] ; then
+if [[ "$SHELL" != *bash* && ! -z PS1 ]] ; then
   SHELLS=($(chsh -l |grep bash)) ;
   if [ -z "${SHELLS[0]}" ] ; then
     if type yum > /dev/null ; then
