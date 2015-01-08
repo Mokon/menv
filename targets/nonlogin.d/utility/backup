@@ -104,11 +104,14 @@ function wipe_and_format_drive {
   sudo lsblk |grep $device
   echo "-------------------------------------------------"
 
-  read -t 5 -p "You are about to format a device. I have just printed a summary"\
-    " about the device. Please confirm this is in fact the device you want to"\
-    " wipe. After this process is done no data will be recoverable from this"\
-    "device." -n 1 -r
-echo
+  read -t 5 -p
+
+  cat << EOF
+You are about to format a device. I have just printed a summary about the
+device. Please confirm this is in fact the device you want to wipe. After this
+process is done no data will be recoverable from this device."
+EOF
+  read -p "Wipe device? [y/n]" -n 1 -r
 
   if [[ $REPLY =~ ^[Yy]$ ]] ; then
     sudo /usr/bin/shred -v /dev/${device}
