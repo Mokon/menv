@@ -7,7 +7,7 @@ spushd .
 if grep backup /etc/fstab &> /dev/null ; then
   echo "Backup already in fstab."
 else
-  echo "LABEL=/backup           /backup                 ext4    defaults        1 2" | sudo tee -a /etc/fstab
+  echo "LABEL=/backup /backup auto nosuid,nodev,nofail" | sudo tee -a /etc/fstab
 fi
 
 spopd
