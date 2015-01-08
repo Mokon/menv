@@ -19,6 +19,8 @@ touch ~/.ssh/.$menv_gen_tag
 
 safe_symlink ~/.ssh/config $menv_dotfiles_dir/ssh/config
 
+chmod 600 ~/.ssh/config
+
 if [ ! -f ~/.ssh/id_rsa.pub ]; then
   ssh-keygen -t rsa -b 4096 -N '' -f ~/.ssh/id_rsa
 fi
