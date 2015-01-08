@@ -10,7 +10,7 @@ BASHRC
 #--full-screen --hide-menubar
 gnome-terminal --maximize\
   --tab -t msg -e "finch" --working-directory=~\
-  --tab -t build -e "sshpass -p local ssh mokon@build" --working-directory=~\
+  --tab -t build -e "sshpass -p local ssh $USER@build" --working-directory=~\
   --tab -t vt -e "bash --rcfile $tmpfile" --working-directory=~
 rm $tmpfile
 exit

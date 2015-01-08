@@ -43,8 +43,8 @@ function restore_backup {
   mkdir $backup_dir
   rsync -ar $backup_dir ~/menv/local
 
-  chown -R mokon ~/menv/local
-  chgrp -R mokon ~/menv/local
+  chown -R $USER ~/menv/local
+  chgrp -R $USER ~/menv/local
 
   echo "Restoration of Backup Complete"
   spopd

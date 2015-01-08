@@ -215,7 +215,7 @@ function netbios_ip {
 menv_function netbios_ssh
 function netbios_ssh {
   local dns=${1}
-  local username=${2:-mokon}
+  local username=${2:-$USER}
 
   ssh $username@`netbios_ip $dns`
 }
