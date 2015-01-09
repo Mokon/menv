@@ -41,8 +41,8 @@ menv_alias dist_install=${DIST}_install
 menv_alias ins=dist_install
 menv_alias ${DIST}_install=${PKG_MGMT}_install
 
-menv_alias yum_install="sudo yum install -q"
-menv_alias apt_install="sudo apt-get install -qq"
+menv_alias yum_install="sudo yum install -qy"
+menv_alias apt_install="sudo apt-get --yes --force-yes install -qq"
 
 menv_function install_package
 function install_package {
