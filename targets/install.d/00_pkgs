@@ -6,6 +6,11 @@ echo
 
 if [[ $REPLY =~ ^[Yy]$ ]] ; then
 
+  echo -n Password:
+  read -s password
+  echo
+
+  login_to_sudo $password
   cat << EOF | sudo tee /etc/yum.repos.d/google-chrome.repo
 [google-chrome]
 name=google-chrome-\$basearch
@@ -15,6 +20,7 @@ gpgcheck=1
 gpgkey=https://dl-ssl.google.com/linux/linux_signing_key.pub
 EOF
 
+  login_to_sudo $password
   cat << EOF | sudo tee /etc/yum.repos.d/adobe-linux-x86_64.repo
 [adobe-linux-x86_64]
 name=Adobe Systems Incorporated
@@ -24,6 +30,7 @@ gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-adobe-linux
 EOF
 
+  login_to_sudo $password
   cat << EOF | sudo tee /etc/yum.repos.d/google.repo 
 [google32]
 name=Google - i386
@@ -32,6 +39,7 @@ enabled=1
 gpgcheck=1
 EOF
 
+  login_to_sudo $password
   cat << EOF | sudo tee /etc/yum.repos.d/google-earth.repo 
 [google-earth]
 name=google-earth
@@ -40,6 +48,7 @@ enabled=1
 gpgcheck=1
 EOF
 
+  login_to_sudo $password
 cat << EOF | sudo tee /etc/yum.repos.d/rpm-sphere.repo
 [rpm-sphere]
 name=RPM Sphere
@@ -49,15 +58,19 @@ enabled=1
 gpgcheck=1
 EOF
 
+  login_to_sudo $password
   su -c 'yum localinstall --nogpgcheck \
     http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
     http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm'
 
-  sudo yum update
+  login_to_sudo $password
+  sudo yum update -y
 
+  login_to_sudo $password
   sudo yum -y install libXv.i686 libXScrnSaver.i686 qt.i686 qt-x11.i686 pulseaudio-libs.i686 pulseaudio-libs-glib2.i686 alsa-plugins-pulseaudio.i686 qtwebkit.i686
 
   wget http://www.skype.com/go/getskype-linux-beta-fc10 -O skype.rpm
+  login_to_sudo $password
   sudo yum localinstall skype.rpm
   $RM skype.rpm
 
@@ -78,7 +91,7 @@ EOF
   install_simple_package vlc
   install_simple_package google-chrome-stable
   install_simple_package cmatrix
-  install_simple_pacakge eclipse-jdt
+  install_simple_package eclipse-jdt
 fi
 
 menv_function install_java
