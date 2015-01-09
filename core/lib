@@ -89,7 +89,7 @@ if [ -f $menv_local_dir/menv_config ]; then
   source $menv_local_dir/menv_config
 elif [ -f $menv_core_dir/menv_config ]; then
   source $menv_core_dir/menv_config
-fi 
+fi
 
 # Silent pushd and popd
 menv_function spushd
@@ -260,6 +260,17 @@ menv_function append_crontab
 function append_crontab {
   local cmd=$1
   (crontab -l ; echo "$cmd") 2>&1 | grep -v "no crontab" | sort | uniq | crontab -
+}
+
+
+# This is a simple function which ensures sudo has been recently given a
+# password so it can login without a password. This solves some redirection
+# problems in other scripts.
+menv_function login_to_sudo
+function login_to_sudo {
+  local password=$1
+
+  echo $password | sudo -s echo &> /dev/null
 }
 
 # Include and set the distro core functionality.
