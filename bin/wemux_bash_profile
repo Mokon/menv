@@ -1,0 +1,13 @@
+#!/bin/bash
+# (C) 2015 David 'Mokon' Bond, All Rights Reserved
+
+# Set the terminal size of the user.
+printf '\e[8;200;100t'
+
+if [ -z $READONLY ] ; then
+  wemux attach
+else
+  wemux mirror
+fi
+
+exit
