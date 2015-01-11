@@ -7,3 +7,5 @@ if [ -f $menv_local_logout ]; then
   source $menv_local_logout
 fi
 
+# This fixes xterm freezing on logout.
+xterm < /dev/null >& /dev/null &
