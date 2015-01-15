@@ -1,6 +1,7 @@
 #!/bin/bash
 # (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
 
+if test -x "$(command -v "gnome-terminal")" ; then
 # Only run gnome for gnome <= 3.8.4
 gnomeVersion="$(expr "$(gnome-terminal --version)" : '.* \(.*[.].*[.].*\)$')"
 if version_ge $gnomeVersion "3.8.4" ; then
@@ -30,6 +31,7 @@ function add_app {
   FAV_APPS="$FAV_APPS '${app}',"
 }
 
+mkdir -p $menv_dotfiles_dir/local/share/applications/
 add_app root-wireshark
 add_app gnome-start
 gsettings set org.gnome.shell favorite-apps "${FAV_APPS%?}]"
@@ -71,4 +73,6 @@ spopd
 else
   echo "Unsupported Gnome Version [$gnomeVersion] detected."
 fi
-
+else
+  echo "Unsupported Gnome Not Installed."
+fi
