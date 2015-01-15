@@ -74,7 +74,6 @@ EOF
   sudo yum localinstall skype.rpm
   $RM skype.rpm
 
-  install_simple_package procmail
   install_simple_package sed
   install_simple_package vim
   install_simple_package wemux

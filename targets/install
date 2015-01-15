@@ -3,8 +3,12 @@
 
 if [ -f $menv_dir/.$menv_gen_tag ] ; then
   echo "menv is already installed on this computer. Not installing."
-else 
+else
   echo "Installing menv!"
+
+  if test -x "$(command -v "lockfile")" ; then
+    install_simple_package procmail
+  fi
   lockfile -r-1 $menv_dir/.lock
 
   touch $menv_dir/.$menv_gen_tag
@@ -20,13 +24,13 @@ else
   if [ -d ~/backup ] ; then
     echo "Restoring backup dir!"
     $RM -rf $menv_backup_dir
-    $MV ~/backup $menv_backup_dir 
+    $MV ~/backup $menv_backup_dir
   fi
 
   if [ -d ~/local ] ; then
     echo "Restoring local dir!"
     $RM -rf $menv_local_dir
-    $MV ~/local $menv_local_dir 
+    $MV ~/local $menv_local_dir
   fi
 
   if [ -f $menv_local_nonlogin ]; then
