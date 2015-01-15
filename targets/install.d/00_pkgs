@@ -75,14 +75,10 @@ EOF
   $RM skype.rpm
 
   install_simple_package sed
-  install_simple_package vim
-  install_simple_package wemux
   install_simple_package wireshark
   install_simple_package bc
   install_simple_package wget
   install_simple_package grep
-  install_simple_package vim
-  install_simple_package cscope
   install_simple_package openssh-clients
   install_simple_package python-fabulous
   install_simple_package bleachbit
@@ -91,9 +87,25 @@ EOF
   install_simple_package google-chrome-stable
   install_simple_package cmatrix
   install_simple_package eclipse-jdt
+fi
+  
+read -t 5 -p "Do you want to install devel packages MENV might use? " -n 1 -r
+echo
+
+if [[ $REPLY =~ ^[Yy]$ ]] ; then
+
+  echo -n Password:
+  read -s password
+  echo
+
+  login_to_sudo $password
+
   install_simple_package clang
   install_simple_package tmux
   install_simple_package screen
+  install_simple_package cscope
+  install_simple_package vim
+  install_simple_package wemux
 fi
 
 menv_function install_java
