@@ -8,9 +8,9 @@ if version_ge $gnomeVersion "3.8.4" ; then
 
 spushd .
 
-append_crontab "1 1 * * * ~$USER/menv/bin/rotate_background"
+append_crontab "1 1 * * * /home/$USER/menv/bin/rotate_background"
 
-~$USER/menv/bin/rotate_background
+~/menv/bin/rotate_background
 
 avatar=david_bond_social_media.jpg
 fetch http://mokonphotography.com/wp-content/uploads/2013/11/$avatar
