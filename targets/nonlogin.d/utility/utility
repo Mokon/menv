@@ -36,6 +36,11 @@ function vim {
       vin ${1/:/ }
       ;;
     *)
+      if [ ! -f $1 ] ; then
+        if [[ $1 =~ .*\.jpp ]] ; then
+          set -- ${1/.jpp/.hpp} ${@:2:$#}
+        fi
+      fi
       /usr/bin/vim $@
       ;;
   esac
@@ -44,6 +49,12 @@ function vim {
 # Function that opens vim at a given line number.
 menv_function vin
 function vin {
+  if [ ! -f $1 ] ; then
+    if [[ $1 =~ .*\.jpp ]] ; then
+      set -- ${1/.jpp/.hpp} ${@:2:$#}
+    fi
+  fi
+
   /usr/bin/vim +$2 $1
 }
 
