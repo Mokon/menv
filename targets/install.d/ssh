@@ -25,5 +25,7 @@ if [ ! -f ~/.ssh/id_rsa.pub ]; then
   ssh-keygen -t rsa -b 4096 -N '' -f ~/.ssh/id_rsa
 fi
 
+sudo /sbin/chkconfig sshd on
+
 spopd
 
