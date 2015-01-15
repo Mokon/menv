@@ -6,7 +6,7 @@ if [ -f $menv_dir/.$menv_gen_tag ] ; then
 else
   echo "Installing menv!"
 
-  if test -x "$(command -v "lockfile")" ; then
+  if ! test -x "$(command -v "lockfile")" ; then
     install_simple_package procmail
   fi
   lockfile -r-1 $menv_dir/.lock
