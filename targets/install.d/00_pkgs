@@ -91,6 +91,9 @@ EOF
   install_simple_package google-chrome-stable
   install_simple_package cmatrix
   install_simple_package eclipse-jdt
+  install_simple_package clang
+  install_simple_package tmux
+  install_simple_package screen
 fi
 
 menv_function install_java
