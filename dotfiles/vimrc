@@ -137,6 +137,16 @@ map <leader>n :NERDTreeToggle<CR>
 
 nnoremap <F5> :NumbersToggle<CR>
 nnoremap <F6> :set nonumber<CR>
+nnoremap <F7> :GitGutterToggle<CR>
+
+nnoremap <F8> :call ToggleForCopy()<CR>
+
+function! ToggleForCopy()
+  :NumbersToggle
+  :set nonumber
+  :GitGutterToggle
+  setlocal colorcolumn=
+endfunction
 
 set nocscopeverbose
 
