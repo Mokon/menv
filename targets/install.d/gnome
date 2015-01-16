@@ -77,6 +77,11 @@ gconftool-2 --set "$p/palette" --type string "$PALETTE"
 gconftool-2 --set "$p/background_color" --type string "$BG_COLOR"
 gconftool-2 --set "$p/foreground_color" --type string "$FG_COLOR"
 
+if [ ! -z $MENV_HOSTNAME ] ; then
+  sudo hostnamectl set-hostname --static "$MENV_HOSTNAME"
+  sudo hostnamectl set-hostname --pretty "$MENV_HOSTNAME"
+fi
+
 spopd
 else
   echo "Unsupported Gnome Version [$gnomeVersion] detected."
