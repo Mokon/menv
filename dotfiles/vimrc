@@ -39,6 +39,8 @@ autocmd FileType make setlocal noexpandtab " Makefiles need tabs. Don't convert
 " If supported color the 80th colomn.
 if exists('+colorcolumn')
   set colorcolumn=80
+  autocmd BufNewFile,BufRead COMMIT_EDITMSG setlocal spell
+  autocmd BufNewFile,BufRead COMMIT_EDITMSG set colorcolumn=72
 endif
 
 " Color anything over 80 chars red.
