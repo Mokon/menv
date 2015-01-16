@@ -38,9 +38,9 @@ menv_alias sh=search_history
 
 menv_function cd
 function cd {
-  if dir=`realpath ${1:-~}` ; then
+  if dir=`realpath "${1:-~}"` ; then
     dirstack=("${dirstack[@]}" $(pwd))
-    builtin cd $dir
+    builtin cd "$dir"
   fi
 }
 
