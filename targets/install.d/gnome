@@ -70,6 +70,13 @@ dconf write ${p}bold-color-same-as-fg "false"
 
 dconf write ${p}scrollback-unlimited "true"
 
+p="/apps/gnome-terminal/profiles/Default"
+gconftool-2 --set "$p/use_theme_background" --type bool false
+gconftool-2 --set "$p/use_theme_colors" --type bool false
+gconftool-2 --set "$p/palette" --type string "$PALETTE"
+gconftool-2 --set "$p/background_color" --type string "$BG_COLOR"
+gconftool-2 --set "$p/foreground_color" --type string "$FG_COLOR"
+
 spopd
 else
   echo "Unsupported Gnome Version [$gnomeVersion] detected."
