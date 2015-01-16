@@ -1,17 +1,71 @@
 #!/bin/bash
 # (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
 
-tmpfile=`mktemp`
-cat << BASHRC > $tmpfile
+read -r -d '' TMUX_SCRIPT <<'EOF'
   source ~/.bashrc
-  start
+
+  function init {
+    export SESSION=$1
+    export WI=0
+    local SELECTED_WINDOW=1
+    echo $1
+
+    tmux kill-session -t $SESSION
+    unset TMUX
+
+    tmux new-session -d -s $SESSION -n 'host'
+    tmux send-keys  -t $SESSION:$((++WI)) "cd ~" C-m
+  }
+
+  function tmux_start {
+    init $1
+    setup
+    finish
+  }
+
+  function finish {
+    SELECTED_WINDOW=$WI
+  
+    tmux select-window -t $SESSION:$SELECTED_WINDOW
+    tmux attach-session -t $SESSION
+  }
+
+  function new_window {
+    local title=$1
+    local cmd=$2
+
+    tmux new-window -t $SESSION:$((++WI)) -n "$title" "bash -c \"$cmd\""
+  }
+
+  function new_split {
+    local title=$1
+    local cmd=$2
+    local perc=$3
+
+    tmux split-window -p $3 -h "bash -c \"$cmd\""
+  }
+EOF
+
+main_viewer=`mktemp`
+cat << BASHRC > $main_viewer
+  $TMUX_SCRIPT
+  function setup {
+    new_window "build" "ssh $USER@build-machine"
+    new_split "build" "ssh $USER@build-machine" 50
+    tmux swap-pane -U
+  }
+
+  tmux_start main_viewer
 BASHRC
 
-#--full-screen --hide-menubar
-gnome-terminal --maximize\
-  --tab -t msg -e "finch" --working-directory=~\
-  --tab -t build -e "sshpass -p local ssh $USER@build" --working-directory=~\
-  --tab -t vt -e "bash --rcfile $tmpfile" --working-directory=~
-rm $tmpfile
+if ! vboxmanage list runningvms|grep -q build-machine ; then
+  vboxmanage startvm build-machine --type headless
+fi
+
+sleep 1
+gnome-terminal --maximize \
+  --window -e "ssh $USER@build-machine" --working-directory=~\
+  --window -e "bash --rcfile $main_viewer" --working-directory=~
+rm $main_viewer
 exit
 
