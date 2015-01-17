@@ -38,10 +38,15 @@ function vim {
     *)
       if [ ! -f $1 ] ; then
         if [[ $1 =~ .*\.jpp ]] ; then
-          set -- ${1/.jpp/.hpp} ${@:2:$#}
+          set -- "${1/.jpp/.hpp}" ${@:2:$#}
         fi
       fi
-      /usr/bin/vim $@
+
+      PARAMS=""
+      for PARAM in "$@" ; do
+          PARAMS="${PARAMS} \"${PARAM}\""
+        done
+      /usr/bin/vim "$PARAMS"
       ;;
   esac
 }
