@@ -46,7 +46,7 @@ function vim {
       for PARAM in "$@" ; do
           PARAMS="${PARAMS} \"${PARAM}\""
         done
-      /usr/bin/vim "$PARAMS"
+      bash -c "/usr/bin/vim $PARAMS"
       ;;
   esac
 }

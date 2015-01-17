@@ -4,4 +4,4 @@ Terminal=true
 Name=Root Wireshark
 Exec=sudo wireshark
 Type=Application
-Icon=gnome-panel-launcher
+Icon=wireshark
