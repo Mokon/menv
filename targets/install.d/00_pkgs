@@ -76,6 +76,7 @@ EOF
 
   install_simple_package sed
   install_simple_package wireshark
+  install_simple_package wireshark-gnome
   install_simple_package bc
   install_simple_package wget
   install_simple_package grep

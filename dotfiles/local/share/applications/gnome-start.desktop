@@ -4,4 +4,4 @@ Terminal=true
 Name=gnome_start
 Exec=bash -c "source /home/mokon/menv/bin/gnome_start"
 Type=Application
-Icon=Transmission
+Icon=seahorse
