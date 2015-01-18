@@ -13,7 +13,7 @@ append_crontab "1 1 * * * /home/$USER/menv/bin/rotate_background"
 ~/menv/bin/rotate_background
 
 avatar=david_bond_social_media.jpg
-fetch http://mokonphotography.com/wp-content/uploads/2013/11/$avatar
+fetch http://mokonphotography.com/wp-content/uploads/2015/01/$avatar
 
 dbus-send --system --dest=org.freedesktop.Accounts  \
     --type=method_call --print-reply \
