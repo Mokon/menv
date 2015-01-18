@@ -15,7 +15,6 @@ if [[ $- == *i* ]] ; then
   for h in $hs ; do
     pid=${h##*.}
     if ! kill -0 $pid &> /dev/null ; then
-      echo "menv session terminated without logout. Saving history!"
       echo >> ~/.bash_history
       cat $h >> ~/.bash_history
       rm $h
