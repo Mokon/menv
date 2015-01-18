@@ -84,6 +84,7 @@ EOF
   install_simple_package python-fabulous
   install_simple_package bleachbit
   install_simple_package gdmap
+  install_simple_package gimp
   install_simple_package vlc
   install_simple_package google-chrome-stable
   install_simple_package cmatrix
