@@ -34,7 +34,7 @@ read -r -d '' TMUX_SCRIPT <<'EOF'
     local title=$1
     local cmd=$2
 
-    tmux new-window -t $SESSION:$((++WI)) -n "$title" "bash -c \"$cmd\""
+    tmux new-window -t $SESSION:$((++WI)) -n "$title" "bash -c \" cd ~/git ; $cmd\""
   }
 
   function new_split {
@@ -42,7 +42,7 @@ read -r -d '' TMUX_SCRIPT <<'EOF'
     local cmd=$2
     local perc=$3
 
-    tmux split-window -p $3 -h "bash -c \"$cmd\""
+    tmux split-window -p $3 -h "bash -c \" cd ~/git ; $cmd\""
   }
 EOF
 
