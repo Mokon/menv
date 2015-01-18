@@ -9,7 +9,7 @@ menv_alias cscopeD="cscope -d -p100"
 menv_function cscopeinit
 function cscopeinit {
   find `realpath .` -not '(' -path '*.pc*' ')' -and  '(' -name '*.c' -o -name '*.h' \
-    -o -name '*.cpp' -o -name '*.hpp' ')' > ./cscope.files 2> /dev/null
+    -o -name '*.cpp' -o -name '*.hpp' ')' -execdir realpath {} \; > ./cscope.files 2> /dev/null
   cscope -b
   menv_export CSCOPE_DB=`realpath cscope.out`
   /bin/rm ./cscope.files
