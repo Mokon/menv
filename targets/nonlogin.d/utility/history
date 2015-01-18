@@ -24,7 +24,9 @@ if [[ $- == *i* ]] ; then
   shopt -u nullglob
 fi
 
-cp ~/.bash_history ${menv_history_dir}/bash_history.${BASHPID}
+if [ -f ~/.bash_history ] ; then
+  cp ~/.bash_history ${menv_history_dir}/bash_history.${BASHPID}
+fi
 menv_export HISTCONTROL=ignoredups:erasedups
 menv_export HISTFILE=${menv_history_dir}/bash_history.${BASHPID}
 menv_export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'} history -a; history -c; history -r"
