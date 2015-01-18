@@ -76,6 +76,14 @@ function! FindAndReplaceAll(from, to)
   exec '%s/' . a:from . '/' . a:to . '/g'
 endfunction
 
+function! FindAndReplaceAllConfirmWord(from, to)
+  exec '%s/\<' . a:from . '\>/' . a:to . '/gc'
+endfunction
+
+function! FindAndReplaceAllWord(from, to)
+  exec '%s/\<' . a:from . '\>/' . a:to . '/g'
+endfunction
+
 function! DeleteAllWhiteSpaceLines()
   exec 'g/^\s*$/d'
 endfunction
