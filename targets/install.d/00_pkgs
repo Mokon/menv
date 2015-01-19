@@ -74,6 +74,9 @@ EOF
   sudo yum -y localinstall skype.rpm
   $RM skype.rpm
 
+  login_to_sudo $password
+  sudo yum -y plymouth-theme*
+
   install_simple_package sed
   install_simple_package wireshark
   install_simple_package wireshark-gnome

@@ -39,6 +39,7 @@ if [ ! -f  wallpapers/${i}.jpg ] ; then
   fetch ${background_url} wallpapers/${i}.jpg
 fi
 gsettings set org.gnome.desktop.background picture-uri ${menv_cache_dir}/wallpapers/${i}.jpg
+gsettings set org.gnome.desktop.screensaver picture-uri ${menv_cache_dir}/wallpapers/${i}.jpg
 
 spopd
 
