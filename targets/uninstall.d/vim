@@ -8,7 +8,7 @@ cd ~
 if_symlink_rm .vimrc
   
 if [ -f ~/.vim/.$menv_gen_tag ] ; then
-  $RM -rf ~/.vim
+  $BINRM -rf ~/.vim
 else
   echo "vim folder was not menv generated, not deleting!"
 fi

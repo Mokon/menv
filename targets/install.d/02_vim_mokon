@@ -12,11 +12,11 @@ cd ~/.vim
 github_fetch Rip-Rip/clang_complete
 $MV clang_complete/bin .
 $MV clang_complete/plugin .
-$RM -rf clang_complete
+$BINRM -rf clang_complete
 
 github_fetch tpope/vim-fugitive
 $MV vim-fugitive/plugin/* plugin/
-$RM -rf vim-fugitive
+$BINRM -rf vim-fugitive
 
 cd ~/.vim/plugin
 

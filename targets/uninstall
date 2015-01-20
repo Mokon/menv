@@ -29,7 +29,7 @@ $MV $menv_backup_dir ~
 $MV $menv_local_dir ~
 
 echo "Deleting the menv directory."
-$RM -rf $menv_dir
+$BINRM -rf $menv_dir
 
 spopd
 

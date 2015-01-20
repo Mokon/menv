@@ -7,7 +7,7 @@ cd ~
 
 if [ -d ~/.ssh ] ; then
   if [ -f ~/.ssh/.$menv_gen_tag ] ; then
-    $RM -rf ~/.ssh/config
+    $BINRM -rf ~/.ssh/config
   else
     $MV --backup=numbered ~/.ssh/config ${menv_backup_dir}/.ssh/config
   fi

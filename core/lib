@@ -65,7 +65,7 @@ menv_export menv_gen_tag="menv_generated"
 # Absolute paths for lsb commands.
 menv_export MV=/bin/mv
 menv_export LN=/bin/ln
-menv_export RM=/bin/rm
+menv_export BINRM=/bin/rm
 menv_export CP=/bin/cp
 menv_export TAR=/bin/tar
 menv_export MKDIR=/bin/mkdir
@@ -152,7 +152,7 @@ function github_fetch {
   fetch https://github.com/$repo/archive/master.tar.gz
 
   tar -xzf master.tar.gz
-  $RM -f master.tar.gz
+  $BINRM -f master.tar.gz
   $MV "$(basename $repo)-master" $(basename $repo)
 }
 
@@ -181,7 +181,7 @@ function if_symlink_rm {
   local file=$1
 
   if [ -L $file ] ; then
-    $RM -f $file
+    $BINRM -f $file
   fi
 }
 

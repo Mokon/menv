@@ -1,13 +1,13 @@
 #!/bin/bash
 # (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
-RM="/bin/rm -R"
-$RM ~/.gntrc
-$RM ~/.gitconfig
-$RM ~/.config/user-dirs.conf
-$RM ~/.tmux.conf
-$RM ~/menv
-$RM ~/.bashrc
-$RM ~/.vimrc
-$RM ~/.vim
-$RM ~/.bash_profile
-$RM ~/.bash_logout
+BINRM="/bin/rm -R"
+$BINRM ~/.gntrc
+$BINRM ~/.gitconfig
+$BINRM ~/.config/user-dirs.conf
+$BINRM ~/.tmux.conf
+$BINRM ~/menv
+$BINRM ~/.bashrc
+$BINRM ~/.vimrc
+$BINRM ~/.vim
+$BINRM ~/.bash_profile
+$BINRM ~/.bash_logout

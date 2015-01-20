@@ -18,8 +18,8 @@ wget -O gitwt.tar -q -N --no-check-certificate \
 tar -xvf gitwt.tar &> /dev/null
 
 $CP  willgit-mainline/bin/* ~/menv/bin
-$RM -rf willgit-mainline
-$RM gitwt.tar
+$BINRM -rf willgit-mainline
+$BINRM gitwt.tar
 
 spopd
 

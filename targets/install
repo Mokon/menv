@@ -23,13 +23,13 @@ else
 
   if [ -d ~/backup ] ; then
     echo "Restoring backup dir!"
-    $RM -rf $menv_backup_dir
+    $BINRM -rf $menv_backup_dir
     $MV ~/backup $menv_backup_dir
   fi
 
   if [ -d ~/local ] ; then
     echo "Restoring local dir!"
-    $RM -rf $menv_local_dir
+    $BINRM -rf $menv_local_dir
     $MV ~/local $menv_local_dir
   fi
 
@@ -55,7 +55,7 @@ else
 
   menv_target_children install
 
-  $RM -f $menv_dir/.lock
+  $BINRM -f $menv_dir/.lock
   echo "Done installing menv!"
 
 fi

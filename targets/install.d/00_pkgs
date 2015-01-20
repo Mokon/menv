@@ -72,7 +72,7 @@ EOF
   wget http://www.skype.com/go/getskype-linux-beta-fc10 -O skype.rpm
   login_to_sudo $password
   sudo yum -y localinstall skype.rpm
-  $RM skype.rpm
+  $BINRM skype.rpm
 
   login_to_sudo $password
   sudo yum -y plymouth-theme*

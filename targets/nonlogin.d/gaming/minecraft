@@ -30,7 +30,7 @@ menv_alias mcjarmc=" ln -s ${MCHOME}/bin/minecraftmc.jar \
 # Function to install single player commands into minecraft.
 menv_function mcspc
 function mcspc {
-  $RM -rf mc
+  $BINRM -rf mc
   mkdir mc
   cd mc
 
@@ -38,7 +38,7 @@ function mcspc {
   wget -O spc.zip "http://bit.ly/10ZwXQ5"
   mkdir spc
   unzip -qq -d spc spc.zip
-  $RM -f spc.zip
+  $BINRM -f spc.zip
 
   echo "Backing up MCHOME"
   $CP --backup=numbered -R ${MCHOME} ~/backup/
@@ -47,7 +47,7 @@ function mcspc {
   unzip -qq -d minecraftjar ${MCHOME}/bin/minecraft.jar
 
   echo "Creating new minecraft.jar"
-  $RM -rf minecraftjar/META-INF
+  $BINRM -rf minecraftjar/META-INF
   $CP -R spc/com minecraftjar
   $CP -R spc/*.class minecraftjar
 
@@ -60,12 +60,12 @@ function mcspc {
   $CP minecraftspc.jar ${MCHOME}/bin/minecraftspc.jar
 
   cd ..
-  $RM -rf mc
+  $BINRM -rf mc
 }
 
 menv_function mclib
 function mclib {
-  $RM -rf mc
+  $BINRM -rf mc
   mkdir mc
   cd mc
 
@@ -96,7 +96,7 @@ function mclib {
   unset cptomc
 
   cd ..
-  $RM -rf mc
+  $BINRM -rf mc
 }
 
 # Function to backup my ii map in mc.

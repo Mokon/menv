@@ -3,7 +3,7 @@
 
 if [ -d ~/.vim ] ; then
   if [ -f ~/.vim/.$menv_gen_tag ] ; then
-    $RM -rf ~/.vim
+    $BINRM -rf ~/.vim
   else
     $MV --backup=numbered ~/.vim ${menv_backup_dir}/.vim
   fi

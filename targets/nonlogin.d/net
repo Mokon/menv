@@ -116,7 +116,7 @@ function rfc {
   if [ ! -f $rfcdir/$rfc.$extension ]; then
     wget -q $url -O $rfcdir/$rfc.$extension
     if [[ $? != 0 ]]; then
-      $RM -f $rfcdir/$rfc.$extension
+      $BINRM -f $rfcdir/$rfc.$extension
     fi
   fi
 
