@@ -92,6 +92,7 @@ EOF
   install_simple_package google-chrome-stable
   install_simple_package cmatrix
   install_simple_package eclipse-jdt
+  install_simple_package lynx
 fi
   
 read -t 5 -p "Do you want to install devel packages MENV might use? " -n 1 -r
