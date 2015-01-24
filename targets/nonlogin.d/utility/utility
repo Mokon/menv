@@ -32,13 +32,19 @@ function find_large_files {
 menv_function vim
 function vim {
   case $1 in
+    *:*:*)
+      local one=(${1//:/ })
+      vin ${one[@]:0:2} ${@:2:$#}
+      ;;
     *:*)
-      vin ${1/:/ }
+      vin ${1/:/ } ${@:2:$#}
       ;;
     *)
       if [ ! -f $1 ] ; then
         if [[ $1 =~ .*\.jpp ]] ; then
           set -- "${1/.jpp/.hpp}" ${@:2:$#}
+        elif [[ $1 =~ [a|b]\/.*\.[c|h]pp ]] ; then
+          set -- "${1:2}" ${@:2:$#}
         fi
       fi
 
