@@ -39,6 +39,14 @@ function git_diff_moved_file {
   git diff HEAD:$from $to
 }
 
+menv_function git_find_and_replace_all
+function git_find_and_replace_all {
+  local oldtext=$1
+  local newtext=$2
+
+  grep -rl $oldtext . | xargs sed -i "s/$oldtext/$newtext/g"
+}
+
 menv_function stash_cmdline_install
 function stash_cmdline_install {
   gem install atlassian-stash
