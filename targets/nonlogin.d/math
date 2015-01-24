@@ -5,7 +5,7 @@ menv_function convert_base
 function convert_base {
   local from=$1
   local to=$2
-  local number=$3
+  local number=$( to_upper ${3})
 
   echo "obase=$to; ibase=$from; $number" | bc
 }
@@ -14,6 +14,20 @@ menv_alias dec_to_binary="convert_base 10 2 "
 menv_alias binary_to_dec="convert_base 2 10 "
 menv_alias dec_to_hex="convert_base 10 16 "
 menv_alias hex_to_dec="convert_base 16 10 "
+
+menv_function to_lower
+function to_lower {
+  local input=$1
+
+  echo $input | awk '{print tolower($0)}'
+}
+
+menv_function to_upper
+function to_upper {
+  local input=$1
+
+  echo $input | awk '{print toupper($0)}'
+}
 
 menv_function calc
 function calc {

@@ -61,7 +61,7 @@ function hex_to_ip {
   printf '%d.%d.%d.%d\n' `echo $@ | sed -r 's/(..)/0x\1 /g'`
 }
 
-menv_function hex_to_ip
+menv_function ip_to_hex
 function ip_to_hex {
   printf '%.2X%.2X%.2X%.2X\n' `echo $@ | sed -e 's/\./ /g'`
 }
