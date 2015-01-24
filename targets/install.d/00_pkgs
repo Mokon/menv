@@ -80,7 +80,6 @@ EOF
   install_simple_package sed
   install_simple_package wireshark
   install_simple_package wireshark-gnome
-  install_simple_package bc
   install_simple_package wget
   install_simple_package grep
   install_simple_package openssh-clients
@@ -93,6 +92,7 @@ EOF
   install_simple_package cmatrix
   install_simple_package eclipse-jdt
   install_simple_package lynx
+  install_simple_package time
 fi
   
 read -t 5 -p "Do you want to install devel packages MENV might use? " -n 1 -r
@@ -112,6 +112,7 @@ if [[ $REPLY =~ ^[Yy]$ ]] ; then
   install_simple_package cscope
   install_simple_package vim
   install_simple_package wemux
+  install_simply_package bc
 fi
 
 menv_function install_java
