@@ -7,6 +7,10 @@ fi
 
 export PATH=$PATH:$HOME/bin:$menv_bin_dir
 
+if [ -d $menv_local_bin_dir ];then
+  export PATH=$PATH:$HOME/bin:$menv_local_bin_dir
+fi
+
 menv_target_children login
 
 # Source a local login script if one exists.

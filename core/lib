@@ -54,6 +54,7 @@ menv_export menv_history_dir=$menv_cache_dir/history
 menv_export menv_bin_dir=$menv_dir/bin
 menv_export menv_core_dir=$menv_dir/core
 menv_export menv_local_dir=$menv_dir/local
+menv_export menv_local_bin_dir=$menv_local_dir/bin
 menv_export menv_dotfiles_dir=$menv_dir/dotfiles
 menv_export menv_targets_dir=${menv_dir}/targets
 menv_export menv_pkgs_dir=${menv_dir}/pkgs
