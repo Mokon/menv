@@ -1,7 +1,8 @@
 #!/bin/bash
 # (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
 
-motd=$(
+menv_function
+function motd {
 # Terminal colors, assuming 256 colors.
 TC_RESET="[0m"
 TC_SKY="[0;37;44m"
@@ -51,10 +52,11 @@ unset TC_SKY
 unset TC_GRD
 unset TC_TEXT
 )
+}
 
 if [ "$TERM" = "screen" ] && [ -n "$TMUX" ]; then
-  echo $motd | sed -e :a -e 's/^.\{1,78\}$/& /;ta' 
+  motd | sed -e :a -e 's/^.\{1,78\}$/& /;ta'
 else
-  echo $motd
+  motd
 fi
 
