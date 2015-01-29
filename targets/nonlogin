@@ -3,6 +3,37 @@
 
 menv_target_children nonlogin
 
+export PATH=$PATH:$HOME/bin:$menv_bin_dir
+
+if [ -d $menv_local_bin_dir ];then
+  export PATH=$PATH:$HOME/bin:$menv_local_bin_dir
+fi
+
+menv_target_children login
+
+# Check the script version and update if needed. Never update an ignore version.
+ping -c1 -W1 github.com &> /dev/null
+if [ $? ]; then
+  if [ "$(menv_version get)" == "ignore" ] ; then
+    echo "menv script ignored." &> $menv_logs_dir/menv_status
+  elif [ "$(menv_version get)" == "$(menv_latest_version)" ] ; then
+    echo "menv script up to date." &> $menv_logs_dir/menv_status
+  else
+    read -t 5 -p "menv script different than github. update? " -n 1 -r
+    echo
+
+    if [[ $REPLY =~ ^[Yy]$ ]] ; then
+      echo "menv script different than github. Auto-updating." | tee $menv_logs_dir/menv_status
+      menv_target update
+    else
+      echo "menv script different than github. Not-updating" | tee $menv_logs_dir/menv_status
+    fi
+  fi
+else
+  echo "Git Hub not reachable. Could not check if menv is up to date." | tee $menv_logs_dir/menv_status
+fi
+
+
 # Source a local nonlogin script if one exists.
 if [ -f $menv_local_nonlogin ]; then
   source $menv_local_nonlogin
@@ -12,4 +43,6 @@ fi
 if [ -f /etc/bashrc ]; then
   source /etc/bashrc
 fi
+
+source $menv_core_dir/motd
 

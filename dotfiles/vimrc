@@ -158,6 +158,18 @@ endfunction
 
 set nocscopeverbose
 
+let vimDir = '$HOME/.vim'
+let &runtimepath.=','.vimDir
+
+if has('persistent_undo')
+  let myUndoDir = expand(vimDir . '/undodir')
+  call system('mkdir ' . myUndoDir)
+  let &undodir = myUndoDir
+  set undofile
+  set undolevels=1000
+  set undoreload=10000
+endif
+
 " =============================================================================
 " Some useful vimrc settings I don't want enabled by default.
 
