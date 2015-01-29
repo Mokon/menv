@@ -25,7 +25,13 @@ if [ ! -f ~/.ssh/id_rsa.pub ]; then
   ssh-keygen -t rsa -b 4096 -N '' -f ~/.ssh/id_rsa
 fi
 
-sudo /sbin/chkconfig sshd on
+read -t 5 -p "Do you want to enable sshd? " -n 1 -r
+echo
+
+if [[ $REPLY =~ ^[Yy]$ ]] ; then
+
+  sudo /sbin/chkconfig sshd on
+fi
 
 spopd
 

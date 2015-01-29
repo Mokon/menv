@@ -3,11 +3,19 @@
 
 spushd .
 
+read -t 5 -p "Do you want to install backup in fstab? " -n 1 -r
+echo
+
+if [[ $REPLY =~ ^[Yy]$ ]] ; then
+
+
 # TODO remove on uninstall.
 if grep backup /etc/fstab &> /dev/null ; then
   echo "Backup already in fstab."
 else
   echo "LABEL=/backup /backup auto nosuid,nodev,nofail" | sudo tee -a /etc/fstab
+fi
+
 fi
 
 spopd
