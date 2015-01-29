@@ -51,7 +51,6 @@ unset TC_RESET
 unset TC_SKY
 unset TC_GRD
 unset TC_TEXT
-)
 }
 
 if [ "$TERM" = "screen" ] && [ -n "$TMUX" ]; then
