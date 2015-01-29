@@ -170,7 +170,7 @@ function safe_symlink {
       $MV --backup=numbered $file ${menv_backup_dir}/${file}
     else
       echo "Found valid $file which is in the skel folder. Removing"
-      $RM $file
+      /bin/rm $file
     fi
   elif [ -L $file ] ; then
     echo "Found valid $file symlink to ${to}."
