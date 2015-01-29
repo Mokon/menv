@@ -164,7 +164,7 @@ function safe_symlink {
   local to=$2
 
   if [ -f $file ] && { [ ! -L $file ] || [`readlink $file` != "$to"] ; } ; then
-    if ! diff -q $file $to &> /dev/null ; then
+    if ! diff -q $file /etc/skel/$file &> /dev/null ; then
       echo "Found foreign ${file}. Backing up as ${menv_backup_dir}/${file}."
       $MKDIR -p `dirname ${menv_backup_dir}/${file}`
       $MV --backup=numbered $file ${menv_backup_dir}/${file}
