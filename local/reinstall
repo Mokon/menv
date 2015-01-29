@@ -1,0 +1,2 @@
+#!/bin/bash
+source <(curl -sL https://raw.githubusercontent.com/Mokon/menv/master/core/remote_install)
