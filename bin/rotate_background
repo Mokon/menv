@@ -10,6 +10,8 @@ if version_ge $gnomeVersion "3.8.4" ; then
 spushd .
 cd ${menv_cache_dir}
 
+for i in {1..1}; do
+
 mpwp="http://mokonphotography.com/wp-content/uploads"
 background_urls=(
   "$mpwp/2013/11/ca_2013_8_1-205.jpg"
@@ -25,11 +27,29 @@ background_urls=(
   "$mpwp/2013/11/hannah-geek.jpg"
   "$mpwp/2013/11/ca_2013_8_1-066.jpg"
   "$mpwp/2013/11/ca_2013_8_1-177.jpg"
+  "$mpwp/2014/07/IMG_0789.jpg"
+  "$mpwp/2014/07/ames_farm_inn_i-142.jpg"
+  "$mpwp/2012/06/Seacoast-Sunrise-059.jpg"
+  "$mpwp/2012/06/Cologne-072.jpg"
+  "$mpwp/2012/08/SeacoastNov07-2951.jpg"
+  "$mpwp/2013/11/misc-007.jpg"
+  "$mpwp/2013/02/winter-027.jpg"
+  "$mpwp/2013/02/winter-003.jpg"
+  "$mpwp/2012/07/t1.jpg"
+  "$mpwp/2012/07/misc2-329.jpg"
+  "$mpwp/2012/07/misc2-311.jpg"
+  "$mpwp/2012/07/hi-635.jpg"
+  "$mpwp/2012/07/hi-629.jpg"
+  "$mpwp/2013/11/back.jpg"
+  "$mpwp/2012/06/IMG_1058.jpg"
+  "$mpwp/2012/06/PitsfieldSunsunt-156.jpg"
+  "$mpwp/2012/07/DSC_0092.jpg"
+  "$mpwp/2014/02/IMG_8119.jpg"
 )
 i=$(($RANDOM % ${#background_urls[@]}))
 background_url=${background_urls[$i]}
 
-echo "Setting wallpaper to $background_url"
+echo "Setting wallpaper to $background_url" &>> $menv_cache_dir/rotate_background.log
 
 if [ ! -d wallpapers ] ; then
   mkdir wallpapers
@@ -38,8 +58,15 @@ fi
 if [ ! -f  wallpapers/${i}.jpg ] ; then
   fetch ${background_url} wallpapers/${i}.jpg
 fi
-DISPLAY=:0 gsettings set org.gnome.desktop.background picture-uri ${menv_cache_dir}/wallpapers/${i}.jpg
-DISPLAY=:0 gsettings set org.gnome.desktop.screensaver picture-uri ${menv_cache_dir}/wallpapers/${i}.jpg
+
+PID=$(pgrep gnome-session)
+export DBUS_SESSION_BUS_ADDRESS=$(grep -z DBUS_SESSION_BUS_ADDRESS /proc/$PID/environ|cut -d= -f2-)
+
+gsettings set org.gnome.desktop.background picture-uri ${menv_cache_dir}/wallpapers/${i}.jpg
+gsettings set org.gnome.desktop.screensaver picture-uri ${menv_cache_dir}/wallpapers/${i}.jpg
+
+sleep 5
+done
 
 spopd
 
