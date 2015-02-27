@@ -1,0 +1,9 @@
+#!/bin/bash
+
+menv_function run_all_tests
+function run_all_tests {
+  local dir=${1:-.}
+  local pattern=${2:-"*Test*"}
+
+  find $dir -type f -executable -name $pattern -and -not -name "*\.so*" -exec '{}' \;
+}
