@@ -13,6 +13,11 @@ menv_alias gitcp="git cherry-pick -x"
 menv_alias gitcdiff="git diff --staged --color-words --word-diff-regex=\"[^[:space:]]|([[:alnum:]]|UTF_8_GUARD)+\""
 menv_alias git_mk_branch="git checkout -b"
 menv_alias git_push_local_branch="git push -u origin"
+menv_alias git_graphical_diff_xxdiff="git difftool -t xxdiff -y"
+menv_alias git_graphical_diff_meld="git difftool -t meld -y"
+menv_alias git_graphical_diff_kdiff3="git difftool -t kdiff3 -y"
+menv_alias git_graphical_diff_kompare="git difftool -t kompare -y"
+menv_alias git_graphical_diff="git difftool -t kompare -y"
 
 # Function to clone from github.
 menv_function githubc
