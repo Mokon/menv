@@ -254,3 +254,10 @@ function pretty_print_json {
   mv -b $tmp_file $json
 }
 
+menv_function remove_empty_dirs
+function remove_empty_dirs {
+  local dir=${1:-.}
+
+  find $dir -type d -empty -exec rmdir {} \;
+}
+
