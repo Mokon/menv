@@ -1,0 +1,11 @@
+#!/bin/bash
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+
+spushd .
+
+cd ~
+  
+safe_symlink .gdbinit $menv_dotfiles_dir/gdbinit
+
+spopd
+

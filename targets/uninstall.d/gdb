@@ -1,0 +1,11 @@
+#!/bin/bash
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+
+spushd .
+
+cd ~
+
+if_symlink_rm .gdbinit
+
+spopd
+
