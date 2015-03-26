@@ -1,5 +1,8 @@
 #!/bin/bash
-# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+
+menv_export MENV_GAMING=0
+if [ $MENV_GAMING -ne 0 ] ; then
 
 menv_export MCHOME=~/.minecraft
 
@@ -41,23 +44,23 @@ function mcspc {
   $BINRM -f spc.zip
 
   echo "Backing up MCHOME"
-  $CP --backup=numbered -R ${MCHOME} ~/backup/
+  $BINCP --backup=numbered -R ${MCHOME} ~/backup/
 
   echo "Extracting minecraft.jar"
   unzip -qq -d minecraftjar ${MCHOME}/bin/minecraft.jar
 
   echo "Creating new minecraft.jar"
   $BINRM -rf minecraftjar/META-INF
-  $CP -R spc/com minecraftjar
-  $CP -R spc/*.class minecraftjar
+  $BINCP -R spc/com minecraftjar
+  $BINCP -R spc/*.class minecraftjar
 
   cd minecraftjar
   zip -q -r ../minecraftspc.jar *
   cd ..
 
   echo "Moving jar files to ${MCHOME}."
-  $CP spc/*.jar ${MCHOME}/bin/
-  $CP minecraftspc.jar ${MCHOME}/bin/minecraftspc.jar
+  $BINCP spc/*.jar ${MCHOME}/bin/
+  $BINCP minecraftspc.jar ${MCHOME}/bin/minecraftspc.jar
 
   cd ..
   $BINRM -rf mc
@@ -74,7 +77,7 @@ function mclib {
   unzip lwjgl.zip
 
   function cptomc {
-    $CP "lwjgl-2.8.5/jar/${1}" ${MCHOME}/bin/
+    $BINCP "lwjgl-2.8.5/jar/${1}" ${MCHOME}/bin/
   }
 
   cptomc jinput.jar
@@ -84,7 +87,7 @@ function mclib {
   unset cptomc
 
   function cptomc {
-    $CP "lwjgl-2.8.5/native/linux/${1}" ${MCHOME}/bin/natives/
+    $BINCP "lwjgl-2.8.5/native/linux/${1}" ${MCHOME}/bin/natives/
   }
 
   cptomc libjinput-linux.so
@@ -105,6 +108,8 @@ function mcbkii {
   local ii="${HOME}/.minecraft/saves/Imperium Infinitus"
 
   tar czf ii.tgz "${ii}"
-  $MV --backup=numbered ii.tgz ~/backup/
+  $BINMV --backup=numbered ii.tgz ~/backup/
 }
+
+fi
 

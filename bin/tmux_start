@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) 2013 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 
 export vt_install_dir="$menv_pkgs_dir/vt"
 export vt_logs_dir="$menv_logs_dir"

@@ -1,8 +1,9 @@
 #!/bin/bash
-# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 
 echo "Uninstalling menv"
-lockfile -r-1 $menv_dir/.lock
+
+menv_lock $menv_dir/.lock
 
 source ~/.bash_logout
 
@@ -15,18 +16,21 @@ menv_target login &> /dev/null # So we have the aliases etc in the menv arrays.
 
 menv_target_children uninstall
 
+local u=`whoami`
+exesudo delete_line_in_file "$u ALL=(ALL) NOPASSWD: ALL" /etc/sudoers
+
 if_symlink_rm $bashrc
 if_symlink_rm $bash_profile
 if_symlink_rm $bash_logout
 
 if_symlink_rm ~/cloud
 if_symlink_rm ~/docs
-if_symlink_rm ~/git
+if_symlink_rm ~/code
 if_symlink_rm ~/pics
 
 echo "Saving the menv backup and local directories."
-$MV $menv_backup_dir ~
-$MV $menv_local_dir ~
+$BINMV $menv_backup_dir ~
+$BINMV $menv_local_dir ~
 
 echo "Deleting the menv directory."
 $BINRM -rf $menv_dir

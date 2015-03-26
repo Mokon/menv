@@ -1,19 +1,19 @@
 #!/bin/bash
-# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 
 menv_alias menv_help="cat ${menv_dir}/README | less"
 menv_alias menv_local_refresh="source ~/.bash_profile"
 
 # Simple function for my dev box which has menv checked out in git. This
 # allows me to test menv on the box before I push it to github.
-if [ -d ~/menv/local/git/menv ]; then
+if [ -d ~/menv/local/code/menv ]; then
   menv_function menv_stage
   function menv_stage {
     spushd .
 
     menv_uninstall
 
-    cp -R  ~/local/git/menv ~
+    cp -R  ~/local/code/menv ~
 
     source ~/menv/core/target_handler
 

@@ -1,5 +1,7 @@
 #!/bin/bash
-# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+
+if [ $MENV_ROOT_ACCESS -ne 0 ] && [ $MENV_GRAPHICAL -ne 0 ] ; then
 
 if test -x "$(command -v "gnome-terminal")" ; then
 # Only run gnome for gnome <= 3.8.4
@@ -51,17 +53,17 @@ gsettings set org.gnome.shell.overrides workspaces-only-on-primary false
 
 gset_powr_path=org.gnome.settings-daemon.plugins.power
 gsettings set $gset_powr_path button-power                   hibernate
-gsettings set $gset_powr_path sleep-inactive-ac-timeout      3600
+gsettings set $gset_powr_path sleep-inactive-ac-timeout      36000
 gsettings set $gset_powr_path sleep-inactive-ac-type         hibernate
-gsettings set $gset_powr_path sleep-inactive-battery-timeout 1800
+gsettings set $gset_powr_path sleep-inactive-battery-timeout 18000
 gsettings set $gset_powr_path sleep-inactive-battery-type    hibernate
 gsettings set org.gnome.desktop.lockdown disable-lock-screen true
 gsettings set org.gnome.settings-daemon.plugins.xrandr default-monitors-setup do-nothing
 
-sudo plymouth-set-default-theme solar -R
+sudo plymouth-set-default-theme solar -R &> /dev/null
 
 sudo bash -c "echo 'HandleLidSwitch=ignore' >> /etc/systemd/logind.conf"
-systemctl restart systemd-logind
+sudo systemctl restart systemd-logind
 menv_alias record_screen="echo 'Type Ctrl + Shift + Alt + R'"
 
 PALETTE="['rgb(0,0,0)', 'rgb(205,0,0)', 'rgb(0,205,0)', 'rgb(205,205,0)', 'rgb(30,144,255)', 'rgb(205,0,205)', 'rgb(0,205,205)', 'rgb(229,229,229)', 'rgb(76,76,76)', 'rgb(255,0,0)', 'rgb(0,255,0)', 'rgb(255,255,0)', 'rgb(70,130,180)', 'rgb(255,0,255)', 'rgb(0,255,255)', 'rgb(255,255,255)']"
@@ -108,3 +110,6 @@ fi
 else
   echo "Unsupported Gnome Not Installed."
 fi
+
+fi
+

@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 
 menv_function senddiff
 function senddiff {
@@ -18,3 +18,4 @@ function sendemail {
   to=${3:-mokon@mokon.net}
   cat $file | mail -s "$subject" -r mokon@mokon.net $to mokon@mokon.net
 }
+

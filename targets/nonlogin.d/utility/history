@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
   
 # I like a large history size and I like a history that automatically saves
 # itself after each command so if my shell terminates without a proper exit I
@@ -43,6 +43,9 @@ function cd {
   if dir=`realpath "${1:-$default_dir}"` ; then
     dirstack=("${dirstack[@]}" $(pwd))
     builtin cd "$dir"
+  fi
+  if [ -f cscope.out ] ; then
+    menv_export CSCOPE_DB=`realpath cscope.out`
   fi
 }
 

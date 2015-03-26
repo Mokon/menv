@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 
 if test -x "$(command -v "gnome-terminal")" ; then
 # Only run gnome for gnome <= 3.8.4
@@ -12,7 +12,9 @@ cd ~
 
 function rm_app {
   local app="${1}.desktop"
-  rm .local/share/applications/${app}
+  if [ -f .local/share/applications/${app} ] ; then
+    $BINRM .local/share/applications/${app}
+  fi
 }
 
 rm_app root-wireshark
@@ -24,4 +26,6 @@ unset rm_app
 spopd
 
 fi
+
 fi
+

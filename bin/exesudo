@@ -1,0 +1,36 @@
+#!/bin/bash
+# From:
+#   http://stackoverflow.com/questions/9448920/how-can-i-execute-a-bash-function-using-sudo
+
+. ~/.bashrc &> /dev/null
+
+function exesudo {
+  local _funcname_="$1"
+  local params=( "$@" )
+  local tmpfile=`mktemp`
+
+  unset params[0]
+
+  echo -ne "#!/bin/bash\n\n" >> $tmpfile
+  
+  local regex="\s+"
+  
+  echo -ne "params=(\n" >> $tmpfile
+  for param in "${params[@]}" ; do
+    if [[ "$param" =~ $regex ]] ; then
+      echo -ne "\t\"${param}\"\n" >> $tmpfile
+    else
+      echo -ne "\t${param}\n" >> $tmpfile
+    fi
+  done
+  echo -ne ")\n" >> $tmpfile
+  
+	echo -ne "#$( type "$_funcname_" )" >> $tmpfile
+  echo -ne "\n$_funcname_ \"\${params[@]}\"\n" >> $tmpfile
+  
+  sudo bash $tmpfile
+  rm "$tmpfile"
+}
+
+exesudo "$@"
+

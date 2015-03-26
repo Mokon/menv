@@ -1,13 +1,18 @@
 #!/bin/bash
-# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 
 if [[ "$SHELL" != *bash* && ! -z $PS1 ]] ; then
   SHELLS=($(chsh -l |grep bash)) ;
   if [ -z "${SHELLS[0]}" ] ; then
-    if type yum > /dev/null ; then
-      sudo yum -y install bash
-    elif type apt-get > /dev/null ; then
-      sudo apt-get -y install bash
+    if groups dbond|grep -q wheelx ; then
+      if type yum > /dev/null ; then
+        sudo yum -y install bash
+      elif type apt-get > /dev/null ; then
+        sudo apt-get -y install bash
+      fi
+    else
+      echo "your shell is not bash and you are not in the wheel group"
+      echo "please ask the system administrator to install bash"
     fi
   fi
 
@@ -55,21 +60,24 @@ menv_export menv_bin_dir=$menv_dir/bin
 menv_export menv_core_dir=$menv_dir/core
 menv_export menv_local_dir=$menv_dir/local
 menv_export menv_local_bin_dir=$menv_local_dir/bin
+menv_export menv_local_save_dir=$menv_local_dir/save
 menv_export menv_dotfiles_dir=$menv_dir/dotfiles
 menv_export menv_targets_dir=${menv_dir}/targets
 menv_export menv_pkgs_dir=${menv_dir}/pkgs
 menv_export menv_cloud_dir=${menv_dir}/cloud
+menv_export menv_install_opts_file=$menv_cache_dir/install_opts
+menv_export menv_last_no_update_file=$menv_cache_dir/last_no_update
 
 # A tag to use to specify menv created the item in question
 menv_export menv_gen_tag="menv_generated"
 
 # Absolute paths for lsb commands.
-menv_export MV=/bin/mv
-menv_export LN=/bin/ln
+menv_export BINMV=/bin/mv
+menv_export BINLN=/bin/ln
 menv_export BINRM=/bin/rm
-menv_export CP=/bin/cp
-menv_export TAR=/bin/tar
-menv_export MKDIR=/bin/mkdir
+menv_export BINCP=/bin/cp
+menv_export BINTAR=/bin/tar
+menv_export BINMKDIR=/bin/mkdir
 
 # Some files on the local machine
 menv_export menv_local_login=$menv_local_dir/login
@@ -96,12 +104,12 @@ fi
 # Silent pushd and popd
 menv_function spushd
 function spushd {
-  pushd $@ > /dev/null
+  pushd $@ &> /dev/null
 }
 
 menv_function spopd
 function spopd {
-  popd $@ > /dev/null
+  popd $@ &> /dev/null
 }
 
 # executes a target
@@ -154,7 +162,7 @@ function github_fetch {
 
   tar -xzf master.tar.gz
   $BINRM -f master.tar.gz
-  $MV "$(basename $repo)-master" $(basename $repo)
+  $BINMV "$(basename $repo)-master" $(basename $repo)
 }
 
 # Aux function to setup a symbolic link. Backing up w/e was there before.
@@ -166,18 +174,18 @@ function safe_symlink {
   if [ -f $file ] && { [ ! -L $file ] || [`readlink $file` != "$to"] ; } ; then
     if ! diff -q $file /etc/skel/$file &> /dev/null ; then
       echo "Found foreign ${file}. Backing up as ${menv_backup_dir}/${file}."
-      $MKDIR -p `dirname ${menv_backup_dir}/${file}`
-      $MV --backup=numbered $file ${menv_backup_dir}/${file}
+      $BINMKDIR -p `dirname ${menv_backup_dir}/${file}`
+      $BINMV --backup=numbered $file ${menv_backup_dir}/${file}
     else
       echo "Found valid $file which is in the skel folder. Removing"
-      /bin/rm $file
+      $BINRM $file
     fi
   elif [ -L $file ] ; then
     echo "Found valid $file symlink to ${to}."
   fi
 
   if [ ! -f $file ] ; then
-    $LN -s $to $file
+    $BINLN -s $to $file
   fi
 }
 
@@ -269,17 +277,41 @@ function append_crontab {
   (crontab -l ; echo "$cmd") 2>&1 | grep -v "no crontab" | sort | uniq | crontab -
 }
 
+menv_function menv_lock
+function menv_lock {
+  local lockfile=$1
 
-# This is a simple function which ensures sudo has been recently given a
-# password so it can login without a password. This solves some redirection
-# problems in other scripts.
-menv_function login_to_sudo
-function login_to_sudo {
-  local password=$1
+  trap "/bin/rm -f $lockfile; exit" INT TERM EXIT
 
-  echo $password | sudo -s echo &> /dev/null
+  if type lockfile > /dev/null ; then
+    lockfile -r-1 $lockfile
+  else
+    while true ; do
+      if mkdir $lockfile; then
+        break
+      fi
+    done
+  fi
 }
+
+menv_function menv_unlock
+function menv_unlock {
+  local lockfile=$1
+  
+  $BINRM -f $lockfile
+  trap - INT TERM EXIT
+}
+
+menv_function delete_line_in_file
+function delete_line_in_file {
+    local pattern=$1
+    local file=$2
+
+    sed -i "/$pattern/d" $file
+}
+
 
 # Include and set the distro core functionality.
 source $menv_core_dir/dist
+source $menv_core_dir/progress_bar
 

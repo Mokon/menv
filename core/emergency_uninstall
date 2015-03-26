@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 BINRM="/bin/rm -R"
 $BINRM ~/.gntrc
 $BINRM ~/.gitconfig
@@ -11,3 +11,12 @@ $BINRM ~/.vimrc
 $BINRM ~/.vim
 $BINRM ~/.bash_profile
 $BINRM ~/.bash_logout
+$BINRM ~/.gdbinit
+$BINRM ~/.quiltrc
+$BINRM ~/.ssh
+$BINRM ~/.config/user-dirs.conf
+$BINRM ~/.config/user-dirs.dirs
+$BINRM ~/.local/share/applications/gnome-start.desktop
+$BINRM ~/.local/share/applications/mimeapps.desktop
+$BINRM ~/.local/share/applications/root-wireshark.desktop
+

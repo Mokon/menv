@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
   
 # I like to keep my prompt simple...
 TC_GRE="\[\033[0;32;40m\]"
@@ -50,3 +50,5 @@ function login_to_vm {
 }
 
 menv_alias fix_broken_chrome="/bin/rm -rf ~/.config/google-chrome/Default/Web\ Data"
+menv_alias kill_chrome="sudo pkill -9 chrome"
+

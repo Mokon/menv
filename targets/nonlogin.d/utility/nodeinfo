@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 
 menv_function nodeinfo {
 function nodeinfo {
@@ -23,12 +23,13 @@ function nodeinfo {
                            | sed ':a;N;$!ba;s/\n/\n..............: /g'` "
   echo "Kernel........: `uname -s ` `uname -r` `uname -v`"
   echo "Machine HW....: `uname -m`"
-  echo "Uptime........:`uptime | sed 's/.*up ([^,]*), .*/1/'`"
+  echo "Uptime........:`uptime -p | sed 's/.*up ([^,]*), .*/1/'`"
   echo "Memory........: `echo $MEMT | awk {'print $2'}` `echo $MEMT \
                                     | awk {'print $3'}`"
   echo "SWAP..........: `echo $SWAT | awk {'print $2'}` `echo $SWAT \
                                     | awk {'print $3'}`"
   echo "Username......: `whoami`"
+  echo "Groups........: `groups $(whoami) | cut -f2 -d':'`"
   echo "Processor(s)..: $PNUMS $PVENDOR ${PMHZ} MHz ${PMODEL}"
 
   echo "Reachability..:"

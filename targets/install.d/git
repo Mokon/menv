@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 
 spushd .
 
@@ -17,8 +17,11 @@ wget -O gitwt.tar -q -N --no-check-certificate \
   https://gitorious.org/willgit/mainline/archive-tarball/master
 tar -xvf gitwt.tar &> /dev/null
 
-$CP  willgit-mainline/bin/* ~/menv/bin
-$BINRM -rf willgit-mainline
+$BINCP  willgit-mainline/bin/* ~/menv/bin
+
+if [ -f willgit-mainline ] ; then
+  $BINRM -rf willgit-mainline
+fi
 $BINRM gitwt.tar
 
 spopd

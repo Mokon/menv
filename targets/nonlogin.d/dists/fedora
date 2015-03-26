@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 
 if [ $DIST == "fedora" ] ; then 
   menv_alias fedora_empty_trash='/bin/rm -rf ~/.local/share/Trash/'

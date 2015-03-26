@@ -1,4 +1,4 @@
 #!/bin/bash
-# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 
 menv_alias mkdp="debclean ; debuild -uc -us -b -i -d -nc"

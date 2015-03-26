@@ -1,0 +1,56 @@
+#!/biin/bash
+# From: Ian Brown (ijbrown@hotmail.com)
+#   http://stackoverflow.com/questions/11592583/bash-progress-bar
+
+function progres_bar_put {
+  echo -en "\033[${1};${2}H"
+}
+
+function progres_bar_draw {
+  echo -en "\033%"
+  echo -en "\033(0"
+}
+
+function progres_bar_write {
+  echo -en "\033(B"
+}
+
+function progres_bar_hide_cursor {
+  echo -en "\033[?25l"
+}
+
+function progres_bar_norm {
+  echo -en "\033[?12l\033[?25h"
+}
+
+function progress_bar_update {
+  perc_done=$(echo 'scale=2;'$1/$2*100 | bc)
+  half_done=$(echo $perc_done/2 | bc)
+  bar_len=$(echo ${perc_done%'.00'})
+  half_done=`expr $half_done + 6`
+  tput bold
+  progres_bar_put 7 28
+  printf "%4.4s  " $bar_len%
+  progres_bar_put 5 $half_done
+  echo -e "\033[7m \033[0m"
+  tput sgr0
+}
+
+function progress_bar_construct {
+  clear
+  progres_bar_hide_cursor
+  echo -e ""
+  echo -e ""
+  progres_bar_draw
+  echo -e "    lqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqk"
+  echo -e "    x                                                   x"
+  echo -e "    mqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqj"
+  progres_bar_write
+}
+
+function progress_bar_destruct {
+  progres_bar_put 10 12
+  echo -e ""
+  progres_bar_norm
+}
+

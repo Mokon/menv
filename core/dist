@@ -1,11 +1,11 @@
 #!/bin/bash
-# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 
 # A function to determine the distribution and pkg management tool
 menv_function determine_dist
 function determine_dist {
-  if tyep lsb_release &> /dev/null ; then 
-    DIST=$(lsb_release -a |grep "Distributor ID" |awk {'print tolower($3)'})
+  if type lsb_release &> /dev/null ; then 
+    DIST=$(lsb_release -a | grep "Distributor ID" | awk {'print tolower($3)'})
   else
     DIST=""
   fi
@@ -43,6 +43,9 @@ menv_alias ${DIST}_install=${PKG_MGMT}_install
 
 menv_alias yum_install="sudo yum install -q -y"
 menv_alias apt_install="sudo apt-get --yes --force-yes install -qq"
+
+menv_alias global_install_package="install_package"
+menv_alias local_install_package="echo 'local install not supported'"
 
 menv_function install_package
 function install_package {

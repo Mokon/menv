@@ -1,4 +1,5 @@
 #!/usr/bin/perl
+# (C) 2015 David 'Mokon' Bond, All Rights Reserved
 # This is a simple perl script to add the enumeration values to a c enumeration
 # contained within a source file. Just pass the file you want to open as the
 # first param and the enumeration name as the second name.

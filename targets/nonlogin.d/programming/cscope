@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 
 menv_alias cscope="cscope -p100"
 menv_alias cscopeR="cscope -R -p100"
@@ -13,6 +13,13 @@ function cscopeinit {
   cscope -b
   menv_export CSCOPE_DB=`realpath cscope.out`
   /bin/rm ./cscope.files
+}
+
+menv_function cscope_update
+function cscope_udpdate {
+  if [ -f cscope.out ] ; then
+    menv_export CSCOPE_DB=`realpath cscope.out`
+  fi
 }
 
 menv_function cscope_vim_help

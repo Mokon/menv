@@ -1,16 +1,62 @@
 #!/bin/bash
-# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+
+menv_function install_java
+function install_java {
+  spushd
+
+  local jrerpm=jre-8u40-linux-x64.rpm
+  local jdkrpm=jdk-8u40-linux-x64.rpm
+  local jrepkg=jre1.8.0_40-1.8.0_40-fcs.x86_64
+
+  if rpm -q $jrepkg &> /dev/null ; then
+    sudo rpm -e --quiet $jrepkg &> /dev/null
+  fi
+
+  fetch http://javadl.sun.com/webapps/download/AutoDL?BundleId=104759 $jrerpm
+  wget -q -N --no-check-certificate --no-cookies \
+    --header "Cookie: oraclelicense=accept-securebackup-cookie" \
+    http://download.oracle.com/otn-pub/java/jdk/8u40-b26/$jdkrpm
+
+  sudo rpm -ivh --quiet $jrerpm &> /dev/null
+  sudo rpm -ivh --quiet $jdkrpm &> /dev/null
+  sudo $BINRM $jrerpm
+  sudo $BINRM $jdkrpm
+
+  function jaltinstall {
+    sudo alternatives --install $@
+    if ! sudo alternatives --set $2 $3 &> /dev/null; then
+      if [ -f /usr/bin/$2 ] ; then
+        sudo rm /usr/bin/$2
+      fi
+
+      if [ -f /var/lib/alternatives/$2 ] ; then
+        sudo rm /var/lib/alternatives/$2
+      fi
+
+      sudo alternatives --set $2 $3
+    fi
+  }
+
+  jaltinstall /usr/bin/java java /usr/java/latest/bin/java 200000
+  #jaltinstall /usr/bin/javaws javaws /usr/java/latest/bin/javaws 200000
+  jaltinstall /usr/lib/mozilla/plugins/libjavaplugin.so libjavaplugin.so /usr/java/latest/lib/i386/libnpjp2.so 200000
+  jaltinstall /usr/lib64/mozilla/plugins/libjavaplugin.so libjavaplugin.so.x86_64 /usr/java/latest/lib/amd64/libnpjp2.so 200000
+  jaltinstall /usr/bin/javac javac /usr/java/latest/bin/javac 200000
+  jaltinstall /usr/bin/jar jar /usr/java/latest/bin/jar 200000
+
+  spopd
+}
+
+if [ $MENV_ROOT_ACCESS -ne 0 ] && [ $MENV_GRAPHICAL -ne 0 ] ; then
 
 read -t 5 -p "Do you want to install packages MENV might use? " -n 1 -r
 echo
 
 if [[ $REPLY =~ ^[Yy]$ ]] ; then
 
-  echo -n Password:
-  read -s password
-  echo
+if [ "$PKG_MGMT" -eq "yum" ] ; then
 
-  login_to_sudo $password
   cat << EOF | sudo tee /etc/yum.repos.d/google-chrome.repo
 [google-chrome]
 name=google-chrome-\$basearch
@@ -20,7 +66,6 @@ gpgcheck=1
 gpgkey=https://dl-ssl.google.com/linux/linux_signing_key.pub
 EOF
 
-  login_to_sudo $password
   cat << EOF | sudo tee /etc/yum.repos.d/adobe-linux-x86_64.repo
 [adobe-linux-x86_64]
 name=Adobe Systems Incorporated
@@ -30,8 +75,7 @@ gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-adobe-linux
 EOF
 
-  login_to_sudo $password
-  cat << EOF | sudo tee /etc/yum.repos.d/google.repo 
+  cat << EOF | sudo tee /etc/yum.repos.d/google.repo
 [google32]
 name=Google - i386
 baseurl=http://dl.google.com/linux/rpm/stable/i386
@@ -39,8 +83,7 @@ enabled=1
 gpgcheck=1
 EOF
 
-  login_to_sudo $password
-  cat << EOF | sudo tee /etc/yum.repos.d/google-earth.repo 
+  cat << EOF | sudo tee /etc/yum.repos.d/google-earth.repo
 [google-earth]
 name=google-earth
 baseurl=http://dl.google.com/linux/earth/rpm/stable/x86_64
@@ -48,7 +91,6 @@ enabled=1
 gpgcheck=1
 EOF
 
-  login_to_sudo $password
 cat << EOF | sudo tee /etc/yum.repos.d/rpm-sphere.repo
 [rpm-sphere]
 name=RPM Sphere
@@ -58,24 +100,22 @@ enabled=1
 gpgcheck=1
 EOF
 
-  login_to_sudo $password
   su -c 'yum localinstall --nogpgcheck \
     http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
     http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm'
 
-  login_to_sudo $password
   sudo yum update -y
 
-  login_to_sudo $password
   sudo yum -y install libXv.i686 libXScrnSaver.i686 qt.i686 qt-x11.i686 pulseaudio-libs.i686 pulseaudio-libs-glib2.i686 alsa-plugins-pulseaudio.i686 qtwebkit.i686
 
   wget http://www.skype.com/go/getskype-linux-beta-fc10 -O skype.rpm
-  login_to_sudo $password
   sudo yum -y localinstall skype.rpm
   $BINRM skype.rpm
 
-  login_to_sudo $password
   sudo yum -y plymouth-theme*
+
+  install_java
+fi
 
   install_simple_package sed
   install_simple_package wireshark
@@ -94,17 +134,12 @@ EOF
   install_simple_package lynx
   install_simple_package time
 fi
-  
+
 read -t 5 -p "Do you want to install devel packages MENV might use? " -n 1 -r
 echo
 
 if [[ $REPLY =~ ^[Yy]$ ]] ; then
 
-  echo -n Password:
-  read -s password
-  echo
-
-  login_to_sudo $password
 
   install_simple_package clang
   install_simple_package tmux
@@ -115,7 +150,5 @@ if [[ $REPLY =~ ^[Yy]$ ]] ; then
   install_simply_package bc
 fi
 
-menv_function install_java
-function install_java {
-  echo "Not Implemented Yet"
-}
+fi
+

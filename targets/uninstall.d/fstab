@@ -1,0 +1,11 @@
+#!/bin/bash
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+
+spushd .
+
+if sudo grep -q backup /etc/fstab &> /dev/null ; then
+  exesudo delete_line_in_file "LABEL=\\/backup \\/backup auto nosuid,nodev,nofail" /etc/fstab
+fi
+
+spopd
+

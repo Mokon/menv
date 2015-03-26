@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 
 menv_function start
 function start {
@@ -22,3 +22,14 @@ function start {
   tmux attach-session -t $SESSION
 }
 
+menv_function tmux_help
+function tmux_help {
+cat <<HERE
+  tmux new -s session_name
+  tmux attach -t session_name
+  tmux switch -t session_name
+  tmux list-sessions
+  tmux detach (prefix + d)
+  tmux kill-session -t session_name
+HERE
+}

@@ -1,11 +1,15 @@
 #!/bin/bash
-# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 
 menv_alias xval="valgrind --track-origins=yes --leak-check=full "\
   "--show-reachable=yes"
+menv_alias rval="valgrind --tool=memcheck --leak-check=full "\
+  "--show-reachable=no --undef-value-errors=no --track-origins=no "\
+  "--child-silent-after-fork=no --trace-children=no"
 menv_alias sval="xval --gen-suppressions=yes --demangle=no"
 menv_alias profvis="kcachegrind"
 menv_alias prof="valgrind --tool=callgrind"
+menv_alias visual_memcheck="valkyrie"
 
 menv_function gprof
 function gprof {

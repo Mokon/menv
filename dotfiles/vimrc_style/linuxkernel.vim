@@ -1,4 +1,4 @@
-" (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
+" (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 
 set wildignore+=*.ko,*.mod.c,*.order,modules.builtin
 

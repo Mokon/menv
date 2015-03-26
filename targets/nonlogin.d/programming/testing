@@ -1,4 +1,5 @@
 #!/bin/bash
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 
 menv_function run_all_tests
 function run_all_tests {
@@ -7,3 +8,4 @@ function run_all_tests {
 
   find $dir -type f -executable -name $pattern -and -not -name "*\.so*" -exec '{}' \;
 }
+

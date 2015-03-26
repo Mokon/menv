@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 
 spushd .
 
@@ -10,12 +10,12 @@ github_fetch airblade/vim-gitgutter
 
 cd ~/.vim
 github_fetch Rip-Rip/clang_complete
-$MV clang_complete/bin .
-$MV clang_complete/plugin .
+$BINMV clang_complete/bin .
+$BINMV clang_complete/plugin .
 $BINRM -rf clang_complete
 
 github_fetch tpope/vim-fugitive
-$MV vim-fugitive/plugin/* plugin/
+$BINMV vim-fugitive/plugin/* plugin/
 $BINRM -rf vim-fugitive
 
 cd ~/.vim/plugin

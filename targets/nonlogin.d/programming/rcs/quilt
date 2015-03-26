@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 
 menv_export QUILT_PATCHES="debian/patches"
 menv_export QUILT_REFRESH_ARGS="--backup --diffstat --strip-trailing-whitespace --no-timestamps --no-index --sort -p1 -p ab"

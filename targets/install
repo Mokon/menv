@@ -1,19 +1,41 @@
 #!/bin/bash
-# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 
 if [ -f $menv_dir/.$menv_gen_tag ] ; then
   echo "menv is already installed on this computer. Not installing."
 else
   echo "Installing menv!"
-
-  if ! test -x "$(command -v "lockfile")" ; then
-    install_simple_package procmail
-  fi
-  lockfile -r-1 $menv_dir/.lock
+  
+  menv_lock $menv_dir/.lock
 
   touch $menv_dir/.$menv_gen_tag
   menv_version set
   spushd .
+
+  read -t 5 -p "Is this a graphical terminal? " -n 1 -r
+  echo
+
+  if [[ $REPLY =~ ^[Yy]$ ]] ; then
+    echo "graphical" >> $menv_install_opts_file
+    menv_export MENV_GRAPHICAL=1
+  else
+    echo "nographical" >> $menv_install_opts_file
+    menv_export MENV_GRAPHICAL=0
+  fi
+
+  read -t 5 -p "Do you have root access? " -n 1 -r
+  echo
+
+  if [[ $REPLY =~ ^[Yy]$ ]] ; then
+    menv_export MENV_ROOT_ACCESS=1
+    echo "root" >> $menv_install_opts_file
+  
+    local u=`whoami`
+    echo "$u ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers &> /dev/null
+  else
+    menv_export MENV_ROOT_ACCESS=0
+    echo "noroot" >> $menv_install_opts_file
+  fi
 
   # Link the bash targets.
   cd ~
@@ -24,13 +46,13 @@ else
   if [ -d ~/backup ] ; then
     echo "Restoring backup dir!"
     $BINRM -rf $menv_backup_dir
-    $MV ~/backup $menv_backup_dir
+    $BINMV ~/backup $menv_backup_dir
   fi
 
   if [ -d ~/local ] ; then
     echo "Restoring local dir!"
     $BINRM -rf $menv_local_dir
-    $MV ~/local $menv_local_dir
+    $BINMV ~/local $menv_local_dir
   fi
 
   if [ -f $menv_local_nonlogin ]; then
@@ -46,17 +68,20 @@ else
   fi
 
   # Link some files and dirs to the user home.
-  safe_symlink ~/cloud $menv_dir/cloud
+  safe_symlink ~/code $menv_local_dir/code
   safe_symlink ~/docs $menv_local_dir/docs
-  safe_symlink ~/git $menv_local_dir/git
-  safe_symlink ~/pics $menv_local_dir/pics
+
+  if [ $MENV_GRAPHICAL -ne 0 ] ; then
+    safe_symlink ~/cloud $menv_dir/cloud
+    safe_symlink ~/pics $menv_local_dir/pics
+  fi
 
   spopd
 
   menv_target_children install
 
-  $BINRM -f $menv_dir/.lock
-  echo "Done installing menv!"
+  menv_unlock $menv_dir/.lock
 
+  echo "Done installing menv!"
 fi
 

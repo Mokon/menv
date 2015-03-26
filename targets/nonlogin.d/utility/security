@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 
 # Sets up ssh priv keys
 menv_function add_priv_key
@@ -59,3 +59,4 @@ function vpn {
     send_user "openvpn terminated"
 DONE
 }
+

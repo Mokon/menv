@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 
 if test -x "$(command -v "gnome-terminal")" ; then
 # Only run gnome for gnome <= 3.8.4
@@ -30,4 +30,6 @@ function gnome_list_all_settings {
 }
 
 fi
+
 fi
+

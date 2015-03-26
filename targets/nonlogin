@@ -1,5 +1,7 @@
 #!/bin/bash
-# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+
+echo "Starting menv"
 
 menv_target_children nonlogin
 
@@ -8,6 +10,8 @@ export PATH=$PATH:$HOME/bin:$menv_bin_dir
 if [ -d $menv_local_bin_dir ];then
   export PATH=$PATH:$HOME/bin:$menv_local_bin_dir
 fi
+
+if [ $MENV_INTERACTIVE -eq 1 ] ; then
 
 menv_target_children login
 
@@ -19,14 +23,22 @@ if [ $? ]; then
   elif [ "$(menv_version get)" == "$(menv_latest_version)" ] ; then
     echo "menv script up to date." &> $menv_logs_dir/menv_status
   else
-    read -t 5 -p "menv script different than github. update? " -n 1 -r
-    echo
+    find $menv_last_no_update_file -mtime +10 -type f -delete
+    if [ ! -f $menv_last_no_update_file ] ; then
+      read -t 5 -p "menv script different than github. update? " -n 1 -r
+      echo
 
-    if [[ $REPLY =~ ^[Yy]$ ]] ; then
-      echo "menv script different than github. Auto-updating." | tee $menv_logs_dir/menv_status
-      menv_target update
+      if [[ $REPLY =~ ^[Yy]$ ]] ; then
+        echo "menv script different than github. Auto-updating." | tee $menv_logs_dir/menv_status
+        menv_target update
+      else
+        touch $menv_last_no_update_file
+        echo "menv script different than github. Not-updating" | tee $menv_logs_dir/menv_status
+        echo 
+      fi
     else
-      echo "menv script different than github. Not-updating" | tee $menv_logs_dir/menv_status
+      echo "menv script different than github. Not-updating, since recently update rejected." | tee $menv_logs_dir/menv_status
+      echo "run menv_update if you wish to manually update" | tee $menv_logs_dir/menv_status
     fi
   fi
 else
@@ -39,10 +51,14 @@ if [ -f $menv_local_nonlogin ]; then
   source $menv_local_nonlogin
 fi
 
+fi
+
 # Source global definitions
 if [ -f /etc/bashrc ]; then
   source /etc/bashrc
 fi
 
-source $menv_core_dir/motd
+if [ $MENV_INTERACTIVE -eq 1 ] ; then
+  source $menv_core_dir/motd
+fi
 

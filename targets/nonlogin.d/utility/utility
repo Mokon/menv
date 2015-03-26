@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 
 menv_alias count_files_in_directory_r="find . -type f | wc -l"
 
@@ -43,8 +43,22 @@ function vim {
       if [ ! -f $1 ] ; then
         if [[ $1 =~ .*\.jpp ]] ; then
           set -- "${1/.jpp/.hpp}" ${@:2:$#}
-        elif [[ $1 =~ [a|b]\/.*\.[c|h]pp ]] ; then
+        elif [[ $1 =~ ^[a|b]\/.*\.[c|h]pp ]] ; then
           set -- "${1:2}" ${@:2:$#}
+        else
+          local initial=$1
+          local path=".."
+          set -- "../${1}" ${@:2:$#}
+          local rpath=`realpath $path`
+          while [ $rpath != "/" ] && [ ! -f "$1" ] ; do
+            set -- "../${1}" ${@:2:$#}
+            path="../$path"
+            rpath=`realpath $path`
+          done
+
+          if [ ! -f "$1" ] ; then
+            set -- "$initial" ${@:2:$#}
+          fi
         fi
       fi
 
@@ -138,7 +152,7 @@ function find_and_replace_all {
   local dir=${3:-./}
 
   find $dir -type f -and -not -path "*.git*" \
-    -exec sed -i -e 's/$search_pattern/$replace_pattern/g' {} \;
+    -exec sed -i -e "s/$search_pattern/$replace_pattern/g" {} \;
 }
 
 # Opens a file based on its extension or hashbang.
@@ -259,5 +273,26 @@ function remove_empty_dirs {
   local dir=${1:-.}
 
   find $dir -type d -empty -exec rmdir {} \;
+}
+
+menv_function sum_transfer_size
+function sum_transfer_size {
+  local file=$1
+  
+  awk '{print $3}' $file | sed 's/KB/000/' | sed 's/MB/000000/' | \
+    grep -v - | grep -v % | awk '{ sum += $1 } END { print sum }'
+}
+
+menv_function save
+function save {
+  local savefile=${1:-$menv_local_save_dir/saveme}
+ 
+  if [ -f $savefile ] ; then
+    $BINCP --backup=numbered ${savefile}{,.bak}
+  fi
+
+  local input=$(cat)
+
+  echo $input | tee $savefile
 }
 

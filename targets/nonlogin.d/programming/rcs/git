@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) 2013-2014 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 
 menv_alias gits="git status -s"
 menv_alias gitic="git commit -m \"Initial Commit\""
@@ -18,6 +18,7 @@ menv_alias git_graphical_diff_meld="git difftool -t meld -y"
 menv_alias git_graphical_diff_kdiff3="git difftool -t kdiff3 -y"
 menv_alias git_graphical_diff_kompare="git difftool -t kompare -y"
 menv_alias git_graphical_diff="git difftool -t kompare -y"
+menv_alias git_stash_keep_index="git stash -k"
 
 # Function to clone from github.
 menv_function githubc
