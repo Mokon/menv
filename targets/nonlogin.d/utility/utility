@@ -296,3 +296,24 @@ function save {
   echo $input | tee $savefile
 }
 
+menv_alias dropboxd="~/.dropbox-dist/dropboxd"
+
+menv_function determine_filesystem
+function determine_filesystem {
+  local dev=${1:-sd1}
+
+  sudo fdisk /dev/$dev -l
+}
+
+menv_function grep_exclude_list
+function grep_exclude_list {
+  local pattern=$1
+
+  local cmd="/usr/bin/grep -rn $pattern ."
+  for param in ${*:2} ; do
+    cmd="$cmd | grep -v $param "
+  done
+  echo $cmd
+  eval $cmd
+}
+

@@ -5,13 +5,13 @@ echo "Starting menv"
 
 menv_target_children nonlogin
 
-export PATH=$PATH:$HOME/bin:$menv_bin_dir
+export PATH=$PATH:$HOME/bin:$menv_bin_dir:$HOME/.local/bin
 
 if [ -d $menv_local_bin_dir ];then
   export PATH=$PATH:$HOME/bin:$menv_local_bin_dir
 fi
 
-if [ $MENV_INTERACTIVE -eq 1 ] ; then
+if [[ "$MENV_INTERACTIVE" == 1 ]] ; then
 
 menv_target_children login
 
@@ -23,7 +23,9 @@ if [ $? ]; then
   elif [ "$(menv_version get)" == "$(menv_latest_version)" ] ; then
     echo "menv script up to date." &> $menv_logs_dir/menv_status
   else
-    find $menv_last_no_update_file -mtime +10 -type f -delete
+    if [ -f $menv_last_no_update_file ] ; then
+      find $menv_last_no_update_file -mtime +10 -type f -delete
+    fi
     if [ ! -f $menv_last_no_update_file ] ; then
       read -t 5 -p "menv script different than github. update? " -n 1 -r
       echo
@@ -34,7 +36,7 @@ if [ $? ]; then
       else
         touch $menv_last_no_update_file
         echo "menv script different than github. Not-updating" | tee $menv_logs_dir/menv_status
-        echo 
+        echo
       fi
     else
       echo "menv script different than github. Not-updating, since recently update rejected." | tee $menv_logs_dir/menv_status
@@ -58,7 +60,7 @@ if [ -f /etc/bashrc ]; then
   source /etc/bashrc
 fi
 
-if [ $MENV_INTERACTIVE -eq 1 ] ; then
+if [[ "$MENV_INTERACTIVE" == 1 ]] ; then
   source $menv_core_dir/motd
 fi
 

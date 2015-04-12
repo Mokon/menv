@@ -1,0 +1,21 @@
+#!/bin/bash
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+
+spushd .
+
+if [ $MENV_ROOT_ACCESS -ne 0 ] &&[ $MENV_GRAPHICAL -ne 0 ] ; then
+  if grep -q "* soft nofile 4096" /etc/security/limits.conf &> /dev/null ; then
+    echo "High file limit already installed"
+  else
+    read -t 5 -p "Do you want to install a high file limit? " -n 1 -r
+    echo
+
+    if [[ $REPLY =~ ^[Yy]$ ]] ; then
+      echo "* soft nofile 4096" | sudo tee -a /etc/security/limits.conf &> /dev/null
+      echo "* hard nofile 4096" | sudo tee -a /etc/security/limits.conf &> /dev/null
+    fi
+  fi
+fi
+
+spopd
+

@@ -128,7 +128,7 @@ w
 END
 
     partprobe
-    umount /dev/${device}1
+    umount /dev/${device}1 &> /dev/null
 
     case $os in
       linux)

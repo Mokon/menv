@@ -23,7 +23,11 @@ function nodeinfo {
                            | sed ':a;N;$!ba;s/\n/\n..............: /g'` "
   echo "Kernel........: `uname -s ` `uname -r` `uname -v`"
   echo "Machine HW....: `uname -m`"
-  echo "Uptime........:`uptime -p | sed 's/.*up ([^,]*), .*/1/'`"
+  if uptime -p &> /dev/null ; then
+    echo "Uptime........:`uptime -p | sed 's/.*up ([^,]*), .*/1/' | cut -c 1-79`"
+  else
+    echo "Uptime........:`uptime | sed 's/.*up ([^,]*), .*/1/' | cut -c 1-79`"
+  fi
   echo "Memory........: `echo $MEMT | awk {'print $2'}` `echo $MEMT \
                                     | awk {'print $3'}`"
   echo "SWAP..........: `echo $SWAT | awk {'print $2'}` `echo $SWAT \

@@ -19,6 +19,7 @@ set mouse=v " Use the mouse in visual mode.
 set hlsearch " Highlight search.
 set ai " Auto indentation.
 set nocp " I don't care about compat with vi.
+set expandtab
 set pastetoggle=<F2> " Quick shortcut to toggle paste mode.
 set autoread " Watch for file changes.
 set showmatch " Show the matching bracket.
@@ -101,27 +102,66 @@ endfunction
 autocmd BufWrite *.cpp,*.hpp call StripTrailingWhitespaceConfirm()
 
 function AddRuleOfSix(...)
-  if a:0 == 1
+  if a:0 > 1
     let class = a:1
-  elseif a:0 > 1
-    echoerr "invalid arguments given"
-    return
   else
     let class = expand("%:t:r")
   end
+
+  if a:0 == 2
+    let mod = a:2
+  elseif a:0 > 2
+    echoerr "invalid arguments given"
+    return
+  else
+    let mod = "delete"
+  end
   let s:line=line(".")
-  call setline(s:line,"".class."() = default ;")
+  call setline(s:line,"    ".class."() = default;")
   call append(s:line,"")
-  call append(s:line+1,"virtual ~".class."() = default ;")
+  call append(s:line+1,"    virtual ~".class."() = default;")
   call append(s:line+2,"")
-  call append(s:line+3,"".class."(const ".class."&) = delete ;")
+  call append(s:line+3,"    ".class."(const ".class."&) = ".mod.";")
   call append(s:line+4,"")
-  call append(s:line+5,"".class."& operator=(const ".class."&) = delete ;")
+  call append(s:line+5,"    ".class."& operator=(const ".class."&) = ".mod.";")
   call append(s:line+6,"")
-  call append(s:line+7,"".class."(const ".class."&&) = delete ;")
+  call append(s:line+7,"    ".class."(const ".class."&&) = ".mod.";")
   call append(s:line+8,"")
-  call append(s:line+9,"".class."& operator=(const ".class."&&) = delete ;")
+  call append(s:line+9,"    ".class."& operator=(const ".class."&&) = "mod.";")
   call append(s:line+10,"")
+  unlet s:line
+endfunction
+
+function AddClass(...)
+  if a:0 > 1
+    let class = a:1
+  else
+    let class = expand("%:t:r")
+  end
+
+  if a:0 == 2
+    let mod = a:2
+  elseif a:0 > 2
+    echoerr "invalid arguments given"
+    return
+  else
+    let mod = "delete"
+  end
+  let s:line=line(".")
+  call setline(s:line,"class ".class." {")
+  call append(s:line,"    ".class."() = default;")
+  call append(s:line+1,"")
+  call append(s:line+2,"    virtual ~".class."() = default;")
+  call append(s:line+3,"")
+  call append(s:line+4,"    ".class."(const ".class."&) = ".mod.";")
+  call append(s:line+5,"")
+  call append(s:line+6,"    ".class."& operator=(const ".class."&) = ".mod.";")
+  call append(s:line+7,"")
+  call append(s:line+8,"    ".class."(const ".class."&&) = ".mod.";")
+  call append(s:line+9,"")
+  call append(s:line+10,"    ".class."& operator=(const ".class."&&) = "mod.";")
+  call append(s:line+11,"")
+  call append(s:line+12,"}")
   unlet s:line
 endfunction
 

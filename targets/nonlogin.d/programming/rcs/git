@@ -1,6 +1,7 @@
 #!/bin/bash
 # (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 
+menv_alias gd="git difftool -t meld -y -M50"
 menv_alias gits="git status -s"
 menv_alias gitic="git commit -m \"Initial Commit\""
 menv_alias gitc="git commit -am "
@@ -17,8 +18,14 @@ menv_alias git_graphical_diff_xxdiff="git difftool -t xxdiff -y"
 menv_alias git_graphical_diff_meld="git difftool -t meld -y"
 menv_alias git_graphical_diff_kdiff3="git difftool -t kdiff3 -y"
 menv_alias git_graphical_diff_kompare="git difftool -t kompare -y"
-menv_alias git_graphical_diff="git difftool -t kompare -y"
+menv_alias git_graphical_diff="git difftool -t meld -y"
 menv_alias git_stash_keep_index="git stash -k"
+
+function git_stash_diff {
+  local index=${1:-0}
+
+  git stash show -p stash@{$index}
+}
 
 # Function to clone from github.
 menv_function githubc
@@ -63,5 +70,33 @@ function stash_cmdline_install {
   # Create a pull request from the current branch into 'master'
   # stash pull-request master
   # git create-pull-request master
+}
+
+# from 
+# http://stackoverflow.com/questions/8259851/using-git-diff-how-can-i-get-added-and-modified-lines-numbers
+menv_function diff-lines
+function diff-lines {
+    local path=
+    local line=
+    while read; do
+        esc=$'\033'
+        if [[ $REPLY =~ ---\ (a/)?.* ]]; then
+            continue
+        elif [[ $REPLY =~ \+\+\+\ (b/)?([^[:blank:]$esc]+).* ]]; then
+            path=${BASH_REMATCH[2]}
+        elif [[ $REPLY =~ @@\ -[0-9]+(,[0-9]+)?\ \+([0-9]+)(,[0-9]+)?\ @@.* ]]; then
+            line=${BASH_REMATCH[2]}
+        elif [[ $REPLY =~ ^($esc\[[0-9;]+m)*([\ +-]) ]]; then
+            echo "$path:$line:$REPLY"
+            if [[ ${BASH_REMATCH[2]} != - ]]; then
+                ((line++))
+            fi
+        fi
+    done
+}
+
+menv_function git_diff_annotate_lines
+function git_diff_annotate_lines {
+  git diff $* | diff-lines
 }
 

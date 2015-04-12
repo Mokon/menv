@@ -5,6 +5,7 @@
 menv_alias arp_flush="ip -s -s neigh flush all"
 menv_alias amialone="ping 8.8.8.8"
 menv_alias amialonedns="ping google.com"
+menv_alias tcp="sudo netstat -tanp"
 
 menv_function find_subnet_devices
 function find_subnet_devices {
@@ -256,3 +257,14 @@ function m4 {
 END
 }
 
+menv_function echo_many_routes
+function echo_many_routes {
+  local max=${1:-100}
+
+  for i in $(seq 1 $max) ; do
+    echo "ip route 1.1.$i.0/24 blackhole"
+  done
+}
+
+menv_alias iptables_stop="sudo systemctl stop firewalld.service"
+menv_alias networking_restart="sudo systemctl restart NetworkManager"

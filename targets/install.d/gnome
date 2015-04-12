@@ -10,7 +10,7 @@ if version_ge $gnomeVersion "3.8.4" ; then
 
 spushd .
 
-append_crontab "1 1 * * * /home/$USER/menv/bin/rotate_background"
+append_crontab "* * * * * /home/$USER/menv/bin/rotate_background"
 
 ~/menv/bin/rotate_background
 

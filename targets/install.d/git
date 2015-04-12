@@ -17,9 +17,11 @@ wget -O gitwt.tar -q -N --no-check-certificate \
   https://gitorious.org/willgit/mainline/archive-tarball/master
 tar -xvf gitwt.tar &> /dev/null
 
-$BINCP  willgit-mainline/bin/* ~/menv/bin
+if [ -d willgit-mainline/bin/* ] ; then
+  $BINCP  willgit-mainline/bin/* ~/menv/bin
+fi
 
-if [ -f willgit-mainline ] ; then
+if [ -d willgit-mainline ] ; then
   $BINRM -rf willgit-mainline
 fi
 $BINRM gitwt.tar

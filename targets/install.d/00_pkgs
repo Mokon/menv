@@ -133,6 +133,7 @@ fi
   install_simple_package eclipse-jdt
   install_simple_package lynx
   install_simple_package time
+  install_simple_package inkscape
 fi
 
 read -t 5 -p "Do you want to install devel packages MENV might use? " -n 1 -r
@@ -147,8 +148,16 @@ if [[ $REPLY =~ ^[Yy]$ ]] ; then
   install_simple_package cscope
   install_simple_package vim
   install_simple_package wemux
-  install_simply_package bc
+  install_simple_package bc
+  install_simple_package sloccount
+  install_simple_package cloc
 fi
 
 fi
+
+echo "You may want to comment out:"
+echo -e "\tDefaults    env_reset"
+echo "and"
+echo -e "\tDefaults    secure_path = ..."
+echo "in /etc/sudoers"
 
