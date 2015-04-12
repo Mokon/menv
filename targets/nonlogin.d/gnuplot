@@ -1,0 +1,22 @@
+#!/bin/bash
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+
+menv_function plot
+function plot {
+  infile=${1}
+  outfile=${2:-`mktemp --suffix .png`}
+
+  plotfile=`mktemp`
+
+  cat <<-EOF > $plotfile
+    set term png
+    set output "${outfile}"
+    plot "$infile" using 1:2 with lines
+EOF
+
+  gnuplot $plotfile
+  shotwell "$outfile" &> /dev/null
+
+  rm $plotfile
+}
+
