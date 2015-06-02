@@ -1,7 +1,9 @@
 #!/bin/bash
 # (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 
-echo "Starting menv"
+if [[ "$MENV_INTERACTIVE" == 1 ]] ; then
+  echo "Starting menv"
+fi
 
 menv_target_children nonlogin
 
