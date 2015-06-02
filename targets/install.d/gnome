@@ -62,8 +62,6 @@ gsettings set org.gnome.settings-daemon.plugins.xrandr default-monitors-setup do
 
 sudo plymouth-set-default-theme solar -R &> /dev/null
 
-sudo bash -c "echo 'HandleLidSwitch=ignore' >> /etc/systemd/logind.conf"
-sudo systemctl restart systemd-logind
 menv_alias record_screen="echo 'Type Ctrl + Shift + Alt + R'"
 
 PALETTE="['rgb(0,0,0)', 'rgb(205,0,0)', 'rgb(0,205,0)', 'rgb(205,205,0)', 'rgb(30,144,255)', 'rgb(205,0,205)', 'rgb(0,205,205)', 'rgb(229,229,229)', 'rgb(76,76,76)', 'rgb(255,0,0)', 'rgb(0,255,0)', 'rgb(255,255,0)', 'rgb(70,130,180)', 'rgb(255,0,255)', 'rgb(0,255,255)', 'rgb(255,255,255)']"
