@@ -26,5 +26,9 @@ if [ -d willgit-mainline ] ; then
 fi
 $BINRM gitwt.tar
 
+cd $menv_bin_dir
+
+curl -O https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
+
 spopd
 

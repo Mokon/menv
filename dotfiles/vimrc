@@ -101,6 +101,10 @@ endfunction
 
 autocmd BufWrite *.cpp,*.hpp call StripTrailingWhitespaceConfirm()
 
+function JsonFormat(...)
+    exec "%!python -m json.tool"
+endfunction
+
 function AddRuleOfSix(...)
   if a:0 > 1
     let class = a:1
@@ -125,9 +129,9 @@ function AddRuleOfSix(...)
   call append(s:line+4,"")
   call append(s:line+5,"    ".class."& operator=(const ".class."&) = ".mod.";")
   call append(s:line+6,"")
-  call append(s:line+7,"    ".class."(const ".class."&&) = ".mod.";")
+  call append(s:line+7,"    ".class."(".class."&&) = ".mod.";")
   call append(s:line+8,"")
-  call append(s:line+9,"    ".class."& operator=(const ".class."&&) = "mod.";")
+  call append(s:line+9,"    ".class."& operator=(".class."&&) = ".mod.";")
   call append(s:line+10,"")
   unlet s:line
 endfunction
@@ -157,9 +161,9 @@ function AddClass(...)
   call append(s:line+5,"")
   call append(s:line+6,"    ".class."& operator=(const ".class."&) = ".mod.";")
   call append(s:line+7,"")
-  call append(s:line+8,"    ".class."(const ".class."&&) = ".mod.";")
+  call append(s:line+8,"    ".class."(".class."&&) = ".mod.";")
   call append(s:line+9,"")
-  call append(s:line+10,"    ".class."& operator=(const ".class."&&) = "mod.";")
+  call append(s:line+10,"    ".class."& operator=(".class."&&) = ".mod.";")
   call append(s:line+11,"")
   call append(s:line+12,"}")
   unlet s:line

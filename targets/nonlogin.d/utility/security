@@ -13,6 +13,9 @@ function add_priv_key {
     ssh-keygen -t rsa -b 4096 -N '' -f ~/.ssh/id_rsa
   fi
   cat $pubkeyfile | ssh $remoteuser@$remoteserver "cat >> $authkeyfile"
+  chmod 700 ~/.ssh
+  chmod 644 $pubkeyfile
+  chmod 600 ~/.ssh/id_rsa
 }
 
 menv_function magic_open

@@ -1,0 +1,13 @@
+#!/bin/bash
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+# git difftool --extcmd="~/menv/bin/diff" -y
+
+LOCAL=$1
+REMOTE=$2
+
+# Example script, edit according to diff filter needs.
+if grep -qP "Copyright\\ \\(c\\)\\ 2015" $LOCAL ; then
+  if grep -qP "Copyright\\ \\(c\\)\\ 2014-2015" $REMOTE ; then
+    echo "Copyright was moved back for $REMOTE"
+  fi  
+fi

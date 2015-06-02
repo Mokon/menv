@@ -134,6 +134,7 @@ fi
   install_simple_package lynx
   install_simple_package time
   install_simple_package inkscape
+  install_simple_package pstree
 fi
 
 read -t 5 -p "Do you want to install devel packages MENV might use? " -n 1 -r
@@ -143,6 +144,7 @@ if [[ $REPLY =~ ^[Yy]$ ]] ; then
 
 
   install_simple_package clang
+  install_simple_package clang-devel
   install_simple_package tmux
   install_simple_package screen
   install_simple_package cscope
@@ -151,6 +153,11 @@ if [[ $REPLY =~ ^[Yy]$ ]] ; then
   install_simple_package bc
   install_simple_package sloccount
   install_simple_package cloc
+  install_simple_package perltidy
+  install_simple_package strace
+  install_simple_package yum-utils
+  install_simple_package meld
+  install_simple_package cpulimit
 fi
 
 fi

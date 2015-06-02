@@ -18,8 +18,10 @@ menv_alias git_graphical_diff_xxdiff="git difftool -t xxdiff -y"
 menv_alias git_graphical_diff_meld="git difftool -t meld -y"
 menv_alias git_graphical_diff_kdiff3="git difftool -t kdiff3 -y"
 menv_alias git_graphical_diff_kompare="git difftool -t kompare -y"
-menv_alias git_graphical_diff="git difftool -t meld -y"
+menv_alias git_graphical_diff="git difftool -t meld -y &> /dev/null"
 menv_alias git_stash_keep_index="git stash -k"
+menv_alias git_text_colordiff="git difftool --extcmd='colordiff -ydw --suppress-common-lines -C 10' -y"
+menv_alias git_text_diff="git difftool --extcmd='colordiff -ydw \$LOCAL \$REMOTE | grep -E -C3 \'^.{123} [|<>]( |$)\'  ' -y"
 
 function git_stash_diff {
   local index=${1:-0}
@@ -100,3 +102,6 @@ function git_diff_annotate_lines {
   git diff $* | diff-lines
 }
 
+if [ -f $menv_bin_dir/git-completion.bash ]; then
+    source $menv_bin_dir/git-completion.bash
+fi

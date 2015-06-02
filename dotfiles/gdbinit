@@ -3,3 +3,4 @@ set $SETCOLOR1STLINE = 1
 set $USECOLOR = 1
 set history filename ~/menv/cache/history/.gdb_history
 set history save
+set print thread-events off

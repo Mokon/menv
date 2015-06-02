@@ -317,3 +317,21 @@ function grep_exclude_list {
   eval $cmd
 }
 
+menv_function what
+function what {
+    OUT=`which $@ 2> /dev/null`
+    if [ $? -eq 0 ]; then
+        echo $OUT
+    fi
+
+    OUT=`type $@ 2> /dev/null`
+    if [ $? -eq 0 ]; then
+        echo $OUT
+    fi
+
+    OUT=`alias $@ 2> /dev/null`
+    if [ $? -eq 0 ]; then
+        echo $OUT
+    fi
+}
+

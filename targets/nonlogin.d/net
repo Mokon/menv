@@ -14,6 +14,13 @@ function find_subnet_devices {
   nmap -v -sn $subnet |grep -B 1 --no-group-separator "Host is up"
 }
 
+menv_function tcp_client
+function tcp_client {
+  local port=$1
+
+  nc -w 30 --recv-only -x nc.log -4 localhost $port
+}
+
 # A function which looks up a ethertype
 menv_function ethertype
 function ethertype {
