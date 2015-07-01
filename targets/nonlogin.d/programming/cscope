@@ -17,9 +17,17 @@ function cscopeinit {
 
 menv_function cscope_update
 function cscope_udpdate {
-  if [ -f cscope.out ] ; then
-    menv_export CSCOPE_DB=`realpath cscope.out`
-  fi
+  pushd
+
+  while [ `pwd` != "/" ] ; do
+    if [ -f cscope.out ] ; then
+      menv_export CSCOPE_DB=`realpath cscope.out`
+      break
+    fi
+    builtin cd ..
+  done
+
+  popd
 }
 
 menv_function cscope_vim_help

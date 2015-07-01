@@ -35,6 +35,7 @@ function nodeinfo {
   echo "Username......: `whoami`"
   echo "Groups........:`groups $(whoami) | cut -f2 -d':'`"
   echo "Processor(s)..: $PNUMS $PVENDOR ${PMHZ} MHz ${PMODEL}"
+  echo "SELinux..: `/usr/sbin/getenforce`)"
 
   echo "Reachability..:"
   echo -n "..............: "

@@ -5,13 +5,16 @@ menv_alias xval="valgrind --track-origins=yes --leak-check=full "\
   "--show-reachable=yes --num-callers=100"
 menv_alias rval="valgrind --tool=memcheck --leak-check=full "\
   "--show-reachable=no --undef-value-errors=no --track-origins=no "\
-  "--child-silent-after-fork=no --trace-children=no --num-callers=100"
+  "--child-silent-after-fork=no --trace-children=no --num-callers=100 --fair-sched=yes"
 menv_alias sval="xval --gen-suppressions=yes --demangle=no"
 menv_alias profvis="kcachegrind"
 menv_alias prof="valgrind --tool=callgrind"
 menv_alias visual_memcheck="valkyrie"
 menv_alias gdbv="valgrind --vgdb=yes --vgdb-error=0"
+menv_alias gval="rval --vgdb=yes --vgdb-error=0"
 menv_alias gdbr="(echo r ; cat) | gdb --args"
+menv_alias xmlval="valgrind --tool=memcheck --leak-check=full  --show-reachable=no --undef-value-errors=no --track-origins=no  --child-silent-after-fork=no --trace-children=no --xml=yes --xml-file=xmlval.%p.memcheck"
+
 
 menv_function gprof
 function gprof {

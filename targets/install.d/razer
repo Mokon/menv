@@ -1,0 +1,10 @@
+#!/bin/bash
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+
+spushd .
+
+cd $menv_bin_dir
+wget http://finch.am/projects/blackwidow/blackwidow_enable.py
+chmod +x blackwidow_enable.py
+
+spopd

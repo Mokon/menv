@@ -18,7 +18,7 @@ if [[ "$MENV_INTERACTIVE" == 1 ]] ; then
 menv_target_children login
 
 # Check the script version and update if needed. Never update an ignore version.
-ping -c1 -W1 github.com &> /dev/null
+testconnection github.com &> /dev/null
 if [ $? ]; then
   if [ "$(menv_version get)" == "ignore" ] ; then
     echo "menv script ignored." &> $menv_logs_dir/menv_status

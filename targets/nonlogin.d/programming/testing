@@ -9,3 +9,10 @@ function run_all_tests {
   find $dir -type f -executable -name $pattern -and -not -name "*\.so*" -exec '{}' \;
 }
 
+menv_function sum_gtest_times
+function sum_gtest_times {
+    local log=$1
+
+    cat $log | /usr/bin/grep "\[==========\]" | /usr/bin/grep total \
+        | awk '{print $9}'| cut -c2- | awk '{s+=$1} END {print s/1000/60}'
+}

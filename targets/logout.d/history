@@ -7,10 +7,9 @@ menv_export HISTFILE=~/.bash_history
 echo >> "$HISTFILE"
 cat "${menv_history_dir}/bash_history.${BASHPID}" >> "$HISTFILE"
 tmplog=`mktemp`
-cat "$HISTFILE" | tail -n $HISTSIZE > $tmplog ;
+cat "$HISTFILE" | tail -n $HISTSIZE > $tmplog
 mv -f $tmplog "$HISTFILE"
 
 if [ -f ${menv_history_dir}/bash_history.${BASHPID} ] ; then
   rm ${menv_history_dir}/bash_history.${BASHPID}
 fi
-

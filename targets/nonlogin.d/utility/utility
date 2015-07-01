@@ -171,7 +171,10 @@ function mopen {
     *.png|*.jpg|*.jpeg) shotwell "$file" &> /dev/null & ;;
     *.pcap|*.npcap) wireshark "$file" &> /dev/null & ;;
     *.log|*.txt|*.rej|*.patch) gedit "$file" &> /dev/null & ;;
-    *) echo "I don't know how to open that." ;;
+    *)
+        echo "I don't know how to open that, falling back to xdg-open!"
+        xdg-open "$file"
+        ;;
   esac
 }
 
@@ -278,7 +281,7 @@ function remove_empty_dirs {
 menv_function sum_transfer_size
 function sum_transfer_size {
   local file=$1
-  
+
   awk '{print $3}' $file | sed 's/KB/000/' | sed 's/MB/000000/' | \
     grep -v - | grep -v % | awk '{ sum += $1 } END { print sum }'
 }
@@ -286,7 +289,7 @@ function sum_transfer_size {
 menv_function save
 function save {
   local savefile=${1:-$menv_local_save_dir/saveme}
- 
+
   if [ -f $savefile ] ; then
     $BINCP --backup=numbered ${savefile}{,.bak}
   fi
@@ -319,19 +322,33 @@ function grep_exclude_list {
 
 menv_function what
 function what {
-    OUT=`which $@ 2> /dev/null`
-    if [ $? -eq 0 ]; then
-        echo $OUT
-    fi
+  OUT=`which $@ 2> /dev/null`
+  if [ $? -eq 0 ]; then
+    echo $OUT
+  fi
 
-    OUT=`type $@ 2> /dev/null`
-    if [ $? -eq 0 ]; then
-        echo $OUT
-    fi
+  OUT=`type $@ 2> /dev/null`
+  if [ $? -eq 0 ]; then
+    echo $OUT
+  fi
 
-    OUT=`alias $@ 2> /dev/null`
-    if [ $? -eq 0 ]; then
-        echo $OUT
+  OUT=`alias $@ 2> /dev/null`
+  if [ $? -eq 0 ]; then
+    echo $OUT
+  fi
+}
+
+menv_function list_path_permissions
+function list_path_permissions {
+  file=$1
+  dir=$file
+
+  while true ; do
+    ls -altZd $dir
+    if [ "$dir" = "/" ] ; then
+        break;
     fi
+    dir=$(realpath `dirname $dir`)
+  done
 }
 

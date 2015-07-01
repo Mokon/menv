@@ -1,6 +1,6 @@
 #!/bin/bash
 # (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
-  
+
 # I like a large history size and I like a history that automatically saves
 # itself after each command so if my shell terminates without a proper exit I
 # can still find my last command. Each sesssions saves to that sessions history
@@ -44,9 +44,18 @@ function cd {
     dirstack=("${dirstack[@]}" $(pwd))
     builtin cd "$dir"
   fi
-  if [ -f cscope.out ] ; then
-    menv_export CSCOPE_DB=`realpath cscope.out`
-  fi
+
+  pushd
+
+  while [ `pwd` != "/" ] ; do
+    if [ -f cscope.out ] ; then
+      menv_export CSCOPE_DB=`realpath cscope.out`
+      break
+    fi
+    builtin cd ..
+  done
+
+  popd
 }
 
 menv_function mpop

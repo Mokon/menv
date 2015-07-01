@@ -5,7 +5,7 @@ echo "Updating menv"
 
 menv_target_children update
 
-if ping -c1 -W1 github.com &> /dev/null ; then
+if testconnnection github.com &> /dev/null ; then
   if [ "$(menv_version get)" == "$(menv_latest_version)" ] ; then
     echo "menv is up to date."
     return 0

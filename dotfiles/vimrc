@@ -56,6 +56,20 @@ if filereadable(cs)
   exec 'source '.cs
 endif
 
+autocmd BufRead,BufNewFile */quagga/* call s:QuaggaFormatting()
+
+function s:QuaggaFormatting()
+  setlocal tabstop=8
+  setlocal softtabstop=2
+  setlocal shiftwidth=2
+  setlocal noexpandtab
+  
+  highlight default link Rt128Error ErrorMsg
+  
+  syn match Rt128Error /\t/
+  syn match Rt128Error /\%81v.\+/
+endfunction
+
 " A nice function that strips trailing white space from a file. Mapped to
 " leader space.
 function! <SID>StripTrailingWhitespace()
@@ -91,6 +105,10 @@ function! DeleteAllWhiteSpaceLines()
   exec 'g/^\s*$/d'
 endfunction
 
+function! FindIPAddresses()
+  exec '/\d*\.\d*\.\d*\.\d*'
+endfunction
+
 function! StripTrailingWhitespaceConfirm()
   echo "Do you want to strip white space?"
   let a = getchar()
@@ -106,7 +124,7 @@ function JsonFormat(...)
 endfunction
 
 function AddRuleOfSix(...)
-  if a:0 > 1
+  if a:0 >= 1
     let class = a:1
   else
     let class = expand("%:t:r")
@@ -137,7 +155,7 @@ function AddRuleOfSix(...)
 endfunction
 
 function AddClass(...)
-  if a:0 > 1
+  if a:0 >= 1
     let class = a:1
   else
     let class = expand("%:t:r")
@@ -152,20 +170,22 @@ function AddClass(...)
     let mod = "delete"
   end
   let s:line=line(".")
-  call setline(s:line,"class ".class." {")
-  call append(s:line,"    ".class."() = default;")
+  call setline(s:line,"class ".class)
+  call append(s:line,"{")
   call append(s:line+1,"")
-  call append(s:line+2,"    virtual ~".class."() = default;")
+  call append(s:line+2,"    ".class."() = default;")
   call append(s:line+3,"")
-  call append(s:line+4,"    ".class."(const ".class."&) = ".mod.";")
+  call append(s:line+4,"    virtual ~".class."() = default;")
   call append(s:line+5,"")
-  call append(s:line+6,"    ".class."& operator=(const ".class."&) = ".mod.";")
+  call append(s:line+6,"    ".class."(const ".class."&) = ".mod.";")
   call append(s:line+7,"")
-  call append(s:line+8,"    ".class."(".class."&&) = ".mod.";")
+  call append(s:line+8,"    ".class."& operator=(const ".class."&) = ".mod.";")
   call append(s:line+9,"")
-  call append(s:line+10,"    ".class."& operator=(".class."&&) = ".mod.";")
+  call append(s:line+10,"    ".class."(".class."&&) = ".mod.";")
   call append(s:line+11,"")
-  call append(s:line+12,"}")
+  call append(s:line+12,"    ".class."& operator=(".class."&&) = ".mod.";")
+  call append(s:line+13,"")
+  call append(s:line+14,"};")
   unlet s:line
 endfunction
 

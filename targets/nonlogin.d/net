@@ -139,27 +139,6 @@ function rfc {
   fi
 }
 
-# A function to test if a connection exists to the given server.
-menv_function testconnection
-function testconnection {
-  local server=$1
-  local suc_msg=$2
-  local err_msg=$3
-  local dns_err_msg=$4
-
-  ping -c1 -W1 "$server" &> /dev/null
-  if [ $? ]; then
-    echo $suc_msg
-  else
-    host -W1 $?
-    if [ $? ]; then
-      echo $err_msg
-    else
-  	  echo $dns_err_msg
-    fi
-  fi
-}
-
 menv_function update_host
 function update_host {
   local hostname=$1

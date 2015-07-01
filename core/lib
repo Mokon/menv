@@ -53,6 +53,7 @@ menv_export menv_backup_dir=$menv_dir/backup
 menv_export menv_trash_dir=$menv_dir/trash
 menv_export menv_cache_dir=$menv_dir/cache
 menv_export menv_downloads_dir=$menv_cache_dir/downloads
+menv_export menv_sysbackup_dir=$menv_cache_dir/sysbackup
 menv_export menv_screenshots_dir=$menv_cache_dir/screenshots
 menv_export menv_logs_dir=$menv_cache_dir/logs
 menv_export menv_history_dir=$menv_cache_dir/history
@@ -297,7 +298,7 @@ function menv_lock {
 menv_function menv_unlock
 function menv_unlock {
   local lockfile=$1
-  
+
   $BINRM -f $lockfile
   trap - INT TERM EXIT
 }
@@ -308,6 +309,30 @@ function delete_line_in_file {
     local file=$2
 
     sed -i "/$pattern/d" $file
+}
+
+# A function to test if a connection exists to the given server.
+menv_function testconnection
+function testconnection {
+  local server=$1
+  local suc_msg=$2
+  local err_msg=$3
+  local dns_err_msg=$4
+
+  host -W1 "$server" &> /dev/null
+  if [ $? -ne 0 ]; then
+    echo $dns_err_msg
+    return 1
+  else
+    ping -c1 -W1 "$server" &> /dev/null
+    if [ $? -ne 0 ]; then
+      echo $err_msg
+      return 1
+    else
+      echo $suc_msg
+      return 0
+    fi
+  fi
 }
 
 

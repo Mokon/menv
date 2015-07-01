@@ -4,3 +4,43 @@ set $USECOLOR = 1
 set history filename ~/menv/cache/history/.gdb_history
 set history save
 set print thread-events off
+set print array on
+fs CMD
+
+define stdbreaks
+    catch throw
+    catch syscall clone
+end
+
+define savebreaks
+    save breakpoints /tmp/breaks.save
+end
+
+define loadbreaks
+    source /tmp/breaks.save
+end
+
+define print_state
+    info threads
+    thread apply all bt
+end
+
+define step_into
+    step
+    list
+end
+
+define step_next
+    next
+    list
+end
+
+define step_end
+    finish
+end
+
+define switch_window
+    info win
+    fs next
+    info win
+end

@@ -10,4 +10,12 @@ if grep -qP "Copyright\\ \\(c\\)\\ 2015" $LOCAL ; then
   if grep -qP "Copyright\\ \\(c\\)\\ 2014-2015" $REMOTE ; then
     echo "Copyright was moved back for $REMOTE"
   fi  
+f
+i
+
+# Another example script that skips CMake files during the diff
+if [[ $LOCAL != *"CMake"* ]] ; then
+  xxdiff $LOCAL $REMOTE &> /dev/null
+else
+  echo "Skip CMake $REMOTE"
 fi

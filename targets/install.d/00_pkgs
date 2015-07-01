@@ -158,6 +158,32 @@ if [[ $REPLY =~ ^[Yy]$ ]] ; then
   install_simple_package yum-utils
   install_simple_package meld
   install_simple_package cpulimit
+  install_simple_package npm
+  install_simple_package gem
+  install_simple_package ruby-devel
+  install_simple_package gitstats
+  install_simple_package colordiff
+  install_simple_package tig
+  install_simple_package nmap
+  install_simple_package uncrustify
+  install_simple_package htop
+  install_simple_package vagrant
+
+  sudo debuginfo-install glibc
+  sudo debuginfo-install kernel
+
+  install_simple_package python3-pyusb
+  install_simple_package pyusb
+
+  #install_simple_package luarocks
+  #install_simple_package lua-devel
+  #sudo luarocks install cw
+
+  sudo npm install -g git-stats
+  sudo npm install -g git-stats-importer
+
+  gem install git_stats
+  gem install slackcat
 fi
 
 fi

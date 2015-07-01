@@ -1,0 +1,15 @@
+#!/bin/bash
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+
+spushd .
+
+cp /etc/selinux/config $menv_sysbackup_dir
+
+setenforce 0
+
+cat <<HEREDOC | sudo tee /etc/selinux/config &> /dev/null
+SELINUX=disabled
+SELINUXTYPE=targeted
+HEREDOC
+
+spopd
