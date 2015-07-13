@@ -55,7 +55,7 @@ echo
 
 if [[ $REPLY =~ ^[Yy]$ ]] ; then
 
-if [ "$PKG_MGMT" -eq "yum" ] ; then
+if [ "$PKG_MGMT" == "yum" ] ; then
 
   cat << EOF | sudo tee /etc/yum.repos.d/google-chrome.repo
 [google-chrome]
