@@ -3,6 +3,6 @@
 
 spushd .
 
-cp -f $menv_sysbackup_dir/config /etc/selinux/config
+sudo cp -f $menv_sysbackup_dir/config /etc/selinux/config
 
 spopd

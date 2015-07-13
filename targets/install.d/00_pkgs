@@ -100,9 +100,9 @@ enabled=1
 gpgcheck=1
 EOF
 
-  su -c 'yum localinstall --nogpgcheck \
+  sudo yum localinstall --nogpgcheck \
     http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
-    http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm'
+    http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 
   sudo yum update -y
 
@@ -112,7 +112,7 @@ EOF
   sudo yum -y localinstall skype.rpm
   $BINRM skype.rpm
 
-  sudo yum -y plymouth-theme*
+  sudo yum -y install plymouth-theme*
 
   install_java
 fi

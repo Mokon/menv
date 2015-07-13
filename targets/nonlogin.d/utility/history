@@ -45,7 +45,7 @@ function cd {
     builtin cd "$dir"
   fi
 
-  pushd
+  pushd .
 
   while [ `pwd` != "/" ] ; do
     if [ -f cscope.out ] ; then

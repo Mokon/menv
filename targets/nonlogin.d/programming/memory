@@ -13,8 +13,9 @@ menv_alias visual_memcheck="valkyrie"
 menv_alias gdbv="valgrind --vgdb=yes --vgdb-error=0"
 menv_alias gval="rval --vgdb=yes --vgdb-error=0"
 menv_alias gdbr="(echo r ; cat) | gdb --args"
+menv_alias gdb_run="gdb --eval-command=run --args"
+menv_alias gdb_oneshot="gdb --eval-command=run --eval-command=quit --args"
 menv_alias xmlval="valgrind --tool=memcheck --leak-check=full  --show-reachable=no --undef-value-errors=no --track-origins=no  --child-silent-after-fork=no --trace-children=no --xml=yes --xml-file=xmlval.%p.memcheck"
-
 
 menv_function gprof
 function gprof {

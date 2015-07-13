@@ -78,8 +78,8 @@ function stash_cmdline_install {
 
 # from 
 # http://stackoverflow.com/questions/8259851/using-git-diff-how-can-i-get-added-and-modified-lines-numbers
-menv_function diff-lines
-function diff-lines {
+menv_function diff_lines
+function diff_lines {
     local path=
     local line=
     while read; do
@@ -101,7 +101,7 @@ function diff-lines {
 
 menv_function git_diff_annotate_lines
 function git_diff_annotate_lines {
-  git diff $* | diff-lines
+  git diff $* | diff_lines
 }
 
 if [ -f $menv_bin_dir/git-completion.bash ]; then
