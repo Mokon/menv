@@ -13,6 +13,20 @@ menv_function sum_gtest_times
 function sum_gtest_times {
     local log=$1
 
-    cat $log | /usr/bin/grep "\[==========\]" | /usr/bin/grep total \
-        | awk '{print $9}'| cut -c2- | awk '{s+=$1} END {print s/1000/60}'
+    local validate_runtime=`cat $log | /usr/bin/grep "\[==========\]" \
+                                     | /usr/bin/grep total \
+                                     | awk '{print $9}'\
+                                     | cut -c2- \
+                                     | awk '{s+=$1} END {print s/1000/60}'`
+
+    local sed_regex="^Build took \([[:digit:]]\+\) minutes \([[:digit:]]\+\) seconds.*"
+    local build_runtime_min=`sed -n -e  "s/$sed_regex/\\1/p" $log`
+    local build_runtime_sec=`sed -n -e  "s/$sed_regex/\\2/p" $log`
+    local build_runtime=`echo "scale=2; $build_runtime_min + $build_runtime_sec/60.0" | bc`
+    local total_runtime=`echo "scale=2; $validate_runtime + $build_runtime" | bc`
+
+    echo "Validate Run Time: $validate_runtime"
+    echo "Build Run Time:    $build_runtime"
+    echo "------------------------------"
+    echo "Total Run Time:    $total_runtime"
 }

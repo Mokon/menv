@@ -66,6 +66,6 @@ function to_upper {
 
 menv_function calc
 function calc {
-  echo "$*" | bc
+  echo "scale=2; $*" | bc
 }
 

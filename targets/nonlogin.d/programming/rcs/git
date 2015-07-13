@@ -23,6 +23,7 @@ menv_alias git_stash_keep_index="git stash -k"
 menv_alias git_text_colordiff="git difftool --extcmd='colordiff -ydw --suppress-common-lines -C 10' -y"
 menv_alias git_text_diff="git difftool --extcmd='colordiff -ydw \$LOCAL \$REMOTE | grep -E -C3 \'^.{123} [|<>]( |$)\'  ' -y"
 menv_alias git_tree="git log --graph --all --pretty=oneline"
+menv_alias git_log_fuller="git log --pretty=fuller"
 
 function git_stash_diff {
   local index=${1:-0}

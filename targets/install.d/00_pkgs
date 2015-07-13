@@ -168,6 +168,8 @@ if [[ $REPLY =~ ^[Yy]$ ]] ; then
   install_simple_package uncrustify
   install_simple_package htop
   install_simple_package vagrant
+  install_simple_package twin
+  install_simple_package iftop
 
   sudo debuginfo-install glibc
   sudo debuginfo-install kernel
