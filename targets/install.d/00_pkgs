@@ -189,8 +189,8 @@ if [[ $REPLY_DEVEL =~ ^[Yy]$ ]] ; then
   sudo npm install --loglevel error -g git-stats
   sudo npm install --loglevel error -g git-stats-importer
 
-  gem install -q git_stats > /dev/null
-  gem install -q slackcat > /dev/null
+  gem install -q git_stats &> /dev/null
+  gem install -q slackcat &> /dev/null
 fi
 
 fi
