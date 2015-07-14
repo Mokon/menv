@@ -189,15 +189,15 @@ if [[ $REPLY_DEVEL =~ ^[Yy]$ ]] ; then
   sudo npm install --loglevel error -g git-stats
   sudo npm install --loglevel error -g git-stats-importer
 
-  gem install -q git_stats
-  gem install -q slackcat
+  gem install -q git_stats > /dev/null
+  gem install -q slackcat > /dev/null
 fi
 
 fi
 
-echo "You may want to comment out:"
-echo -e "\tDefaults    env_reset"
-echo "and"
-echo -e "\tDefaults    secure_path = ..."
-echo "in /etc/sudoers"
+#echo "You may want to comment out:"
+#echo -e "\tDefaults    env_reset"
+#echo "and"
+#echo -e "\tDefaults    secure_path = ..."
+#echo "in /etc/sudoers"
 

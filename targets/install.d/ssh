@@ -29,7 +29,7 @@ if [ $MENV_ROOT_ACCESS -ne 0 ] ; then
     sudo /sbin/chkconfig sshd on
    
     if ! grep -q "UseDNS no" /etc/ssh/sshd_config &> /dev/null ; then 
-      echo "UseDNS no" | sudo tee -a /etc/ssh/sshd_config
+      echo "UseDNS no" | sudo tee -a /etc/ssh/sshd_config &> /dev/null
     fi
 fi
 
