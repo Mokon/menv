@@ -12,7 +12,7 @@ else
   menv_version set
   spushd .
 
-  read -t 5 -p "Is this a graphical terminal? " -n 1 -r
+  read -t 5 -p "Is this a graphical system? " -n 1 -r
   echo
 
   if [[ $REPLY =~ ^[Yy]$ ]] ; then

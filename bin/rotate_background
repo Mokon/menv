@@ -56,7 +56,7 @@ if [ ! -d wallpapers ] ; then
 fi
 
 if [ ! -f  wallpapers/${i}.jpg ] ; then
-  fetch ${background_url} wallpapers/${i}.jpg
+  timeout -k 5 60 fetch ${background_url} wallpapers/${i}.jpg
 fi
 
 PID=$(pgrep gnome-session)

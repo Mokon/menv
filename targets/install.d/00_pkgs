@@ -52,8 +52,13 @@ if [ $MENV_ROOT_ACCESS -ne 0 ] && [ $MENV_GRAPHICAL -ne 0 ] ; then
 
 read -t 5 -p "Do you want to install packages MENV might use? " -n 1 -r
 echo
+REPLY_PKGS=$REPLY
 
-if [[ $REPLY =~ ^[Yy]$ ]] ; then
+read -t 5 -p "Do you want to install devel packages MENV might use? " -n 1 -r
+echo
+REPLY_DEVEL=$REPLY
+
+if [[ $REPLY_PKGS =~ ^[Yy]$ ]] ; then
 
 if [ "$PKG_MGMT" == "yum" ] ; then
 
@@ -137,10 +142,7 @@ fi
   install_simple_package pstree
 fi
 
-read -t 5 -p "Do you want to install devel packages MENV might use? " -n 1 -r
-echo
-
-if [[ $REPLY =~ ^[Yy]$ ]] ; then
+if [[ $REPLY_DEVEL =~ ^[Yy]$ ]] ; then
 
 
   install_simple_package clang

@@ -26,16 +26,11 @@ if [ ! -f ~/.ssh/id_rsa.pub ]; then
 fi
 
 if [ $MENV_ROOT_ACCESS -ne 0 ] ; then
-  read -t 5 -p "Do you want to enable sshd? " -n 1 -r
-  echo
-
-  if [[ $REPLY =~ ^[Yy]$ ]] ; then
     sudo /sbin/chkconfig sshd on
    
     if ! grep -q "UseDNS no" /etc/ssh/sshd_config &> /dev/null ; then 
       echo "UseDNS no" | sudo tee -a /etc/ssh/sshd_config
     fi
-  fi
 fi
 
 spopd

@@ -4,8 +4,8 @@
 spushd .
 
 if sudo grep -q backup /etc/security/limits.conf &> /dev/null ; then
-  exesudo delete_line_in_file "* soft nofile 4096" /etc/security/limits.conf
-  exesudo delete_line_in_file "* hard nofile 4096" /etc/security/limits.conf
+  exesudo delete_line_in_file "\\* soft nofile 4096" /etc/security/limits.conf
+  exesudo delete_line_in_file "\\* hard nofile 4096" /etc/security/limits.conf
 fi
 
 spopd

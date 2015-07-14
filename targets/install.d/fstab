@@ -7,12 +7,7 @@ if [ $MENV_ROOT_ACCESS -ne 0 ] &&[ $MENV_GRAPHICAL -ne 0 ] ; then
   if grep -q backup /etc/fstab &> /dev/null ; then
     echo "Backup already in fstab."
   else
-    read -t 5 -p "Do you want to install backup in fstab? " -n 1 -r
-    echo
-
-    if [[ $REPLY =~ ^[Yy]$ ]] ; then
-      echo "LABEL=/backup /backup auto nosuid,nodev,nofail" | sudo tee -a /etc/fstab &> /dev/null
-    fi
+    echo "LABEL=/backup /backup auto nosuid,nodev,nofail" | sudo tee -a /etc/fstab &> /dev/null
   fi
 fi
 

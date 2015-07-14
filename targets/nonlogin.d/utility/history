@@ -45,7 +45,7 @@ function cd {
     builtin cd "$dir"
   fi
 
-  pushd .
+  pushd . &> /dev/null
 
   while [ `pwd` != "/" ] ; do
     if [ -f cscope.out ] ; then
@@ -55,7 +55,7 @@ function cd {
     builtin cd ..
   done
 
-  popd
+  popd &> /dev/null
 }
 
 menv_function mpop
