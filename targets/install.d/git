@@ -28,9 +28,9 @@ $BINRM gitwt.tar
 
 cd $menv_bin_dir
 
-curl -O https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
+curl -Os https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
 
-git clone https://code.google.com/p/gitinspector/
+git clone -q https://code.google.com/p/gitinspector/
 
 ln -s gitinsepctor/gitinspector/gitinspector.py gitinspector
 
