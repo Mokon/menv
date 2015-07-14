@@ -154,6 +154,20 @@ function fetch {
   wget -O $fname -q -N --no-check-certificate ${url}
 }
 
+menv_function fetch_w_timeout
+function fetch_w_timeout {
+  local url=$1
+  local timeout=${3:60}
+
+  command -v wget >/dev/null 2>&1 || { echo >&2 "wget not found" ; return ; }
+  if [ -n "$2" ] ; then
+    local fname=$2
+  else
+    local fname=`basename ${url}`
+  fi
+  timeout -k 5 $timeout wget -O $fname -q -N --no-check-certificate ${url}
+}
+
 # An aux function to grab a git repo
 menv_function github_fetch
 function github_fetch {

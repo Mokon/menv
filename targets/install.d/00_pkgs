@@ -62,7 +62,7 @@ if [[ $REPLY_PKGS =~ ^[Yy]$ ]] ; then
 
 if [ "$PKG_MGMT" == "yum" ] ; then
 
-  cat << EOF | sudo tee /etc/yum.repos.d/google-chrome.repo
+  cat << EOF | sudo tee /etc/yum.repos.d/google-chrome.repo &> /dev/null
 [google-chrome]
 name=google-chrome-\$basearch
 baseurl=http://dl.google.com/linux/chrome/rpm/stable/\$basearch
@@ -71,7 +71,7 @@ gpgcheck=1
 gpgkey=https://dl-ssl.google.com/linux/linux_signing_key.pub
 EOF
 
-  cat << EOF | sudo tee /etc/yum.repos.d/adobe-linux-x86_64.repo
+  cat << EOF | sudo tee /etc/yum.repos.d/adobe-linux-x86_64.repo &> /dev/null
 [adobe-linux-x86_64]
 name=Adobe Systems Incorporated
 baseurl=http://linuxdownload.adobe.com/linux/x86_64/
@@ -80,7 +80,7 @@ gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-adobe-linux
 EOF
 
-  cat << EOF | sudo tee /etc/yum.repos.d/google.repo
+  cat << EOF | sudo tee /etc/yum.repos.d/google.repo &> /dev/null
 [google32]
 name=Google - i386
 baseurl=http://dl.google.com/linux/rpm/stable/i386
@@ -88,7 +88,7 @@ enabled=1
 gpgcheck=1
 EOF
 
-  cat << EOF | sudo tee /etc/yum.repos.d/google-earth.repo
+  cat << EOF | sudo tee /etc/yum.repos.d/google-earth.repo &> /dev/null
 [google-earth]
 name=google-earth
 baseurl=http://dl.google.com/linux/earth/rpm/stable/x86_64
@@ -96,7 +96,7 @@ enabled=1
 gpgcheck=1
 EOF
 
-cat << EOF | sudo tee /etc/yum.repos.d/rpm-sphere.repo
+cat << EOF | sudo tee /etc/yum.repos.d/rpm-sphere.repo &> /dev/null
 [rpm-sphere]
 name=RPM Sphere
 baseurl=http://download.opensuse.org/repositories/home:/zhonghuaren/Fedora_21/
@@ -105,19 +105,19 @@ enabled=1
 gpgcheck=1
 EOF
 
-  sudo yum localinstall --nogpgcheck \
+  sudo yum localinstall -q --nogpgcheck \
     http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
     http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 
-  sudo yum update -y
+  sudo yum update -q -y
 
-  sudo yum -y install libXv.i686 libXScrnSaver.i686 qt.i686 qt-x11.i686 pulseaudio-libs.i686 pulseaudio-libs-glib2.i686 alsa-plugins-pulseaudio.i686 qtwebkit.i686
+  sudo yum -y -q install libXv.i686 libXScrnSaver.i686 qt.i686 qt-x11.i686 pulseaudio-libs.i686 pulseaudio-libs-glib2.i686 alsa-plugins-pulseaudio.i686 qtwebkit.i686
 
-  wget http://www.skype.com/go/getskype-linux-beta-fc10 -O skype.rpm
-  sudo yum -y localinstall skype.rpm
+  wget -q http://www.skype.com/go/getskype-linux-beta-fc10 -O skype.rpm
+  sudo yum -y -q localinstall skype.rpm
   $BINRM skype.rpm
 
-  sudo yum -y install plymouth-theme*
+  sudo yum -y -q install plymouth-theme*
 
   install_java
 fi
@@ -173,8 +173,8 @@ if [[ $REPLY_DEVEL =~ ^[Yy]$ ]] ; then
   install_simple_package twin
   install_simple_package iftop
 
-  sudo debuginfo-install glibc
-  sudo debuginfo-install kernel
+  sudo debuginfo-install -q glibc
+  sudo debuginfo-install -q kernel
 
   install_simple_package python3-pyusb
   install_simple_package pyusb
@@ -183,11 +183,11 @@ if [[ $REPLY_DEVEL =~ ^[Yy]$ ]] ; then
   #install_simple_package lua-devel
   #sudo luarocks install cw
 
-  sudo npm install -g git-stats
-  sudo npm install -g git-stats-importer
+  sudo npm install --loglevel error -g git-stats
+  sudo npm install --loglevel error -g git-stats-importer
 
-  gem install git_stats
-  gem install slackcat
+  gem install -q git_stats
+  gem install -q slackcat
 fi
 
 fi
