@@ -157,7 +157,7 @@ function fetch {
 menv_function fetch_w_timeout
 function fetch_w_timeout {
   local url=$1
-  local timeout=${3:60}
+  local timeout=${3:-60}
 
   command -v wget >/dev/null 2>&1 || { echo >&2 "wget not found" ; return ; }
   if [ -n "$2" ] ; then

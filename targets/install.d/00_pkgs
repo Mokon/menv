@@ -24,17 +24,19 @@ function install_java {
   sudo $BINRM $jdkrpm
 
   function jaltinstall {
-    sudo alternatives --install $@
-    if ! sudo alternatives --set $2 $3 &> /dev/null; then
-      if [ -f /usr/bin/$2 ] ; then
-        sudo rm /usr/bin/$2
-      fi
+    if [ -f $1 ] ; then
+      sudo alternatives --install $@
+      if ! sudo alternatives --set $2 $3 &> /dev/null; then
+        if [ -f /usr/bin/$2 ] ; then
+          sudo rm /usr/bin/$2
+        fi
 
-      if [ -f /var/lib/alternatives/$2 ] ; then
-        sudo rm /var/lib/alternatives/$2
-      fi
+        if [ -f /var/lib/alternatives/$2 ] ; then
+          sudo rm /var/lib/alternatives/$2
+        fi
 
-      sudo alternatives --set $2 $3
+        sudo alternatives --set $2 $3
+      fi
     fi
   }
 
@@ -107,17 +109,18 @@ EOF
 
   sudo yum localinstall -q --nogpgcheck \
     http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
-    http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+    http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm \
+    | grep -v "already installed and latest version"
 
   sudo yum update -q -y
 
-  sudo yum -y -q install libXv.i686 libXScrnSaver.i686 qt.i686 qt-x11.i686 pulseaudio-libs.i686 pulseaudio-libs-glib2.i686 alsa-plugins-pulseaudio.i686 qtwebkit.i686
+  sudo yum -y -q install libXv.i686 libXScrnSaver.i686 qt.i686 qt-x11.i686 pulseaudio-libs.i686 pulseaudio-libs-glib2.i686 alsa-plugins-pulseaudio.i686 qtwebkit.i686 | grep -v "already installed and latest version"
 
   wget -q http://www.skype.com/go/getskype-linux-beta-fc10 -O skype.rpm
-  sudo yum -y -q localinstall skype.rpm
+  sudo yum -y -q localinstall skype.rpm | grep -v "already installed and latest version"
   $BINRM skype.rpm
 
-  sudo yum -y -q install plymouth-theme*
+  sudo yum -y -q install plymouth-theme* | grep -v "already installed and latest version"
 
   install_java
 fi
@@ -173,8 +176,8 @@ if [[ $REPLY_DEVEL =~ ^[Yy]$ ]] ; then
   install_simple_package twin
   install_simple_package iftop
 
-  sudo debuginfo-install -q glibc
-  sudo debuginfo-install -q kernel
+  sudo debuginfo-install -q glibc | grep -v "already installed and latest version"
+  sudo debuginfo-install -q kernel | grep -v "already installed and latest version"
 
   install_simple_package python3-pyusb
   install_simple_package pyusb

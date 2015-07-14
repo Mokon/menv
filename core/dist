@@ -53,7 +53,7 @@ function install_package {
 
   eval "local pkg=\${$dist_to_pkg[$DIST]}"
   echo $pkg >> $menv_local_dir/installed
-  dist_install $pkg
+  dist_install $pkg | grep -v "already installed and latest version"
 }
 
 menv_function install_simple_package
