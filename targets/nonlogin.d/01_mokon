@@ -4,6 +4,7 @@
 # I like to keep my prompt simple...
 TC_GRE="\[\033[0;32;40m\]"
 TC_RESET="\[\033[0;0m\]"
+ORIG_PS1=$PS1
 PS1="${TC_GRE}i:${TC_RESET}"
 unset TC_GRE
 unset TC_RESET
