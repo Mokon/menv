@@ -32,6 +32,10 @@ else
   
     local u=`whoami`
     echo "$u ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers &> /dev/null
+    echo "$u ALL=(root) NOPASSWD: /sbin/reboot" | sudo tee -a /etc/sudoers &> /dev/null
+    exesudo delete_line_in_file "\tDefaults    env_reset" /etc/sudoers
+    exesudo delete_line_in_file "\tDefaults    secure_path = *" /etc/sudoers
+
   else
     menv_export MENV_ROOT_ACCESS=0
     echo "noroot" >> $menv_install_opts_file

@@ -186,18 +186,12 @@ if [[ $REPLY_DEVEL =~ ^[Yy]$ ]] ; then
   #install_simple_package lua-devel
   #sudo luarocks install cw
 
-  sudo npm install --loglevel error -g git-stats
-  sudo npm install --loglevel error -g git-stats-importer
+  sudo npm install --loglevel error -g git-stats &> /dev/null
+  sudo npm install --loglevel error -g git-stats-importer &> /dev/null
 
   gem install -q git_stats &> /dev/null
   gem install -q slackcat &> /dev/null
 fi
 
 fi
-
-#echo "You may want to comment out:"
-#echo -e "\tDefaults    env_reset"
-#echo "and"
-#echo -e "\tDefaults    secure_path = ..."
-#echo "in /etc/sudoers"
 

@@ -1,0 +1,22 @@
+#!/bin/bash
+# (C) 2015 David 'Mokon' Bond, All Rights Reserved
+# This is a simple script to mute my computer while at work.
+
+last_change=$(($(date +"%s")+28801))
+
+while : ; do
+  now=$(date +"%s")
+
+  diff=$(($last_change-$now))
+  if [ $diff -gt 28800 ] ; then # more than eight hours since last change
+    hour=$(date +"%H")
+    dow=$(date +"%u")
+    if [ $hour -ge 8 -a $hour -le 17 -a $dow -ge 1 -a $dow -le 6 ] ; then
+      amixer -D pulse sset Master 0% &> /dev/null
+      last_change=$now
+    fi
+  fi
+
+  sleep 60
+done
+
