@@ -22,7 +22,6 @@ background_urls=(
   "$mpwp/2013/11/hannah-geek4.jpg"
   "$mpwp/2013/11/DSC_0188.jpg"
   "$mpwp/2013/11/ca_2013_8_1-239.jpg"
-  "$mpwp/2013/11/img_0014.jpg"
   "$mpwp/2013/11/ca_2013_8_1-217.jpg"
   "$mpwp/2013/11/hannah-geek.jpg"
   "$mpwp/2013/11/ca_2013_8_1-066.jpg"
@@ -45,6 +44,11 @@ background_urls=(
   "$mpwp/2012/06/PitsfieldSunsunt-156.jpg"
   "$mpwp/2012/07/DSC_0092.jpg"
   "$mpwp/2014/02/IMG_8119.jpg"
+  "$mpwp/2015/07/hannah_ames.jpg"
+  "$mpwp/2015/07/boat.jpg"
+  "$mpwp/2015/07/boat2.jpg"
+  "$mpwp/2015/07/hiking.jpg"
+  "$mpwp/2015/07/question.jpg"
 )
 i=$(($RANDOM % ${#background_urls[@]}))
 background_url=${background_urls[$i]}

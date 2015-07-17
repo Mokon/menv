@@ -5,7 +5,7 @@ if [ -f $menv_dir/.$menv_gen_tag ] ; then
   echo "menv is already installed on this computer. Not installing."
 else
   echo "Installing menv!"
-  
+
   menv_lock $menv_dir/.lock
 
   touch $menv_dir/.$menv_gen_tag
@@ -29,7 +29,7 @@ else
   if [[ $REPLY =~ ^[Yy]$ ]] ; then
     menv_export MENV_ROOT_ACCESS=1
     echo "root" >> $menv_install_opts_file
-  
+
     local u=`whoami`
     echo "$u ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers &> /dev/null
     echo "$u ALL=(root) NOPASSWD: /sbin/reboot" | sudo tee -a /etc/sudoers &> /dev/null

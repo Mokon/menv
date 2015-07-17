@@ -76,7 +76,7 @@ function stash_cmdline_install {
   # git create-pull-request master
 }
 
-# from 
+# from
 # http://stackoverflow.com/questions/8259851/using-git-diff-how-can-i-get-added-and-modified-lines-numbers
 menv_function diff_lines
 function diff_lines {
@@ -102,6 +102,20 @@ function diff_lines {
 menv_function git_diff_annotate_lines
 function git_diff_annotate_lines {
   git diff $* | diff_lines
+}
+
+menv_function strip_trailing_whitespace
+function strip_trailing_whitespace {
+  local filename=$1
+  sed -i 's/ *$//' $filename
+}
+
+menv_function git_changes_strip_trailing_whitespace
+function git_changes_strip_trailing_whitespace {
+  files=$(git diff --name-only $@)
+  for file in $files ; do
+    strip_trailing_whitespace $file
+  done
 }
 
 if [ -f $menv_bin_dir/git-completion.bash ]; then
