@@ -1,9 +1,9 @@
 #!/bin/bash
 # (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 # This is a simple bash script which installs an ipsec/l2tp based vpn on a
-# fedora (21) system. This vpn can then be started, run, or stoped from the
-# command line It also allows one to uninstall said vpn configuration.
-# portability has not been ensured.
+# fedora (21) system. This vpn can then be started, run, or stopped from the
+# command line. It also allows one to uninstall said vpn configuration.
+# Portability has not been ensured.
 
 # TODO this shouldn't be static and rather should come in from the user.
 PPP_INT=ppp0
@@ -30,7 +30,7 @@ function main {
         run) run_vpn ${@:2:$#} ;;
         watch) watch_log ;;
         usage|help) usage ;;
-        *) exit_script "invalid cmd" ;;
+        *) exit_script "You need to add a command. Try usage or help for options" ;;
     esac
 }
 
@@ -482,6 +482,12 @@ function ensure_daemon_running {
     ensure_num_args $# 1
 
     systemctl restart $daemon
+    if [ $? -eq 0 ]
+    then
+	echo "$daemon restarted"
+    else
+	echo "$daemon failed to (re)start"
+    fi
 }
 
 function ensure_num_args {
