@@ -24,4 +24,4 @@ for item in $files ; do
   fi  
 done
 
-rm -r $uc_dir
+/bin/rm -r $uc_dir

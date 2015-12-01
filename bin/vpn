@@ -1,0 +1,828 @@
+#!/bin/bash
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+#
+# This is a script which installs an ipsec/l2tp or cisco/ipsec based vpn on a
+# Fedora (21) system. It may work on other systems but it has not been tested.
+# This vpn can be started, run, or stopped from the command line It also allows
+# one to uninstall said vpn configuration.
+
+WAIT_TIME=2
+
+xl2tpd_conf_file=/etc/xl2tpd/xl2tpd.conf
+ipsec_config_file=/etc/ipsec.conf
+l2tp_control=/var/run/xl2tpd/l2tp-control
+resolv_conf_file=/etc/resolv.conf
+vpnc_conf_dir=/etc/vpnc/
+vpn_conf_dir=/etc/
+
+function main {
+    local cmd=$1
+
+    case $cmd in
+        interactive)
+            interactive
+            ;;
+        watch)
+            watch_log
+            ;;
+        usage|help|--usage|--help|-help|-h)
+            usage
+            ;;
+        install|uninstall|start|stop|run)
+            vpn_type=$(get_vpn_type $2)
+            if [ $vpn_type = "invalid" ] ; then
+              exit_script "invalid vpn type"
+            fi
+            vpn_int=$(get_vpn_int $2)
+            ${cmd}_vpn_${vpn_type} ${@:3:$#}
+            ;;
+        *)
+            if [[ -z $cmd ]] ; then
+                exit_script \
+                    "You need to add a command. Try usage or help for options."
+            else
+                exit_script "invalid cmd '$cmd'. Try usage or help for options."
+            fi
+            ;;
+    esac
+}
+
+function usage {
+    cat <<- EOF
+    sudo vpn interactive
+    sudo vpn install <type> <id> <ip> <pre_shared_secret> <username> <password>
+                     (<vpn_route>) (<vpn_dns>)
+    sudo vpn uninstall <type> <id>
+    sudo vpn start <type> <id>
+    sudo vpn stop <type> <id>
+    sudo vpn run <type> <id>
+    vpn watch
+    vpn usage
+		EOF
+}
+
+function interactive {
+    local vpn_type
+    local vpn_id
+    local vpn_ip
+    local vpn_pre_shared_secret
+    local username
+    local password
+    local vpn_route
+    local vpn_dns
+
+    ensure_root
+    ensure_num_args $# 0
+
+    echo "I need some information about the vpn you wish to install."
+
+    echo -n "VPN Type (l2tp_ipsec or ipsec): "
+    read vpn_type
+
+    echo -n "VPN Id: "
+    read vpn_id
+
+    echo -n "VPN IP: "
+    read vpn_ip
+
+    echo -n "VPN Pre Shared Secret: "
+    read -s vpn_pre_shared_secret
+    echo
+
+    echo -n "VPN Username: "
+    read username
+
+    echo -n "VPN Password: "
+    read -s password
+    echo
+
+    read -p "Do you want to use a vpn route? " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]] ; then
+        echo -n "VPN Route: (e.g. 10.0.0.0/8)"
+        read vpn_route
+    fi
+
+    read -p "Do you want to use vpn dns? " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]] ; then
+        echo -n "VPN DNS: (e.g. 10.0.0.2)"
+        read vpn_dns
+    fi
+
+    echo "installing vpn"
+    install_vpn_$vpn_type $vpn_id $vpn_ip $vpn_pre_shared_secret \
+                $username $password $vpn_route $vpn_dns
+
+    echo "starting vpn, type 'sudo vpn $vpn_type stop' to stop the vpn"
+    echo "\ttype 'sudo vpn $vpn_type start' after stopping the vpn to restart"
+    echo "\ttype 'sudo vpn $vpn_type run' to run the vpn from the command line"
+    echo "\t\tand use ctrl-c to stop vpn"
+    start_vpn_$vpn_type $vpn_id
+}
+
+function install_vpn_l2tp_ipsec {
+    local vpn_id=$1
+    local vpn_ip=$2
+    local vpn_pre_shared_secret=$3
+    local username=$4
+    local password=$5
+    local vpn_route=$6
+    local vpn_dns=$7
+
+    ensure_root
+    ensure_num_args_between $# 5 7
+
+    umask 277
+
+    log "Installing l2tp_ipsec vpn..."
+
+    ensure_pkg_installed libreswan
+    ensure_pkg_installed xl2tpd
+
+    configure_ipsec $vpn_id $vpn_ip $vpn_pre_shared_secret
+    configure_l2tp $vpn_id $vpn_ip $username $password
+
+    install_vpn_config $vpn_id $vpn_route $vpn_dns
+
+    log "Done installing l2tp_ipsec vpn"
+}
+
+function install_vpn_ipsec {
+    local vpn_id=$1
+    local vpn_ip=$2
+    local vpn_pre_shared_secret=$3
+    local username=$4
+    local password=$5
+    local vpn_route=$6
+    local vpn_dns=$7
+
+    log "Installing ipsec vpn..."
+
+    ensure_root
+    ensure_num_args_between $# 5 7
+
+    umask 277
+
+    ensure_pkg_installed vpnc
+
+    configure_vpnc $vpn_id $vpn_ip $vpn_pre_shared_secret $username $password
+
+    install_vpn_config $vpn_id $vpn_route $vpn_dns
+
+    log "Done installing ipsec vpn"
+}
+
+function uninstall_vpn_l2tp_ipsec {
+    local vpn_id=$1
+
+    ensure_root
+    ensure_num_args $# 1
+
+    log "Uninstalling l2tp_ipsec vpn..."
+
+    deconfigure_l2tp $vpn_id
+    deconfigure_ipsec $vpn_id
+
+    # I don't uninstall libreswan and xl2tpd as that might be overkill
+    # and in fact might be the wrong thing to do.
+
+    uninstall_vpn_config $vpn_id
+
+    log "Done uninstaling l2tp_ipsec vpn"
+}
+
+function uninstall_vpn_ipsec {
+    local vpn_id=$1
+
+    ensure_root
+    ensure_num_args $# 1
+
+    log "Uninstalling ipsec vpn..."
+
+    deconfigure_vpnc $vpn_id
+
+    # I don't uninstall vpnc and in fact might be the wrong thing to do.
+
+    uninstall_vpn_config $vpn_id
+
+    log "Done uninstaling ipsec vpn"
+}
+
+function start_vpn_l2tp_ipsec {
+    local vpn_id=$1
+
+    ensure_root
+    ensure_num_args $# 1
+
+    log "Starting l2tp_ipsec vpn..."
+
+    ensure_daemon_running ipsec
+    ensure_daemon_running xl2tpd
+
+    local file=/sys/class/net/$vpn_int/operstate
+    while [ ! -f $file ] ; do
+        echo "c $vpn_id" > $l2tp_control
+        if hash inotifywait &>/dev/null; then
+            inotifywait -qqt $WAIT_TIME -e create $file
+        else
+           sleep $WAIT_TIME
+        fi
+    done
+
+    sleep $WAIT_TIME
+    start_network_l2tp_ipsec $vpn_id
+
+    log "Done starting l2tp_ipsec vpn"
+}
+
+function start_vpn_ipsec {
+    local vpn_id=$1
+
+    ensure_root
+    ensure_num_args $# 1
+
+    log "Starting ipsec vpn..."
+
+    vpnc --local-port 0 $vpn_id
+    if [ $? -ne 0 ] ; then
+      exit_script "Failed to start ipsec vpn!"
+    fi
+
+    local file=/sys/class/net/$vpn_int/operstate
+    while [ ! -f $file ] ; do
+        if hash inotifywait &>/dev/null; then
+            inotifywait -qqt $WAIT_TIME -e create $file
+        else
+           sleep $WAIT_TIME
+        fi
+    done
+
+    sleep $WAIT_TIME
+    start_network_ipsec $vpn_id
+
+    log "Done starting ipsec vpn"
+}
+
+function start_network_l2tp_ipsec {
+    local vpn_id=$1
+
+    ensure_root
+    ensure_num_args $# 1
+
+    log "Starting l2tp_ipsec vpn network..."
+
+    start_vpn_config $vpn_id
+
+    log "Done starting l2tp_ipsec vpn network"
+}
+
+function start_network_ipsec {
+    local vpn_id=$1
+    ensure_num_args $# 1
+
+    ensure_root
+
+    log "Starting ipsec vpn network..."
+
+    start_vpn_config $vpn_id
+
+    # We want split horizons
+    ip route del 0.0.0.0/0 dev $vpn_int
+
+    log "Done starting ipsec vpn network"
+}
+
+function stop_vpn_l2tp_ipsec {
+    local vpn_id=$1
+
+    ensure_root
+    ensure_num_args $# 1
+
+    log "Stopping l2tp_ipsec vpn...."
+
+    stop_network_l2tp_ipsec
+    echo "d $vpn_id" > $l2tp_control
+
+    log "Done stopping l2tp_ipsec vpn"
+}
+
+function stop_vpn_ipsec {
+    local vpn_id=$1
+
+    ensure_root
+    ensure_num_args $# 1
+
+    log "Stopping ipsec vpn...."
+
+    vpnc-disconnect
+
+    stop_network_ipsec $vpn_id
+
+    log "Done stopping ipsec vpn"
+}
+
+function stop_network_l2tp_ipsec {
+    local vpn_id=$1
+
+    ensure_root
+    ensure_num_args $# 1
+
+    log "Stopping l2tp_ipsec vpn network..."
+
+    stop_vpn_config $vpn_id
+
+    log "Done stopping l2tp_ipsec vpn network"
+}
+
+function stop_network_ipsec {
+    local vpn_id=$1
+
+    ensure_root
+    ensure_num_args $# 1
+
+    log "Stopping ipsec vpn network..."
+
+    stop_vpn_config $vpn_id
+
+    log "Done stopping ipsec vpn network"
+}
+
+function ctrl_c {
+    stop_vpn_$RUNNING_VPN_TYPE $RUNNING_VPN_ID
+    exit_script "terminated vpn"
+}
+
+function run_vpn {
+    local vpn_type=$1
+    local vpn_id=$2
+
+    ensure_root
+    ensure_num_args $# 2
+
+    log "Running $vpn_type vpn..."
+
+    export RUNNING_VPN_TYPE=$vpn_type
+    export RUNNING_VPN_ID=$vpn_id
+    trap ctrl_c SIGINT
+    trap ctrl_c SIGTSTP
+
+    start_vpn_$vpn_type $vpn_id
+    wait_till_file_dne /sys/class/net/$vpn_int/operstate
+
+    log "Done running $vpn_type vpn"
+}
+
+function run_vpn_l2tp_ipsec {
+  run_vpn l2tp_ipsec $@
+}
+
+function run_vpn_ipsec {
+  run_vpn ipsec $@
+}
+
+function watch_log {
+    ensure_num_args $# 0
+
+    echo "Watching VPN"
+    echo
+
+    echo "----------------------------------------------------------------"
+    echo "Current kernel routing table"
+    echo "----------------------------------------------------------------"
+    ip route
+
+    echo "----------------------------------------------------------------"
+    echo "Current ip address information for vpn interface"
+    echo "----------------------------------------------------------------"
+    ip address show dev $vpn_int
+
+    echo "----------------------------------------------------------------"
+    echo "Following vpn related journal logs"
+    echo "----------------------------------------------------------------"
+    journalctl -t vpnc -t xl2tpd -t pppd -t ipsec -t NetworkManager -f
+}
+
+function install_vpn_config {
+    local vpn_id=$1
+    local vpn_route=$2
+    local vpn_dns=$3
+
+    ensure_root
+    ensure_num_args_between $# 1 3
+
+    local vpn_conf_file="${vpn_conf_dir}${vpn_id}.conf"
+
+    if [ -z "$vpn_route" ] ; then
+      append_if_line_dne "local vpn_route=$vpn_route" $vpn_conf_file
+    fi
+
+    if [ -z "$vpn_dns" ] ; then
+      append_if_line_dne "local vpn_dns=$vpn_dns" $vpn_conf_file
+    fi
+}
+
+function uninstall_vpn_config {
+    local vpn_id=$1
+
+    ensure_root
+    ensure_num_args $# 1
+
+    local vpn_conf_file="${vpn_conf_dir}${vpn_id}.conf"
+
+    /bin/rm -f $vpn_conf_file
+}
+
+function start_vpn_config {
+    local vpn_id=$1
+
+    ensure_root
+    ensure_num_args $# 1
+
+    source "${vpn_conf_dir}${vpn_id}.conf"
+
+    if [ ! -z "$vpn_route" ] ; then
+        ip route add $vpn_route dev $vpn_int
+    fi
+
+    if [ ! -z "$vpn_dns" ] ; then
+        append_if_line_dne "nameserver $vpn_dns" $resolv_conf_file
+    fi
+}
+
+function stop_vpn_config {
+    local vpn_id=$1
+
+    ensure_root
+    ensure_num_args $# 1
+
+    source "${vpn_conf_dir}${vpn_id}.conf"
+
+    if [ ! -z "$vpn_route" ] ; then
+        ip route delete $vpn_route dev $vpn_int
+    fi
+
+    if [ ! -z "$vpn_dns" ] ; then
+        delete_line_in_file "nameserver $VPN_DNS" $resolv_conf_file
+    fi
+}
+
+function configure_ipsec {
+    local vpn_id=$1
+    local vpn_ip=$2
+    local vpn_pre_shared_secret=$3
+
+    ensure_root
+    ensure_num_args $# 3
+
+    log "Configuring ipsec..."
+
+    replace_line_in_file "#include /etc/ipsec.d/\*.conf" \
+                         "include /etc/ipsec.d/\*.conf" $ipsec_config_file
+
+    local vpn_ipsec_conf_file=/etc/ipsec.d/${vpn_id}.conf
+    ensure_file_dne $vpn_ipsec_conf_file
+
+    cat <<- EOF > $vpn_ipsec_conf_file
+		conn $vpn_id
+     authby=secret
+     pfs=no
+     auto=add
+     keyingtries=3
+     dpddelay=30
+     dpdtimeout=120
+     dpdaction=clear
+     rekey=yes
+     ikelifetime=8h
+     keylife=1h
+     type=transport
+     left=%defaultroute
+     leftnexthop=%defaultroute
+     leftprotoport=17/1701
+     right=$vpn_ip
+     rightprotoport=17/1701
+		EOF
+
+    local vpn_ipsec_secrets_file=/etc/ipsec.d/${vpn_id}.secrets
+    ensure_file_dne $vpn_ipsec_secrets_file
+
+    cat <<- EOF > $vpn_ipsec_secrets_file
+    %any $vpn_ip : PSK "$vpn_pre_shared_secret"
+		EOF
+
+    ensure_kmod_loaded af_key
+
+    ipsec auto --add $vpn_id
+
+    log "Done configuring ipsec"
+}
+
+function deconfigure_ipsec {
+    local vpn_id=$1
+
+    ensure_root
+    ensure_num_args $# 1
+
+    log "Deconfiguring ipsec..."
+
+    ipsec auto --delete $vpn_id
+
+    local vpn_ipsec_secrets_file=/etc/ipsec.d/${vpn_id}.secrets
+    ensure_file_dne $vpn_ipsec_secrets_file
+
+    local vpn_ipsec_conf_file=/etc/ipsec.d/${vpn_id}.conf
+    ensure_file_dne $vpn_ipsec_conf_file
+
+    replace_line_in_file "include /etc/ipsec.d/\*.conf" \
+                         "#include /etc/ipsec.d/\*.conf" $ipsec_config_file
+
+    log "Done deconfiguring ipsec..."
+}
+
+function configure_l2tp {
+    local vpn_id=$1
+    local vpn_ip=$2
+    local username=$3
+    local password=$4
+
+    ensure_root
+    ensure_num_args $# 4
+
+    log "Configuring l2tp..."
+
+    ensure_l2tp_config_clean $vpn_id
+
+    cat <<- EOF >> $xl2tpd_conf_file
+    ; start $vpn_id
+    [lac $vpn_id]
+    lns = $vpn_ip
+    ppp debug = yes
+    pppoptfile = /etc/ppp/options.xl2tpd.$vpn_id
+    length bit = yes
+    ; end $vpn_id
+		EOF
+
+    replace_line_in_file "; debug tunnel = yes" \
+                         "debug tunnel = yes" $xl2tpd_conf_file
+
+    local l2tp_options_file=/etc/ppp/options.xl2tpd.$vpn_id
+    ensure_file_dne $l2tp_options_file
+
+    cat <<- EOF > $l2tp_options_file
+    ipcp-accept-local
+    ipcp-accept-remote
+    refuse-eap
+    require-mschap-v2
+    noccp
+    noauth
+    idle 1800
+    mtu 1410
+    mru 1410
+    defaultroute
+    usepeerdns
+    debug
+    lock
+    connect-delay 5000
+    name $username
+    password $password
+		EOF
+
+    log "Done configuring l2tp..."
+}
+
+function configure_vpnc {
+    local vpn_id=$1
+    local vpn_ip=$2
+    local vpn_pre_shared_secret=$3
+    local username=$4
+    local password=$5
+
+    ensure_root
+    ensure_num_args $# 5
+
+    log "Configuring vpnc..."
+
+    local vpnc_config_file=$vpnc_conf_dir/${vpn_id}.conf
+    ensure_file_dne $vpnc_config_file
+
+    cat <<- EOF > $vpnc_config_file
+IPSec gateway $vpn_ip
+Vendor cisco
+IPSec ID $vpn_id
+IKE Authmode psk
+IPSec secret $vpn_pre_shared_secret
+Xauth username $username
+Xauth password $password
+NAT Traversal Mode cisco-udp
+IKE DH Group dh2
+Perfect Forward Secrecy nopfs
+DPD idle timeout (our side) 3
+Debug 1
+		EOF
+
+    log "Done configuring vpnc..."
+}
+
+function ensure_l2tp_config_clean {
+    local vpn_id=$1
+
+    ensure_root
+    ensure_num_args $# 1
+
+    sed -i "/; start $vpn_id/,/; end $vpn_id/d" $xl2tpd_conf_file
+}
+
+function deconfigure_l2tp {
+    local vpn_id=$1
+
+    ensure_root
+    ensure_num_args $# 1
+
+    log "Deconfiguring l2tp..."
+
+    local l2tp_options_file=/etc/ppp/options.xl2tpd.$vpn_id
+    ensure_file_dne $l2tp_options_file
+
+    replace_line_in_file "debug tunnel = yes" \
+                         "; debug tunnel = yes" $xl2tpd_conf_file
+
+    ensure_l2tp_config_clean $vpn_id
+
+    log "Done deconfiguring l2tp"
+}
+
+function deconfigure_vpnc {
+    local vpn_id=$1
+
+    ensure_root
+    ensure_num_args $# 1
+
+    log "Deconfiguring vpnc..."
+
+    local vpnc_config_file=$vpnc_conf_dir/${vpn_id}.conf
+    ensure_file_dne $vpnc_config_file
+
+    log "Done deconfiguring vpnc"
+}
+
+function get_vpn_type {
+    local vpn_type=$1
+
+    ensure_num_args $# 1
+
+    case $vpn_type in
+        l2tp_ipsec)
+            echo $vpn_type ;;
+        ipsec)
+            echo $vpn_type ;;
+        *) exit_script "invalid vpn_type $vpn_type" ;;
+    esac
+}
+
+function get_vpn_int {
+    local vpn_type=$1
+
+    ensure_num_args $# 1
+
+    case $vpn_type in
+        l2tp_ipsec)
+            echo ppp0 ;; # TODO programmatically query
+        ipsec)
+            echo tun0 ;; # TODO programmatically query
+        *) exit_script "invalid vpn_type $vpn_type" ;;
+    esac
+}
+
+function exit_script {
+    local msg=$1
+    local return_code=$2
+
+    echo $msg
+    exit $2
+}
+
+function ensure_root {
+    if [[ $EUID -ne 0 ]]; then
+      exit_script "must be root"
+    fi
+}
+
+function ensure_kmod_loaded {
+    local mod=$1
+
+    ensure_root
+
+    if lsmod | grep $mod &> /dev/null ; then
+        modprobe $mod
+    fi
+}
+
+function ensure_pkg_installed {
+    local pkg=$1
+
+    ensure_root
+
+    if ! yum list installed $pkg &> /dev/null; then
+        yum install -q -y $pkg
+    fi
+}
+
+function ensure_file_dne {
+    local file=$1
+
+    if [ -f $file ] ; then
+        /bin/rm -f $file
+    fi
+}
+
+function replace_line_in_file {
+    local pattern=$1
+    local replacement=$2
+    local file=$3
+
+    sed -i "s@^$pattern\$@$replacement@" $file
+}
+
+function delete_line_in_file {
+    local pattern=$1
+    local file=$2
+
+    sed -i "/$pattern/d" $file
+}
+
+function append_if_line_dne {
+    local line=$1
+    local file=$2
+
+    if ! grep "$line" $file &> /dev/null ; then
+        echo "$line" >> $file
+    fi
+}
+
+function wait_till_file_dne {
+    local file=$1
+
+    while [ -f $file ] ; do
+        if hash inotifywait &>/dev/null; then
+            inotifywait -qqt $WAIT_TIME -e delete $file
+        else
+            sleep $WAIT_TIME
+        fi
+    done
+}
+
+function wait_till_file_exists {
+    while [ ! -f $file ] ; do
+        if hash inotifywait &>/dev/null; then
+            inotifywait -qqt $WAIT_TIME -e create $file
+        else
+            sleep $WAIT_TIME
+        fi
+    done
+}
+
+function ensure_daemon_running {
+    local daemon=$1
+
+    ensure_root
+    ensure_num_args $# 1
+
+    systemctl restart $daemon
+    if [ $? -eq 0 ] ; then
+        log "$daemon (re)started"
+    else
+        log "$daemon failed to (re)start"
+    fi
+}
+
+function ensure_num_args {
+    local given_num_args=$1
+    local required_num_args=$2
+
+    if [ "$#" -ne 2 ] ; then
+        exit_script "insufficient arguments (to ensure)"
+      elif [ "$given_num_args" -ne $required_num_args ] ; then
+        exit_script "insufficient arguments"
+    fi
+}
+
+function ensure_num_args_between {
+    local given_num_args=$1
+    local required_min_num_args=$2
+    local required_max_num_args=$3
+
+    if [ "$#" -ne 3 ] ; then
+        exit_script "insufficient arguments (to ensure)"
+    elif [ "$given_num_args" -lt $required_min_num_args -a \
+            "$given_num_args" -gt $required_max_num_args ] ; then
+        exit_script "insufficient arguments"
+    fi
+}
+
+function log {
+    local msg=$1
+
+    echo $msg
+}
+
+main $@

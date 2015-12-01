@@ -322,7 +322,7 @@ function grep_exclude_list {
 
 menv_function what
 function what {
-  OUT=`which $@ 2> /dev/null`
+  local OUT=`which $@ 2> /dev/null`
   if [ $? -eq 0 ]; then
     echo $OUT
   fi
@@ -340,8 +340,8 @@ function what {
 
 menv_function list_path_permissions
 function list_path_permissions {
-  file=$1
-  dir=$file
+  local file=$1
+  local dir=$file
 
   while true ; do
     ls -altZd $dir
@@ -350,5 +350,25 @@ function list_path_permissions {
     fi
     dir=$(realpath `dirname $dir`)
   done
+}
+
+menv_function find_ext
+function find_ext {
+  local ext=$1
+  local dir=${2:-.}
+
+  find $dir -iname "*.$ext"
+}
+
+menv_function talk
+function talk {
+  local mode=$1
+  local text=$2
+
+  case $mode in
+    festival) echo "$text" | festival --tts ;;
+    spd) spd-say "$text" ;;
+    espeak|*) espeak "$text" ;;
+  esac
 }
 

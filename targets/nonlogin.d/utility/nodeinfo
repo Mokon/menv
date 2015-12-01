@@ -3,6 +3,8 @@
 
 menv_function nodeinfo {
 function nodeinfo {
+  local TC_RED="[0;31;42m"
+  local TC_RESET="[0m"
   local MEMT=`cat /proc/meminfo | grep MemTotal`
   local SWAT=`cat /proc/meminfo | grep '^SwapTotal:'`
   local PMODEL=`cat /proc/cpuinfo | \
@@ -39,11 +41,11 @@ function nodeinfo {
 
   echo "Reachability..:"
   echo -n "..............: "
-  testconnection "8.8.8.8" "Google DNS Reachable" "Google DNS Not Reachable" ""
+  testconnection "8.8.8.8" "Google DNS Reachable" "${TC_RED}Google DNS Not Reachable$TC_RESET" ""
 
   echo -n "..............: "
-  testconnection "google.com" "Google Reachable" "Google Not Reachable" \
-    "DNS Failure"
+  testconnection "google.com" "Google Reachable" "${TC_RED}Google Not Reachable$TC_RESET" \
+    "${TC_RED}DNS Failure$TC_RESET"
 
   echo "menv version..: $(menv_version)"
 }

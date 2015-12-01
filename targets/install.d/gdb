@@ -7,5 +7,10 @@ cd ~
   
 safe_symlink .gdbinit $menv_dotfiles_dir/gdbinit
 
+cd $menv_dotfiles_dir
+mkdir gdb
+cd gdb
+fetch https://sourceware.org/ml/gdb/2008-02/msg00064/stl-views.gdb
+
 spopd
 

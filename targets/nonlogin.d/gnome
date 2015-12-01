@@ -29,6 +29,16 @@ function gnome_list_all_settings {
   done
 }
 
+if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
+  eval `dbus-launch --close-stderr --sh-syntax --exit-with-session`
+  #export $(dbus-launch)
+fi
+
+menv_alias rd="rdesktop -g 1600x900 -u admin -p -"
+
+menv_alias mount_phone="simple-mtpfs $menv_local_dir/phone"
+menv_alias unmount_phone="fusermount -u $menv_local_dir/phone"
+
 fi
 
 fi

@@ -18,9 +18,15 @@ menv_alias hex_to_dec="convert_base 16 10 "
 menv_function hex_endian_conversion
 function hex_endian_conversion {
   local hex=$1
+
+  while [ ${#hex} -lt 8 ]; do
+    hex=0$hex
+  done
  
   echo ${hex:6:2}${hex:4:2}${hex:2:2}${hex:0:2}
 }
+
+menv_alias endian_conversion_hex="hex_endian_conversion"
 
 menv_function dec_endian_conversion
 function dec_endian_conversion {

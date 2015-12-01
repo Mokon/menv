@@ -14,7 +14,7 @@ if [ -d ~/menv/local/code/menv ]; then
     menv_uninstall
 
     cp -R  ~/local/code/menv ~
-    rm -rf ~/menv/.git
+    /bin/rm -rf ~/menv/.git
 
     source ~/menv/core/target_handler
 

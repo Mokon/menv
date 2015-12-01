@@ -4,12 +4,12 @@
 menv_function
 function motd {
 # Terminal colors, assuming 256 colors.
-TC_RESET="[0m"
-TC_SKY="[0;37;44m"
-TC_GRD="[0;30;42m"
-TC_TEXT="[38;5;203m"
-CLREOL=$'\x1B[K'
-tmp=`mktemp`
+local TC_RESET="[0m"
+local TC_SKY="[0;37;44m"
+local TC_GRD="[0;30;42m"
+local TC_TEXT="[38;5;203m"
+local CLREOL=$'\x1B[K'
+local tmp=`mktemp`
 echo -n "${TC_SKY}
               ( \`   )_
              (    )    \`)
@@ -46,11 +46,6 @@ nodeinfo >> $tmp
 echo ${TC_RESET} >> $tmp
 
 sed ":a;N;\$!ba;s/\\n/${CLREOL}\\n/g" $tmp
-
-unset TC_RESET
-unset TC_SKY
-unset TC_GRD
-unset TC_TEXT
 }
 
 if [ "$TERM" = "screen" ] && [ -n "$TMUX" ]; then

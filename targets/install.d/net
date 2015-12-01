@@ -1,0 +1,10 @@
+#!/bin/bash
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+
+spushd .
+
+cd $menv_bin_dir
+fetch http://www.yang-central.org/twiki/pub/Main/YangTools/rfcstrip
+chmod +x rfcstrip
+
+spopd

@@ -5,7 +5,8 @@ set history filename ~/menv/cache/history/.gdb_history
 set history save
 set print thread-events off
 set print array on
-fs CMD
+
+source ~/menv/dotfiles/gdb/*.gdb
 
 define stdbreaks
     catch throw

@@ -217,7 +217,7 @@ function if_symlink_rm {
 # A nasty little function which grabs the latest sha hash from github
 menv_function menv_latest_version
 function menv_latest_version {
-  local j=`curl -L --connect-timeout 1 -s https://api.github.com/repos/mokon/menv/git/refs/heads/master | \
+  local j=`curl -m 1 -L --connect-timeout 1 -s https://api.github.com/repos/mokon/menv/git/refs/heads/master | \
     sed 's/\\\\\//\//g' | sed 's/[{}]//g' | \
     awk -v k="text" '{n=split($0,a,","); for (i=1; i<=n; i++) print a[i]}' | \
     sed 's/\"\:\"/\|/g' | sed 's/[\,]/ /g' | sed 's/\"//g' | grep -w sha`
@@ -298,7 +298,7 @@ function menv_lock {
 
   trap "/bin/rm -f $lockfile; exit" INT TERM EXIT
 
-  if type lockfile > /dev/null ; then
+  if type lockfile &> /dev/null ; then
     lockfile -r-1 $lockfile
   else
     while true ; do
@@ -313,7 +313,7 @@ menv_function menv_unlock
 function menv_unlock {
   local lockfile=$1
 
-  $BINRM -f $lockfile
+  $BINRM -rf $lockfile
   trap - INT TERM EXIT
 }
 

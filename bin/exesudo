@@ -27,7 +27,7 @@ function exesudo {
   
 	echo -ne "#$( type "$_funcname_" )" >> $tmpfile
   echo -ne "\n$_funcname_ \"\${params[@]}\"\n" >> $tmpfile
-  
+
   sudo bash $tmpfile
   rm "$tmpfile"
 }

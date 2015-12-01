@@ -1,6 +1,8 @@
 # (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 Host *
+  ForwardAgent yes
   ForwardX11 yes
+  ForwardX11Trusted yes 
   TCPKeepAlive yes
   ServerAliveInterval 30
   ServerAliveCountMax 4

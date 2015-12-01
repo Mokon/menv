@@ -1,6 +1,8 @@
 #!/bin/bash
 # (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 
+if [ $MENV_ROOT_ACCESS -ne 0 ] && [ $MENV_GRAPHICAL -ne 0 ] ; then
+
 spushd .
 
 cp /etc/selinux/config $menv_sysbackup_dir
@@ -13,3 +15,5 @@ SELINUXTYPE=targeted
 HEREDOC
 
 spopd
+
+fi

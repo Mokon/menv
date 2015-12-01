@@ -46,10 +46,16 @@ if exists('+colorcolumn')
   autocmd BufNewFile,BufRead COMMIT_EDITMSG set colorcolumn=72
 endif
 
-" Color anything over 80 chars red.
-highlight ColorColumn ctermbg=lightgrey guibg=lightgrey
-highlight OverLength ctermbg=red ctermfg=white guibg=#592929
-match OverLength /\%81v.\+/
+autocmd BufRead,BufNewFile * call s:CommonFormatting()
+
+function s:CommonFormatting()
+  if @% != "*log*"
+    " Color anything over 80 chars red.
+    highlight ColorColumn ctermbg=lightgrey guibg=lightgrey
+    highlight OverLength ctermbg=red ctermfg=white guibg=#592929
+    match OverLength /\%81v.\+/
+  endif
+endfunction
 
 let cs=$menv_dotfiles_dir."/vimrc_style/".$CODING_STYLE.".vim"
 if filereadable(cs)

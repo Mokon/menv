@@ -143,10 +143,22 @@ fi
   install_simple_package time
   install_simple_package inkscape
   install_simple_package pstree
+  install_simple_package dbus-x11
+  install_simple_package festival
+  install_simple_package speech-dispatcher-utils
+  install_simple_package spd-say
+  install_simple_package espeak
+  install_simple_package smem
+  install_simple_package htop
+  install_simple_package rdesktop
+  install_simple_package simple-mtpfs
+  install_simple_package libmtp
+  install_simple_package fuse
+  install_simple_package fuse-libs
+  install_simple_package gvfs-mtp
 fi
 
 if [[ $REPLY_DEVEL =~ ^[Yy]$ ]] ; then
-
 
   install_simple_package clang
   install_simple_package clang-devel
@@ -171,10 +183,17 @@ if [[ $REPLY_DEVEL =~ ^[Yy]$ ]] ; then
   install_simple_package tig
   install_simple_package nmap
   install_simple_package uncrustify
-  install_simple_package htop
   install_simple_package vagrant
   install_simple_package twin
   install_simple_package iftop
+  install_simple_package graphviz
+  install_simple_package dsniff
+  install_simple_package pyang
+  install_simple_package plantuml
+  install_simple_package python-matplotlib
+  install_simple_package perl-List-AllUtils
+  install_simple_package perl-List-UtilsBy
+  install_simple_package xxdiff
 
   sudo debuginfo-install -q glibc | grep -v "already installed and latest version"
   sudo debuginfo-install -q kernel | grep -v "already installed and latest version"

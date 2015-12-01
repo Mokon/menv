@@ -7,6 +7,16 @@ menv_alias amialone="ping 8.8.8.8"
 menv_alias amialonedns="ping google.com"
 menv_alias tcp="sudo netstat -tanp"
 
+menv_function emulate_traffic
+function emulate_traffic {
+  local dst_addr=${1:-224.0.0.9}
+  local src_addr=${2:-172.16.1.5}
+  local dst_port=${3:-520}
+  local src_port=${4:-520}
+
+  sudo nc $dst_addr $dst_port -vu -s $src_addr -p $src_port
+}
+
 menv_function find_subnet_devices
 function find_subnet_devices {
   local subnet=${1:-192.168.1.0/24}
@@ -29,7 +39,7 @@ function ethertype {
 
   local file=${menv_cache_dir}/ethertype
   if [ ! -f $file ]; then
-    url=https://www.iana.org/assignments/ieee-802-numbers/ieee-802-numbers-1.csv
+    local url=https://www.iana.org/assignments/ieee-802-numbers/ieee-802-numbers-1.csv
     wget -O $file -q $url
   fi
 
@@ -43,6 +53,23 @@ function ethertype {
   done < $file
   shopt -u nocasematch
   IFS=$OLDIFS
+}
+
+menv_function port
+function port {
+  local port=$1
+  
+  local file=${menv_cache_dir}/ports
+  if [ ! -f $file ]; then
+    local url=http://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.csv
+    wget -O $file -q $url
+  fi
+
+  echo "According to IANA"
+  grep ",$port," $file
+
+  echo "According to services"
+  grep " $port/" /etc/services
 }
 
 menv_function dec_to_ip
@@ -62,6 +89,17 @@ function ip_to_dec {
   local a b c d ip=$@
   IFS=. read -r a b c d <<< "$ip"
   printf '%d\n' "$((a * 256 ** 3 + b * 256 ** 2 + c * 256 + d))"
+}
+
+menv_function ip_subtraction
+function ip_substraction {
+  local ipa=$1
+  local ipb=$2
+
+  local ipa_d=$(ip_to_dec $ipa)
+  local ipb_d=$(ip_to_dec $ipb)
+
+  calc $ipa_d - $ipb_d
 }
 
 menv_function hex_to_ip
@@ -254,3 +292,33 @@ function echo_many_routes {
 
 menv_alias iptables_stop="sudo systemctl stop firewalld.service"
 menv_alias networking_restart="sudo systemctl restart NetworkManager"
+
+menv_function pend_capture
+function pend_capture {
+  local interface=${1:-"1-10.0"}
+
+  while true; do
+    until ip link show $interface &> /dev/null; do
+      continue
+    done
+                                                      
+    echo "Starting Capture";
+    local capture_file="/tmp/capture_${interface}.pcap"
+    if [ -f $capture_file ] ; then
+      sudo /bin/mv --backup=existing $capture_file "/tmp/capture_${interface}.old.pcap"
+    fi  
+
+    sudo tshark -P -w $capture_file -i $interface
+  done
+}
+
+menv_function convert_yang_to_png_uml
+function convert_yang_to_png_uml {
+  local infile=$1
+
+  pyang -f uml $infile -o ${infile}.uml
+  plantuml ${infile}.uml -o .
+  $BINRM ${infile}.uml
+  mopen ${infile}.png
+}
+

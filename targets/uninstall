@@ -18,7 +18,7 @@ menv_target_children uninstall
 
 local u=`whoami`
 exesudo delete_line_in_file "$u ALL=(ALL) NOPASSWD: ALL" /etc/sudoers
-exesudo delete_line_in_file "$u ALL=(root) NOPASSWD: /sbin/reboot" /etc/sudoers
+exesudo delete_line_in_file "$u ALL=(root) NOPASSWD: \/sbin\/reboot" /etc/sudoers
 
 if_symlink_rm $bashrc
 if_symlink_rm $bash_profile

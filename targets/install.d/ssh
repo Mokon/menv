@@ -6,10 +6,12 @@ spushd .
 cd ~
 
 if [ -d ~/.ssh ] ; then
-  if [ -f ~/.ssh/.$menv_gen_tag ] ; then
-    $BINRM -rf ~/.ssh/config
-  else
-    $BINMV --backup=numbered ~/.ssh/config ${menv_backup_dir}/.ssh/config
+  if [ -f ~/.ssh/config ] ; then
+    if [ -f ~/.ssh/.$menv_gen_tag ] ; then
+      $BINRM -rf ~/.ssh/config
+    else
+      $BINMV --backup=numbered ~/.ssh/config ${menv_backup_dir}/.ssh/config
+    fi
   fi
 else
   mkdir ~/.ssh
