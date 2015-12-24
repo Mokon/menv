@@ -1,0 +1,9 @@
+#!/bin/bash
+ 
+file=$1
+  
+echo "" > "$file"
+  
+while inotifywait -e modify -e delete_self "$file" 2> /dev/null; do
+  echo "" > "$file"
+done

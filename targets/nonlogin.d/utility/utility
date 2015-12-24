@@ -372,3 +372,22 @@ function talk {
   esac
 }
 
+menv_function find_all_videos
+function find_all_videos {
+  EXTS=(mov mp4 avi mpeg mkv flv wmv)
+  for ext in "${EXTS[@]}" ; do
+    find . -type f -iname "*.$ext"
+  done
+}
+
+menv_function scp_all_videos
+function scp_all_videos {
+  local dst=$1
+
+  EXTS=(mov mp4 avi mpeg mkv flv wmv)
+  mkdir -p ~/movs
+  for ext in "${EXTS[@]}" ; do
+    find . -type f -iname "*.$ext" -exec cp {} ~/movs \;
+  done
+  scp -r ~/mov $2
+}

@@ -31,7 +31,7 @@ set laststatus=2 " Always show the last status msg.
 set clipboard=unnamed
 set hid
 set wildmenu
-set viminfo='100,<100,s10,h
+set viminfo='1000,<1000,s10,h
 set directory=~/.vim/swap,.
 
 let g:html_indent_inctags = "html,body,head,tbody"

@@ -297,6 +297,14 @@ menv_function pend_capture
 function pend_capture {
   local interface=${1:-"1-10.0"}
 
+  function ctrl_c {
+    echo "exiting capture loop";
+    exit
+  }
+  
+  trap ctrl_c SIGINT
+  trap ctrl_c SIGTSTP
+
   while true; do
     until ip link show $interface &> /dev/null; do
       continue

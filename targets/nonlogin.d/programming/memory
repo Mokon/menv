@@ -22,6 +22,17 @@ function gprof {
   gprof $1 gmon.out &> profileinfo.out
 }
 
+menv_alias list_core_dumps="ls -Alt /var/lib/systemd/coredump"
+
+menv_function extract_core_dump
+function extract_core_dump {
+  pushd
+  cd /var/lib/systemd/coredump
+  sudo xz -d ${core}.xz
+  popd
+  sudo cp /var/lib/systemd/coredump/${core} .
+}
+
 menv_alias interactive_decode="addr2line -e "
 menv_function decode_stacktrace
 function decode_stacktrace {

@@ -10,6 +10,12 @@ if version_ge $gnomeVersion "3.8.4" ; then
 
 spushd .
 
+mkdir -p ~/.config/gtk-3.0/
+safe_symlink ~/.config/gtk-3.0/settings.ini $menv_dotfiles_dir/config/gtk-3.0/settings.ini
+
+echo "" > ~/.local/share/recently-used.xbel
+sudo chattr +i ~/.local/share/recently-used.xbel
+
 append_crontab "@reboot /home/$USER/menv/bin/mute_volume"
 append_crontab "* * * * * /home/$USER/menv/bin/rotate_background"
 
@@ -60,6 +66,7 @@ gsettings set $gset_powr_path sleep-inactive-battery-timeout 18000
 gsettings set $gset_powr_path sleep-inactive-battery-type    hibernate
 gsettings set org.gnome.desktop.lockdown disable-lock-screen true
 gsettings set org.gnome.settings-daemon.plugins.xrandr default-monitors-setup do-nothing
+gsettings set org.gnome.gedit.preferences.ui max-recents "uint32 0"
 
 sudo plymouth-set-default-theme solar -R &> /dev/null
 

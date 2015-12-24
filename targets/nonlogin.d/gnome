@@ -39,6 +39,20 @@ menv_alias rd="rdesktop -g 1600x900 -u admin -p -"
 menv_alias mount_phone="simple-mtpfs $menv_local_dir/phone"
 menv_alias unmount_phone="fusermount -u $menv_local_dir/phone"
 
+menv_function gnome_autostart_script
+function gnome_autostart_script {
+  local script=$1
+
+  mkdir -p ~/.config/autostart/
+  cat <<-EOF > ~//.config/autostart/$script.desktop
+[Desktop Entry]
+Type=Application
+Exec=$script
+X-GNOME-Autostart-enabled=true
+Name=$script
+EOF
+}
+
 fi
 
 fi

@@ -34,5 +34,8 @@ git clone -q https://code.google.com/p/gitinspector/
 
 ln -s gitinsepctor/gitinspector/gitinspector.py gitinspector
 
+fetch https://raw.githubusercontent.com/Mokon/git_get/master/git_get
+chmod +x git_get
+
 spopd
 

@@ -17,11 +17,17 @@ function rm_app {
   fi
 }
 
+~/.config/gtk-3.0/settings.ini
+
 rm_app root-wireshark
 rm_app gnome-start
 gsettings set org.gnome.shell favorite-apps "['gnome-terminal.desktop']"
 
 unset rm_app
+
+if_symlink_rm ~/.config/gtk-3.0/settings.ini
+
+$BINRM ~/.local/share/recently-used.xbel
 
 spopd
 
