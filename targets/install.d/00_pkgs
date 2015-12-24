@@ -195,6 +195,7 @@ if [[ $REPLY_DEVEL =~ ^[Yy]$ ]] ; then
   install_simple_package perl-List-AllUtils
   install_simple_package perl-List-UtilsBy
   install_simple_package perl-File-chdir
+  install_simple_package perl-Devel-Profiler
   install_simple_package xxdiff
 
   sudo debuginfo-install -q glibc | grep -v "already installed and latest version"
