@@ -197,6 +197,10 @@ if [[ $REPLY_DEVEL =~ ^[Yy]$ ]] ; then
   install_simple_package perl-File-chdir
   install_simple_package perl-Devel-Profiler
   install_simple_package xxdiff
+  install_simple_package go
+
+  sudo rpm -Uvfh http://d-rats.com/yum/f11/d-rats-repo-0.1.2-1.fc11.noarch.rpm
+  install_simple_package chirp
 
   sudo debuginfo-install -q glibc | grep -v "already installed and latest version"
   sudo debuginfo-install -q kernel | grep -v "already installed and latest version"

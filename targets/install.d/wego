@@ -1,0 +1,7 @@
+#!/bin/bash
+# (C) 2015 David 'Mokon' Bond, All Rights Reserved
+
+go get github.com/schachmat/wego
+
+echo "To use wego add an api key to wegorc"
+safe_symlink .wegorc $menv_dotfiles_dir/wegorc
