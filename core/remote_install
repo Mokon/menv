@@ -15,7 +15,11 @@ wget -O $file -q -N --no-check-certificate \
 
 find menv/ -not -path "menv/local*" -and -not -path "menv/backup*" -and -name .gitkeep -exec rm -rf {} \;
 
+echo "at install"
+
 source ~/menv/core/install
+
+echo "about to login"
 
 source ~/menv/core/login
 
