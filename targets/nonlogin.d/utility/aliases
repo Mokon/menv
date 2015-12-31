@@ -3,8 +3,10 @@
 
 menv_function empty_ru
 function empty_ru {
-  sudo chattr -i ~/.local/share/recently-used.xbel
-  echo "" > ~/.local/share/recently-used.xbel
+  if [ -f ~/.local/share/recently-used.xbel ] ; then
+    sudo chattr -i ~/.local/share/recently-used.xbel
+  fi
+  echo "" | sudo tee ~/.local/share/recently-used.xbel
   sudo chattr +i ~/.local/share/recently-used.xbel
 }
 

@@ -37,6 +37,8 @@ function determine_dist {
 
 determine_dist
 
+echo "Distribution is $DIST"
+
 menv_alias dist_install=${DIST}_install
 menv_alias ins=dist_install
 menv_alias ${DIST}_install=${PKG_MGMT}_install

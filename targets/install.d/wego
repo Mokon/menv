@@ -1,6 +1,8 @@
 #!/bin/bash
 # (C) 2015 David 'Mokon' Bond, All Rights Reserved
 
+export GOPATH=$HOME/menv/go
+export PATH="$PATH:$GOPATH/bin"
 go get github.com/schachmat/wego
 
 echo "To use wego add an api key to wegorc"

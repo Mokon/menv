@@ -6,6 +6,8 @@ if [ -f $menv_dir/.$menv_gen_tag ] ; then
 else
   echo "Installing menv!"
 
+  menv_export MENV_INTERACTIVE=1
+
   source ~/menv/core/lib
 
   menv_lock $menv_dir/.lock
