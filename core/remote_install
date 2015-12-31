@@ -17,7 +17,7 @@ find menv/ -not -path "menv/local*" -and -not -path "menv/backup*" -and -name .g
 
 source ~/menv/core/install
 
-source ~/.bash_profile
+source ~/menv/core/login
 
 popd &> /dev/null
 

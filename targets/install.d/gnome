@@ -13,8 +13,8 @@ spushd .
 mkdir -p ~/.config/gtk-3.0/
 safe_symlink ~/.config/gtk-3.0/settings.ini $menv_dotfiles_dir/config/gtk-3.0/settings.ini
 
-echo "" > ~/.local/share/recently-used.xbel
 if [ $MENV_ROOT_ACCESS -ne 0 ] ; then
+  echo "" | sudo tee ~/.local/share/recently-used.xbel
   sudo chattr +i ~/.local/share/recently-used.xbel
 fi
 

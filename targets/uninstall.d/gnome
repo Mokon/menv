@@ -19,6 +19,7 @@ function rm_app {
 
 if [ $MENV_ROOT_ACCESS -ne 0 ] ; then
   sudo chattr -i ~/.local/share/recently-used.xbel
+  sudo $BINRM ~/.local/share/recently-used.xbel
 fi
 
 rm_app root-wireshark
@@ -28,8 +29,6 @@ gsettings set org.gnome.shell favorite-apps "['gnome-terminal.desktop']"
 unset rm_app
 
 if_symlink_rm ~/.config/gtk-3.0/settings.ini
-
-$BINRM ~/.local/share/recently-used.xbel
 
 spopd
 
