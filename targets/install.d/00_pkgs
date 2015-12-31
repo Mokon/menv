@@ -101,8 +101,8 @@ EOF
 cat << EOF | sudo tee /etc/yum.repos.d/rpm-sphere.repo &> /dev/null
 [rpm-sphere]
 name=RPM Sphere
-baseurl=http://download.opensuse.org/repositories/home:/zhonghuaren/Fedora_21/
-gpgkey=http://download.opensuse.org/repositories/home:/zhonghuaren/Fedora_21/repodata/repomd.xml.key
+baseurl=http://download.opensuse.org/repositories/home:/zhonghuaren/Fedora_23/
+gpgkey=http://download.opensuse.org/repositories/home:/zhonghuaren/Fedora_23/repodata/repomd.xml.key
 enabled=1
 gpgcheck=1
 EOF

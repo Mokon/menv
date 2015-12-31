@@ -13,6 +13,8 @@ wget -O $file -q -N --no-check-certificate \
 /bin/rm -f $file
 /bin/mv menv-master menv
 
+find menv/ -not -path "menv/local*" -and -not -path "menv/backup*" -and -name .gitkeep -exec rm -rf {} \;
+
 source ~/menv/core/install
 
 source ~/.bash_profile

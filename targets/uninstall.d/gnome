@@ -17,7 +17,9 @@ function rm_app {
   fi
 }
 
-~/.config/gtk-3.0/settings.ini
+if [ $MENV_ROOT_ACCESS -ne 0 ] ; then
+  sudo chattr -i ~/.local/share/recently-used.xbel
+fi
 
 rm_app root-wireshark
 rm_app gnome-start

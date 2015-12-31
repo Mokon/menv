@@ -6,6 +6,8 @@ if [ -f $menv_dir/.$menv_gen_tag ] ; then
 else
   echo "Installing menv!"
 
+  source ~/menv/core/lib
+
   menv_lock $menv_dir/.lock
 
   touch $menv_dir/.$menv_gen_tag

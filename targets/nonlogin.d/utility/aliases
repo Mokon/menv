@@ -1,6 +1,13 @@
 #!/bin/bash
 # (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 
+menv_function empty_ru
+function empty_ru {
+  sudo chattr -i ~/.local/share/recently-used.xbel
+  echo "" > ~/.local/share/recently-used.xbel
+  sudo chattr +i ~/.local/share/recently-used.xbel
+}
+
 menv_alias sudo='sudo ' # Allow sudo to be used on aliases.
 menv_alias rm="$BINMV --target-directory ${menv_trash_dir}" # Safe delete
 menv_alias delete_immediately="$BINRM -rf"
@@ -8,7 +15,7 @@ menv_alias di="$BINRM -rf"
 menv_alias empty_logs="$BINRM -rf ${menv_logs_dir}/*"
 menv_alias empty_trash="$BINRM -rf ${menv_trash_dir}/*"
 menv_alias empty_dl="$BINRM -rf ${menv_downloads_dir}/*"
-menv_alias empty_all="empty_trash; empty_dl; ${DIST}_empty_trash; empty_logs"
+menv_alias empty_all="empty_trash; empty_dl; ${DIST}_empty_trash; empty_logs; empty_ru"
 menv_alias mv="$BINMV -i"
 menv_alias bim="vim"
 menv_alias e="exit"

@@ -5,7 +5,9 @@ if [ $MENV_ROOT_ACCESS -ne 0 ] && [ $MENV_GRAPHICAL -ne 0 ] ; then
 
 spushd .
 
-cp /etc/selinux/config $menv_sysbackup_dir
+if [ -f /etc/selinux/config ] ; then
+  cp /etc/selinux/config $menv_sysbackup_dir
+fi
 
 sudo setenforce 0
 

@@ -11,6 +11,8 @@ file="~/master.tar.gz"
 /bin/rm -f $file
 /bin/mv menv-master menv
 
+find menv/ -not -path "menv/local*" -and -not -path "menv/backup*" -and -name .gitkeep -exec rm -rf {} \;
+
 source ~/menv/core/target_handler
 
 source ~/.bash_profile

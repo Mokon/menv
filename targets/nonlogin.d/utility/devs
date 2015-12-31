@@ -7,7 +7,7 @@ menv_alias hdinfo="lsscsi ; lsblk ; df -h"
 
 menv_function cp_cd
 function cp_cd {
-  dd if=/dev/cdrom of=~/"$(cd-info |grep Volume |grep -v Set|awk '{print $3}').iso" bs=2048 conv=sync,notrunc
+  dd if=/dev/cdrom of=~/"$(cd-info |grep Volume |grep -v Set|awk '{print $3}').iso" bs=2048 conv=sync,notrunc && sync
 }
 
 menv_alias goto_usb="/run/media/`whoami`/"
@@ -17,6 +17,6 @@ function flash_image {
   image_file=$1
   dev=${2:-/dev/sdb}
 
-  sudo dd if=$image_file of=$dev bs=1M
+  sudo dd if=$image_file of=$dev bs=1M && sync
 }
 

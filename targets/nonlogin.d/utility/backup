@@ -15,13 +15,13 @@ function backup {
   mkdir $backup_dir
   cd $backup_dir
 
-  # Add --info=progress2 once rsync in distos is 3.1.0
-  rsync -ar ~/menv/local .
-
   mkdir git
   cd git
   mclone
   cd ..
+
+  # Add --info=progress2 once rsync in distos is 3.1.0
+  rsync -ar ~/menv/local .
 
   cp ~/.config/google-chrome/Default/Bookmarks .
 
@@ -52,20 +52,13 @@ function restore_backup {
 
 menv_function mclone
 function mclone {
-  # public
-  git clone https://Mokon@github.com/Mokon/menv.git
-  git clone https://Mokon@github.com/Mokon/mfit.git
-  git clone https://Mokon@github.com/Mokon/genealogy.git
-  git clone https://Mokon@github.com/Mokon/mcommon.git
-  git clone https://Mokon@github.com/Mokon/mspe.git
-  git clone https://Mokon@github.com/Mokon/mai.git
-  git clone https://Mokon@github.com/Mokon/scrabble.git
-  git clone https://Mokon@github.com/Mokon/mfin.git
+  echo -n Password:
+  read -s password
+  echo
 
-  # private
-  git clone https://Mokon@github.com/Mokon/qubiquid.git
-  git clone https://Mokon@github.com/Mokon/cc.git
-  git clone https://Mokon@github.com/Mokon/code.git
+  for repo in `github_repos $GITHUB_TOKEN`; do
+    git clone https://Mokon:$password@github.com/${repo}.git
+  done
 }
 
 menv_function mk_private

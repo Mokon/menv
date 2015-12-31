@@ -1,0 +1,15 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+use JSON 'decode_json';
+
+my ($token) = @ARGV;
+
+my $json =
+  `curl --silent https://api.github.com/user/repos?access_token=$token`;
+ 
+my $repos = JSON::decode_json($json);
+ 
+foreach my $repo ( @$repos ) {
+  print $repo->{full_name} . "\n";
+}
