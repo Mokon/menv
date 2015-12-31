@@ -2,7 +2,7 @@
 # From:
 #   http://stackoverflow.com/questions/9448920/how-can-i-execute-a-bash-function-using-sudo
 
-. ~/.bashrc &> /dev/null
+. ~/.menv/core/login &> /dev/null
 
 function exesudo {
   local _funcname_="$1"

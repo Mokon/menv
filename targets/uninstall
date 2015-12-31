@@ -14,11 +14,17 @@ cd ~
 menv_version ignore
 menv_target login &> /dev/null # So we have the aliases etc in the menv arrays.
 
-menv_target_children uninstall
+if grep -v --quiet noroot $menv_install_opts_file ; then
+  menv_export MENV_ROOT_ACCESS=1
 
-local u=`whoami`
-exesudo delete_line_in_file "$u ALL=(ALL) NOPASSWD: ALL" /etc/sudoers
-exesudo delete_line_in_file "$u ALL=(root) NOPASSWD: \/sbin\/reboot" /etc/sudoers
+  local u=`whoami`
+  exesudo delete_line_in_file "$u ALL=(ALL) NOPASSWD: ALL" /etc/sudoers
+  exesudo delete_line_in_file "$u ALL=(root) NOPASSWD: \/sbin\/reboot" /etc/sudoers
+else
+  menv_export MENV_ROOT_ACCESS=0
+fi
+
+menv_target_children uninstall
 
 if_symlink_rm $bashrc
 if_symlink_rm $bash_profile

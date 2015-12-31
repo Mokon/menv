@@ -77,7 +77,6 @@ else
   safe_symlink ~/docs $menv_local_dir/docs
 
   if [ $MENV_GRAPHICAL -ne 0 ] ; then
-    safe_symlink ~/cloud $menv_dir/cloud
     safe_symlink ~/pics $menv_local_dir/pics
   fi
 
