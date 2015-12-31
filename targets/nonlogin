@@ -3,8 +3,6 @@
 
 if [[ "$MENV_INTERACTIVE" == 1 ]] ; then
   echo "Starting menv"
-else 
-  echo "not iteractive"
 fi
 
 menv_target_children nonlogin
@@ -65,9 +63,6 @@ if [ -f /etc/bashrc ]; then
 fi
 
 if [[ "$MENV_INTERACTIVE" == 1 ]] ; then
-  echo "printing motd"
   source $menv_core_dir/motd
-else
-  echo "no motd"
 fi
 
