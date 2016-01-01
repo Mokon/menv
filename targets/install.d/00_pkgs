@@ -1,6 +1,8 @@
 #!/bin/bash
 # (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 
+  alias dist_install
+  alias fedora_install
 menv_function install_java
 function install_java {
   spushd
@@ -200,7 +202,7 @@ if [[ $REPLY_DEVEL =~ ^[Yy]$ ]] ; then
   install_simple_package xxdiff
   install_simple_package go
 
-  sudo rpm -Uvfh http://d-rats.com/yum/f11/d-rats-repo-0.1.2-1.fc11.noarch.rpm \
+  sudo rpm -Uvfh --quiet http://d-rats.com/yum/f11/d-rats-repo-0.1.2-1.fc11.noarch.rpm \
     | grep -v "already installed"
   install_simple_package chirp
 

@@ -39,7 +39,7 @@ determine_dist
 
 menv_alias dist_install=${DIST}_install
   alias dist_install
-  echo " dist 1 is $DIST"
+  echo " dist 1 is $DIST $PKG_MGMT"
 menv_alias ins=dist_install
 menv_alias ${DIST}_install=${PKG_MGMT}_install
 
@@ -54,12 +54,12 @@ function install_package {
   dist_to_pkg=$1
 
   alias dist_install
-  echo " dist 2 is $DIST"
+  echo " dist 2 is $DIST $PKG_MGMT"
 
   eval "local pkg=\${$dist_to_pkg[$DIST]}"
   echo $pkg >> $menv_local_dir/installed
   sort -u $menv_local_dir/installed -o $menv_local_dir/installed
-  dist_install $pkg | grep -v "already installed and latest version"
+  dist_install $pkg #| grep -v "already installed and latest version"
 }
 
 menv_function install_simple_package
