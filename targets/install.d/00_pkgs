@@ -1,8 +1,6 @@
 #!/bin/bash
 # (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 
-  alias dist_install
-  alias fedora_install
 menv_function install_java
 function install_java {
   spushd

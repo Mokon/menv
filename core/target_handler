@@ -1,6 +1,7 @@
 #!/bin/bash
 # (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 
+shopt -s expand_aliases
 source ~/menv/core/lib
 
 [[ $- == *i* ]] && menv_export MENV_INTERACTIVE=1

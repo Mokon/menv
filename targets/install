@@ -10,9 +10,6 @@ else
 
   menv_lock $menv_dir/.lock
 
-  alias dist_install
-  alias fedora_install
-
   touch $menv_dir/.$menv_gen_tag
   menv_version set
   spushd .
