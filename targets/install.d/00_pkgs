@@ -142,11 +142,10 @@ fi
   install_simple_package lynx
   install_simple_package time
   install_simple_package inkscape
-  install_simple_package pstree
+  install_simple_package psmisc
   install_simple_package dbus-x11
   install_simple_package festival
   install_simple_package speech-dispatcher-utils
-  install_simple_package spd-say
   install_simple_package espeak
   install_simple_package smem
   install_simple_package htop
@@ -200,12 +199,17 @@ if [[ $REPLY_DEVEL =~ ^[Yy]$ ]] ; then
   install_simple_package xxdiff
   install_simple_package go
 
-  sudo rpm -Uvfh --quiet http://d-rats.com/yum/f11/d-rats-repo-0.1.2-1.fc11.noarch.rpm \
+  sudo rpm -Uvfh --quiet http://d-rats.com/yum/f11/d-rats-repo-0.1.3-1.fc11.noarch.rpm \
     | grep -v "already installed"
   install_simple_package chirp
 
-  sudo debuginfo-install -q glibc | grep -v "already installed and latest version"
-  sudo debuginfo-install -q kernel | grep -v "already installed and latest version"
+  sudo debuginfo-install -q glibc \
+    | grep -v "already installed and latest version" \
+    | grep -v "No debuginfo packages available to install"
+
+  sudo debuginfo-install -q kernel \
+    | grep -v "already installed and latest version" \
+    | grep -v "No debuginfo packages available to install"
 
   install_simple_package python3-pyusb
   install_simple_package pyusb
