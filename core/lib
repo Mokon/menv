@@ -292,6 +292,12 @@ function append_crontab {
   (crontab -l ; echo "$cmd") 2>&1 | grep -v "no crontab" | sort | uniq | crontab -
 }
 
+menv_function delete_crontab
+function delete_crontab {
+  local cmd=$1
+  crontab -l |sed "/$cmd/d" |grep -v 'no crontab' | sort | uniq | crontab -
+}
+
 menv_function menv_lock
 function menv_lock {
   local lockfile=$1
