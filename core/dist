@@ -53,12 +53,14 @@ menv_function install_package
 function install_package {
   dist_to_pkg=$1
 
-  alias dist_install
   echo " dist 2 is $DIST $PKG_MGMT"
 
   eval "local pkg=\${$dist_to_pkg[$DIST]}"
   echo $pkg >> $menv_local_dir/installed
   sort -u $menv_local_dir/installed -o $menv_local_dir/installed
+  alias dist_install
+  alias fedora_install
+  alias yum_install
   dist_install $pkg #| grep -v "already installed and latest version"
 }
 

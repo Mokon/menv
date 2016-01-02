@@ -216,8 +216,10 @@ if [[ $REPLY_DEVEL =~ ^[Yy]$ ]] ; then
   #install_simple_package lua-devel
   #sudo luarocks install cw
 
-  sudo npm install --loglevel error -g git-stats &> /dev/null
-  sudo npm install --loglevel error -g git-stats-importer &> /dev/null
+  npm config set prefix ~/menv/npm
+  menv_export PATH=$PATH:$HOME/menv/npm/bin
+  npm install --loglevel error -g git-stats &> /dev/null
+  npm install --loglevel error -g git-stats-importer &> /dev/null
 
   gem install -q git_stats &> /dev/null
   gem install -q slackcat &> /dev/null
