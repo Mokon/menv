@@ -28,7 +28,7 @@ if [ ! -f ~/.ssh/id_rsa.pub ]; then
 fi
 
 if [ $MENV_ROOT_ACCESS -ne 0 ] ; then
-    sudo /sbin/chkconfig sshd on
+    sudo /sbin/chkconfig sshd on 2>&1 |grep -v Forwarding
    
     if ! grep -q "UseDNS no" /etc/ssh/sshd_config &> /dev/null ; then 
       echo "UseDNS no" | sudo tee -a /etc/ssh/sshd_config &> /dev/null

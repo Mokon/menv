@@ -4,7 +4,7 @@
 spushd .
 
 cd $menv_bin_dir
-wget -q http://finch.am/projects/blackwidow/blackwidow_enable.py
+fetch http://finch.am/projects/blackwidow/blackwidow_enable.py
 chmod +x blackwidow_enable.py
 
 spopd

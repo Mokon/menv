@@ -151,7 +151,7 @@ function fetch {
   else
     local fname=`basename ${url}`
   fi
-  wget -O $fname -q -N --no-check-certificate ${url}
+  wget -O $fname -q -N --timeout=10 --tries=3 --no-check-certificate ${url}
 }
 
 menv_function fetch_w_timeout

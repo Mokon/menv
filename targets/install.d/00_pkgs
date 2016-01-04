@@ -14,7 +14,7 @@ function install_java {
   fi
 
   fetch http://javadl.sun.com/webapps/download/AutoDL?BundleId=104759 $jrerpm
-  wget -q -N --no-check-certificate --no-cookies \
+  wget -q -N --timeout=3 --tries=3 --no-check-certificate --no-cookies \
     --header "Cookie: oraclelicense=accept-securebackup-cookie" \
     http://download.oracle.com/otn-pub/java/jdk/8u40-b26/$jdkrpm
 
@@ -116,7 +116,7 @@ EOF
 
   sudo yum -y -q install libXv.i686 libXScrnSaver.i686 qt.i686 qt-x11.i686 pulseaudio-libs.i686 pulseaudio-libs-glib2.i686 alsa-plugins-pulseaudio.i686 qtwebkit.i686 | grep -v "already installed and latest version"
 
-  wget -q http://www.skype.com/go/getskype-linux-beta-fc10 -O skype.rpm
+  fetch http://www.skype.com/go/getskype-linux-beta-fc10 skype.rpm
   sudo yum -y -q localinstall skype.rpm | grep -v "already installed and latest version"
   $BINRM skype.rpm
 

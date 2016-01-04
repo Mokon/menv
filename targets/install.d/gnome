@@ -17,7 +17,7 @@ if [ $MENV_ROOT_ACCESS -ne 0 ] ; then
   if [ -f ~/.local/share/recently-used.xbel ] ; then
     sudo chattr -i ~/.local/share/recently-used.xbel
   fi
-  echo "" | sudo tee ~/.local/share/recently-used.xbel
+  echo "" | sudo tee ~/.local/share/recently-used.xbel > /dev/null
   sudo chattr +i ~/.local/share/recently-used.xbel
 fi
 
