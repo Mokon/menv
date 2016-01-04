@@ -26,6 +26,12 @@
   prstash = "!f() { git fetch $1 refs/pull-requests/$2/from:$3; } ; f"
   gdiff = "difftool -t meld -y"
   tduff = "difftool --extcmd='colordiff -ydw --suppress-common-lines -C 10' -y "
+  co = "checkout"
+  br = "branch"
+  ci = "commit"
+  st = "status"
+  unstage = "reset HEAD --"
+  last = "log -1 HEAD"
 [diff]
   ignoreSubmodules = dirty
   renames = true

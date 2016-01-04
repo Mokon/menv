@@ -57,10 +57,28 @@ function s:CommonFormatting()
   endif
 endfunction
 
+set wildignore+=*.ko,*.mod.c,*.order,modules.builtin
+
 let cs=$menv_dotfiles_dir."/vimrc_style/".$CODING_STYLE.".vim"
 if filereadable(cs)
   exec 'source '.cs
 endif
+
+autocmd BufRead,BufNewFile *.yang call s:YangFormatting()
+
+function s:YangFormatting()
+  set tabstop=4
+  set shiftwidth=4
+  set softtabstop=4
+  set textwidth=80
+  set expandtab
+  set cindent
+  set formatoptions=tcqlron
+  set cinoptions=:0,l1,t0,g2
+  set cino+=(0
+  set cino+=h2
+  set cino+=N-s
+endfunction
 
 autocmd BufRead,BufNewFile */quagga/* call s:QuaggaFormatting()
 
@@ -75,6 +93,8 @@ function s:QuaggaFormatting()
   syn match Rt128Error /\t/
   syn match Rt128Error /\%81v.\+/
 endfunction
+
+autocmd FileType diff,kconfig setlocal tabstop=4
 
 " A nice function that strips trailing white space from a file. Mapped to
 " leader space.
@@ -246,6 +266,11 @@ nnoremap <F6> :set nonumber<CR>
 nnoremap <F7> :GitGutterToggle<CR>
 
 nnoremap <F8> :call ToggleForCopy()<CR>
+
+hi CursorLine   cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
+hi CursorColumn cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
+set cursorline! cursorcolumn!
+nnoremap <F9> :set cursorline! cursorcolumn!<CR>
 
 function! ToggleForCopy()
   :NumbersToggle

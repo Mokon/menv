@@ -10,6 +10,22 @@ function tree_list {
     | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
 }
 
+menv_function start_vm
+function start_vm {
+  local vm = $1
+  if VBoxManage list vms |grep -q $vm ; then
+    echo "vm already running"
+  else
+    VBoxManage startvm $vm --type headless
+  fi
+}
+
+menv_function stop_vm
+function stop_vm {
+  local vm = $1
+  VBoxManage controlvm $vm poweroff
+}
+
 # A function to grep excluding something I normally don't care about.
 menv_function mgrep
 function mgrep {

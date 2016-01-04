@@ -1,7 +1,5 @@
 " (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 
-set wildignore+=*.ko,*.mod.c,*.order,modules.builtin
-
 autocmd FileType c,cpp,pl call s:LinuxKernelFormatting()
 autocmd FileType diff,kconfig setlocal tabstop=8
 
