@@ -261,6 +261,12 @@ map <leader>ss :setlocal spell!<cr>
 "
 map <leader>n :NERDTreeToggle<CR>
 
+set foldenable
+set foldlevelstart=10
+set foldnestmax=10
+set foldmethod=indent
+nnoremap <F2> za
+
 nnoremap <F5> :NumbersToggle<CR>
 nnoremap <F6> :set nonumber<CR>
 nnoremap <F7> :GitGutterToggle<CR>
