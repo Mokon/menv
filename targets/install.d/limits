@@ -3,7 +3,7 @@
 
 spushd .
 
-if [ $MENV_ROOT_ACCESS -ne 0 ] &&[ $MENV_GRAPHICAL -ne 0 ] ; then
+if [ $MENV_DESKTOP -ne 0 ] ; then
   if grep -q "* soft nofile 4096" /etc/security/limits.conf &> /dev/null ; then
     echo "menv note, high file limit already installed"
   else

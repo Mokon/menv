@@ -17,7 +17,7 @@ function rm_app {
   fi
 }
 
-if [ $MENV_ROOT_ACCESS -ne 0 ] ; then
+if [ $MENV_DESKTOP -ne 0 ] ; then
   if [ -f ~/.local/share/recently-used.xbel ] ; then
     sudo chattr -i ~/.local/share/recently-used.xbel
     sudo $BINRM ~/.local/share/recently-used.xbel

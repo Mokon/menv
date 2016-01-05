@@ -27,12 +27,12 @@ if [ ! -f ~/.ssh/id_rsa.pub ]; then
   ssh-keygen -t rsa -b 4096 -N '' -f ~/.ssh/id_rsa
 fi
 
-if [ $MENV_ROOT_ACCESS -ne 0 ] ; then
-    sudo /sbin/chkconfig sshd on 2>&1 |grep -v Forwarding
+if [ $MENV_DESKTOP -ne 0 ] ; then
+  sudo /sbin/chkconfig sshd on 2>&1 |grep -v Forwarding
    
-    if ! grep -q "UseDNS no" /etc/ssh/sshd_config &> /dev/null ; then 
-      echo "UseDNS no" | sudo tee -a /etc/ssh/sshd_config &> /dev/null
-    fi
+  if ! grep -q "UseDNS no" /etc/ssh/sshd_config &> /dev/null ; then 
+    echo "UseDNS no" | sudo tee -a /etc/ssh/sshd_config &> /dev/null
+  fi
 fi
 
 spopd

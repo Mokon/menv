@@ -192,7 +192,7 @@ function safe_symlink {
       $BINMKDIR -p `dirname ${menv_backup_dir}/${file}`
       $BINMV --backup=numbered $file ${menv_backup_dir}/${file}
     else
-      echo "Found valid $file which is in the skel folder. Removing"
+      # Found valid $file which is in the skel folder. Removing
       $BINRM $file
     fi
   elif [ -L $file ] ; then

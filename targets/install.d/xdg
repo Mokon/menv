@@ -1,7 +1,7 @@
 #!/bin/bash
 # (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 
-if [ $MENV_ROOT_ACCESS -ne 0 ] && [ $MENV_GRAPHICAL -ne 0 ] ; then
+if [ $MENV_DESKTOP -ne 0 ] ; then
 
 if test -x "$(command -v "gnome-terminal")" ; then
 # Only run gnome for gnome <= 3.8.4

@@ -5,7 +5,6 @@ spushd .
 
 cd ~
 
-echo "Installing vim pathogen plugin handler."
 $BINMKDIR -p ~/.vim/autoload ~/.vim/bundle
 curl -LSso ~/.vim/autoload/pathogen.vim \
  https://raw.githubusercontent.com/tpope/vim-pathogen/master/autoload/pathogen.vim

@@ -14,14 +14,14 @@ cd ~
 menv_version ignore
 menv_target login &> /dev/null # So we have the aliases etc in the menv arrays.
 
-if grep -v --quiet noroot $menv_install_opts_file ; then
-  menv_export MENV_ROOT_ACCESS=1
+if grep -v --quiet nodesktop $menv_install_opts_file ; then
+  menv_export MENV_DESKTOP=1
 
   local u=`whoami`
   exesudo delete_line_in_file "$u ALL=(ALL) NOPASSWD: ALL" /etc/sudoers
   exesudo delete_line_in_file "$u ALL=(root) NOPASSWD: \/sbin\/reboot" /etc/sudoers
 else
-  menv_export MENV_ROOT_ACCESS=0
+  menv_export MENV_DESKTOP=0
 fi
 
 menv_target_children uninstall
@@ -41,10 +41,9 @@ $BINMV $menv_local_dir ~
 
 if ! find ~/backup -mindepth 1 -print -quit | grep -q .; then
   echo "Deleting empty backup directory."
-  $BINRM ~/backup
+  $BINRM -rf ~/backup
 fi
 
-echo "Deleting the menv directory."
 $BINRM -rf $menv_dir
 
 spopd

@@ -1,7 +1,7 @@
 #!/bin/bash
 # (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 
-if [ $MENV_ROOT_ACCESS -ne 0 ] && [ $MENV_GRAPHICAL -ne 0 ] ; then
+if [ $MENV_DESKTOP -ne 0 ] ; then
 
 if test -x "$(command -v "gnome-terminal")" ; then
 # Only run gnome for gnome <= 3.8.4
@@ -13,13 +13,11 @@ spushd .
 mkdir -p ~/.config/gtk-3.0/
 safe_symlink ~/.config/gtk-3.0/settings.ini $menv_dotfiles_dir/config/gtk-3.0/settings.ini
 
-if [ $MENV_ROOT_ACCESS -ne 0 ] ; then
-  if [ -f ~/.local/share/recently-used.xbel ] ; then
-    sudo chattr -i ~/.local/share/recently-used.xbel
-  fi
-  echo "" | sudo tee ~/.local/share/recently-used.xbel > /dev/null
-  sudo chattr +i ~/.local/share/recently-used.xbel
+if [ -f ~/.local/share/recently-used.xbel ] ; then
+  sudo chattr -i ~/.local/share/recently-used.xbel
 fi
+echo "" | sudo tee ~/.local/share/recently-used.xbel > /dev/null
+sudo chattr +i ~/.local/share/recently-used.xbel
 
 append_crontab "@reboot /home/$USER/menv/bin/mute_volume"
 append_crontab "* * * * * /home/$USER/menv/bin/rotate_background"

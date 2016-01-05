@@ -21,7 +21,6 @@ $BINRM -rf vim-fugitive
 
 cd ~/.vim/plugin
 
-echo "Installing cscope plugin."
 fetch http://cscope.sourceforge.net/cscope_maps.vim
 #fetch http://www.vim.org/scripts/download_script.php?src_id=19933 svndiff.vim
 fetch http://www.yang-central.org/twiki/pub/Main/YangTools/yang.vim

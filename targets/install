@@ -14,32 +14,21 @@ else
   menv_version set
   spushd .
 
-  read -t 5 -p "Is this a graphical system? " -n 1 -r
+  read -t 5 -p "Is this a desktop system? " -n 1 -r
   echo
 
   if [[ $REPLY =~ ^[Yy]$ ]] ; then
-    echo "graphical" >> $menv_install_opts_file
-    menv_export MENV_GRAPHICAL=1
-  else
-    echo "nographical" >> $menv_install_opts_file
-    menv_export MENV_GRAPHICAL=0
-  fi
-
-  read -t 5 -p "Do you have root access? " -n 1 -r
-  echo
-
-  if [[ $REPLY =~ ^[Yy]$ ]] ; then
-    menv_export MENV_ROOT_ACCESS=1
-    echo "root" >> $menv_install_opts_file
-
-    local u=`whoami`
+    echo "desktop" >> $menv_install_opts_file
+    menv_export MENV_DESKTOP=1
+    
+local u=`whoami`
     echo "$u ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers &> /dev/null
     echo "$u ALL=(root) NOPASSWD: /sbin/reboot" | sudo tee -a /etc/sudoers &> /dev/null
     exesudo delete_line_in_file "\tDefaults    env_reset" /etc/sudoers
     exesudo delete_line_in_file "\tDefaults    secure_path = *" /etc/sudoers
   else
-    menv_export MENV_ROOT_ACCESS=0
-    echo "noroot" >> $menv_install_opts_file
+    echo "nodesktop" >> $menv_install_opts_file
+    menv_export MENV_DESKTOP=0
   fi
 
   # Link the bash targets.
@@ -60,23 +49,15 @@ else
     $BINMV ~/local $menv_local_dir
   fi
 
-  if [ -f $menv_local_nonlogin ]; then
-    echo "Found ${menv_local_nonlogin}."
-  else
+  if [ ! -f $menv_local_nonlogin ]; then
     echo "Didn't find ${menv_local_nonlogin}."
-  fi
-
-  if [ -f $menv_local_login ]; then
-    echo "Found ${menv_local_login}."
-  else
-    echo "Didn't find ${menv_local_login}."
   fi
 
   # Link some files and dirs to the user home.
   safe_symlink ~/code $menv_local_dir/code
   safe_symlink ~/docs $menv_local_dir/docs
 
-  if [ $MENV_GRAPHICAL -ne 0 ] ; then
+  if [ $MENV_DESKTOP -ne 0 ] ; then
     safe_symlink ~/pics $menv_local_dir/pics
   fi
 

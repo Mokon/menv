@@ -3,7 +3,7 @@
 
 spushd .
 
-if [ $MENV_ROOT_ACCESS -ne 0 ] &&[ $MENV_GRAPHICAL -ne 0 ] ; then
+if [ $MENV_DESKTOP -ne 0 ] ; then
   if grep -q backup /etc/fstab &> /dev/null ; then
     echo "Backup already in fstab."
   else
