@@ -8,7 +8,7 @@ echo >> "$HISTFILE"
 cat "${menv_history_dir}/bash_history.${BASHPID}" >> "$HISTFILE"
 tmplog=`mktemp`
 cat "$HISTFILE" | tail -n $HISTSIZE > $tmplog
-mv -f $tmplog "$HISTFILE"
+$BINMV -f $tmplog "$HISTFILE"
 
 if [ -f ${menv_history_dir}/bash_history.${BASHPID} ] ; then
   rm ${menv_history_dir}/bash_history.${BASHPID}

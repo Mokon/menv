@@ -1,6 +1,12 @@
 #!/bin/bash
 # (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 
+if grep -v --quiet nodesktop $menv_install_opts_file ; then
+  menv_export MENV_DESKTOP=1
+else
+  menv_export MENV_DESKTOP=0
+fi
+
 menv_target_children logout
 
 if [ -f $menv_local_logout ]; then

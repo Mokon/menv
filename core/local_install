@@ -7,7 +7,7 @@ cd ~
 
 file="~/master.tar.gz"
     
-/bin/tar -xzf $file
+/bin/tar -xzf --warning=no-timestamp $file
 /bin/rm -f $file
 /bin/mv menv-master menv
 

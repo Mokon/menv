@@ -30,9 +30,16 @@ cd $menv_bin_dir
 
 curl -Os https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
 
-git clone -q https://code.google.com/p/gitinspector/
+mkdir git
+cd git
 
-ln -s gitinsepctor/gitinspector/gitinspector.py gitinspector
+git clone -q https://code.google.com/p/gitinspector/
+git clone -q https://github.com/ddksr/cliist
+
+cd ..
+
+ln -s git/gitinsepctor/gitinspector/gitinspector.py gitinspector
+ln -s git/cliist/cliist.py cliist
 
 fetch https://raw.githubusercontent.com/Mokon/git_get/master/git_get
 chmod +x git_get
