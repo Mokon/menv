@@ -12,7 +12,7 @@ function tree_list {
 
 menv_function start_vm
 function start_vm {
-  local vm = $1
+  local vm=$1
   if VBoxManage list vms |grep -q $vm ; then
     echo "vm already running"
   else
@@ -406,4 +406,9 @@ function scp_all_videos {
     find . -type f -iname "*.$ext" -exec cp {} ~/movs \;
   done
   scp -r ~/mov $2
+}
+
+menv_function enumerate_output
+function enumerate_output {
+"$@" 2> >(sed 's/^/2: /') > >(sed 's/^/1: /')
 }

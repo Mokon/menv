@@ -29,10 +29,8 @@ function gnome_list_all_settings {
   done
 }
 
-if [ $MENV_DESKTOP -ne 0 ] ; then
-  if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
-    eval `dbus-launch --close-stderr --sh-syntax --exit-with-session`
-  fi
+if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
+  eval `dbus-launch --close-stderr --sh-syntax --exit-with-session`
 fi
 
 menv_alias rd="rdesktop -g 1600x900 -u admin -p -"
@@ -53,6 +51,10 @@ X-GNOME-Autostart-enabled=true
 Name=$script
 EOF
 }
+
+if [ -d ~/Desktop/ ] ; then
+  rmdir --ignore-fail-on-non-empty ~/Desktop/
+fi
 
 fi
 

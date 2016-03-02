@@ -1,8 +1,15 @@
 #!/bin/bash
 # (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 
-if [ $PKG_TYPE == "rpm" ] ; then 
+if [ $PKG_TYPE == "rpm" ] ; then
   menv_alias rpm_list_deps="rpm -qpR"
-  menv_alias rpm_what_provides="rpm -q --whatprovides"
-fi
 
+  menv_function rpm_what_provides
+  function rpm_what_private {
+    echo "exzact:"
+    rpm -q --whatprovides "$@"
+
+    echo "which:"
+    rpm -q --whatprovides `which "$@"`
+  }
+fi

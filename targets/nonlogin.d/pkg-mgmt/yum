@@ -1,7 +1,15 @@
 #!/bin/bash
 # (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 
-if [ $PKG_MGMT == "yum" ] ; then 
+if [ $PKG_MGMT == "yum" ] ; then
   menv_alias install-build-essentials="yum groupinstall 'Development Tools'"
-fi
 
+  menv_function what_what_provides
+  function rpm_what_private {
+    echo "exzact:"
+    sudo yum whatprovides "$@"
+
+    echo "fuzzy:"
+    sudo yum whatprovide "*/`which "$@"`"
+  }
+fi

@@ -6,6 +6,7 @@ function extract {
   local file=$1
 
   case $file in
+    *.tgz) tar zxvf $file ;;
     *.tar.gz) tar -xzvf $file ;;
     *.tar) tar -xvf $file ;;
     *.zip) unzip $file ;;

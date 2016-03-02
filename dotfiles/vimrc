@@ -282,7 +282,13 @@ function! ToggleForCopy()
   :NumbersToggle
   :set nonumber
   :GitGutterToggle
-  setlocal colorcolumn=
+  if exists('+colorcolumn')
+    if &colorcolumn != 0
+      set colorcolumn=
+    else
+      set colorcolumn=80
+    endif
+  endif
 endfunction
 
 set nocscopeverbose

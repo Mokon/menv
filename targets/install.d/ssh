@@ -32,6 +32,7 @@ if [ $MENV_DESKTOP -ne 0 ] ; then
    
   if ! grep -q "UseDNS no" /etc/ssh/sshd_config &> /dev/null ; then 
     echo "UseDNS no" | sudo tee -a /etc/ssh/sshd_config &> /dev/null
+    echo "UseRoaming no" | sudo tee -a /etc/ssh/ssh_config &> /dev/null
   fi
 fi
 

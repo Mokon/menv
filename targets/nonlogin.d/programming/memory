@@ -24,13 +24,29 @@ function gprof {
 
 menv_alias list_core_dumps="ls -Alt /var/lib/systemd/coredump"
 
+menv_function find_newest_file
+function find_newest_file {
+  local dir="$1"
+  local name_pattern="$2"
+  find "$dir" -name "$name_pattern" -type f -printf "%T@ %p\n" \
+    | sort -n | sed -r 's/^[0-9.]+\s+//' | tail -n 1
+}
+
 menv_function extract_core_dump
 function extract_core_dump {
-  pushd
+  local core=$1
+
+  pushd .
   cd /var/lib/systemd/coredump
   sudo xz -d ${core}.xz
   popd
   sudo cp /var/lib/systemd/coredump/${core} .
+}
+
+menv_function extract_latest_core_dump
+function extract_latest_core_dump {
+  local core=`find_newest_file /var/lib/systemd/coredump/ "core.*.xz"`
+  extract_core_dump $core
 }
 
 menv_alias interactive_decode="addr2line -e "
@@ -56,3 +72,4 @@ END
   done < ${stacktrace}
 }
 
+menv_alias show_core_dumps="coredumpctl list"
