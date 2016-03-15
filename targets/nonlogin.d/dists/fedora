@@ -1,9 +1,15 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2016 David 'Mokon' Bond, All Rights Reserved
 
-if [ $DIST == "fedora" ] ; then 
+if [ $DIST == "fedora" ] ; then
   menv_alias fedora_empty_trash='/bin/rm -rf ~/.local/share/Trash/'
+
+  menv_alias list_packages_i_installed="yumdb search reason user"
+
+  menv_function list_packages_in_repo
+  function list_packages_in_repo{
+    repo=$1
+
+    yum --disablerepo='*' --enablerepo="$repo" list available
+  }
 fi
-
-menv_alias list_packages_i_installed="yumdb search reason user"
-

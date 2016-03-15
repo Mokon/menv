@@ -206,6 +206,7 @@ fi
   install_simple_package hwloc
   install_simple_package hwloc-gui
   install_simple_package perl-Text-SpellChecker
+  install_simple_package perl-Sysadm-Install
 
   sudo rpm -Uf --quiet http://d-rats.com/yum/f11/d-rats-repo-0.1.3-1.fc12.noarch.rpm \
     2>&1 | grep -v "already installed"

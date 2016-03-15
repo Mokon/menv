@@ -1,0 +1,16 @@
+#!/bin/bash
+# (C) 2013-2016 David 'Mokon' Bond, All Rights Reserved
+
+menv_alias download_youtube_video="youtube-dl"
+
+menv_function stream_youtube
+function stream_youtube {
+  local url=$1
+  youtube-dl $url -o - | mplayer -vo aa -monitorpixelaspect 0.5 -
+}
+
+menv_function stream_youtube_text
+function stream_youtube_text {
+  local url=$1
+  youtube-dl $url -o - | CACA_DRIVER=ncurses mplayer -cache 64000 -vo caca -
+}

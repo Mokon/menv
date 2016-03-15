@@ -180,6 +180,10 @@ function AddRuleOfSix(...)
   unlet s:line
 endfunction
 
+function AutoRefresh(...)
+  set autoread
+endfunction
+
 function AddClass(...)
   if a:0 >= 1
     let class = a:1
@@ -199,19 +203,21 @@ function AddClass(...)
   call setline(s:line,"class ".class)
   call append(s:line,"{")
   call append(s:line+1,"")
-  call append(s:line+2,"    ".class."() = default;")
+  call append(s:line+2,"  public:")
   call append(s:line+3,"")
-  call append(s:line+4,"    virtual ~".class."() = default;")
+  call append(s:line+4,"    ".class."() = default;")
   call append(s:line+5,"")
-  call append(s:line+6,"    ".class."(const ".class."&) = ".mod.";")
+  call append(s:line+6,"    virtual ~".class."() = default;")
   call append(s:line+7,"")
-  call append(s:line+8,"    ".class."& operator=(const ".class."&) = ".mod.";")
+  call append(s:line+8,"    ".class."(const ".class."&) = ".mod.";")
   call append(s:line+9,"")
-  call append(s:line+10,"    ".class."(".class."&&) = ".mod.";")
+  call append(s:line+10,"    ".class."& operator=(const ".class."&) = ".mod.";")
   call append(s:line+11,"")
-  call append(s:line+12,"    ".class."& operator=(".class."&&) = ".mod.";")
+  call append(s:line+12,"    ".class."(".class."&&) = ".mod.";")
   call append(s:line+13,"")
-  call append(s:line+14,"};")
+  call append(s:line+14,"    ".class."& operator=(".class."&&) = ".mod.";")
+  call append(s:line+15,"")
+  call append(s:line+16,"};")
   unlet s:line
 endfunction
 

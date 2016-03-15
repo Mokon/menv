@@ -1,0 +1,8 @@
+#!/bin/bash
+# (C) 2013-2016 David 'Mokon' Bond, All Rights Reserved
+
+if [ $DIST == "fedora" ] ; then
+  install_simple_package yum-cron
+  
+  sudo sed -i "s@^apply_updates = no\$@apply_updates = yes@" /etc/yum/yum-cron.conf
+fi

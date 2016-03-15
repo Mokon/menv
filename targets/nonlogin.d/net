@@ -7,6 +7,13 @@ menv_alias amialone="ping 8.8.8.8"
 menv_alias amialonedns="ping google.com"
 menv_alias tcp="sudo netstat -tanp"
 
+menv_export HOSTALIASES=$menv_cache_dir/hosts
+
+menv_function add_host
+function add_host {
+  echo "$alias $url" >> $HOSTALIASES
+}
+
 menv_function emulate_traffic
 function emulate_traffic {
   local dst_addr=${1:-224.0.0.9}

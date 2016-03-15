@@ -47,6 +47,11 @@ function binary_to_hex {
   dec_to_hex $dec
 }
 
+menv_function a2b
+function a2b {
+ local in=$1
+ python -c "import binascii ; print binascii.a2b_hex(\"$1\")"
+}
 menv_function hex_to_binary
 function hex_to_binary {
   local hex=$1

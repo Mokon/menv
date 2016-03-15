@@ -39,14 +39,6 @@ function nodeinfo {
   echo "Processor(s)..: $PNUMS $PVENDOR ${PMHZ} MHz ${PMODEL}"
   echo "SELinux.......: `/usr/sbin/getenforce`"
 
-  echo "Reachability..:"
-  echo -n "..............: "
-  testconnection "8.8.8.8" "Google DNS Reachable" "${TC_RED}Google DNS Not Reachable$TC_RESET" ""
-
-  echo -n "..............: "
-  testconnection "google.com" "Google Reachable" "${TC_RED}Google Not Reachable$TC_RESET" \
-    "${TC_RED}DNS Failure$TC_RESET"
-
   echo "menv version..: $(menv_version)"
 }
 
