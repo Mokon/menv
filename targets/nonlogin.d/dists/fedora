@@ -12,4 +12,6 @@ if [ $DIST == "fedora" ] ; then
 
     yum --disablerepo='*' --enablerepo="$repo" list available
   }
+
+  menv_alias show_yum_vars="python -c 'import yum, pprint; yb = yum.YumBase(); pprint.pprint(yb.conf.yumvar, width=1)'"
 fi
