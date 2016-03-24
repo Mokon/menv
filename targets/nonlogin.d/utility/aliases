@@ -55,3 +55,4 @@ menv_alias limit_program_one_percent_cpu="cpulimit -l 1 -i"
 menv_alias merge="rsync -a" # from to
 menv_alias sudo_preserve_env="sudo -E sh -c"
 menv_alias show_current_cgroup="ps h -p $PPID -o cgroup | sed 's/.*\///g'"
+menv_alias scp="rsync -avzP"
