@@ -13,7 +13,7 @@ function tree_list {
 menv_function start_vm
 function start_vm {
   local vm=$1
-  if VBoxManage list vms |grep -q $vm ; then
+  if VBoxManage list runningvms |grep -q $vm ; then
     echo "vm already running"
   else
     VBoxManage startvm $vm --type headless
