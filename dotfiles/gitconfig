@@ -41,3 +41,5 @@
   prompt = false
 [pager]
   difftool = true
+[rerere]
+  enabled = true
