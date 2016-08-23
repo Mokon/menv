@@ -46,6 +46,9 @@ if exists('+colorcolumn')
   autocmd BufNewFile,BufRead COMMIT_EDITMSG set colorcolumn=72
 endif
 
+autocmd FileType gitcommit call setpos('.', [0, 1, 1, 0])
+autocmd FileType gitcommit setlocal spell
+
 autocmd BufRead,BufNewFile * call s:CommonFormatting()
 
 function s:CommonFormatting()
@@ -282,7 +285,13 @@ nnoremap <F8> :call ToggleForCopy()<CR>
 hi CursorLine   cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
 hi CursorColumn cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
 set cursorline! cursorcolumn!
-nnoremap <F9> :set cursorline! cursorcolumn!<CR>
+nnoremap <F9> :call LogFormating()<CR>
+
+function! LogFormating()
+  :call ToggleForCopy()
+  :set cursorline! cursorcolumn!
+  :match
+endfunction
 
 function! ToggleForCopy()
   :NumbersToggle

@@ -2,7 +2,10 @@
 # (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 
 menv_alias menv_help="cat ${menv_dir}/README | less"
-menv_alias menv_local_refresh="source ~/.bash_profile"
+menv_function menv_local_refresh
+function menv_local_refresh {
+  source ~/.bash_profile
+}
 
 # Simple function for my dev box which has menv checked out in git. This
 # allows me to test menv on the box before I push it to github.
@@ -28,3 +31,22 @@ if [ -d ~/menv/local/code/menv ]; then
   }
 fi
 
+function menv_clone_coderef {
+  spushd .
+
+  mkdir -p ~/code/ref
+
+  git clone git://git.sv.gnu.org/coreutils.git
+  git clone https://github.com/git/git.git
+  git clone git://sourceware.org/git/glibc.git
+  git clone https://github.com/torvalds/linux.git
+  git clone https://github.com/USCiLab/cereal.git
+  git clone https://github.com/libgit2/libgit2.git
+  git clone git://git.kernel.org/pub/scm/linux/kernel/git/shemminger/iproute2.git
+  git clone https://gerrit.googlesource.com/gerrit
+  git clone git://gcc.gnu.org/git/gcc.git
+  git clone git://git.savannah.nongnu.org/quagga.git
+  git clone https://git.torproject.org/git/tor
+
+  spopd
+}

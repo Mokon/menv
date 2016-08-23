@@ -412,3 +412,16 @@ menv_function enumerate_output
 function enumerate_output {
 "$@" 2> >(sed 's/^/2: /') > >(sed 's/^/1: /')
 }
+
+menv_function sshp
+function sshp {
+  local i=60
+  while [[ $i -ne 0 ]] ; do
+    ssh $*
+    if [[ $? -eq 0 ]] ; then
+      break
+    fi
+    ((--i))
+    sleep 1
+  done
+}

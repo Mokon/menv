@@ -17,7 +17,7 @@ function extract {
 
 menv_function compress
 function compress {
-  local file=$1
+  local file=${1%/}
   local archive_type=${2:-tar}
 
   case $archive_type in

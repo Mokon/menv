@@ -199,6 +199,13 @@ fi
   install_simple_package hwloc-gui
   install_simple_package perl-Text-SpellChecker
   install_simple_package perl-Sysadm-Install
+  install_simple_package jhead
+  install_simple_package ImageMagick
+  install_simple_package perl-Clone
+  install_simple_package perl-Storable
+  install_simple_package perl-Path-Class
+  install_simple_package perl-Image-ExifTool
+  install_simple_package perl-DateTime
 
   sudo rpm -Uf --quiet http://d-rats.com/yum/f11/d-rats-repo-0.1.3-1.fc12.noarch.rpm \
     2>&1 | grep -v "already installed"
@@ -223,6 +230,7 @@ fi
   menv_export PATH=$PATH:$HOME/menv/npm/bin
   npm install --loglevel error -g git-stats &> /dev/null
   npm install --loglevel error -g git-stats-importer &> /dev/null
+  npm install --loglevel error -g http-server &> /dev/null
 
   gem install -q git_stats &> /dev/null
   gem install -q slackcat &> /dev/null
