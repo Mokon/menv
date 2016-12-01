@@ -15,4 +15,3 @@ function wemux_open {
 
   sudo chage -E $(($(date --utc --date "$1" +%s)/86400+$ndays)) guest
 }
-

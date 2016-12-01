@@ -79,4 +79,3 @@ menv_function calc
 function calc {
   echo "scale=2; $*" | bc
 }
-

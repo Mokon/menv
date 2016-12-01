@@ -4,14 +4,23 @@
 if [ $DIST == "fedora" ] ; then
   menv_alias fedora_empty_trash='/bin/rm -rf ~/.local/share/Trash/'
 
-  menv_alias list_packages_i_installed="yumdb search reason user"
+  if [ $PKG_MGMT == "yum" ] ; then
+    menv_alias list_packages_i_installed="yumdb search reason user"
 
-  menv_function list_packages_in_repo
-  function list_packages_in_repo {
-    local repo=$1
+    menv_function list_packages_in_repo
+    function list_packages_in_repo {
+      local repo=$1
 
-    yum --disablerepo='*' --enablerepo="$repo" list available
-  }
+      yum --disablerepo='*' --enablerepo="$repo" list available
+    }
 
-  menv_alias show_yum_vars="python -c 'import yum, pprint; yb = yum.YumBase(); pprint.pprint(yb.conf.yumvar, width=1)'"
+    menv_alias show_yum_vars="python -c 'import yum, pprint; yb = yum.YumBase(); pprint.pprint(yb.conf.yumvar, width=1)'"
+  elif [ $PKG_MGMT == "yum" ] ; then
+    menv_function list_packages_in_repo
+    function list_packages_in_repo {
+      local repo=$1
+
+      dnf repo-pkgs $repo list available
+    }
+  fi
 fi

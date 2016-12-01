@@ -19,4 +19,3 @@ function flash_image {
 
   sudo dd if=$image_file of=$dev bs=1M && sync
 }
-

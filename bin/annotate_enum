@@ -1,26 +1,25 @@
 #!/usr/bin/perl
-# (C) 2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2015-2016 David 'Mokon' Bond, All Rights Reserved
+
 # This is a simple perl script to add the enumeration values to a c enumeration
 # contained within a source file. Just pass the file you want to open as the
 # first param and the enumeration name as the second name.
-
 local $/;
 open FILE, $ARGV[0];
 my $doc = <FILE>;
 close FILE;
-my $enum=$ARGV[1] ;
+my $enum = $ARGV[1];
 
-if( $doc =~ /[\S\s]*enum[\S\s]*$enum[\S\s]*?{([\S\s]*?)}[\S\s]*[\S\s]*/ ) {
-  my $enum = $1 ;
-  $enum =~ s#/\*.*?\*/##sg ;
-  $enum =~ s/#.*//g;
-  $enum =~ s/\s+//g;
-  $enum =~ s/,/\n/g;
+if ( $doc =~ /[\S\s]*enum[\S\s]*$enum[\S\s]*?{([\S\s]*?)}[\S\s]*[\S\s]*/ ) {
+    my $enum = $1;
+    $enum =~ s#/\*.*?\*/##sg;
+    $enum =~ s/#.*//g;
+    $enum =~ s/\s+//g;
+    $enum =~ s/,/\n/g;
 
-  my $i=0 ;
-  while ($enum =~ /([^\n]+)\n?/g) {
-    print "$1=$i\n" ;
-    $i++ ;
-  }
+    my $i = 0;
+    while ( $enum =~ /([^\n]+)\n?/g ) {
+        print "$1=$i\n";
+        $i++;
+    }
 }
-

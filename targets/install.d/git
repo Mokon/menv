@@ -45,4 +45,3 @@ fetch https://raw.githubusercontent.com/Mokon/git_get/master/git_get
 chmod +x git_get
 
 spopd
-

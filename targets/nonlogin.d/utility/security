@@ -62,4 +62,3 @@ function vpn {
     send_user "openvpn terminated"
 DONE
 }
-

@@ -21,4 +21,3 @@ cd ~
 safe_symlink .vimrc $menv_dotfiles_dir/vimrc
 
 spopd
-

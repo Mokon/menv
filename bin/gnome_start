@@ -68,4 +68,3 @@ gnome-terminal --maximize \
   --window -e "bash --rcfile $main_viewer" --working-directory=~
 rm $main_viewer
 exit
-

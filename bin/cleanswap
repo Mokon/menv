@@ -32,4 +32,3 @@ for q in ~/.vim/swap/.*sw? ~/.vim/swap/*; do
       rm -i "$q" || exit
   fi
 done
-

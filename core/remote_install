@@ -20,4 +20,3 @@ source ~/menv/core/install
 source ~/menv/core/login
 
 popd &> /dev/null
-

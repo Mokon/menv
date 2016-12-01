@@ -32,4 +32,3 @@ function linecount {
   local TLC=`expr $HLC + $CLC + $CPPLC + $CUCLC + $HPPLC + $CSLC + $JAVALC + $SMLLC`
   echo "Total Line Count: $TLC"
 }
-

@@ -112,6 +112,8 @@ if [ ! -z $MENV_HOSTNAME ] ; then
   sudo hostnamectl set-hostname --pretty "$MENV_HOSTNAME"
 fi
 
+tracker-control --hard-reset --remove-config
+
 spopd
 else
   echo "Unsupported Gnome Version [$gnomeVersion] detected."
@@ -121,4 +123,3 @@ else
 fi
 
 fi
-

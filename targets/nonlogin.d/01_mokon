@@ -32,13 +32,13 @@ export vt_config_dir="$menv_local_dir"
 menv_alias v="sudo -E $menv_pkgs_dir/vt/v"
 menv_alias fin="mopen ~/menv/local/Database.ods"
 
-xset r rate 300 20 2> /dev/null
+#xset r rate 300 20 2> /dev/null
 
 menv_function login_to_vm
 function login_to_vm {
   local vm=$1
   local un=${2:-`logname`}
-  local pw=${3:-vyatta}
+  local pw=${3}
   local force=${4:-no}
 
   if [ "$force" == "yes" ] ; then

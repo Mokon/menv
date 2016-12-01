@@ -16,7 +16,7 @@ function cscopeinit {
 }
 
 menv_function cscope_update
-function cscope_udpdate {
+function cscope_update {
   pushd
 
   while [ `pwd` != "/" ] ; do
@@ -50,4 +50,3 @@ function cscope_vim_help {
           CTRL-O: send you back to the location before the last search
 HELP
 }
-

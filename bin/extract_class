@@ -14,4 +14,3 @@ my $class=$ARGV[1] ;
 while ($doc =~ /(class\ $class\ (\{(?:[^{}]++|(?2))*\}))/xg ) {
     print "$1\n";
 }
-

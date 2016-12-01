@@ -8,4 +8,3 @@ cd ~
 safe_symlink .quiltrc $menv_dotfiles_dir/quiltrc
 
 spopd
-

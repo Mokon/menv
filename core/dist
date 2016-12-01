@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2016 David 'Mokon' Bond, All Rights Reserved
 
 # A function to determine the distribution and pkg management tool
 menv_function determine_dist
@@ -25,7 +25,17 @@ function determine_dist {
   fi
 
   case $DIST in
-    *fedora*|*redhat*) PKG_TYPE=rpm ; PKG_MGMT=yum ;;
+    *fedora*)
+      PKG_TYPE=rpm ;
+      version=`sed -rn 's/VERSION_ID=(.*)/\1/p' /etc/os-release`
+
+      if [ "$version" -ge "22" ] ; then
+        PKG_MGMT=dnf
+      else
+        PKG_MGMT=yum
+      fi
+      ;;
+    *redhat*) PKG_TYPE=rpm ; PKG_MGMT=yum ;;
     *debian*|*ubuntu*) PKG_TYPE=dpkg ; PKG_MGMT=apt ;;
     *) PKG_TYPE=unknown ; PKG_MGMT=unknown ; echo "Unknown Distribution" ;;
   esac
@@ -42,6 +52,7 @@ menv_alias ins=dist_install
 menv_alias ${DIST}_install=${PKG_MGMT}_install
 
 menv_alias yum_install="sudo yum install -q -y"
+menv_alias dnf_install="sudo dnf install -q -y"
 menv_alias apt_install="sudo apt-get --yes --force-yes install -qq"
 
 menv_alias global_install_package="install_package"

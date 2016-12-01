@@ -26,4 +26,3 @@ function compress {
     rar|*) echo "I don't know how to compress that archive type."
   esac
 }
-

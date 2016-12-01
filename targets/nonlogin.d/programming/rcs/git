@@ -28,7 +28,7 @@ menv_alias git_log_t="git log --pretty=\"format:%C(yellow)%h %ad%Cred%d %Creset%
 menv_alias git_files="git show --name-only --oneline"
 menv_alias git_label="git show --pretty=format:'%h %<(20,trunc)%an %ad %<(20,trunc)%s' --date=short --quiet"
 menv_alias git_stash_non_staged="git stash -k -u"
-menv_alais show_git_urls="find . -maxdepth 1 -type d -execdir git --git-dir {}/.git config --get remote.origin.url \;"
+menv_alias show_git_urls="find . -maxdepth 1 -type d -execdir git --git-dir {}/.git config --get remote.origin.url \;"
 
 menv_function git_stash_diff
 function git_stash_diff {

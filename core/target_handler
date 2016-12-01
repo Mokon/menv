@@ -16,4 +16,3 @@ case ${BASH_SOURCE[0]} in
   *.bash_aliases) echo "Unsupported target bash_aliases." ;;
   *) echo "Unknown menv target" ;;
 esac
-

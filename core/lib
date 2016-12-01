@@ -5,7 +5,9 @@ if [[ "$SHELL" != *bash* && ! -z $PS1 ]] ; then
   SHELLS=($(chsh -l |grep bash)) ;
   if [ -z "${SHELLS[0]}" ] ; then
     if groups dbond|grep -q wheelx ; then
-      if type yum > /dev/null ; then
+      if type dnf > /dev/null ; then
+        sudo dnf -y install bash
+      elif type yum > /dev/null ; then
         sudo yum -y install bash
       elif type apt-get > /dev/null ; then
         sudo apt-get -y install bash

@@ -9,4 +9,3 @@ function bash_cmd_exists {
 menv_alias show_bash_functions="typeset -f"
 menv_alias show_bash_function="type"
 menv_alias list_bash_functions="typeset -F"
-

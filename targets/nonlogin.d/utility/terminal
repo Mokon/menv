@@ -9,4 +9,3 @@ function reset_tc {
 }
 
 menv_alias remote_terminal_share="wemux"
-

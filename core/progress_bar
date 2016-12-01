@@ -53,4 +53,3 @@ function progress_bar_destruct {
   echo -e ""
   progres_bar_norm
 }
-

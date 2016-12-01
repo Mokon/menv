@@ -425,3 +425,10 @@ function sshp {
     sleep 1
   done
 }
+
+menv_function cut_file_between {
+  local file=$1
+  local start=$2
+  local end=$3
+  sed -n "${start},${end}p" $file
+}

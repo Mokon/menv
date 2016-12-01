@@ -13,4 +13,3 @@ if [ $MENV_DESKTOP -ne 0 ] ; then
 fi
 
 spopd
-

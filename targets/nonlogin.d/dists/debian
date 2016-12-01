@@ -4,4 +4,3 @@
 if [ $DIST == "debian" ] ; then 
   menv_alias debian_empty_trash='echo "I dont know how to to empty the debian trash"'
 fi
-

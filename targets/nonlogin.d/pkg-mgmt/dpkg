@@ -6,4 +6,3 @@ if [ $PKG_TYPE == "dpkg" ] ; then
   #menv_alias dpkg_what_provides="sudo dpkg-query -S"
   menv_alias dpkg_provides_what="sudo dpkg-query -L"
 fi
-

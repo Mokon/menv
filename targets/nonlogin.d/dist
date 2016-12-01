@@ -3,5 +3,3 @@
 
 menv_alias what_provides=${PKG_TYPE}_what_provides
 menv_alias dist_empty_trash=${DIST}_empty_trash
-
-

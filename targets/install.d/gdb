@@ -13,4 +13,3 @@ cd gdb
 fetch https://sourceware.org/ml/gdb/2008-02/msg00064/stl-views.gdb
 
 spopd
-

@@ -1,0 +1,13 @@
+#!/bin/bash
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+
+if [ $PKG_MGMT == "dnf" ] ; then
+  menv_function dnf_what_provides
+  function dnf_what_private {
+    echo "exzact:"
+    sudo dnf whatprovides "$@"
+
+    echo "fuzzy:"
+    sudo dnf whatprovide "*/`which "$@"`"
+  }
+fi

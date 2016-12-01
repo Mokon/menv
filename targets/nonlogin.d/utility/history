@@ -68,4 +68,3 @@ menv_function mdirs
 function mdirs {
   echo ${dirstack[@]}
 }
-

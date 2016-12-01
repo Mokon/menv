@@ -58,8 +58,8 @@ REPLY_PKGS=$REPLY
 
 if [[ $REPLY_PKGS =~ ^[Yy]$ ]] ; then
 
-if [ "$PKG_MGMT" == "yum" ] ; then
-
+menv_function create_yum_dnf_repos
+function create_yum_dnf_repos {
   cat << EOF | sudo tee /etc/yum.repos.d/google-chrome.repo &> /dev/null
 [google-chrome]
 name=google-chrome-\$basearch
@@ -103,24 +103,52 @@ gpgkey=http://download.opensuse.org/repositories/home:/zhonghuaren/Fedora_23/rep
 enabled=1
 gpgcheck=1
 EOF
+}
 
-  sudo yum localinstall -q --nogpgcheck \
-    http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
-    http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm \
-    | grep -v "already installed and latest version"
 
-  sudo yum update -q -y
+  if [ $DIST == "fedora" ] ; then
+    install_simple_package libXv.i686
+    install_simple_package libXScrnSaver.i686
+    install_simple_package qt.i686
+    install_simple_package qt-x11.i686
+    install_simple_package pulseaudio-libs.i686
+    install_simple_package pulseaudio-libs-glib2.i686
+    install_simple_package alsa-plugins-pulseaudio.i686
+    install_simple_package qtwebkit.i686
 
-  sudo yum -y -q install libXv.i686 libXScrnSaver.i686 qt.i686 qt-x11.i686 pulseaudio-libs.i686 pulseaudio-libs-glib2.i686 alsa-plugins-pulseaudio.i686 qtwebkit.i686 | grep -v "already installed and latest version"
+    create_yum_dnf_repos
 
-  fetch http://www.skype.com/go/getskype-linux-beta-fc10 skype.rpm
-  sudo yum -y -q localinstall skype.rpm | grep -v "already installed and latest version"
-  $BINRM skype.rpm
+    if [ "$PKG_MGMT" == "yum" ] ; then
 
-  sudo yum -y -q install plymouth-theme* | grep -v "already installed and latest version"
+      sudo yum localinstall -q --nogpgcheck \
+        http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
+        http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm \
+        | grep -v "already installed and latest version"
 
-  install_java
-fi
+      sudo yum update -q -y
+
+      fetch http://www.skype.com/go/getskype-linux-beta-fc10 skype.rpm
+      sudo yum -y -q localinstall skype.rpm | grep -v "already installed and latest version"
+      $BINRM skype.rpm
+    fi
+
+    if [ "$PKG_MGMT" == "dnf" ] ; then
+      sudo dnf install \
+        https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
+        https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm \
+        | grep -v "already installed and latest version"
+
+      sudo dnf update -q -y
+
+      fetch http://www.skype.com/go/getskype-linux-beta-fc10 skype.rpm
+      sudo dnf -y -q localinstall skype.rpm | grep -v "already installed and latest version"
+      $BINRM skype.rpm
+    fi
+
+    install_simple_package plymouth-theme*
+
+    install_java
+  fi
 
   install_simple_package sed
   install_simple_package wireshark
@@ -206,6 +234,9 @@ fi
   install_simple_package perl-Path-Class
   install_simple_package perl-Image-ExifTool
   install_simple_package perl-DateTime
+  install_simple_packege audacity-freeworld
+  install_simple_packege sox-plugins-freeworld
+  install_simple_packege sox-plugins-nonfree
 
   sudo rpm -Uf --quiet http://d-rats.com/yum/f11/d-rats-repo-0.1.3-1.fc12.noarch.rpm \
     2>&1 | grep -v "already installed"
@@ -237,4 +268,3 @@ fi
 fi
 
 fi
-

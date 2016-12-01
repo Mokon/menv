@@ -53,4 +53,3 @@ if [ "$TERM" = "screen" ] && [ -n "$TMUX" ]; then
 else
   motd
 fi
-

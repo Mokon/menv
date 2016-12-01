@@ -19,4 +19,3 @@ $BINRM ~/.config/user-dirs.dirs
 $BINRM ~/.local/share/applications/gnome-start.desktop
 $BINRM ~/.local/share/applications/mimeapps.desktop
 $BINRM ~/.local/share/applications/root-wireshark.desktop
-

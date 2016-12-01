@@ -18,4 +18,3 @@ function sendemail {
   to=${3:-mokon@mokon.net}
   cat $file | mail -s "$subject" -r mokon@mokon.net $to mokon@mokon.net
 }
-
