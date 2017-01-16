@@ -20,7 +20,7 @@ function nodeinfo {
   echo "Distribution..: $DIST"
   echo "Pkt Mgmt......: $PKG_MGMT"
   echo "Hostname......: `uname -n`"
-  echo "Address(es)...: `/sbin/ifconfig | grep "inet" \
+  echo "Address(es)...: `/sbin/ip address | grep "inet" \
                            | grep -v '127.\|::1\|fe80::' | awk '{print $2}' \
                            | sed ':a;N;$!ba;s/\n/\n..............: /g'` "
   echo "Kernel........: `uname -s ` `uname -r` `uname -v`"
