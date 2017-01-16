@@ -150,6 +150,7 @@ EOF
     install_java
   fi
 
+  install_simple_package ntpdate
   install_simple_package sed
   install_simple_package wireshark
   install_simple_package wireshark-gnome

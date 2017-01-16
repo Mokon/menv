@@ -426,7 +426,8 @@ function sshp {
   done
 }
 
-menv_function cut_file_between {
+menv_function cut_file_between
+function cut_file_between {
   local file=$1
   local start=$2
   local end=$3

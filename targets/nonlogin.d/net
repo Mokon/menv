@@ -336,3 +336,5 @@ function convert_yang_to_png_uml {
   $BINRM ${infile}.uml
   mopen ${infile}.png
 }
+
+sudo ntpdate -s time.nist.gov

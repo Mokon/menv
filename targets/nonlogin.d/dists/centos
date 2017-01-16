@@ -1,8 +1,8 @@
 #!/bin/bash
-# (C) 2013-2016 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2017 David 'Mokon' Bond, All Rights Reserved
 
-if [ $DIST == "fedora" ] ; then
-  menv_alias fedora_empty_trash='/bin/rm -rf ~/.local/share/Trash/'
+if [ $DIST == "centos" ] ; then
+  menv_alias centos_empty_trash='/bin/rm -rf ~/.local/share/Trash/'
 
   if [ $PKG_MGMT == "yum" ] ; then
     menv_alias list_packages_i_installed="yumdb search reason user"

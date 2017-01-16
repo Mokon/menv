@@ -4,7 +4,7 @@
 # A function to determine the distribution and pkg management tool
 menv_function determine_dist
 function determine_dist {
-  if type lsb_release &> /dev/null ; then 
+  if type lsb_release &> /dev/null ; then
     DIST=$(lsb_release -a | grep "Distributor ID" | awk {'print tolower($3)'})
   else
     DIST=""
@@ -13,6 +13,10 @@ function determine_dist {
   if [ -z $DIST ] && [ -f /etc/redhat-release ] ; then
     if grep -q Fedora /etc/redhat-release; then
       DIST=fedora
+    fi
+
+    if grep -q CentOS /etc/redhat-release; then
+      DIST=centos
     fi
   fi
 
@@ -25,7 +29,7 @@ function determine_dist {
   fi
 
   case $DIST in
-    *fedora*)
+    *fedora*|*centos*)
       PKG_TYPE=rpm ;
       version=`sed -rn 's/VERSION_ID=(.*)/\1/p' /etc/os-release`
 
@@ -73,6 +77,7 @@ function install_simple_package {
   pkg_arr=(
     [debian]="$pkg_name"
     [fedora]="$pkg_name"
+    [centos]="$pkg_name"
   )
 
   install_package pkg_arr
