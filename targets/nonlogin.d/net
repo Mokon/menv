@@ -337,4 +337,4 @@ function convert_yang_to_png_uml {
   mopen ${infile}.png
 }
 
-sudo ntpdate -s time.nist.gov
+(sudo ntpdate -s time.nist.gov &)

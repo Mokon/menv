@@ -150,6 +150,8 @@ EOF
     install_java
   fi
 
+  install_simple_package patchutils
+  install_simple_package powertop
   install_simple_package ntpdate
   install_simple_package sed
   install_simple_package wireshark
@@ -198,6 +200,10 @@ EOF
   install_simple_package meld
   install_simple_package cpulimit
   install_simple_package npm
+  install_simple_package sil-gentium-fonts
+  install_simple_package sil-gentium-fonts-common
+  install_simple_package dig
+  install_simple_package nslookup
   install_simple_package gem
   install_simple_package ruby-devel
   install_simple_package gitstats
@@ -235,9 +241,9 @@ EOF
   install_simple_package perl-Path-Class
   install_simple_package perl-Image-ExifTool
   install_simple_package perl-DateTime
-  install_simple_packege audacity-freeworld
-  install_simple_packege sox-plugins-freeworld
-  install_simple_packege sox-plugins-nonfree
+  install_simple_package audacity-freeworld
+  install_simple_package sox-plugins-freeworld
+  install_simple_package sox-plugins-nonfree
 
   sudo rpm -Uf --quiet http://d-rats.com/yum/f11/d-rats-repo-0.1.3-1.fc12.noarch.rpm \
     2>&1 | grep -v "already installed"
