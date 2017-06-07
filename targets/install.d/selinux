@@ -6,7 +6,7 @@ if [ $MENV_DESKTOP -ne 0 ] ; then
 spushd .
 
 if [ -f /etc/selinux/config ] ; then
-  cp /etc/selinux/config $menv_sysbackup_dir
+  sudo cp /etc/selinux/config $menv_sysbackup_dir
 fi
 
 sudo setenforce 0 &> /dev/null

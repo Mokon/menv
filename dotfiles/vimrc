@@ -83,6 +83,30 @@ function s:YangFormatting()
   set cino+=N-s
 endfunction
 
+autocmd BufRead,BufNewFile *.tex call s:JsonFormatting()
+
+function s:JsonFormatting()
+  :call ToggleForCopy()
+  :set cursorline! cursorcolumn!
+  :match
+  set spell
+endfunction
+
+autocmd BufRead,BufNewFile *.tex call s:TexFormatting()
+
+function s:TexFormatting()
+  "set columns=80
+  "autocmd VimResized * if (&columns > 80) | set columns=80 | endif
+  "set wrap
+  "set linebreak
+  "set showbreak=~
+  :call ToggleForCopy()
+  :set cursorline! cursorcolumn!
+  :match
+  "set mouse=a
+  set spell
+endfunction
+
 autocmd BufRead,BufNewFile */quagga/* call s:QuaggaFormatting()
 
 function s:QuaggaFormatting()

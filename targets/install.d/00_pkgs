@@ -120,6 +120,8 @@ EOF
 
     if [ "$PKG_MGMT" == "yum" ] ; then
 
+      install_simple_package yum-utils
+
       sudo yum localinstall -q --nogpgcheck \
         http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
         http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm \
@@ -141,7 +143,7 @@ EOF
       sudo dnf update -q -y
 
       fetch http://www.skype.com/go/getskype-linux-beta-fc10 skype.rpm
-      sudo dnf -y -q localinstall skype.rpm | grep -v "already installed and latest version"
+      sudo dnf -y -q install skype.rpm | grep -v "already installed and latest version"
       $BINRM skype.rpm
     fi
 
@@ -196,7 +198,6 @@ EOF
   install_simple_package cloc
   install_simple_package perltidy
   install_simple_package strace
-  install_simple_package yum-utils
   install_simple_package meld
   install_simple_package cpulimit
   install_simple_package npm
@@ -204,7 +205,7 @@ EOF
   install_simple_package sil-gentium-fonts-common
   install_simple_package dig
   install_simple_package nslookup
-  install_simple_package gem
+_install_simple_package gem
   install_simple_package ruby-devel
   install_simple_package gitstats
   install_simple_package colordiff
@@ -227,6 +228,8 @@ EOF
   install_simple_package xxdiff
   install_simple_package go
   install_simple_package socat
+  install_simple_package sensors
+  install_simple_package texlive-scheme-full
   install_simple_package texlive-glossaries
   install_simple_package youtube-dl
   install_simple_package mplayer
@@ -241,6 +244,7 @@ EOF
   install_simple_package perl-Path-Class
   install_simple_package perl-Image-ExifTool
   install_simple_package perl-DateTime
+  install_simple_package perl-DateTime-Format-Strptime
   install_simple_package audacity-freeworld
   install_simple_package sox-plugins-freeworld
   install_simple_package sox-plugins-nonfree
@@ -269,6 +273,7 @@ EOF
   npm install --loglevel error -g git-stats &> /dev/null
   npm install --loglevel error -g git-stats-importer &> /dev/null
   npm install --loglevel error -g http-server &> /dev/null
+  npm install --loglevel error -g svgexport &> /dev/null
 
   gem install -q git_stats &> /dev/null
   gem install -q slackcat &> /dev/null
