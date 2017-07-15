@@ -21,8 +21,7 @@ else
     echo "desktop" >> $menv_install_opts_file
     menv_export MENV_DESKTOP=1
 
-    read -t 5 -p "Please provide a hostname: " -n 1 -r
-    echo
+    read -t 5 -p "Please provide a hostname: " -r
     menv_export MENV_HOSTNAME="$REPLY"
 
 local u=`whoami`

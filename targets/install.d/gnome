@@ -57,13 +57,17 @@ gsettings set org.gnome.gnome-screenshot auto-save-directory $menv_screenshots_d
 gsettings set org.gnome.desktop.interface clock-format '12h'
 gsettings set org.gnome.SessionManager logout-prompt false
 gsettings set org.gnome.desktop.interface clock-show-date true
-gsettings set org.gnome.shell.calendar show-weekdate true
+if ! version_ge $gnomeVersion "3.22.1" ; then
+  gsettings set org.gnome.shell.calendar show-weekdate true
+fi
 gconftool-2 -t int --set /apps/gnome-terminal/profiles/Default/scrollback_lines 100000
 gsettings set org.gnome.shell.overrides workspaces-only-on-primary false
 
 gset_powr_path=org.gnome.settings-daemon.plugins.power
-if ! gsettings set $gset_powr_path button-power              hibernate ; then
-  gsettings range $gset_powr_path power-button-action        hibernate
+if version_ge $gnomeVersion "3.22.1" ; then
+  gsettings range $gset_powr_path power-button-action hibernate
+else
+  gsettings set $gset_powr_path button-power hibernate
 fi
 gsettings set $gset_powr_path sleep-inactive-ac-timeout      36000
 gsettings set $gset_powr_path sleep-inactive-ac-type         hibernate
@@ -113,8 +117,6 @@ if [ ! -z $MENV_HOSTNAME ] ; then
   sudo hostnamectl set-hostname --static "$MENV_HOSTNAME"
   sudo hostnamectl set-hostname --pretty "$MENV_HOSTNAME"
 fi
-
-tracker-control --hard-reset --remove-config
 
 spopd
 else

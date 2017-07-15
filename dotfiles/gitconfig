@@ -27,7 +27,7 @@
   gdiff = "difftool -t meld -y"
   tduff = "difftool --extcmd='colordiff -ydw --suppress-common-lines -C 10' -y "
   wdiff = "diff --color-words"
-  whitespace_errors = "diff-index --check --cached HEAD"
+  whitespaceerrors = "diff-index --check --cached HEAD"
   co = "checkout"
   br = "branch"
   ci = "commit"
