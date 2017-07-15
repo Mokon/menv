@@ -1,0 +1,11 @@
+#!/bin/bash
+# (C) 2013-2017 David 'Mokon' Bond, All Rights Reserved
+
+spushd .
+
+cd ~
+
+if_symlink_rm .htoprc
+
+spopd
+

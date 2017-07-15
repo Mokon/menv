@@ -1,0 +1,15 @@
+#!/bin/bash
+# (C) 2017 David 'Mokon' Bond, All Rights Reserved
+
+menv_function randomize_mac
+
+function randomize_mac {
+  local hex=$(dd if=/dev/random bs=2 count=3 2>/dev/null \
+    | perl -e '$hex = <>; $hex = unpack("H*", $hex) ; $hex =~ s/(..)(?!.?$)/$1:/g; print "$hex\n";' \
+    | tail -c +3)
+
+  ifconfig $1 down
+  ifconfig $1 hw ether 01$mac
+  ifconfig $1 up
+  ifconfig $1
+}

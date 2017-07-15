@@ -31,6 +31,8 @@ if_symlink_rm ~/docs
 if_symlink_rm ~/code
 if_symlink_rm ~/pics
 
+$BINCP /etc/hosts $menv_backup_dir
+
 echo "Saving the menv backup and local directories."
 $BINMV $menv_backup_dir ~
 $BINMV $menv_local_dir ~

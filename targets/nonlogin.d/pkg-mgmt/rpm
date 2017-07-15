@@ -12,4 +12,7 @@ if [ $PKG_TYPE == "rpm" ] ; then
     echo "which:"
     rpm -q --whatprovides `which "$@"`
   }
+
+  menv_alias largest_pkgs="rpm -qa --queryformat '%10{size} - %-25{name} \t %{version}\n' | sort -n"
+  menv_alias installed_pkgs_size="largest_pkgs | awk '{ sum += $1 } END { print sum }'"
 fi

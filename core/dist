@@ -82,3 +82,10 @@ function install_simple_package {
 
   install_package pkg_arr
 }
+
+menv_function install_simple_packages
+function install_simple_packages {
+  for package in "$@" ; do
+    install_simple_package $package
+  done
+}

@@ -24,6 +24,8 @@ function backup {
   rsync -ar ~/menv/local .
 
   cp ~/.config/google-chrome/Default/Bookmarks .
+  cp /etc/hosts .
+
 
   echo "Backup Completed"
   spopd

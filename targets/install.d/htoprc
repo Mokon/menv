@@ -1,0 +1,10 @@
+#!/bin/bash
+# (C) 2013-2017 David 'Mokon' Bond, All Rights Reserved
+
+spushd .
+
+cd ~
+  
+safe_symlink .htoprc $menv_dotfiles_dir/htoprc
+
+spopd

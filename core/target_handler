@@ -5,6 +5,7 @@ shopt -s expand_aliases
 source ~/menv/core/lib
 
 [[ $- == *i* ]] && menv_export MENV_INTERACTIVE=1
+
 # Multiplex to the correct menv target
 case ${BASH_SOURCE[0]} in
   *uninstall) menv_target uninstall ;;

@@ -6,7 +6,7 @@ pushd . &> /dev/null
 cd ~
 
 file=`/bin/mktemp`
-wget -O $file -q -N --no-check-certificate \
+curl -L -o $file -s
   https://github.com/mokon/menv/archive/master.tar.gz
     
 /bin/tar -xzf $file

@@ -42,11 +42,11 @@ if [ ! -f  wallpapers/${i}.jpg ] ; then
   fetch_w_timeout ${background_url} wallpapers/${i}.jpg 60
 fi
 
-PID=$(pgrep gnome-session)
-export DBUS_SESSION_BUS_ADDRESS=$(grep -z DBUS_SESSION_BUS_ADDRESS /proc/$PID/environ|cut -d= -f2-)
+PID=$(pgrep gnome-session|head -n 1 | sed ':a;N;$!ba;s/\n/ /g')
+export DBUS_SESSION_BUS_ADDRESS=$(sudo grep -z DBUS_SESSION_BUS_ADDRESS /proc/$PID/environ|cut -d= -f2-)
 
-gsettings set org.gnome.desktop.background picture-uri ${menv_cache_dir}/wallpapers/${i}.jpg
-gsettings set org.gnome.desktop.screensaver picture-uri ${menv_cache_dir}/wallpapers/${i}.jpg
+gsettings set org.gnome.desktop.background picture-uri "${menv_cache_dir}/wallpapers/${i}.jpg"
+gsettings set org.gnome.desktop.screensaver picture-uri "${menv_cache_dir}/wallpapers/${i}.jpg"
 
 sleep 5
 done

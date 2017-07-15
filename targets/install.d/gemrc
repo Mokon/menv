@@ -1,0 +1,10 @@
+#!/bin/bash
+# (C) 2013-2017 David 'Mokon' Bond, All Rights Reserved
+
+spushd .
+
+cd ~
+  
+safe_symlink .gemrc $menv_dotfiles_dir/gemrc
+
+spopd

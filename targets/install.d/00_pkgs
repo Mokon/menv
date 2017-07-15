@@ -52,7 +52,7 @@ function install_java {
 
 if [ $MENV_DESKTOP -ne 0 ] ; then
 
-read -t 5 -p "Do you want to install packages MENV might use? " -n 1 -r
+read -t 60 -p "Do you want to install packages MENV might use? " -n 1 -r
 echo
 REPLY_PKGS=$REPLY
 
@@ -93,28 +93,13 @@ baseurl=https://download.jitsi.org/jitsi/rpm/
 enabled=1
 gpgcheck=0
 EOF
-
-
-  cat << EOF | sudo tee /etc/yum.repos.d/rpm-sphere.repo &> /dev/null
-[rpm-sphere]
-name=RPM Sphere
-baseurl=http://download.opensuse.org/repositories/home:/zhonghuaren/Fedora_23/
-gpgkey=http://download.opensuse.org/repositories/home:/zhonghuaren/Fedora_23/repodata/repomd.xml.key
-enabled=1
-gpgcheck=1
-EOF
 }
 
 
   if [ $DIST == "fedora" ] ; then
-    install_simple_package libXv.i686
-    install_simple_package libXScrnSaver.i686
-    install_simple_package qt.i686
-    install_simple_package qt-x11.i686
-    install_simple_package pulseaudio-libs.i686
-    install_simple_package pulseaudio-libs-glib2.i686
-    install_simple_package alsa-plugins-pulseaudio.i686
-    install_simple_package qtwebkit.i686
+    pkgs="libXv libXScrnSaver qt qt-x11 pulseaudio-libs pulseaudio-libs-glib2
+          alsa-plugins-pulseaudio qtwebkit"
+    install_simple_packages $pkgs
 
     create_yum_dnf_repos
 
@@ -152,121 +137,32 @@ EOF
     install_java
   fi
 
-  install_simple_package patchutils
-  install_simple_package powertop
-  install_simple_package ntpdate
-  install_simple_package sed
-  install_simple_package wireshark
-  install_simple_package wireshark-gnome
-  install_simple_package wget
-  install_simple_package grep
-  install_simple_package openssh-clients
-  install_simple_package python-fabulous
-  install_simple_package bleachbit
-  install_simple_package gdmap
-  install_simple_package gimp
-  install_simple_package vlc
-  install_simple_package google-chrome-stable
-  install_simple_package cmatrix
-  install_simple_package eclipse-jdt
-  install_simple_package lynx
-  install_simple_package time
-  install_simple_package inkscape
-  install_simple_package psmisc
-  install_simple_package dbus-x11
-  install_simple_package festival
-  install_simple_package speech-dispatcher-utils
-  install_simple_package espeak
-  install_simple_package smem
-  install_simple_package htop
-  install_simple_package rdesktop
-  install_simple_package simple-mtpfs
-  install_simple_package libmtp
-  install_simple_package fuse
-  install_simple_package fuse-libs
-  install_simple_package gvfs-mtp
-  install_simple_package fbterm
-  install_simple_package clang
-  install_simple_package clang-devel
-  install_simple_package tmux
-  install_simple_package screen
-  install_simple_package cscope
-  install_simple_package vim
-  install_simple_package wemux
-  install_simple_package bc
-  install_simple_package sloccount
-  install_simple_package cloc
-  install_simple_package perltidy
-  install_simple_package strace
-  install_simple_package meld
-  install_simple_package cpulimit
-  install_simple_package npm
-  install_simple_package sil-gentium-fonts
-  install_simple_package sil-gentium-fonts-common
-  install_simple_package dig
-  install_simple_package nslookup
-_install_simple_package gem
-  install_simple_package ruby-devel
-  install_simple_package gitstats
-  install_simple_package colordiff
-  install_simple_package tig
-  install_simple_package nmap
-  install_simple_package uncrustify
-  install_simple_package vagrant
-  install_simple_package twin
-  install_simple_package iftop
-  install_simple_package graphviz
-  install_simple_package dsniff
-  install_simple_package pyang
-  install_simple_package plantuml
-  install_simple_package python-matplotlib
-  install_simple_package perl-List-AllUtils
-  install_simple_package perl-List-UtilsBy
-  install_simple_package perl-File-chdir
-  install_simple_package perl-Devel-Profiler
-  install_simple_package perl-JSON
-  install_simple_package xxdiff
-  install_simple_package go
-  install_simple_package socat
-  install_simple_package sensors
-  install_simple_package texlive-scheme-full
-  install_simple_package texlive-glossaries
-  install_simple_package youtube-dl
-  install_simple_package mplayer
-  install_simple_package hwloc
-  install_simple_package hwloc-gui
-  install_simple_package perl-Text-SpellChecker
-  install_simple_package perl-Sysadm-Install
-  install_simple_package jhead
-  install_simple_package ImageMagick
-  install_simple_package perl-Clone
-  install_simple_package perl-Storable
-  install_simple_package perl-Path-Class
-  install_simple_package perl-Image-ExifTool
-  install_simple_package perl-DateTime
-  install_simple_package perl-DateTime-Format-Strptime
-  install_simple_package audacity-freeworld
-  install_simple_package sox-plugins-freeworld
-  install_simple_package sox-plugins-nonfree
+  pkgs="patchutils powertop ntpdate sed wireshark wireshark-gnome wget grep
+        openssh-clients python-fabulous bleachbit gdmap gimp vlc
+        google-chrome-stable cmatrix eclipse-jdt lynx time inkscape psmisc
+        dbus-x11 festival speech-dispatcher-utils espeak smem htop rdesktop
+        simple-mtpfs libmtp fuse fuse-libs gvfs-mtp fbterm clang clang-devel
+        tmux screen cscope vim wemux bc sloccount cloc perltidy strace meld
+        cpulimit npm sil-gentium-fonts sil-gentium-fonts-common dig nslookup
+        gem ruby-devel gitstats colordiff tig nmap uncrustify vagrant twin
+        iftop graphviz dsniff pyang plantuml python-matplotlib
+        perl-List-AllUtils perl-List-UtilsBy perl-File-chdir
+        perl-Devel-Profiler perl-JSON xxdiff go socat sensors
+        texlive-scheme-full texlive-glossaries youtube-dl mplayer hwloc
+        hwloc-gui perl-Text-SpellChecker perl-Sysadm-Install jhead ImageMagick
+        perl-Clone perl-Storable perl-Path-Class perl-Image-ExifTool
+        perl-DateTime perl-DateTime-Format-Strptime
+        audacity-freeworld sox-plugins-freeworld sox-plugins-nonfree
+        python3-pyusb pyusb chirp xclip k4dirstat brasero"
+
+  install_simple_packages $pkgs
 
   sudo rpm -Uf --quiet http://d-rats.com/yum/f11/d-rats-repo-0.1.3-1.fc12.noarch.rpm \
     2>&1 | grep -v "already installed"
-  install_simple_package chirp
 
-  sudo debuginfo-install -q glibc \
+  sudo debuginfo-install -q glibc kernel \
     | grep -v "already installed and latest version" \
     | grep -v "No debuginfo packages available to install"
-
-  sudo debuginfo-install -q kernel \
-    | grep -v "already installed and latest version" \
-    | grep -v "No debuginfo packages available to install"
-
-  install_simple_package python3-pyusb
-  install_simple_package pyusb
-
-  #install_simple_package luarocks
-  #install_simple_package lua-devel
-  #sudo luarocks install cw
 
   npm config set prefix ~/menv/npm
   menv_export PATH=$PATH:$HOME/menv/npm/bin

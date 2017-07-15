@@ -125,6 +125,13 @@ function git_changes_strip_trailing_whitespace {
   done
 }
 
+menv_function show_git_origins
+function show_git_origins {
+  for dir in */; do
+    ( cd $dir && git config --get remote.origin.url)
+  done
+}
+
 if [ -f $menv_bin_dir/git-completion.bash ]; then
     source $menv_bin_dir/git-completion.bash
 fi

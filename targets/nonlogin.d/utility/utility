@@ -433,3 +433,8 @@ function cut_file_between {
   local end=$3
   sed -n "${start},${end}p" $file
 }
+
+menv_function checksum_dir
+function checksum_dir {
+  tar -cf - $1 | md5sum
+}

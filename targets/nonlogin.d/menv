@@ -47,6 +47,7 @@ function menv_clone_coderef {
   git clone git://gcc.gnu.org/git/gcc.git
   git clone git://git.savannah.nongnu.org/quagga.git
   git clone https://git.torproject.org/git/tor
+  git clone https://ezix.org/src/pkg/lshw
 
   spopd
 }

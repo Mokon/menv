@@ -12,7 +12,9 @@ function add_priv_key {
   if [ ! -f $pubkeyfile ]; then
     ssh-keygen -t rsa -b 4096 -N '' -f ~/.ssh/id_rsa
   fi
-  cat $pubkeyfile | ssh $remoteuser@$remoteserver "cat >> $authkeyfile"
+
+  ssh-copy-id -i $pubkeyfile $remoteuser@$remoteserver
+  #cat $pubkeyfile | ssh $remoteuser@$remoteserver "cat >> $authkeyfile"
   chmod 700 ~/.ssh
   chmod 644 $pubkeyfile
   chmod 600 ~/.ssh/id_rsa
@@ -27,8 +29,8 @@ function magic_open {
 
 menv_alias kill_vpn="sudo pkill -9 openvpn"
 
-menv_function vpn
-function vpn {
+menv_function ovpn
+function ovpn {
   local username="$1"
   local ovpn_cfg="$2"
   local password=""

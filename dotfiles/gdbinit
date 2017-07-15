@@ -40,6 +40,10 @@ define step_end
     finish
 end
 
+define print_seg_fault_address
+    p $_siginfo._sifields._sigfault.si_addr
+end
+
 define switch_window
     info win
     fs next

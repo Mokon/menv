@@ -1,4 +1,4 @@
-(C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+(C) 2013-2017 David 'Mokon' Bond, All Rights Reserved
 
 Welcome, to menv: a specialized script to setup a linux environment just the
 way I like it. With a single remote execution of a bash script menv will
@@ -45,7 +45,7 @@ Displays this README file on the terminal.
 The command:
   menv_refresh
 Executes ~/.bash_profile to execute any additions to the local menv files. This
-is useful to get the additions into you envirnment without having to relauch
+s useful to get the additions into you envirnment without having to relauch
 the terminal.
 
 menv does not require internet connectivity to run on a daily basis but to
@@ -66,11 +66,10 @@ git configuations these are the folders that the exclude patterns in your
 config will operate on.
 
 In general I like my home laid out as follows:
+  code --> menv/local/ode
   docs --> menv/local/docs
-  git --> menv/local/git
-  git
-  menv
   pics --> menv/local/pics
+  menv
 
 The menv dir has the following layout:
   menv/backup
@@ -82,7 +81,7 @@ The menv dir has the following layout:
   menv/dotfiles
   menv/local
   menv/local/docs
-  menv/local/git
+  menv/local/code
   menv/local/pics
   menv/pkgs
   menv/targets
