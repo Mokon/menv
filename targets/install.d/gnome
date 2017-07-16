@@ -65,7 +65,7 @@ gsettings set org.gnome.shell.overrides workspaces-only-on-primary false
 
 gset_powr_path=org.gnome.settings-daemon.plugins.power
 if version_ge $gnomeVersion "3.22.1" ; then
-  gsettings range $gset_powr_path power-button-action hibernate
+  gsettings set $gset_powr_path power-button-action hibernate
 else
   gsettings set $gset_powr_path button-power hibernate
 fi

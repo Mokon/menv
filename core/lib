@@ -71,6 +71,8 @@ menv_export menv_cloud_dir=${menv_dir}/cloud
 menv_export menv_install_opts_file=$menv_cache_dir/install_opts
 menv_export menv_last_no_update_file=$menv_cache_dir/last_no_update
 
+menv_export menv_user=dbond
+
 # A tag to use to specify menv created the item in question
 menv_export menv_gen_tag="menv_generated"
 
