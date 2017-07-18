@@ -14,6 +14,31 @@ function add_host {
   echo "$alias $url" >> $HOSTALIASES
 }
 
+function convert_hex_to_ip {
+  printf '%d.%d.%d.%d\n' `echo $@ | sed -r 's/(..)/0x\1 /g'`
+}
+
+menv_function kill_quagga
+function kill_quagga {
+  sudo pkill -9 -f bgpd
+  sudo pkill -9 -f zebra
+  sudo pkill -9 -f vtysh
+  sudo ip route flush proto zebra
+  sudo /bin/rm -f /var/run/bgpd.pid
+  sudo /bin/rm -f /var/run/bgpd.vty
+  sudo /bin/rm -f /var/run/zebra.pid
+  sudo /bin/rm -f /var/run/zebra.vty
+  sudo /bin/rm -f /var/run/zserv.api
+}
+
+menv_function launch_quagga
+function launch_quagga {
+  kill_quagga
+  sudo zebra &
+  sudo bgpd &
+  sudo vtysh
+}
+
 menv_function emulate_traffic
 function emulate_traffic {
   local dst_addr=${1:-224.0.0.9}
@@ -335,6 +360,27 @@ function convert_yang_to_png_uml {
   plantuml ${infile}.uml -o .
   $BINRM ${infile}.uml
   mopen ${infile}.png
+}
+
+menv_function decode_hex_frame
+function decode_hex_frame {
+  local hex="$1"
+
+  local hexdump=""
+  local offset=0
+  for byte in `echo $hex| sed -e 's/\(..\)/\1\n/g'` ; do
+    if (( $offset % 16 == 0 )) ; then
+      if (($offset != 0 )) ; then
+        hexdump+="\n"
+      fi
+      hexdump+=`printf "%06X " "$offset"`
+    fi
+    hexdump+="$byte "
+    ((offset++))
+  done
+  hexdump+=`printf "\n%06X" "$offset"`
+
+  printf "$hexdump\n" | text2pcap -q - - | tshark -V -r -
 }
 
 (sudo ntpdate -s time.nist.gov &)

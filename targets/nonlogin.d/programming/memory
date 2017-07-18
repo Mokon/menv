@@ -35,18 +35,44 @@ function find_newest_file {
 menv_function extract_core_dump
 function extract_core_dump {
   local core=$1
+  local bncore=$(basename $core)
 
-  pushd .
-  cd /var/lib/systemd/coredump
-  sudo xz -d ${core}.xz
-  popd
-  sudo cp /var/lib/systemd/coredump/${core} .
+  sudo cp ${core}.xz .
+  sudo xz -d ${bncore}.xz
+  sudo chown $USER ${bncore}
 }
 
 menv_function extract_latest_core_dump
 function extract_latest_core_dump {
-  local core=`find_newest_file /var/lib/systemd/coredump/ "core.*.xz"`
+  local core=$(find_newest_file /var/lib/systemd/coredump/ "core.*.xz" \
+               | rev | cut -f 2- -d '.' | rev)
   extract_core_dump $core
+}
+
+alias delete_all_cores="sudo /bin/rm -rf /var/lib/systemd/coredump/core.*.xz"
+
+menv_function gdb_process
+function gdb_process {
+  local pid=$1
+
+  local re='^[0-9]+$'
+  if ! [[ $pid =~ $re ]] ; then
+    pid=$(pgrep $pid)
+  fi
+
+  if [ -z $pid ] ; then
+    echo "process not found"
+  else
+    shift
+    sudo gdb -p $pid "$@"
+  fi
+}
+
+menv_function get_process_stack
+function get_process_stack {
+  local pid=$1
+
+  gdb_process $1 -ex "thread apply all bt" -batch
 }
 
 menv_alias interactive_decode="addr2line -e "
