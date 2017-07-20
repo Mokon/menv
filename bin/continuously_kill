@@ -1,0 +1,29 @@
+#!/bin/bash
+
+if [ -z ${1+x} ]; then
+  echo "please give an interval"
+  exit -1
+fi
+
+interval=$1
+shift
+
+if [ -z ${1+x} ]; then
+  echo "please give processes"
+  exit -1
+fi
+
+oldifs=$IFS
+IFS="|"
+processes="$*"
+IFS=$oldifs
+
+SECONDS=0
+start=$(date)
+
+echo "Killing the processes [$@] starting at $start every $interval seconds..."
+while : ; do
+  echo "$SECONDS seconds passed"
+  pgrep "$processes" | xargs sudo kill -9
+  sleep $interval
+done
