@@ -31,6 +31,15 @@ if [ -d ~/menv/local/code/menv ]; then
   }
 fi
 
+menv_function make_menv_home_dirs
+function make_menv_home_dirs {
+  for dir in pics docs code; do
+    mkdir $menv_local_dir/$dir
+    safe_symlink ~/$dir $menv_local_dir/$dir
+  done
+}
+
+menv_function menv_clone_coderef
 function menv_clone_coderef {
   spushd .
 
