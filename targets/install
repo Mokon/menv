@@ -64,6 +64,10 @@ local u=`whoami`
     safe_symlink ~/pics $menv_local_dir/pics
   fi
 
+  $BINRM ~/$menv_local_dir/code/.gitkeep
+  $BINRM ~/$menv_local_dir/docs/.gitkeep
+  $BINRM ~/$menv_local_dir/pics/.gitkeep
+
   spopd
 
   menv_target_children install

@@ -55,6 +55,16 @@ else
   echo "Git Hub not reachable. Could not check if menv is up to date." | tee $menv_logs_dir/menv_status
 fi
 
+for dir in pics docs code; do
+  if ! find $menv_local_dir/$dir -mindepth 1 -print -quit | grep -q .; then
+    echo "Deleting empty $dir directory."
+    $BINRM -rf $menv_local_dir/$dir
+    if_symlink_rm ~/$dir
+  elif [ ! -L $dir ] ; then
+    echo "Symlinking $dir directory."
+    safe_symlink ~/$dir $menv_local_dir/$dir
+  fi
+done
 
 # Source a local nonlogin script if one exists.
 if [ -f $menv_local_nonlogin ]; then
