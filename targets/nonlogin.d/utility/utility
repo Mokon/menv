@@ -186,7 +186,7 @@ function mopen {
       shotwell "$pngfile" &> /dev/null & ;;
     *.png|*.jpg|*.jpeg) shotwell "$file" &> /dev/null & ;;
     *.pcap|*.npcap) wireshark "$file" &> /dev/null & ;;
-    *.log|*.txt|*.rej|*.patch) gedit "$file" &> /dev/null & ;;
+    *.log|*.txt|*.rej|*.patch|*.config) gedit "$file" &> /dev/null & ;;
     *)
         echo "I don't know how to open that, falling back to xdg-open!"
         xdg-open "$file"
