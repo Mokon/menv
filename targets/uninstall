@@ -26,7 +26,6 @@ if_symlink_rm $bashrc
 if_symlink_rm $bash_profile
 if_symlink_rm $bash_logout
 
-if_symlink_rm ~/cloud
 if_symlink_rm ~/docs
 if_symlink_rm ~/code
 if_symlink_rm ~/pics
