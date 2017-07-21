@@ -61,10 +61,12 @@ for dir in pics docs code; do
       echo "Deleting empty $dir directory."
       $BINRM -rf $menv_local_dir/$dir
       if_symlink_rm ~/$dir
-    elif [ ! -L $dir ] ; then
+    elif [ ! -L ~/$dir ] ; then
       echo "Symlinking $dir directory."
       safe_symlink ~/$dir $menv_local_dir/$dir
     fi
+  elif [ -L ~/$dir ] ; then
+    if_symlink_rm ~/$dir
   fi
 done
 
