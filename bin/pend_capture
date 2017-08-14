@@ -1,0 +1,31 @@
+#!/bin/bash
+# (C) 2017 David 'Mokon' Bond, All Rights Reserved
+
+interface=${1:-"1-10.0"}
+ns=${2}
+
+trap "exit 0" SIGINT SIGTERM SIGTSTP
+
+while true; do
+  if [ -z ${ns+x} ]; then
+    until ip link show $interface &> /dev/null; do
+      continue
+    done
+  else
+    until sudo ip netns exec $ns ip link show $interface &> /dev/null; do
+      continue
+    done
+  fi
+                                                    
+  echo "Starting Capture";
+  capture_file="/tmp/capture_${interface}.pcap"
+  if [ -f $capture_file ] ; then
+    sudo /bin/mv --backup=existing $capture_file "/tmp/capture_${interface}.old.pcap"
+  fi  
+
+  if [ -z ${ns+x} ]; then
+    sudo tshark -P -w $capture_file -i $interface
+  else
+    sudo ip netns exec $ns tshark -P -w $capture_file -i $interface
+  fi
+done

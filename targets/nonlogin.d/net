@@ -325,33 +325,6 @@ function echo_many_routes {
 menv_alias iptables_stop="sudo systemctl stop firewalld.service"
 menv_alias networking_restart="sudo systemctl restart NetworkManager"
 
-menv_function pend_capture
-function pend_capture {
-  local interface=${1:-"1-10.0"}
-
-  function ctrl_c {
-    echo "exiting capture loop";
-    exit
-  }
-  
-  trap ctrl_c SIGINT
-  trap ctrl_c SIGTSTP
-
-  while true; do
-    until ip link show $interface &> /dev/null; do
-      continue
-    done
-                                                      
-    echo "Starting Capture";
-    local capture_file="/tmp/capture_${interface}.pcap"
-    if [ -f $capture_file ] ; then
-      sudo /bin/mv --backup=existing $capture_file "/tmp/capture_${interface}.old.pcap"
-    fi  
-
-    sudo tshark -P -w $capture_file -i $interface
-  done
-}
-
 menv_function convert_yang_to_png_uml
 function convert_yang_to_png_uml {
   local infile=$1

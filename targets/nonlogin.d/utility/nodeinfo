@@ -23,7 +23,7 @@ function nodeinfo {
   echo "Address(es)...: `/sbin/ip address | grep "inet" \
                            | grep -v '127.\|::1\|fe80::' | awk '{print $2}' \
                            | sed ':a;N;$!ba;s/\n/\n..............: /g'` "
-  echo "Kernel........: `uname -s ` `uname -r` `uname -v`"
+  echo "Kernel........: `uname -s ` `uname -r`"
   echo "Machine HW....: `uname -m`"
   if uptime -p &> /dev/null ; then
     echo "Uptime........: `uptime -p | sed 's/.*up ([^,]*), .*/1/' | cut -c 1-79`"

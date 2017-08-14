@@ -153,7 +153,8 @@ EOF
         perl-Clone perl-Storable perl-Path-Class perl-Image-ExifTool
         perl-DateTime perl-DateTime-Format-Strptime
         audacity-freeworld sox-plugins-freeworld sox-plugins-nonfree
-        python3-pyusb pyusb chirp xclip k4dirstat brasero"
+        python3-pyusb pyusb chirp xclip k4dirstat brasero libcap-ng-utils
+        lm_sensors"
 
   install_simple_packages $pkgs
 
