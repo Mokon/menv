@@ -5,7 +5,7 @@ if [ $PKG_MGMT == "yum" ] ; then
   menv_alias install-build-essentials="yum groupinstall 'Development Tools'"
 
   menv_function yum_what_provides
-  function yum_what_private {
+  function yum_what_provides {
     echo "exzact:"
     sudo yum whatprovides "$@"
 

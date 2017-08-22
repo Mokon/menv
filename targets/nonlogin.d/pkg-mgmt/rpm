@@ -5,7 +5,7 @@ if [ $PKG_TYPE == "rpm" ] ; then
   menv_alias rpm_list_deps="rpm -qpR"
 
   menv_function rpm_what_provides
-  function rpm_what_private {
+  function rpm_what_provides {
     echo "exzact:"
     rpm -q --whatprovides "$@"
 

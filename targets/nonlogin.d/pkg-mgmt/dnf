@@ -3,7 +3,7 @@
 
 if [ $PKG_MGMT == "dnf" ] ; then
   menv_function dnf_what_provides
-  function dnf_what_private {
+  function dnf_what_provides {
     echo "exzact:"
     sudo dnf whatprovides "$@"
 
