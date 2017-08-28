@@ -1,9 +1,11 @@
 #!/bin/bash
-# (C) 2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2015-2017 David 'Mokon' Bond, All Rights Reserved
 
-export GOPATH=$HOME/menv/go
-export PATH="$PATH:$GOPATH/bin"
-go get github.com/schachmat/wego
+if [ $MENV_DESKTOP -ne 0 ] ; then
+  export GOPATH=$HOME/menv/go
+  export PATH="$PATH:$GOPATH/bin"
+  go get github.com/schachmat/wego
 
-echo "To use wego add an api key to wegorc"
-safe_symlink .wegorc $menv_dotfiles_dir/wegorc
+  echo "To use wego add an api key to wegorc"
+  safe_symlink .wegorc $menv_dotfiles_dir/wegorc
+fi
