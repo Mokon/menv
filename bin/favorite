@@ -1,0 +1,28 @@
+#!/bin/bash
+
+if [ ! -e $menv_cache_dir/favorites/ ]; then
+  mkdir -p $menv_cache_dir/favorites/
+fi
+
+case $1 in
+  --add)
+    if [ -a $menv_cache_dir/favorites/$2 ]; then
+      echo "Favorite '$2' exists!"
+    else
+      echo $3 >> $menv_cache_dir/favorites/$2
+    fi
+  ;;
+  --delete)
+    if [ -a $menv_cache_dir/favorites/$2 ]; then
+      /bin/rm -f $menv_cache_dir/favorites/$2
+    else
+      echo "Favorite '$2' does not exist!"
+    fi
+  ;;
+  *)
+    if [ -a $menv_cache_dir/favorites/$1 ]; then
+      $(cat $menv_cache_dir/favorites/$1)
+    else
+      echo "Favorite '$1' does not exist!"
+    fi
+esac
