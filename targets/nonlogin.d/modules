@@ -18,4 +18,6 @@ function install_module {
       ~/menv/dotfiles/vimrc_style/${module_name}.vim
   fi
   menv_export CODING_STYLE=${module_name}
+
+  source ~/menv/cache/${module_name}/*/bashrc
 }

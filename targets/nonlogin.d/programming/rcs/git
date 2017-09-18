@@ -132,6 +132,57 @@ function show_git_origins {
   done
 }
 
+menv_function update_chain_link
+function update_chain_link {
+  local rebase_branch=$1
+  local commit_count=${2:-1}
+  local current_branch=${3:-$(git rev-parse --abbrev-ref HEAD)}
+
+  echo "Rebasing ${commit_count} commits from ${current_branch} onto ${rebase_branch}."
+  git rebase --onto ${rebase_branch} ${current_branch}~${commit_count} ${current_branch}
+}
+
+menv_function update_chain
+function update_chain {(
+  set -e
+
+  local start=$1
+  local mode=$2
+  shift
+  shift
+  local links=("$@")
+
+  local last_branch=$start
+  echo "Pulling latest for ${start}."
+  git checkout $start
+  git pull
+
+  for link in "${links[@]}"; do
+    IFS=","
+    set -- $link
+    local branch=$1
+    local commit_count=$2
+
+    git checkout $branch
+    update_chain_link $last_branch $commit_count $branch
+    last_branch=$branch
+  done
+
+  for link in "${links[@]}"; do
+    IFS=","
+    set -- $link
+    local branch=$1
+    local commit_count=$2
+
+    git checkout $branch
+    if [ "$mode" = force ] ; then
+      git push -f
+    elif [ "$mode" = forcenv ] ; then
+      git push -f --no-verify
+    fi
+  done
+)}
+
 if [ -f $menv_bin_dir/git-completion.bash ]; then
     source $menv_bin_dir/git-completion.bash
 fi

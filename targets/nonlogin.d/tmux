@@ -31,5 +31,6 @@ cat <<HERE
   tmux list-sessions
   tmux detach (prefix + d)
   tmux kill-session -t session_name
+  prefix in my tmuxrc is ctrl a
 HERE
 }
