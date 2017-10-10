@@ -183,6 +183,21 @@ function update_chain {(
   done
 )}
 
+menv_function update_chain_example
+function update_chain_example {
+  local start=develop
+  local mode=${1:-none}
+
+  local links=(
+    feature/my-feature-branch-a,1
+    feature/my-feature-branch-b,2
+    feature/my-feature-branch-c,32
+    feature/my-feature-branch-d,1
+  )
+
+  update_chain $start $mode "${links[@]}"
+}
+
 if [ -f $menv_bin_dir/git-completion.bash ]; then
     source $menv_bin_dir/git-completion.bash
 fi
