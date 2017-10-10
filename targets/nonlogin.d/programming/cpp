@@ -14,22 +14,15 @@ function cpp_class {
 
 namespace TODO {
 
-class $class {
-
+class $class
+{
   public:
-
     $class() = default;
-
     virtual ~$class() = default;
-
     $class(const $class&) = delete;
-
     $class& operator=(const $class&) = delete;
-
     $class(const $class&&) = delete;
-
     $class& operator=(const $class&&) = delete;
-
 };
 
 }

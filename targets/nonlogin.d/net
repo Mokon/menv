@@ -18,8 +18,8 @@ function convert_hex_to_ip {
   printf '%d.%d.%d.%d\n' `echo $@ | sed -r 's/(..)/0x\1 /g'`
 }
 
-menv_function kill_quagga
-function kill_quagga {
+menv_function kill_frr
+function kill_frr {
   sudo pkill -9 -f bgpd
   sudo pkill -9 -f zebra
   sudo pkill -9 -f vtysh
@@ -31,8 +31,8 @@ function kill_quagga {
   sudo /bin/rm -f /var/run/zserv.api
 }
 
-menv_function launch_quagga
-function launch_quagga {
+menv_function launch_frr
+function launch_frr {
   kill_quagga
   sudo zebra &
   sudo bgpd &
@@ -355,5 +355,3 @@ function decode_hex_frame {
 
   printf "$hexdump\n" | text2pcap -q - - | tshark -V -r -
 }
-
-(sudo ntpdate -s time.nist.gov &)

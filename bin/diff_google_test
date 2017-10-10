@@ -1,7 +1,9 @@
 #!/usr/bin/perl
-#
+# (C) 2016 David 'Mokon' Bond, All Rights Reserved
+
 # A simple script to extract an diff the text coming from a google test expect
 # output.
+
 if (
     (
         do { local $/; <STDIN> }

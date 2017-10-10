@@ -52,15 +52,28 @@ function determine_dist {
 determine_dist
 
 menv_alias dist_install=${DIST}_install
+menv_alias dist_local_install=${DIST}_local_install
 menv_alias ins=dist_install
 menv_alias ${DIST}_install=${PKG_MGMT}_install
+menv_alias ${DIST}_local_install=${PKG_MGMT}_local_install
+
+menv_alias dist_update=${DIST}_update
+menv_alias ${DIST}_update=${PKG_MGMT}_update
 
 menv_alias yum_install="sudo yum install -q -y"
 menv_alias dnf_install="sudo dnf install -q -y"
 menv_alias apt_install="sudo apt-get --yes --force-yes install -qq"
 
+menv_alias yum_update="sudo yum update -q -y"
+menv_alias dnf_update="sudo dnf update -q -y"
+
+menv_alias yum_local_install="sudo yum localinstall -q -y --nogpgcheck"
+menv_alias dnf_local_install="sudo dnf install -q -y"
+
 menv_alias global_install_package="install_package"
 menv_alias local_install_package="echo 'local install not supported'"
+
+menv_alias update_packages=dist_update
 
 menv_function install_package
 function install_package {
@@ -68,6 +81,14 @@ function install_package {
 
   eval "local pkg=\${$dist_to_pkg[$DIST]}"
   dist_install $pkg | grep -v "already installed and latest version"
+}
+
+menv_function local_install_package
+function local_install_package {
+  dist_to_pkg=$1
+
+  eval "local pkg=\${$dist_to_pkg[$DIST]}"
+  dist_local_install $pkg | grep -v "already installed and latest version"
 }
 
 menv_function install_simple_package

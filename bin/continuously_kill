@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# (C) 2017 David 'Mokon' Bond, All Rights Reserved
+
 if [ -z ${1+x} ]; then
   echo "please give an interval"
   exit -1

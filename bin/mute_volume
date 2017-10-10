@@ -1,5 +1,6 @@
 #!/bin/bash
 # (C) 2015 David 'Mokon' Bond, All Rights Reserved
+
 # This is a simple script to mute my computer while at work.
 
 last_change=$(($(date +"%s")+28801))

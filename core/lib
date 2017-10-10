@@ -359,6 +359,19 @@ function testconnection {
   fi
 }
 
+menv_function menv_load_install_opts {
+  if grep -v --quiet nodesktop $menv_install_opts_file ; then
+    menv_export MENV_DESKTOP=1
+  else
+    menv_export MENV_DESKTOP=0
+  fi
+
+  if grep -v --quiet noroot $menv_install_opts_file ; then
+    menv_export MENV_ROOT=1
+  else
+    menv_export MENV_ROOT=0
+  fi
+}
 
 # Include and set the distro core functionality.
 source $menv_core_dir/dist

@@ -15,11 +15,7 @@ fi
 
 if [[ "$MENV_INTERACTIVE" == 1 ]] ; then
 
-if grep -v --quiet nodesktop $menv_install_opts_file ; then
-  menv_export MENV_DESKTOP=1
-else
-  menv_export MENV_DESKTOP=0
-fi
+menv_load_install_opts
 
 menv_target_children login
 

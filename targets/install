@@ -14,25 +14,34 @@ else
   menv_version set
   spushd .
 
-  read -t 5 -p "Is this a desktop system? " -n 1 -r
+  read -t 60 -p "Do you have root access on this system? " -n 1 -r
   echo
-
   if [[ $REPLY =~ ^[Yy]$ ]] ; then
-    echo "desktop" >> $menv_install_opts_file
-    menv_export MENV_DESKTOP=1
+    echo "root" >> $menv_install_opts_file
 
     read -t 5 -p "Please provide a hostname: " -r
     menv_export MENV_HOSTNAME="$REPLY"
 
-local u=`whoami`
+    local u=`whoami`
     echo "$u ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers &> /dev/null
     echo "$u ALL=(root) NOPASSWD: /sbin/reboot" | sudo tee -a /etc/sudoers &> /dev/null
     exesudo delete_line_in_file "\tDefaults    env_reset" /etc/sudoers
     exesudo delete_line_in_file "\tDefaults    secure_path = *" /etc/sudoers
   else
     echo "nodesktop" >> $menv_install_opts_file
-    menv_export MENV_DESKTOP=0
+    echo "noroot" >> $menv_install_opts_file
   fi
+
+  read -t 60 -p "Is this a desktop system? " -n 1 -r
+  echo
+
+  if [[ $REPLY =~ ^[Yy]$ ]] ; then
+    echo "desktop" >> $menv_install_opts_file
+  else
+    echo "nodesktop" >> $menv_install_opts_file
+  fi
+
+  menv_load_install_opts
 
   # Link the bash targets.
   cd ~
@@ -70,7 +79,10 @@ local u=`whoami`
 
   spopd
 
-  menv_target_children install
+  if [ $MENV_ROOT -ne 0 ] ; then
+    menv_target_children install_global
+  fi
+  menv_target_children install_user
 
   menv_unlock $menv_dir/.lock
 
