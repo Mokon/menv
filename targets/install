@@ -19,7 +19,7 @@ else
   if [[ $REPLY =~ ^[Yy]$ ]] ; then
     echo "root" >> $menv_install_opts_file
 
-    read -t 5 -p "Please provide a hostname: " -r
+    read -t 60 -p "Please provide a hostname: " -r
     menv_export MENV_HOSTNAME="$REPLY"
 
     local u=`whoami`
