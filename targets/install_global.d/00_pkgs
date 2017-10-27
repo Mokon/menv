@@ -97,14 +97,14 @@ function install_rpmfusion {
   free_url=${rpmfusion_org}/${free}-${ver}.noarch.rpm
   nonfree_url=${rpmfusion_org}/${nonfree}-${ver}.noarch.rpm
 
-  install_local_package $free_url
-  install_local_package $nonfree_url
+  local_install_package $free_url
+  local_install_package $nonfree_url
 }
 
 menv_function install_skype
 function install_skype {
   fetch http://www.skype.com/go/getskype-linux-beta-fc10 skype.rpm
-  install_local_package skype.rpm
+  local_install_package skype.rpm
   $BINRM skype.rpm
 }
 
