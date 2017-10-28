@@ -155,9 +155,13 @@ if [[ $REPLY_PKGS =~ ^[Yy]$ ]] ; then
 
       install_simple_package plymouth-theme*
 
-      install_java
+      #install_java
 
-      sudo debuginfo-install -q -y glibc kernel \
+      if [ "$PKG_MGMT" == "dnf" ] ; then
+        cmd="dnf"
+      fi
+
+      sudo $cmd debuginfo-install -q -y glibc kernel \
         | grep -v "already installed and latest version" \
         | grep -v "No debuginfo packages available to install"
     fi
