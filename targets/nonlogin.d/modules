@@ -14,10 +14,11 @@ function install_module {
   fi
 
   if [ ! -f ~/menv/dotfiles/vimrc_style/${module_name}.vim ] ; then
-    ln -s ~/menv/cache/${module_name}/*/${module_name}.vim \
+    ln -s ~/menv/cache/${module_name}/dotfiles/${module_name}.vim \
       ~/menv/dotfiles/vimrc_style/${module_name}.vim
   fi
   menv_export CODING_STYLE=${module_name}
 
-  source ~/menv/cache/${module_name}/*/bashrc
+  source ~/menv/cache/${module_name}/dotfiles/bashrc
+  export PATH=$PATH:~/menv/cache/${module_name}/bin/
 }

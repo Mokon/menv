@@ -11,7 +11,7 @@ if [ $MENV_ROOT -ne 0 ] ; then
   (sudo ntpdate -s time.nist.gov &> /dev/null &)
 fi
 
-export PATH=$PATH:$HOME/bin:$menv_bin_dir:$HOME/.local/bin
+export PATH=$PATH:$HOME/bin:$menv_bin_dir:$menv_local_bin_dir
 
 if [ -d $menv_local_bin_dir ];then
   export PATH=$PATH:$HOME/bin:$menv_local_bin_dir
