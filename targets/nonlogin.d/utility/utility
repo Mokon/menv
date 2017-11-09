@@ -438,3 +438,9 @@ menv_function checksum_dir
 function checksum_dir {
   tar -cf - $1 | md5sum
 }
+
+menv_function frequency
+function frequency {
+  local file=$1
+  awk -F ' ' '{print $1}' $file | sort | uniq -c | sort -nr
+}
