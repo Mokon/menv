@@ -1,0 +1,119 @@
+<div id="work-tasks"></div>
+<script>
+  function renderer(states, object){
+    if (object.value in states) {
+      color = states[object.value].color;
+    } else {
+      color = 'black';
+    }
+
+    object.style = {
+      background: color,
+      color: 'black'
+    };
+
+    return object;
+  }
+
+  function cellTip(states, object){
+    if (object.value in states) {
+      return states[object.value].cellTip;
+    } else {
+      return false;
+    }
+  }
+
+  var reviewStates = {
+    'final':    {'color': 'green',
+                 'cellTip': 'Asking for final review comment'},
+    'start':    {'color': 'lime',
+                 'cellTip': 'Ready to review'},
+    'comments': {'color': 'orange',
+                 'cellTip': 'I am fixing review comments'},
+    'na':       {'color': 'red',
+                 'cellTip': 'Ignore this task'},
+  };
+
+  var testingStates = {
+    'passed':   {'color': 'green',
+                 'cellTip': 'This has passed all testing'},
+    'running':  {'color': 'lime',
+                 'cellTip': 'Testing is currently running'},
+    'na':       {'color': 'orange',
+                 'cellTip': 'Ignore this task'},
+    'failed':   {'color': 'red',
+                 'cellTip': 'Testing failed'},
+  };
+
+  var statusStates = {
+    'review':   {'color': 'green',
+                 'cellTip': 'This is in review, please review if you can'},
+    'active':   {'color': 'lime',
+                 'cellTip': 'I am actively working on this, no need to review'},
+    'on hold':  {'color': 'orange',
+                 'cellTip': 'I am not currently looking at this, no need to review'},
+    'dup':      {'color': 'orange',
+                 'cellTip': 'This is a duplicate task and will be closed, no need to review'},
+    'watching': {'color': 'olive',
+                 'cellTip': 'I am just watching this task, no need to review'},
+    'declined': {'color': 'olive',
+                 'cellTip': 'I have decline this task, no need to review'},
+    'future':   {'color': 'red',
+                 'cellTip': 'This task is for the future'},
+  };
+
+  var data = {{{json data}}};
+
+  window.onload = function(){
+    new FancyGrid({
+      renderTo: 'work-tasks',
+      width: 1200,
+      height: 800,
+      data: data,
+      theme: "blue",
+      defaults: {
+        type: 'string',
+        width: 100,
+        editable: true,
+        sortable: true
+      },
+      columns: [{
+        index: 'task',
+        title: 'Task',
+        type: 'string',
+        width: 500
+      },{
+        index: 'bb',
+        title: 'BitBucket',
+        type: 'string',
+        width: 100
+      },{
+        index: 'jira',
+        title: 'Jira',
+        type: 'string',
+        width: 100
+      },{
+        index: 'status',
+        title: 'Status',
+        type: 'string',
+        width: 100,
+        cellTip: function (o) { return cellTip(statusStates, o); },
+        render: function (o) { return renderer(statusStates, o); }
+      },{
+        index: 'testing',
+        title: 'Testing',
+        type: 'string',
+        width: 100,
+        cellTip: function (o) { return cellTip(testingStates, o); },
+        render: function (o) { return renderer(testingStates, o); }
+      },{
+        index: 'review',
+        title: 'Review',
+        type: 'string',
+        width: 100,
+        cellTip: function (o) { return cellTip(reviewStates, o); },
+        render: function (o) { return renderer(reviewStates, o); }
+      }]
+    });
+  };
+</script>

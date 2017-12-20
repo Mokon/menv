@@ -57,6 +57,7 @@ menv_alias merge="rsync -a" # from to
 menv_alias sudo_preserve_env="sudo -E sh -c"
 menv_alias show_current_cgroup="ps h -p $PPID -o cgroup | sed 's/.*\///g'"
 menv_alias scp="rsync -avzP"
+menv_alias scpthrough="scp -3"
 menv_alias show_bus_info="sudo lshw -c network -businfo"
 menv_alias view_image_metadata="exiftool"
 menv_alias view_image_metadata2="jhead"

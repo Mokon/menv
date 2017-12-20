@@ -5,6 +5,8 @@ set history filename ~/menv/cache/history/.gdb_history
 set history save
 set print thread-events off
 set print array on
+set height 10000
+set print pretty on
 
 source ~/menv/dotfiles/gdb/*.gdb
 

@@ -64,3 +64,12 @@ function ovpn {
     send_user "openvpn terminated"
 DONE
 }
+
+menv_function add_ca_trust_anchor
+function add_ca_trust_anchor {
+  local site=$1
+  openssl s_client -showcerts -connect ${site}:443 </dev/null 2>/dev/null |
+    openssl x509 -outform PEM |
+    sudo tee /etc/pki/ca-trust/source/anchors/certificate_${site}.pem
+  sudo update-ca-trust
+}

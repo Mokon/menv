@@ -1,6 +1,12 @@
 #!/bin/bash
 # (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 
+menv_function hash_dir
+function hash_dir {
+  local dir=$1
+  tar -cf - $dir | md5sum
+}
+
 menv_function backup
 function backup {
   local backup_location=${1:-/backup}
@@ -8,6 +14,8 @@ function backup {
   local date=`date +"%m_%d_%Y"`
   local hostname=`hostname`
   local backup_dir=$backup_location/${date}_${hostname}/
+
+  start=$(date)
 
   spushd .
   echo "Starting Backup"
@@ -23,9 +31,20 @@ function backup {
   # Add --info=progress2 once rsync in distos is 3.1.0
   rsync -ar ~/menv/local .
 
+  local_hash=$(hash_dir local)
+  git_hash=$(hash_dir git)
+
   cp ~/.config/google-chrome/Default/Bookmarks .
   cp /etc/hosts .
 
+  end=$(date)
+
+  cat << EOF > metadata
+start time = ${start}
+end time = ${end}
+local dir hash = ${local_hash}
+git dir hash = ${git_hash}
+EOF
 
   echo "Backup Completed"
   spopd
