@@ -115,10 +115,24 @@ function s:QuaggaFormatting()
   setlocal shiftwidth=2
   setlocal noexpandtab
   
-  highlight default link Rt128Error ErrorMsg
+  highlight default link QuaggaError ErrorMsg
   
-  syn match Rt128Error /\t/
-  syn match Rt128Error /\%81v.\+/
+  syn match QuaggaError /\t/
+  syn match QuaggaError /\%81v.\+/
+endfunction
+
+autocmd BufRead,BufNewFile */frr/* call s:FrrFormatting()
+
+function s:FrrFormatting()
+  setlocal tabstop=8
+  setlocal softtabstop=2
+  setlocal shiftwidth=2
+  setlocal noexpandtab
+  
+  highlight default link FrrError ErrorMsg
+  
+  syn match FrrError /\t/
+  syn match FrrError /\%81v.\+/
 endfunction
 
 autocmd FileType diff,kconfig setlocal tabstop=4

@@ -32,6 +32,8 @@ menv_export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'} history -a; 
 
 shopt -s histappend
 
+menv_export HISTTIMEFORMAT='%F %T '
+menv_export HISTIGNORE="reset:clear:exit:shutdown*:reboot:*systemctl poweroff*:*systemctl reboot*"
 menv_export HISTSIZE=10000
 menv_export HISTFILESIZE=10000
 menv_alias search_history="history | grep "
