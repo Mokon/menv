@@ -1,1 +1,10 @@
+trash/*
+local/*
+backup/*
+cache/*
+bin/*
+go/*
+npm/*
+.menv_generated
+version
 node_modules

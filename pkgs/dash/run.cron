@@ -1,2 +1,2 @@
 #!/bin/bash
-forever start -v -w --watchDirectory /home/dbond/menv/local/docs/menv/pkgs/dash/ index.js
+forever start -v -w --watchDirectory /home/dbond/menv/pkgs/dash/ index.js

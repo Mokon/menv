@@ -90,7 +90,7 @@ function ethertype {
 menv_function port
 function port {
   local port=$1
-  
+
   local file=${menv_cache_dir}/ports
   if [ ! -f $file ]; then
     local url=http://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.csv
@@ -277,8 +277,8 @@ function netbios_ssh {
   ssh $username@`netbios_ip $dns`
 }
 
-menv_function m6
-function m6 {
+menv_function multicast_ipv6_traffic
+function multicast_ipv6_traffic {
   local int1=$1
   local int2=$2
   local int3=$3
@@ -291,8 +291,8 @@ function m6 {
 END
 }
 
-menv_function m4
-function m4 {
+menv_function multicast_ipv4_traffic
+function multicast_ipv4_traffic {
   local int1=$1
   local int2=$2
   local int3=$3
@@ -311,6 +311,17 @@ function m4 {
     18.0 ON 9 UDP DST 224.225.1.2/5008 SRC 5001 PERIODIC [1 512] COUNT 1 TTL 10 DATA [18]
     # 100000.0 JOIN 224.225.1.2 INTERFACE $int3
 END
+}
+
+menv_alias show_multicast_joins="ip maddr show"
+
+menv_function join_multicast_group
+function join_multicast_group {
+  local group=$1
+  local ip=$2
+  local port=1337
+
+  socat STDIO UDP4-DATAGRAM:${group}:${port},ip-add-membership=${group}:${ip}
 }
 
 menv_function echo_many_routes

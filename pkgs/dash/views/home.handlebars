@@ -46,6 +46,8 @@
   };
 
   var statusStates = {
+    'jenkins':  {'color': 'yellow',
+                 'cellTip': 'This is a jenkins related bug that has not been started.'},
     'review':   {'color': 'green',
                  'cellTip': 'This is in review, please review if you can'},
     'active':   {'color': 'lime',
@@ -62,22 +64,7 @@
                  'cellTip': 'This task is for the future'},
   };
 
-  var data = {{{json data}}};
-
-  window.onload = function(){
-    new FancyGrid({
-      renderTo: 'work-tasks',
-      width: 1200,
-      height: 800,
-      data: data,
-      theme: "blue",
-      defaults: {
-        type: 'string',
-        width: 100,
-        editable: true,
-        sortable: true
-      },
-      columns: [{
+  var columns = [{
         index: 'task',
         title: 'Task',
         type: 'string',
@@ -113,7 +100,51 @@
         width: 100,
         cellTip: function (o) { return cellTip(reviewStates, o); },
         render: function (o) { return renderer(reviewStates, o); }
-      }]
+      }];
+  var defaults = {
+    resizable: true
+  };
+
+
+  var data = {{{json data}}};
+
+  data.groups.forEach(function(group) {
+    group.tasks.forEach(function(task) {
+      if (task.bb != "") {
+        task.bb = "<a href=\"" + data["bitbucket-url"]
+          + task.bb + "\">" + task.bb + "</a>"
+      }
+
+      if (task.jira != "") {
+        task.jira = "<a href=\"" + data["jira-url"]
+          + task.jira + "\">" + task.jira + "</a>"
+      }
+    });
+  });
+
+  var tabs = [];
+
+  data["groups"].forEach(function(group) {
+    tabs.push({
+      title: group["group"],
+	    type: 'grid',
+      selModel: 'row',
+	    data: group.tasks,
+      defaults: defaults,
+      columns: columns
+    });
+  });
+
+  window.onload = function(){
+    new FancyTab({
+      renderTo: 'work-tasks',
+      title: 'Dashboard',
+      width: 1200,
+      height: 800,
+      activeTab: 1,
+      resizable: true,
+      theme: "blue",
+      items: tabs
     });
   };
 </script>

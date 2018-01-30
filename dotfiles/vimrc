@@ -135,6 +135,12 @@ function s:FrrFormatting()
   syn match FrrError /\%81v.\+/
 endfunction
 
+autocmd BufRead,BufNewFile *handlebars* call s:HandlebarsFormatting()
+
+function s:HandlebarsFormatting()
+  setlocal syntax=html
+endfunction
+
 autocmd FileType diff,kconfig setlocal tabstop=4
 
 " A nice function that strips trailing white space from a file. Mapped to

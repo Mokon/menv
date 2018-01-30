@@ -1,5 +1,6 @@
 const express = require('express')
 const exphbs = require('express-handlebars')
+const fs = require('fs');
 
 const port = 1337
 
@@ -12,25 +13,14 @@ var hbs = exphbs.create({
 
 const app = express()
 
-var data = require("./dash.json");
-for(var row in data["tasks"]) {
-  if (data["tasks"][row].bb != "") {
-    data["tasks"][row].bb = "<a href=\"" + data["bitbucket-url"]
-      + data["tasks"][row].bb + "\">" + data["tasks"][row].bb + "</a>"
-  }
-
-  if (data["tasks"][row].jira != "") {
-    data["tasks"][row].jira = "<a href=\"" + data["jira-url"]
-      + data["tasks"][row].jira + "\">" + data["tasks"][row].jira + "</a>"
-  }
-}
+var data = JSON.parse(fs.readFileSync('./dash.json', 'utf8'));
 
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
 app.get('/', (request, response) => {
   response.render('home', {
-    data: data["tasks"]
+    data: data
   })
 })
 
