@@ -7,7 +7,7 @@ fi
 
 menv_target_children nonlogin
 
-if [ $MENV_ROOT -ne 0 ] ; then
+if [[ $MENV_ROOT -ne 0 ]] ; then
   (sudo ntpdate -s time.nist.gov &> /dev/null &)
 fi
 
