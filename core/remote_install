@@ -18,7 +18,7 @@ find menv/ -not -path "menv/local/*/*" -and -not -path "menv/backup/*/*" -and -n
 source ~/menv/core/install
 
 cd menv
-git clone --bare https://github.com/mokon/menv
+git clone --bare https://github.com/mokon/menv .git
 git config --unset core.bare
 git reset
 cd ..
