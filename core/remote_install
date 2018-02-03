@@ -21,6 +21,7 @@ cd menv
 git clone --bare https://github.com/mokon/menv .git
 git config --unset core.bare
 git reset
+git ls-files --deleted -z | git update-index --assume-unchanged -z --stdin
 cd ..
 
 source ~/menv/core/login
