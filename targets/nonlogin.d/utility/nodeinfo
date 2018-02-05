@@ -38,6 +38,6 @@ function nodeinfo {
   echo "Groups........:`groups $(whoami) | cut -f2 -d':'`"
   echo "Processor(s)..: $PNUMS $PVENDOR ${PMHZ} MHz ${PMODEL}"
   echo "SELinux.......: `/usr/sbin/getenforce`"
-
+  echo "last login....: $(last -1 -R  $USER | head -1 | cut -c 20-| awk '{$1=$1};1')"
   echo "menv version..: $(menv_version)"
 }
