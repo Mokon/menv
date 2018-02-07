@@ -76,6 +76,7 @@ else
   $BINRM -f $menv_local_dir/code/.gitkeep
   $BINRM -f $menv_local_dir/docs/.gitkeep
   $BINRM -f $menv_local_dir/pics/.gitkeep
+  mkdir ${menv_cache_bin_dir}
 
   spopd
 
