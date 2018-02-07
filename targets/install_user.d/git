@@ -4,7 +4,7 @@
 spushd .
 
 cd ~
-  
+
 safe_symlink .gitconfig $menv_dotfiles_dir/gitconfig
 gitVersion=$(git --version | awk -F"version " '{print $2}')
 if version_le $gitVersion "1.7.11" ; then
@@ -18,7 +18,7 @@ wget -O gitwt.tar -q -N --no-check-certificate \
 tar -xvf gitwt.tar &> /dev/null
 
 if [ -d willgit-mainline/bin/* ] ; then
-  $BINCP  willgit-mainline/bin/* ~/menv/bin
+  $BINCP  willgit-mainline/bin/* $menv_cache_bin_dir
 fi
 
 if [ -d willgit-mainline ] ; then
@@ -26,7 +26,7 @@ if [ -d willgit-mainline ] ; then
 fi
 $BINRM gitwt.tar
 
-cd $menv_bin_dir
+cd $menv_cache_bin_dir
 
 curl -Os https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
 

@@ -46,7 +46,7 @@ function mcloud_enroll {
 
   spushd .
   cd ~ && wget -O - "https://www.dropbox.com/download?plat=lnx.x86_64" | tar xzf -
-  wget -O $menv_bin_dir/dropbox https://www.dropbox.com/download?dl=packages/dropbox.py
+  wget -O $menv_cache_bin_dir/dropbox https://www.dropbox.com/download?dl=packages/dropbox.py
   ~/.dropbox-dist/dropboxd
   spopd
 

@@ -198,6 +198,6 @@ function update_chain_example {
   update_chain $start $mode "${links[@]}"
 }
 
-if [ -f $menv_bin_dir/git-completion.bash ]; then
-    source $menv_bin_dir/git-completion.bash
+if [ -f $menv_cache_bin_dir/git-completion.bash ]; then
+    source $menv_cache_bin_dir/git-completion.bash
 fi

@@ -3,7 +3,7 @@
 
 spushd .
 
-cd $menv_bin_dir
+cd $menv_cache_bin_dir
 fetch http://finch.am/projects/blackwidow/blackwidow_enable.py
 chmod +x blackwidow_enable.py
 
