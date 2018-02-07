@@ -71,7 +71,6 @@ menv_alias yum_local_install="sudo yum localinstall -q -y --nogpgcheck"
 menv_alias dnf_local_install="sudo dnf install -q -y"
 
 menv_alias global_install_package="install_package"
-menv_alias local_install_package="echo 'local install not supported'"
 
 menv_alias update_packages=dist_update
 
