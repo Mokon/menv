@@ -2,8 +2,5 @@ trash/*
 local/*
 backup/*
 cache/*
-go/*
 .menv_generated
 version
-node_modules
-dotfiles/gdb/stl-views.gdb

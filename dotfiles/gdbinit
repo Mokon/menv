@@ -9,6 +9,7 @@ set height 10000
 set print pretty on
 
 source ~/menv/dotfiles/gdb/*.gdb
+source ~/menv/cache/dotfiles/gdb/*.gdb
 
 define stdbreaks
     catch throw

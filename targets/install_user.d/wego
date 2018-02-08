@@ -2,8 +2,8 @@
 # (C) 2015-2017 David 'Mokon' Bond, All Rights Reserved
 
 if [ $MENV_DESKTOP -ne 0 ] ; then
-  export GOPATH=$HOME/menv/go
-  export PATH="$PATH:$GOPATH/bin"
+  export GOPATH=$menv_cache_go_dir
+  export PATH="$PATH:$menv_cache_go_bin_dir"
   go get github.com/schachmat/wego
 
   echo "To use wego add an api key to wegorc"

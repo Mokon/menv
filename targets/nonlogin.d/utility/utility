@@ -444,3 +444,14 @@ function frequency {
   local file=$1
   awk -F ' ' '{print $1}' $file | sort | uniq -c | sort -nr
 }
+
+menv_function run_remote_script
+function run_remote_script {
+  local ip=$1
+  local script=$2
+
+  ssh -x -tt $ip << EOF
+    $script
+    exit 0
+EOF
+}
