@@ -6,11 +6,11 @@ function install_module {
   local module_url=$2
 
   if [ ! -d ~/menv/cache/${module_name} ] ; then
-    pushd .
+    spushd .
     cd ~/menv/cache
     echo "Installing module ${module_name}. Git Hub login may be required."
     git clone -q ${module_url} ${module_name}
-    popd
+    spopd
   fi
 
   if [ ! -f ~/menv/dotfiles/vimrc_style/${module_name}.vim ] ; then

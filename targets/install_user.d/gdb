@@ -7,7 +7,7 @@ cd ~
   
 safe_symlink .gdbinit $menv_dotfiles_dir/gdbinit
 
-mkidr -p $menv_cache_dotfiles_dir/gdb
+mkdir -p $menv_cache_dotfiles_dir/gdb
 cd $menv_cache_dotfiles_dir/gdb
 fetch https://sourceware.org/ml/gdb/2008-02/msg00064/stl-views.gdb
 

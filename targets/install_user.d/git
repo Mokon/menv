@@ -13,8 +13,7 @@ fi
 
 # Let's install these cool ruby scripts for working with git!
 #   http://git-wt-commit.rubyforge.org/
-wget -O gitwt.tar -q -N --no-check-certificate \
-  https://gitorious.org/willgit/mainline/archive-tarball/master
+fetch https://gitorious.org/willgit/mainline/archive-tarball/master
 tar -xvf gitwt.tar &> /dev/null
 
 if [ -d willgit-mainline/bin/* ] ; then

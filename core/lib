@@ -161,6 +161,7 @@ function fetch {
   else
     local fname=`basename ${url}`
   fi
+  echo "Fetching $url";
   wget -O $fname -q -N --timeout=10 --tries=3 --no-check-certificate ${url}
 }
 
@@ -175,6 +176,7 @@ function fetch_w_timeout {
   else
     local fname=`basename ${url}`
   fi
+  echo "Fetchingwto $url";
   timeout -k 5 $timeout wget -O $fname -q -N --no-check-certificate ${url}
 }
 

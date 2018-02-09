@@ -18,10 +18,11 @@ find menv/ -not -path "menv/local/*/*" -and -not -path "menv/backup/*/*" -and -n
 source ~/menv/core/install
 
 cd menv
-git clone --bare https://github.com/mokon/menv .git > /dev/null
+git clone --bare https://github.com/mokon/menv .git &> /dev/null
 git config --unset core.bare > /dev/null
 git reset > /dev/null
 git ls-files --deleted -z | git update-index --assume-unchanged -z --stdin > /dev/null
+# git branch --set-upstream-to origin/master
 cd ..
 
 source ~/menv/core/login

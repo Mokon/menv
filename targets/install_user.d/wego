@@ -6,6 +6,5 @@ if [ $MENV_DESKTOP -ne 0 ] ; then
   export PATH="$PATH:$menv_cache_go_bin_dir"
   go get github.com/schachmat/wego
 
-  echo "To use wego add an api key to wegorc"
   safe_symlink .wegorc $menv_dotfiles_dir/wegorc
 fi

@@ -4,9 +4,7 @@
 spushd .
 
 if [ $MENV_DESKTOP -ne 0 ] ; then
-  if grep -q "* soft nofile 4096" /etc/security/limits.conf &> /dev/null ; then
-    echo "menv note, high file limit already installed"
-  else
+  if ! grep -q "* soft nofile 4096" /etc/security/limits.conf &> /dev/null ; then
     echo "* soft nofile 4096" | sudo tee -a /etc/security/limits.conf &> /dev/null
     echo "* hard nofile 4096" | sudo tee -a /etc/security/limits.conf &> /dev/null
   fi
