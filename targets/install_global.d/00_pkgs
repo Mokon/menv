@@ -161,10 +161,10 @@ if [[ $REPLY_PKGS =~ ^[Yy]$ ]] ; then
         cmd="dnf"
       fi
 
-      sudo $cmd debuginfo-install -q -y glibc kernel \
-        | grep -v "already installed" \
-        | grep -v "No debuginfo packages available to install" \
-        &> /dev/null # redirect for now as there is a bug in fedora
+      # redirect to dev null for now as there is a bug in fedora
+      sudo $cmd debuginfo-install -q -y glibc kernel &> /dev/null
+      #  | grep -v "already installed" \
+      #  | grep -v "No debuginfo packages available to install"
     fi
 
     install_simple_packages $desktop_pkgs
