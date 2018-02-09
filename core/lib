@@ -163,7 +163,6 @@ function fetch {
   fi
   echo "Fetching $url";
   wget -O $fname -q -N --timeout=10 --tries=3 --no-check-certificate ${url}
-  echo "done"
 }
 
 menv_function fetch_w_timeout
@@ -177,9 +176,8 @@ function fetch_w_timeout {
   else
     local fname=`basename ${url}`
   fi
-  echo "Fetchingwto $url";
+  echo "Fetching $url";
   timeout -k 5 $timeout wget -O $fname -q -N --no-check-certificate ${url}
-  echo "done"
 }
 
 # An aux function to grab a git repo

@@ -39,7 +39,7 @@ if [ ! -d wallpapers ] ; then
 fi
 
 if [ ! -f  wallpapers/${i}.jpg ] ; then
-  fetch_w_timeout ${background_url} wallpapers/${i}.jpg 60
+  fetch_w_timeout ${background_url} wallpapers/${i}.jpg 60 &> /dev/null
 fi
 
 PID=$(pgrep gnome-session -u $menv_user |head -n 1 | sed ':a;N;$!ba;s/\n/ /g')
