@@ -162,8 +162,9 @@ if [[ $REPLY_PKGS =~ ^[Yy]$ ]] ; then
       fi
 
       sudo $cmd debuginfo-install -q -y glibc kernel \
-        | grep -v "already installed and latest version" \
-        | grep -v "No debuginfo packages available to install"
+        | grep -v "already installed" \
+        | grep -v "No debuginfo packages available to install" \
+        &> /dev/null # redirect for now as there is a bug in fedora
     fi
 
     install_simple_packages $desktop_pkgs

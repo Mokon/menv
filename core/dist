@@ -84,9 +84,8 @@ function install_package {
 
 menv_function local_install_package
 function local_install_package {
-  dist_to_pkg=$1
+  pkg=$1
 
-  eval "local pkg=\${$dist_to_pkg[$DIST]}"
   dist_local_install $pkg  2>&1 | grep -v "already installed"
 }
 
@@ -106,6 +105,7 @@ function install_simple_package {
 menv_function install_simple_packages
 function install_simple_packages {
   for package in "$@" ; do
-    install_simple_package $package
+    echo "Installing package '$package'"
+    #install_simple_package $package
   done
 }
