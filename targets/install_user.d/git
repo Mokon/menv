@@ -13,17 +13,16 @@ fi
 
 # Let's install these cool ruby scripts for working with git!
 #   http://git-wt-commit.rubyforge.org/
-fetch https://gitorious.org/willgit/mainline/archive-tarball/master
-tar -xvf master.tar &> /dev/null
 
-if [ -d willgit-mainline/bin/* ] ; then
-  $BINCP  willgit-mainline/bin/* $menv_cache_bin_dir
+git clone https://gitorious.org/willgit/mainline.git &> /dev/null
+
+if [ -d mainline/bin/* ] ; then
+  $BINCP mainline/bin/* $menv_cache_bin_dir
 fi
 
-if [ -d willgit-mainline ] ; then
-  $BINRM -rf willgit-mainline
+if [ -d mainline ] ; then
+  $BINRM -rf mainline
 fi
-$BINRM master.tar
 
 cd $menv_cache_bin_dir
 
