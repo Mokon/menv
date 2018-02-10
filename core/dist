@@ -108,6 +108,6 @@ function install_simple_package {
 menv_function install_simple_packages
 function install_simple_packages {
   for package in "$@" ; do
-    #install_simple_package $package
+    install_simple_package $package
   done
 }
