@@ -5,14 +5,13 @@ echo "Uninstalling menv"
 
 menv_lock $menv_dir/.lock
 
-source ~/.bash_logout
+. ~/.bash_logout
 
 spushd .
 
 cd ~
 
 menv_version ignore
-menv_target login &> /dev/null # So we have the aliases etc in the menv arrays.
 
 menv_load_install_opts
 
