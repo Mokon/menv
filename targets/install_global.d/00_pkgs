@@ -118,7 +118,7 @@ perl_pkgs="perl-List-AllUtils perl-List-UtilsBy perl-File-chdir
 
 tex_pkgs="texlive-scheme-full texlive-glossaries"
 
-desktop_pkgs="powertop ntpdate wireshark-gnome openssh-clients python-fabulousi
+desktop_pkgs="powertop ntpdate wireshark-gnome openssh-clients python-fabulous
   gdmap gimp vlc google-chrome-stable cmatrix eclipse-jdt inkscape dbus-x11
   festival speech-dispatcher-utils espeak rdesktop simple-mtpfs libmtp fuse
   fuse-libs gvfs-mtp screen npm sil-gentium-fonts sil-gentium-fonts-common gem
@@ -174,7 +174,7 @@ if [[ $REPLY_PKGS =~ ^[Yy]$ ]] ; then
     menv_function npm_install_package
     function npm_install_package {
       local pkg=$1
-      echo "gem installing package $pkg"
+      echo "Installing npm package '$pkg'"
       npm install --loglevel error -g $pkg &> /dev/null
     }
 
@@ -189,7 +189,7 @@ if [[ $REPLY_PKGS =~ ^[Yy]$ ]] ; then
     function gem_install_package {
       local pkg=$1
 
-      echo "gem installing package $pkg"
+      echo "Installing gem package '$pkg'"
       gem install -q --install-dir=${menv_cache_bin_dir} -n ${menv_cache_bin_dir} $pkg &> /dev/null
     }
 

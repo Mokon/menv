@@ -77,7 +77,7 @@ gsettings set org.gnome.desktop.lockdown disable-lock-screen true
 gsettings set org.gnome.settings-daemon.plugins.xrandr default-monitors-setup do-nothing
 gsettings set org.gnome.gedit.preferences.ui max-recents "uint32 0"
 
-echo "setting plymouth theme"
+echo "Setting plymouth theme"
 sudo plymouth-set-default-theme solar -R &> /dev/null
 
 menv_alias record_screen="echo 'Type Ctrl + Shift + Alt + R'"
