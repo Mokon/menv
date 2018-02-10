@@ -16,9 +16,7 @@ fi
 
 git clone https://gitorious.org/willgit/mainline.git &> /dev/null
 
-if [ -d mainline/bin/* ] ; then
-  $BINCP mainline/bin/* $menv_cache_bin_dir
-fi
+$BINCP mainline/bin/* $menv_cache_bin_dir
 
 if [ -d mainline ] ; then
   $BINRM -rf mainline

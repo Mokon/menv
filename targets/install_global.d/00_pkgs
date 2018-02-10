@@ -171,17 +171,30 @@ if [[ $REPLY_PKGS =~ ^[Yy]$ ]] ; then
 
     local_install_package http://d-rats.com/yum/f11/d-rats-repo-0.1.3-1.fc12.noarch.rpm
 
+    menv_function npm_install_package
+    function npm_install_package {
+      local pkg=$1
+      echo "gem installing package $pkg"
+      npm install --loglevel error -g $pkg &> /dev/null
+    }
+
     npm config set prefix ${menv_cache_npm_dir}
     menv_export PATH=$PATH:${menv_cache_npm_bin_dir}
-    npm install --loglevel error -g git-stats &> /dev/null
-    npm install --loglevel error -g git-stats-importer &> /dev/null
-    npm install --loglevel error -g http-server &> /dev/null
-    npm install --loglevel error -g svgexport &> /dev/null
+    npm_install_package git-stats
+    npm_install_package git-stats-importer
+    npm_install_package http-server
+    npm_install_package svgexport
 
-    alias gem_install="gem install -q --install-dir=${menv_cache_bin_dir} -n ${menv_cache_bin_dir}"
+    menv_function gem_install_package
+    function gem_install_package {
+      local pkg=$1
 
-    gem_install git_stats &> /dev/null
-    gem_install slackcat &> /dev/null
+      echo "gem installing package $pkg"
+      gem install -q --install-dir=${menv_cache_bin_dir} -n ${menv_cache_bin_dir} $pkg &> /dev/null
+    }
+
+    gem_install_package git_stats
+    gem_install_package slackcat
   fi
 
   install_simple_packages $root_pkgs
