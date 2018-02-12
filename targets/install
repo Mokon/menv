@@ -1,7 +1,7 @@
 #!/bin/bash
 # (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 
-if [ -f $menv_dir/.$menv_gen_tag ] ; then
+if [ -f $menv_cache_dir/.$menv_gen_tag ] ; then
   echo "menv is already installed on this computer. Not installing."
 else
   echo "Installing menv!"
@@ -10,7 +10,7 @@ else
 
   menv_lock $menv_dir/.lock
 
-  touch $menv_dir/.$menv_gen_tag
+  touch $menv_cache_dir/.$menv_gen_tag
   menv_version set
   spushd .
 

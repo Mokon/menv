@@ -248,9 +248,9 @@ function menv_version {
   op=$1
 
   case $op in
-    ignore) echo ignore &> ${menv_dir}/version ;;
-    set) menv_latest_version &> ${menv_dir}/version ;;
-    get|*) cat ${menv_dir}/version ;;
+    ignore) echo ignore &> ${menv_cache_dir}/version ;;
+    set) menv_latest_version &> ${menv_cache_dir}/version ;;
+    get|*) cat ${menv_cache_dir}/version ;;
   esac
 }
 
