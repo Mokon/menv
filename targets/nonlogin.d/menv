@@ -60,3 +60,5 @@ function menv_clone_coderef {
 
   spopd
 }
+
+menv_alias menv_grep="grep --exclude-dir trash --exclude-dir local --exclude-dir backup --exclude-dir cache"

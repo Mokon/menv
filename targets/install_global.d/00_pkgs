@@ -89,13 +89,19 @@ EOF
 
 menv_function install_rpmfusion
 function install_rpmfusion {
-  rpmfusion_org=http://download1.rpmfusion.org
-  ver=$(rpm -E %fedora)
-  free=free/fedora/rpmfusion-free-release
-  nonfree=nonfree/fedora/rpmfusion-nonfree-release
+  local rpmfusion_org=http://download1.rpmfusion.org
+  local ver=$(rpm -E %${DIST})
 
-  free_url=${rpmfusion_org}/${free}-${ver}.noarch.rpm
-  nonfree_url=${rpmfusion_org}/${nonfree}-${ver}.noarch.rpm
+  local dist=$DIST
+  if [ $dist == "centos" ] ; then
+    dist=el
+  fi
+
+  local free=free/${dist}/rpmfusion-free-release
+  local nonfree=nonfree/${dist}/rpmfusion-nonfree-release
+
+  local free_url=${rpmfusion_org}/${free}-${ver}.noarch.rpm
+  local nonfree_url=${rpmfusion_org}/${nonfree}-${ver}.noarch.rpm
 
   local_install_package $free_url
   local_install_package $nonfree_url
