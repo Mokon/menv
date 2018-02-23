@@ -455,3 +455,11 @@ function run_remote_script {
     exit 0
 EOF
 }
+
+menv_function merge_pdfs
+function merge_pdfs {
+  local out=$1
+  shift
+
+  gs -q -sPAPERSIZE=letter -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=$out.pdf $@
+}
