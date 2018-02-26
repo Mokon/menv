@@ -2,3 +2,4 @@ trash/*
 local/*
 backup/*
 cache/*
+node_modules/
