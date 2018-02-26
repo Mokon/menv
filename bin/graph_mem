@@ -1,0 +1,33 @@
+#!/bin/env bash
+
+trap ctrl_c INT
+
+process=${1}
+data=$(mktemp)
+script=$(mktemp)
+graph=~/${process}.png
+
+cat >$script <<EOL
+set term png small size 800,600
+set output "$graph"
+set ylabel "RSS"
+set y2label "VSZ"
+set ytics nomirror
+set y2tics nomirror in
+set yrange [0:*]
+set y2range [0:*]
+plot "$data" using 3 with lines axes x1y1 title "%mem", "$data" using 2 with lines axes x1y2 title "vsz"
+EOL
+
+function ctrl_c {
+  gnuplot $script
+  xdg-open $graph
+  rm $data
+  exit 0
+}
+
+rm $data
+while true; do
+  ps -p "$(pgrep -f $process | head -n 1)" -o pid= -o %mem -o vsz= >> $data
+  sleep 1
+done
