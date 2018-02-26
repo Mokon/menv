@@ -176,22 +176,28 @@ menv_function mopen
 function mopen {
   local file="$1"
 
-  case $file in
-    *.pdf) evince "$file"&> /dev/null & ;;
-    *.odt) oowriter "$file" &> /dev/null & ;;
-    *.ods) ooffice "$file" &> /dev/null & ;;
-    *.dot)
-      local pngfile=`mktemp --suffix==.png`
-      dot_to_png $file $pngfile
-      shotwell "$pngfile" &> /dev/null & ;;
-    *.png|*.jpg|*.jpeg) shotwell "$file" &> /dev/null & ;;
-    *.pcap|*.npcap) wireshark "$file" &> /dev/null & ;;
-    *.log|*.txt|*.rej|*.patch|*.config) gedit "$file" &> /dev/null & ;;
-    *)
-        echo "I don't know how to open that, falling back to xdg-open!"
-        xdg-open "$file"
-        ;;
-  esac
+  if [ -d $file ] ; then
+    nautilus "$file" &> /dev/null & ;;
+  elif [ -f $file ] ; then
+    case $file in
+      *.pdf) evince "$file"&> /dev/null & ;;
+      *.odt) oowriter "$file" &> /dev/null & ;;
+      *.ods) ooffice "$file" &> /dev/null & ;;
+      *.dot)
+        local pngfile=`mktemp --suffix==.png`
+        dot_to_png $file $pngfile
+        shotwell "$pngfile" &> /dev/null & ;;
+      *.png|*.jpg|*.jpeg) shotwell "$file" &> /dev/null & ;;
+      *.pcap|*.npcap) wireshark "$file" &> /dev/null & ;;
+      *.log|*.txt|*.rej|*.patch|*.config) gedit "$file" &> /dev/null & ;;
+      *)
+          echo "I don't know how to open that, falling back to xdg-open!"
+          xdg-open "$file"
+          ;;
+    esac
+  else
+    echo "I don't know how to open that, it is not a directory or regular file."
+  fi
 }
 
 menv_function dot_to_png
@@ -215,15 +221,21 @@ menv_function topen
 function topen {
   local file="$1"
 
-  case $file in
-    *.dot)
-      local pngfile=`mktemp`
-      dot_to_png $file $pngfile
-      python -m fabulous.image "$pngfile" ;;
-    *.png|*.jpg|*.jpeg) python -m fabulous.image "$file"  ;;
-    *.log|*.txt|*.rej|*.patch|*.cpp|*.c|*.h|*.hpp) vim "$file"  ;;
-    *) echo "I don't know how to open that." ;;
-  esac
+  if [ -d $file ] ; then
+    cd $file
+  elif [ -f $file ] ; then
+    case $file in
+      *.dot)
+        local pngfile=`mktemp`
+        dot_to_png $file $pngfile
+        python -m fabulous.image "$pngfile" ;;
+      *.png|*.jpg|*.jpeg) python -m fabulous.image "$file"  ;;
+      *.log|*.txt|*.rej|*.patch|*.cpp|*.c|*.h|*.hpp) vim "$file"  ;;
+      *) echo "I don't know how to open that." ;;
+    esac
+  else
+    echo "I don't know how to open that, it is not a directory or regular file."
+  fi
 }
 
 menv_function list_root_owned_files
