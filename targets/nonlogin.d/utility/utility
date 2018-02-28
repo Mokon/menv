@@ -177,7 +177,7 @@ function mopen {
   local file="$1"
 
   if [ -d $file ] ; then
-    nautilus "$file" &> /dev/null & ;;
+    nautilus "$file" &> /dev/null &
   elif [ -f $file ] ; then
     case $file in
       *.pdf) evince "$file"&> /dev/null & ;;
