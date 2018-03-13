@@ -1,7 +1,6 @@
 <!doctype html>
 
 <html lang="en">
-<meta http-equiv="refresh" content="30">
 <head>
   <meta charset="utf-8">
 
@@ -12,14 +11,191 @@
   <script src="http://code.highcharts.com/highcharts.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="nav.css" rel="stylesheet">
+
   <link href="https://cdn.fancygrid.com/fancy.min.css" rel="stylesheet">
   <script src="https://cdn.fancygrid.com/fancy.min.js"></script>
   <script>
     Fancy.MODULESDIR="https://cdn.fancygrid.com/modules/";
   </script>
+  <script>
+  function renderer(states, object){
+    if (object.value in states) {
+      color = states[object.value].color;
+    } else {
+      color = 'black';
+    }
+
+    object.style = {
+      background: color,
+      color: 'black'
+    };
+
+    return object;
+  }
+
+  function cellTip(states, object){
+    if (object.value in states) {
+      return states[object.value].cellTip;
+    } else {
+      return false;
+    }
+  }
+
+  var reviewStates = {
+    'final':    {'color': 'green',
+                 'cellTip': 'Asking for final review comment'},
+    'start':    {'color': 'lime',
+                 'cellTip': 'Ready to review'},
+    'comments': {'color': 'orange',
+                 'cellTip': 'I am fixing review comments'},
+    'na':       {'color': 'red',
+                 'cellTip': 'Ignore this task'},
+  };
+
+  var testingStates = {
+    'passed':   {'color': 'green',
+                 'cellTip': 'This has passed all testing'},
+    'running':  {'color': 'lime',
+                 'cellTip': 'Testing is currently running'},
+    'na':       {'color': 'orange',
+                 'cellTip': 'Ignore this task'},
+    'failed':   {'color': 'red',
+                 'cellTip': 'Testing failed'},
+  };
+
+  var statusStates = {
+    'jenkins':  {'color': 'yellow',
+                 'cellTip': 'This is a jenkins related bug that has not been started.'},
+    'review':   {'color': 'green',
+                 'cellTip': 'This is in review, please review if you can'},
+    'active':   {'color': 'lime',
+                 'cellTip': 'I am actively working on this, no need to review'},
+    'on hold':  {'color': 'orange',
+                 'cellTip': 'I am not currently looking at this, no need to review'},
+    'dup':      {'color': 'orange',
+                 'cellTip': 'This is a duplicate task and will be closed, no need to review'},
+    'watching': {'color': 'olive',
+                 'cellTip': 'I am just watching this task, no need to review'},
+    'declined': {'color': 'olive',
+                 'cellTip': 'I have decline this task, no need to review'},
+    'future':   {'color': 'red',
+                 'cellTip': 'This task is for the future'},
+  };
+
+  var taskColumns = [{
+        index: 'task',
+        title: 'Task',
+        type: 'string',
+        width: 500
+      },{
+        index: 'bb',
+        title: 'BitBucket',
+        type: 'string',
+        width: 100
+      },{
+        index: 'jira',
+        title: 'Jira',
+        type: 'string',
+        width: 100
+      },{
+        index: 'status',
+        title: 'Status',
+        type: 'string',
+        width: 100,
+        cellTip: function (o) { return cellTip(statusStates, o); },
+        render: function (o) { return renderer(statusStates, o); }
+      },{
+        index: 'testing',
+        title: 'Testing',
+        type: 'string',
+        width: 100,
+        cellTip: function (o) { return cellTip(testingStates, o); },
+        render: function (o) { return renderer(testingStates, o); }
+      },{
+        index: 'review',
+        title: 'Review',
+        type: 'string',
+        width: 100,
+        cellTip: function (o) { return cellTip(reviewStates, o); },
+        render: function (o) { return renderer(reviewStates, o); }
+      }];
+
+  var failuresColumns = [{
+        index: 'suite_name',
+        title: 'Suite',
+        type: 'string',
+        width: 300
+      },{
+        index: 'test_name',
+        title: 'Test',
+        type: 'string',
+        width: 300
+      },{
+        index: 'failures',
+        title: '# Failures',
+        type: 'string',
+        width: 100
+      }];
+
+  var failureColumns = [{
+        index: 'suite_name',
+        title: 'Suite',
+        type: 'string',
+        width: 100
+      },{
+        index: 'test_name',
+        title: 'Test',
+        type: 'string',
+        width: 200
+      },{
+        index: 'date',
+        title: 'Date',
+        type: 'string',
+        width: 100
+      },{
+        index: 'link',
+        title: 'Link',
+        type: 'string',
+        width: 100
+      },{
+        index: 'release_id',
+        title: 'Release',
+        type: 'string',
+        width: 100
+      },{
+        index: 'user',
+        title: 'User',
+        type: 'string',
+        width: 100
+      },{
+        index: 'from_branch',
+        title: 'From',
+        type: 'string',
+        width: 100
+      },{
+        index: 'to_branch',
+        title: 'to',
+        type: 'string',
+        width: 100
+      }];
+
+
+  var defaults = {
+    resizable: true,
+    editable: true
+  };
+  </script>
 </head>
 
 <body>
+
+  <div class="icon-bar">
+    <a class="active" href="dash"><i class="fa fa-tachometer"></i></a>
+    <a href="failures"><i class="fa fa-bug"></i></a>
+  </div>
+
   {{{body}}}
 </body>
 </html>

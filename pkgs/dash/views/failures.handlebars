@@ -1,0 +1,29 @@
+<div id="failures"></div>
+<script>
+  var failures = {{{json failures}}};
+
+  var tabs = [];
+
+  tabs.push({
+    title: 'failures',
+    type: 'grid',
+    selModel: 'row',
+    data: failures,
+    defaults: defaults,
+    columns: failuresColumns
+  });
+
+  window.onload = function(){
+    new FancyTab({
+      renderTo: 'failures',
+      title: 'Failures',
+      width: 1200,
+      height: 800,
+      activeTab: 0,
+      resizable: true,
+      editable: true,
+      theme: "blue",
+      items: tabs
+    });
+  };
+</script>

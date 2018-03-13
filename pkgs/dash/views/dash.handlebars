@@ -1,0 +1,31 @@
+<div id="dash"></div>
+<script>
+  var task_groups = {{{json task_groups}}};
+
+  var tabs = [];
+
+  task_groups.forEach(function(group) {
+    tabs.push({
+      title: group.group,
+	    type: 'grid',
+      selModel: 'row',
+	    data: group.tasks,
+      defaults: defaults,
+      columns: taskColumns
+    });
+  });
+
+  window.onload = function(){
+    new FancyTab({
+      renderTo: 'dash',
+      title: 'Dashboard',
+      width: 1200,
+      height: 800,
+      activeTab: 0,
+      resizable: true,
+      editable: true,
+      theme: "blue",
+      items: tabs
+    });
+  };
+</script>

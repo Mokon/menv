@@ -1,33 +1,52 @@
-const express = require('express')
-const exphbs = require('express-handlebars')
-const fs = require('fs');
+const db = require('./db.js');
+const engine = require('./engine.js');
 
-const port = 1337
-
-var hbs = exphbs.create({
-    helpers: {
-        json: function (context) { return JSON.stringify(context); }
-    },
-    defaultLayout: 'main'
-});
-
-const app = express()
-
-var data = JSON.parse(fs.readFileSync('./dash.json', 'utf8'));
-
-app.engine('handlebars', hbs.engine);
-app.set('view engine', 'handlebars');
-
-app.get('/', (request, response) => {
-  response.render('home', {
-    data: data
+engine.get('/', (request, response) => {
+  response.render('dash', {
+    task_groups: db.dash(),
   })
 })
 
-app.listen(port, (err) => {
-  if (err) {
-    return console.log('Error!', err)
-  }
-
-  console.log(`The server is listening on ${port}.`)
+engine.get('/dash', (request, response) => {
+  response.render('dash', {
+    task_groups: db.dash()
+  })
 })
+
+engine.get('/failures', (request, response) => {
+  db.failures().then((result) => {
+    response.render('failures', {
+      failures: result
+    })
+  }).catch((err) => {
+    console.log('Error!', err)
+  })
+})
+
+engine.get('/failure_by_suite', (request, response) => {
+  var num_days=request.param('num_days');
+  var suite_name=request.param('suite_name');
+
+  db.failure_by_suite(num_days, suite_name).then((result) => {
+    response.render('failure', {
+      failure: result
+    })
+  }).catch((err) => {
+    console.log('Error!', err)
+  })
+})
+
+engine.get('/failure_by_test', (request, response) => {
+  var num_days=request.param('num_days');
+  var test_name=request.param('test_name');
+
+  db.failure_by_test(num_days, test_name).then((result) => {
+    response.render('failure', {
+      failure: result
+    })
+  }).catch((err) => {
+    console.log('Error!', err)
+  })
+})
+
+engine.listen()
