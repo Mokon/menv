@@ -4,17 +4,47 @@ const sql = require('./sql.js');
 
 engine.get('/dash', (request, response) => {
   response.render('dash', {
-    task_groups: db.dash()
+    task_groups: db.dash(),
+    nav_bar: query_nav_bar(queries, 'dash')
   })
 })
 
-sql.queries().forEach(function(query) {
+function query_nav_bar(queries, current_query) {
+  var dActive = ""
+  if ('dash' == current_query) {
+    dActive = 'class="active" '
+  }
+  var nav_bar = '<a ' + dActive + ' href="dash"><i class="fa fa-tachometer-alt"></i><br />dash</a>'
+  queries.forEach(function(query) {
+    var post_data = ""
+    if (query.params.length != 0) {
+      var dval = 7
+      post_data = "?"
+      query.params.forEach(function(param_name) {
+        post_data += param_name + '=' + dval + '&'
+      })
+      post_data = post_data.slice(0, -1)
+    }
+
+    var active = ""
+    if (query.name == current_query) {
+      active = 'class="active" '
+    }
+    nav_bar += '<a ' + active + ' href="' + query.name + post_data + '">' +
+                 '<i class="' + query.icon + '"></i><br />' +  query.name +
+               '</a>'
+  })
+  return nav_bar
+}
+
+var queries = sql.queries()
+queries.forEach(function(query) {
   console.log("Loading route for /" + query.name)
 
   engine.get('/' + query.name, (request, response) => {
     var params = []
     query.params.forEach(function(param_name) {
-      params.push(request.param(param_name))
+      params.push(request.query[param_name])
     })
 
     var columns = []
@@ -36,7 +66,8 @@ sql.queries().forEach(function(query) {
       response.render('query', {
         data: result,
         name: query.name,
-        columns: columns
+        columns: columns,
+        nav_bar: query_nav_bar(queries, query.name)
       })
     }).catch((err) => {
       console.log('Error!', err)

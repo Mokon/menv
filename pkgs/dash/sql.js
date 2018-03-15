@@ -19,6 +19,12 @@ module.exports.queries = function(query) {
 
     record = record.substr(index + 1, record.length)
 
+    // query.icon
+    index = record.indexOf("\n")
+    query.icon = record.substr(0, index)
+
+    record = record.substr(index + 1, record.length)
+
     // query.columns
     query.columns = []
     index = record.indexOf("\n")
