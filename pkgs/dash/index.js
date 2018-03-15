@@ -1,11 +1,6 @@
 const db = require('./db.js');
 const engine = require('./engine.js');
-
-engine.get('/', (request, response) => {
-  response.render('dash', {
-    task_groups: db.dash(),
-  })
-})
+const sql = require('./sql.js');
 
 engine.get('/dash', (request, response) => {
   response.render('dash', {
@@ -13,39 +8,39 @@ engine.get('/dash', (request, response) => {
   })
 })
 
-engine.get('/failures', (request, response) => {
-  db.failures().then((result) => {
-    response.render('failures', {
-      failures: result
+sql.queries().forEach(function(query) {
+  console.log("Loading route for /" + query.name)
+
+  engine.get('/' + query.name, (request, response) => {
+    var params = []
+    query.params.forEach(function(param_name) {
+      params.push(request.param(param_name))
     })
-  }).catch((err) => {
-    console.log('Error!', err)
-  })
-})
 
-engine.get('/failure_by_suite', (request, response) => {
-  var num_days=request.param('num_days');
-  var suite_name=request.param('suite_name');
+    var columns = []
+    query.columns.forEach(function(column) {
+      var oColumn = {}
+      oColumn.index = column
+      oColumn.title = column
+      oColumn.type = 'string'
+      oColumn.flex = 1
 
-  db.failure_by_suite(num_days, suite_name).then((result) => {
-    response.render('failure', {
-      failure: result
+      columns.push(oColumn)
     })
-  }).catch((err) => {
-    console.log('Error!', err)
-  })
-})
 
-engine.get('/failure_by_test', (request, response) => {
-  var num_days=request.param('num_days');
-  var test_name=request.param('test_name');
-
-  db.failure_by_test(num_days, test_name).then((result) => {
-    response.render('failure', {
-      failure: result
+    query.resolved_sql = query.sql.replace(/(\{\d+\})/g, function (param){
+      return params[+(param.substr(1, param.length - 2))||0]
     })
-  }).catch((err) => {
-    console.log('Error!', err)
+
+    db.query(query.resolved_sql).then((result) => {
+      response.render('query', {
+        data: result,
+        name: query.name,
+        columns: columns
+      })
+    }).catch((err) => {
+      console.log('Error!', err)
+    })
   })
 })
 

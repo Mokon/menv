@@ -1,2 +1,0 @@
-#!/bin/bash
-forever start -v -w --watchDirectory /home/dbond/menv/pkgs/dash/ index.js

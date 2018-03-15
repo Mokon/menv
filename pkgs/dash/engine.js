@@ -7,13 +7,13 @@ var hbs = exphbs.create({
   helpers: {
     json: function (context) { return JSON.stringify(context); }
   },
-  defaultLayout: 'main'
-});
+    defaultLayout: 'main'
+})
 
 const app = express()
 
-app.engine('handlebars', hbs.engine);
-app.set('view engine', 'handlebars');
+app.engine('handlebars', hbs.engine)
+app.set('view engine', 'handlebars')
 app.use(express.static('public'))
 
 module.exports.listen = function() {
