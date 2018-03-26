@@ -62,7 +62,7 @@ endfunction
 
 set wildignore+=*.ko,*.mod.c,*.order,modules.builtin
 
-let cs=$menv_dotfiles_dir."/vimrc_style/".$CODING_STYLE.".vim"
+let cs=$menv_cache_dotfiles_dir."/vimrc_style/".$CODING_STYLE.".vim"
 if filereadable(cs)
   exec 'source '.cs
 endif
