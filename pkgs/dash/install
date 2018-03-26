@@ -1,0 +1,6 @@
+#!/bin/bash
+cd /home/$USER/menv/pkgs/dash
+dir=`pwd`
+echo "Install DASH in $dir"
+/bin/rm -rf node_modules
+npm install
