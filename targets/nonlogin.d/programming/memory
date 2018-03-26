@@ -98,4 +98,6 @@ END
   done < ${stacktrace}
 }
 
+menv_alias web_gdb="gdbgui -n --host 0.0.0.0 -p 1338 --args"
+
 menv_alias show_core_dumps="coredumpctl list"

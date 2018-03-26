@@ -1,0 +1,10 @@
+#!/bin/bash
+# (C) 2018 David 'Mokon' Bond, All Rights Reserved
+
+spushd .
+
+if [ $MENV_DESKTOP -ne 0 ] ; then
+  sudo usermod -a -G wireshark $USER
+fi
+
+spopd

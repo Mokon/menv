@@ -1,3 +1,4 @@
+// Might be cool to use: https://nanogallery2.nanostudio.org/
 const db = require('./db.js');
 const engine = require('./engine.js');
 const sql = require('./sql.js');
@@ -47,22 +48,24 @@ queries.forEach(function(query) {
       params.push(request.query[param_name])
     })
 
-    var columns = []
-    query.columns.forEach(function(column) {
-      var oColumn = {}
-      oColumn.index = column
-      oColumn.title = column
-      oColumn.type = 'string'
-      oColumn.flex = 1
-
-      columns.push(oColumn)
-    })
-
     query.resolved_sql = query.sql.replace(/(\{\d+\})/g, function (param){
       return params[+(param.substr(1, param.length - 2))||0]
     })
 
     db.query(query.resolved_sql).then((result) => {
+      var columns = []
+      if (result.length > 0) {
+        Object.keys(result[0]).forEach(function(column) {
+          var oColumn = {}
+          oColumn.index = column
+          oColumn.title = column
+          oColumn.type = 'string'
+          oColumn.flex = 1
+
+          columns.push(oColumn)
+        })
+      }
+
       response.render('query', {
         data: result,
         name: query.name,

@@ -198,6 +198,18 @@ function update_chain_example {
   update_chain $start $mode "${links[@]}"
 }
 
+menv_function git_open_file_in_another_branch
+function git_open_file_in_another_branch {
+  local file=$1
+  local branch=$2
+
+  local cached_file=`mktemp`
+
+  git show $branch:$file > $cached_file
+  vim $cached_file
+  /bin/rm -f $cached_file
+}
+
 if [ -f $menv_cache_bin_dir/git-completion.bash ]; then
     source $menv_cache_bin_dir/git-completion.bash
 fi

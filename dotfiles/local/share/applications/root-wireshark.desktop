@@ -1,7 +1,0 @@
-[Desktop Entry]
-Comment=
-Terminal=true
-Name=Root Wireshark
-Exec=sudo wireshark
-Type=Application
-Icon=wireshark

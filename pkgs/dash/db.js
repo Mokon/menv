@@ -15,8 +15,12 @@ function add_links(row) {
   }
 
   if (row.hasOwnProperty('suite_name')) {
-    row.suite_name = "<a href=\"failure_by_suite?num_days=7&suite_name=" + row.suite_name
-      + "\">" + row.suite_name + "</a>"
+    row.suite_name = row.suite_name +
+      " <a href=\"failure_by_suite?num_days=7&suite_name=" + row.suite_name
+      + "\">failures by suite</a>  "
+      + "<a href=\"suite_details?num_days=7&suite_name=" + row.suite_name
+      + "\">suite details</a>"
+
   }
 
   if (row.hasOwnProperty('test_name')) {

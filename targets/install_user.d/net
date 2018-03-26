@@ -7,4 +7,6 @@ cd $menv_cache_bin_dir
 fetch http://www.yang-central.org/twiki/pub/Main/YangTools/rfcstrip
 chmod +x rfcstrip
 
+github_fetch tpope/vim-fugitive
+
 spopd

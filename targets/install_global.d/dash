@@ -1,0 +1,5 @@
+#!/bin/bash
+# (C) 2018 David 'Mokon' Bond, All Rights Reserved
+
+append_crontab "@reboot /home/$USER/menv/pkgs/dash/start"
+/home/$USER/menv/pkgs/dash/start

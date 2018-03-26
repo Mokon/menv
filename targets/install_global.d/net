@@ -1,0 +1,12 @@
+#!/bin/bash
+# (C) 2018 David 'Mokon' Bond, All Rights Reserved
+
+spushd .
+
+github_fetch luismartingarcia/protocol
+cd protocol
+sudo ./setup.py install
+cd ..
+$BINRM -rf protocol
+
+spopd

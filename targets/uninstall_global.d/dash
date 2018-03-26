@@ -1,0 +1,5 @@
+#!/bin/bash
+# (C) 2018 David 'Mokon' Bond, All Rights Reserved
+
+delete_crontab "dash/start"
+/home/$USER/menv/pkgs/dash/stop

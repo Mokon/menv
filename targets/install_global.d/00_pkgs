@@ -130,7 +130,7 @@ desktop_pkgs="powertop ntpdate wireshark-gnome openssh-clients python-fabulous
   fuse-libs gvfs-mtp screen npm sil-gentium-fonts sil-gentium-fonts-common gem
   ruby-devel twin python-matplotlib xxdiff go sensors youtube-dl mplayer
   audacity-freeworld sox-plugins-freeworld sox-plugins-nonfree python3-pyusb
-  pyusb chirp xclip k4dirstat brasero lm_sensors $perl_pkgs $tex_pkgs"
+  pyusb chirp xclip k4dirstat brasero lm_sensors firefox $perl_pkgs $tex_pkgs"
 
 root_pkgs="patchutils ntpdate wireshark wget bleachbit lynx time psmisc smem
   htop fbterm clang clang-devel tmux cscope vim wemux bc sloccount cloc perltidy
@@ -201,6 +201,18 @@ if [[ $REPLY_PKGS =~ ^[Yy]$ ]] ; then
 
     gem_install_package git_stats
     gem_install_package slackcat
+
+    menv_function pip_install_package
+    function pip_install_package {
+      local pkg=$1
+
+      echo "Installing pip package '$pkg'"
+      pip -q install $pkg &> /dev/null
+    }
+
+     pip_install_package gdbgui
+     pip_install_package terminaltables
+
   fi
 
   install_simple_packages $root_pkgs

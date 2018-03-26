@@ -1,4 +1,5 @@
 #!/bin/bash
+cd /home/$USER/menv/pkgs/dash
 dir=`pwd`
 forever start -v -w --minUptime 1000ms --spinSleepTime 1000ms \
   --watchDirectory $dir index.js

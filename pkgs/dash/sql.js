@@ -25,14 +25,6 @@ module.exports.queries = function(query) {
 
     record = record.substr(index + 1, record.length)
 
-    // query.columns
-    query.columns = []
-    index = record.indexOf("\n")
-    query.columns = record.substr(0, index).split(' ')
-    query.columns.push('idx')
-
-    record = record.substr(index + 1, record.length)
-
     // query.params
     query.params = []
     if (!record.startsWith("SELECT") && !record.startsWith("WITH")) {
