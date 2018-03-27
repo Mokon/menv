@@ -85,6 +85,15 @@ baseurl=https://download.jitsi.org/jitsi/rpm/
 enabled=1
 gpgcheck=0
 EOF
+
+  cat << EOF | sudo tee /etc/yum.repos.d/bintray-resin-io-redhat.repo &> /dev/null
+[bintray-resin-io-redhat]
+name=bintray-resin-io-redhat
+baseurl=https://resin-io.bintray.com/redhat
+gpgcheck=0
+repo_gpgcheck=0
+enabled=1
+EOF
 }
 
 menv_function install_rpmfusion
@@ -130,7 +139,8 @@ desktop_pkgs="powertop ntpdate wireshark-gnome openssh-clients python-fabulous
   fuse-libs gvfs-mtp screen npm sil-gentium-fonts sil-gentium-fonts-common gem
   ruby-devel twin python-matplotlib xxdiff go sensors youtube-dl mplayer
   audacity-freeworld sox-plugins-freeworld sox-plugins-nonfree python3-pyusb
-  pyusb chirp xclip k4dirstat brasero lm_sensors firefox $perl_pkgs $tex_pkgs"
+  pyusb chirp xclip k4dirstat brasero lm_sensors firefox etcher-electron
+  $perl_pkgs $tex_pkgs"
 
 root_pkgs="patchutils ntpdate wireshark wget bleachbit lynx time psmisc smem
   htop fbterm clang clang-devel tmux cscope vim wemux bc sloccount cloc perltidy
