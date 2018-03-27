@@ -38,6 +38,7 @@ menv_export HISTSIZE=10000
 menv_export HISTFILESIZE=10000
 menv_alias search_history="history | grep "
 menv_alias sh=search_history
+menv_alias history="history | cut -c 8-"
 
 menv_function cd
 function cd {
