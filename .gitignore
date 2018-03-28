@@ -3,3 +3,4 @@ local/*
 backup/*
 cache/*
 node_modules/
+package-lock.json
