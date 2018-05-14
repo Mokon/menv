@@ -39,6 +39,8 @@
   renames = true
   renameLimit = 99999
   guitool = meld
+[merge]
+  conflictstyle = diff3
 [difftool]
   prompt = false
 [pager]

@@ -73,3 +73,5 @@ function add_ca_trust_anchor {
     sudo tee /etc/pki/ca-trust/source/anchors/certificate_${site}.pem
   sudo update-ca-trust
 }
+
+menv_alias generate_password="pwgen  -N 1 15 -y"

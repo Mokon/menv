@@ -20,7 +20,7 @@ echo "" | sudo tee ~/.local/share/recently-used.xbel > /dev/null
 sudo chattr +i ~/.local/share/recently-used.xbel
 
 append_crontab "@reboot /home/$USER/menv/bin/mute_volume"
-append_crontab "* * * * * /home/$USER/menv/bin/rotate_background"
+append_crontab "@hourly /home/$USER/menv/bin/rotate_background"
 
 ~/menv/bin/rotate_background
 

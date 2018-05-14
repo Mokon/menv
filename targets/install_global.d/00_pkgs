@@ -144,9 +144,9 @@ desktop_pkgs="powertop ntpdate wireshark-gnome openssh-clients python-fabulous
 
 root_pkgs="patchutils ntpdate wireshark wget bleachbit lynx time psmisc smem
   htop fbterm clang clang-devel tmux cscope vim wemux bc sloccount cloc perltidy
-  strace meld cpulimit dig nslookup gitstats colordiff tig nmap uncrustify
+  strace meld cpulimit dig nslookup gitk gitstats colordiff tig nmap uncrustify
   vagrant iftop dsniff pyang plantuml graphviz socat hwloc jhead ImageMagick
-  libcap-ng-utils"
+  libcap-ng-utils pwgen"
 
 read -t 60 -p "Do you want to install packages MENV might use? " -n 1 -r
 echo

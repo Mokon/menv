@@ -114,9 +114,9 @@ function s:QuaggaFormatting()
   setlocal softtabstop=2
   setlocal shiftwidth=2
   setlocal noexpandtab
-  
+
   highlight default link QuaggaError ErrorMsg
-  
+
   syn match QuaggaError /\t/
   syn match QuaggaError /\%81v.\+/
 endfunction
@@ -128,9 +128,9 @@ function s:FrrFormatting()
   setlocal softtabstop=2
   setlocal shiftwidth=2
   setlocal noexpandtab
-  
+
   highlight default link FrrError ErrorMsg
-  
+
   syn match FrrError /\t/
   syn match FrrError /\%81v.\+/
 endfunction
@@ -160,6 +160,10 @@ nmap <silent> <leader><space> :call <SID>StripTrailingWhitespace()<CR>
 
 function! FindAndReplaceAllConfirm(from, to)
   exec '%s/' . a:from . '/' . a:to . '/gc'
+endfunction
+
+function! DeleteAllLinesMatchingPattern(pattern)
+  exec ':g/' . a:pattern . '/d'
 endfunction
 
 function! FindAndReplaceAll(from, to)
@@ -254,6 +258,16 @@ function AddClass(...)
   call append(s:line+8,"};")
   unlet s:line
 endfunction
+
+function AddDebugFlag()
+  let s:line=line(".")
+  call setline(s:line, "std::cerr << \"DebugFlagLog \" <<
+                     \ __FILE__ << \":\" <<__LINE__ << \" \" <<
+                     \ __FUNCTION__ << \" \" <<
+                     \ std::this_thread::get_id() << std::endl;")
+  unlet s:line
+endfunction
+
 
 function UpdateModifiable()
   if !exists("b:setmodifiable")
