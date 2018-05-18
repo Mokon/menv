@@ -1,0 +1,6 @@
+#!/bin/bash
+cd /home/$USER/menv/pkgs/web
+./scripts/stop
+./scripts/start
+sleep 1
+./scripts/logs

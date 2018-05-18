@@ -1,0 +1,3 @@
+#!/bin/bash
+cd /home/$USER/menv/pkgs/web
+forever logs index.js

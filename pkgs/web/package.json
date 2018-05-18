@@ -1,0 +1,23 @@
+{
+  "name": "web",
+  "version": "1.0.0",
+  "description": "Mokon Net",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "David Bond",
+  "license": "",
+  "dependencies": {
+    "@okta/oidc-middleware": "0.0.14",
+    "express": "^4.16.2",
+    "express-handlebars": "^3.0.0",
+    "forever": "^0.15.3",
+    "googleapis": "^27.0.0",
+    "jira-client": "^6.4.1",
+    "mariasql": "^0.2.6",
+    "node-rest-client": "^3.1.0",
+    "oauth": "^0.9.15",
+    "request": "^2.83.0"
+  }
+}
