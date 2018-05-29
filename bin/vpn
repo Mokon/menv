@@ -439,7 +439,9 @@ function start_vpn_config {
     ensure_root
     ensure_num_args $# 1
 
-    source "${vpn_conf_dir}${vpn_id}.conf"
+    if [ -f "${vpn_conf_dir}${vpn_id}.conf" ] ; then
+        source "${vpn_conf_dir}${vpn_id}.conf"
+    fi
 
     if [ ! -z "$vpn_route" ] ; then
         ip route add $vpn_route dev $vpn_int
@@ -456,7 +458,9 @@ function stop_vpn_config {
     ensure_root
     ensure_num_args $# 1
 
-    source "${vpn_conf_dir}${vpn_id}.conf"
+    if [ -f "${vpn_conf_dir}${vpn_id}.conf" ] ; then
+        source "${vpn_conf_dir}${vpn_id}.conf"
+    fi
 
     if [ ! -z "$vpn_route" ] ; then
         ip route delete $vpn_route dev $vpn_int

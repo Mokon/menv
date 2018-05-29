@@ -8,7 +8,6 @@ Host *
   ForwardX11Trusted yes
   XAuthLocation /usr/bin/xauth
   Compression yes
-  Ciphers blowfish-cbc,arcfour
 Host github.com
   ForwardX11 no
   Compression yes
