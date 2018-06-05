@@ -2,6 +2,7 @@
 TCPKeepAlive yes
 ServerAliveInterval 30
 ServerAliveCountMax 4
+Include configusers
 Host *
   ForwardAgent yes
   ForwardX11 yes
