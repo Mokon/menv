@@ -5,8 +5,8 @@ spushd .
 
 github_fetch luismartingarcia/protocol
 cd protocol
-sudo ./setup.py install
+sudo ./setup.py install &> /dev/null
 cd ..
-$BINRM -rf protocol
+sudo $BINRM -rf protocol
 
 spopd

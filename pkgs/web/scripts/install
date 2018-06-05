@@ -3,4 +3,4 @@ cd /home/$USER/menv/pkgs/web
 dir=`pwd`
 echo "Install Website in $dir"
 /bin/rm -rf node_modules
-npm install
+npm install --loglevel error &> /dev/null

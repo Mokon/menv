@@ -146,7 +146,7 @@ root_pkgs="patchutils ntpdate wireshark wget bleachbit lynx time psmisc smem
   htop fbterm clang clang-devel tmux cscope vim wemux bc sloccount cloc perltidy
   strace meld cpulimit dig nslookup gitk gitstats colordiff tig nmap uncrustify
   vagrant iftop dsniff pyang plantuml graphviz socat hwloc jhead ImageMagick
-  libcap-ng-utils pwgen"
+  libcap-ng-utils pwgen xmlstarlet"
 
 read -t 60 -p "Do you want to install packages MENV might use? " -n 1 -r
 echo
@@ -160,8 +160,6 @@ if [[ $REPLY_PKGS =~ ^[Yy]$ ]] ; then
       install_simple_packages $fedora_desktop_pkgs
 
       create_yum_dnf_repos
-
-      install_skype
 
       if [ "$PKG_MGMT" == "yum" ] ; then
         install_simple_package yum-utils
@@ -200,6 +198,7 @@ if [[ $REPLY_PKGS =~ ^[Yy]$ ]] ; then
     npm_install_package git-stats-importer
     npm_install_package http-server
     npm_install_package svgexport
+    npm_install_package forever
 
     menv_function gem_install_package
     function gem_install_package {

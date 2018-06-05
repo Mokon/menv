@@ -27,7 +27,6 @@ fi
 delete_crontab rotate_background
 delete_crontab mute_volume
 
-rm_app root-wireshark
 rm_app gnome-start
 gsettings set org.gnome.shell favorite-apps "['gnome-terminal.desktop']"
 

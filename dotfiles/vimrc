@@ -166,6 +166,14 @@ function! DeleteAllLinesMatchingPattern(pattern)
   exec ':g/' . a:pattern . '/d'
 endfunction
 
+function! DeleteBlankLines()
+  exec ':g/^$/d'
+endfunction
+
+function! MergeLines(numlines)
+  exec ':j' . a:numlines
+endfunction
+
 function! FindAndReplaceAll(from, to)
   exec '%s/' . a:from . '/' . a:to . '/g'
 endfunction

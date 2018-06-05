@@ -7,6 +7,7 @@ set print thread-events off
 set print array on
 set height 10000
 set print pretty on
+set print elements 0
 
 source ~/menv/dotfiles/gdb/*.gdb
 source ~/menv/cache/dotfiles/gdb/*.gdb

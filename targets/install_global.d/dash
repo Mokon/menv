@@ -2,5 +2,5 @@
 # (C) 2018 David 'Mokon' Bond, All Rights Reserved
 
 append_crontab "@reboot /home/$USER/menv/pkgs/dash/start"
-/home/$USER/menv/pkgs/dash/install
+/home/$USER/menv/pkgs/dash/install 2>&1 > /dev/null
 /home/$USER/menv/pkgs/dash/start

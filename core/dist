@@ -89,7 +89,7 @@ menv_function local_install_package
 function local_install_package {
   pkg=$1
 
-  dist_local_install $pkg  2>&1 | grep -v "already installed"
+  dist_local_install $pkg  2>&1 | grep -v "already installed\|kB/s"
 }
 
 menv_function install_simple_package
