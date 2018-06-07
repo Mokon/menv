@@ -18,6 +18,7 @@
     "mariasql": "^0.2.6",
     "node-rest-client": "^3.1.0",
     "oauth": "^0.9.15",
-    "request": "^2.83.0"
+    "request": "^2.83.0",
+    "serve-index": "^1.9.1"
   }
 }

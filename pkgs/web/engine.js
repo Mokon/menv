@@ -1,5 +1,6 @@
 const express = require('express')
 const exphbs = require('express-handlebars')
+const serveIndex = require('serve-index');
 
 const port = 1337
 
@@ -15,6 +16,8 @@ const app = express()
 app.engine('handlebars', hbs.engine)
 app.set('view engine', 'handlebars')
 app.use(express.static('public'))
+app.use('/files', serveIndex('files'))
+app.use('/files', express.static('files'))
 
 module.exports.listen = function() {
   app.listen(port, (err) => {
