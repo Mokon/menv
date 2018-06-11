@@ -146,7 +146,7 @@ root_pkgs="patchutils ntpdate wireshark wget bleachbit lynx time psmisc smem
   htop fbterm clang clang-devel tmux cscope vim wemux bc sloccount cloc perltidy
   strace meld cpulimit dig nslookup gitk gitstats colordiff tig nmap uncrustify
   vagrant iftop dsniff pyang plantuml graphviz socat hwloc jhead ImageMagick
-  libcap-ng-utils pwgen xmlstarlet"
+  libcap-ng-utils pwgen xmlstarlet bash-completion"
 
 read -t 60 -p "Do you want to install packages MENV might use? " -n 1 -r
 echo
@@ -210,6 +210,7 @@ if [[ $REPLY_PKGS =~ ^[Yy]$ ]] ; then
 
     gem_install_package git_stats
     gem_install_package slackcat
+    gem_install_package git_fame
 
     menv_function pip_install_package
     function pip_install_package {

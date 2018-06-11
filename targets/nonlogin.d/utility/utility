@@ -183,6 +183,7 @@ function mopen {
       *.pdf) evince "$file"&> /dev/null & ;;
       *.odt) oowriter "$file" &> /dev/null & ;;
       *.ods) ooffice "$file" &> /dev/null & ;;
+      *.html) google-chrome "$file" &> /dev/null & ;;
       *.dot)
         local pngfile=`mktemp --suffix==.png`
         dot_to_png $file $pngfile
@@ -231,6 +232,7 @@ function topen {
         python -m fabulous.image "$pngfile" ;;
       *.png|*.jpg|*.jpeg) python -m fabulous.image "$file"  ;;
       *.log|*.txt|*.rej|*.patch|*.cpp|*.c|*.h|*.hpp) vim "$file"  ;;
+      *.html) lynx "$file" &> /dev/null & ;;
       *) echo "I don't know how to open that." ;;
     esac
   else

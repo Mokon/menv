@@ -62,3 +62,4 @@ function menv_clone_coderef {
 }
 
 menv_alias menv_grep="grep --exclude-dir trash --exclude-dir local --exclude-dir backup --exclude-dir cache"
+menv_alias menv_line_count="find . -type f -exec file {} + | awk -F: '/ASCII text/ {print $1}'|xargs wc -l"

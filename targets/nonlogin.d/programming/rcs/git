@@ -210,6 +210,13 @@ function git_open_file_in_another_branch {
   /bin/rm -f $cached_file
 }
 
+menv_function git_file_owners
+function git_file_owners {
+  local file=$1
+
+  git blame --line-porcelain $file | sed -n -e 's/^author //p' | sort | uniq -c
+}
+
 if [ -f $menv_cache_bin_dir/git-completion.bash ]; then
     source $menv_cache_bin_dir/git-completion.bash
 fi

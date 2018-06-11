@@ -1,0 +1,18 @@
+#!/bin/bash
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+
+menv_function mklatex
+function mklatex {
+  local file=$1
+  local rpath=$(realpath $file)
+
+  mkdir ltemp
+  cd ltemp
+
+  pdflatex -shell-escape -output-directory . $rpath
+  pdflatex -shell-escape -output-directory . $rpath
+  /bin/mv *.pdf ..
+
+  cd ..
+  /bin/rm -rf ltemp
+}
