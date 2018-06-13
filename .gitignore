@@ -2,5 +2,6 @@ trash/*
 local/*
 backup/*
 cache/*
+pkgs/work/*
 node_modules/
 package-lock.json
