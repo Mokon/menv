@@ -145,7 +145,7 @@ desktop_pkgs="powertop ntpdate wireshark-gnome openssh-clients python-fabulous
 root_pkgs="patchutils ntpdate wireshark wget bleachbit lynx time psmisc smem
   htop fbterm clang clang-devel tmux cscope vim wemux bc sloccount cloc perltidy
   strace meld cpulimit dig nslookup gitk gitstats colordiff tig nmap uncrustify
-  vagrant iftop dsniff pyang plantuml graphviz socat hwloc jhead ImageMagick
+  vagrant iftop dsniff plantuml graphviz socat hwloc jhead ImageMagick
   libcap-ng-utils pwgen xmlstarlet bash-completion"
 
 read -t 60 -p "Do you want to install packages MENV might use? " -n 1 -r
@@ -221,6 +221,7 @@ if [[ $REPLY_PKGS =~ ^[Yy]$ ]] ; then
     }
 
      pip_install_package gdbgui
+     pip_install_package pyang
      pip_install_package terminaltables
 
   fi
