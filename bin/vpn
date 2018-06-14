@@ -33,7 +33,7 @@ function main {
             if [ $vpn_type = "invalid" ] ; then
               exit_script "invalid vpn type"
             fi
-            vpn_int=$(get_vpn_int $2)
+            vpn_int=$(get_vpn_int $2 $3)
             ${cmd}_vpn_${vpn_type} ${@:3:$#}
             ;;
         *)
@@ -685,16 +685,24 @@ function get_vpn_type {
 
 function get_vpn_int {
     local vpn_type=$1
+    local vpn_id=$2
 
-    ensure_num_args $# 1
+    ensure_num_args $# 2
+
+    local vpnc_conf_file="${vpnc_conf_dir}${vpn_id}.conf"
 
     case $vpn_type in
         l2tp_ipsec)
-            echo ppp0 ;; # TODO programmatically query
+            interface="ppp0" ;; # TODO programmatically query
         ipsec)
-            echo tun0 ;; # TODO programmatically query
+            interface=$(sed -n -e 's/^Interface name //p' $vpnc_conf_file)
+            if [ -z "$interface" ] ; then
+                interface="tun0"
+            fi
+            ;;
         *) exit_script "invalid vpn_type $vpn_type" ;;
     esac
+    echo "$interface"
 }
 
 function exit_script {
