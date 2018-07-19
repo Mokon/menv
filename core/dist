@@ -80,6 +80,10 @@ function install_package {
 
   eval "local pkg=\${$dist_to_pkg[$DIST]}"
 
+  if [ "$pkg" == "skip" ]; then
+    return 0
+  fi
+
   echo "Installing package '$pkg'"
 
   dist_install $pkg  2>&1 | grep -v "already installed"
