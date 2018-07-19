@@ -10,6 +10,7 @@ function empty_ru {
   sudo chattr +i ~/.local/share/recently-used.xbel
 }
 
+menv_alias logs_since_boot="journalctl --boot"
 menv_alias sudo='sudo ' # Allow sudo to be used on aliases.
 menv_alias rm="$BINMV --target-directory ${menv_trash_dir}" # Safe delete
 menv_alias delete_immediately="$BINRM -rf"
@@ -25,6 +26,7 @@ menv_alias bim="vim"
 menv_alias e="exit"
 menv_alias ex="exit"
 menv_alias exi="exit"
+menv_alias xit="exit"
 menv_alias ls="ls --color"
 menv_alias bx="source ~/$bashrc"
 menv_alias mv="$BINMV -i --backup=numbered"

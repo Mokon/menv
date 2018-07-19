@@ -1,0 +1,51 @@
+#!/bin/bash
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+
+menv_function install_java
+function install_java {
+  spushd
+
+  local jrerpm=jre-8u40-linux-x64.rpm
+  local jdkrpm=jdk-8u40-linux-x64.rpm
+  local jrepkg=jre1.8.0_40-1.8.0_40-fcs.x86_64
+
+  if rpm -q $jrepkg &> /dev/null ; then
+    sudo rpm -e --quiet $jrepkg &> /dev/null
+  fi
+
+  fetch http://javadl.sun.com/webapps/download/AutoDL?BundleId=104759 $jrerpm
+  wget -q -N --timeout=3 --tries=3 --no-check-certificate --no-cookies \
+    --header "Cookie: oraclelicense=accept-securebackup-cookie" \
+    http://download.oracle.com/otn-pub/java/jdk/8u40-b26/$jdkrpm
+
+  sudo rpm -ivh --quiet $jrerpm &> /dev/null
+  sudo rpm -ivh --quiet $jdkrpm &> /dev/null
+  sudo $BINRM $jrerpm
+  sudo $BINRM $jdkrpm
+
+  function jaltinstall {
+    if [ -f $1 ] ; then
+      sudo alternatives --install $@
+      if ! sudo alternatives --set $2 $3 &> /dev/null; then
+        if [ -f /usr/bin/$2 ] ; then
+          sudo rm /usr/bin/$2
+        fi
+
+        if [ -f /var/lib/alternatives/$2 ] ; then
+          sudo rm /var/lib/alternatives/$2
+        fi
+
+        sudo alternatives --set $2 $3
+      fi
+    fi
+  }
+
+  jaltinstall /usr/bin/java java /usr/java/latest/bin/java 200000
+  #jaltinstall /usr/bin/javaws javaws /usr/java/latest/bin/javaws 200000
+  jaltinstall /usr/lib/mozilla/plugins/libjavaplugin.so libjavaplugin.so /usr/java/latest/lib/i386/libnpjp2.so 200000
+  jaltinstall /usr/lib64/mozilla/plugins/libjavaplugin.so libjavaplugin.so.x86_64 /usr/java/latest/lib/amd64/libnpjp2.so 200000
+  jaltinstall /usr/bin/javac javac /usr/java/latest/bin/javac 200000
+  jaltinstall /usr/bin/jar jar /usr/java/latest/bin/jar 200000
+
+  spopd
+}

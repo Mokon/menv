@@ -1,0 +1,47 @@
+#!/bin/bash
+# http://man7.org/linux/man-pages/man7/netlink.7.html
+# http://man7.org/linux/man-pages/man3/rtnetlink.3.html
+# http://man7.org/linux/man-pages/man7/rtnetlink.7.html
+function fpm_hex_decode {
+  hex=$1
+  fpm_header=${hex:0:8}
+  netlink_header=${hex:8:32}
+  netlink_body=${hex:32}
+
+  fpm_version=${fpm_header:0:2}
+  fpm_msg_type=${fpm_header:2:2}
+  fpm_msg_len=${fpm_header:4}
+
+  nlmsg_len=${netlink_header:0:8}
+  nlmsg_type=${netlink_header:8:4}
+  nlmsg_flags=${netlink_header:12:4}
+  nlmsg_seq=${netlink_header:16:8}
+  nlmsg_pid=${netlink_header:24:8}
+
+  rtm_family=${netlink_body:0:2}
+  rtm_dst_len=${netlink_body:2:2}
+  rtm_src_len=${netlink_body:4:2}
+  rtm_tos=${netlink_body:6:2}
+  rtm_table=${netlink_body:8:2}
+  rtm_protocol=${netlink_body:10:2}
+  rtm_scope=${netlink_body:12:2}
+  rtm_type=${netlink_body:14:2}
+  rtm_flags=${netlink_body:16:8}
+
+  printf "Fpm Header %s\n" $fpm_header
+  printf "\tversion %s, msg_type %s, msg_len %s\n" $fpm_version $fpm_msg_type $fpm_msg_len
+
+  printf "Netlink Header %s\n" $netlink_header
+  printf "\tnlmsg_len %s, nlmsg_type %s, nlmsg_flags %s, nlmsg_seq %s, nlmsg_pid %s\n" \
+    $nlmsg_len $nlmsg_type $nlmsg_flags $nlmsg_seq $nlmsg_pid
+
+  printf "Netlink Body %s\n" $netlink_body
+  printf "\trtm_family %s, rtm_dst_len %s, rtm_src_len %s, rtm_tos %s \n" \
+    $rtm_family $rtm_dst_len $rtm_src_len $rtm_tos
+  printf "\trtm_table %s, rtm_protocol %s, rtm_scope %s, rtm_type %s, rtm_flags %s \n" \
+    $rtm_table $rtm_protocol $rtm_scope $rtm_type $rtm_flags
+}
+
+for hex in "$@" ; do
+  fpm_hex_decode $hex
+done

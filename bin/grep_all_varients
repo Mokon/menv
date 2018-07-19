@@ -1,0 +1,17 @@
+#!/bin/bash
+dir=${1:-.}
+shift
+in="$@"
+
+spaces=${in}
+underscores=${in// /_}
+dashes=${in// /-}
+none=${in// /}
+
+varients=("${spaces}" "${underscores}" "${dashes}" "${none}")
+
+for varient in "${varients[@]}" ; do
+  echo "Searching for varient '$varient'"
+  grep -rniI "${varient}" ${dir}
+  find ${dir} -iname "*${varient}*"
+done

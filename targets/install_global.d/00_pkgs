@@ -1,99 +1,21 @@
 #!/bin/bash
 # (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
 
-menv_function install_java
-function install_java {
-  spushd
-
-  local jrerpm=jre-8u40-linux-x64.rpm
-  local jdkrpm=jdk-8u40-linux-x64.rpm
-  local jrepkg=jre1.8.0_40-1.8.0_40-fcs.x86_64
-
-  if rpm -q $jrepkg &> /dev/null ; then
-    sudo rpm -e --quiet $jrepkg &> /dev/null
-  fi
-
-  fetch http://javadl.sun.com/webapps/download/AutoDL?BundleId=104759 $jrerpm
-  wget -q -N --timeout=3 --tries=3 --no-check-certificate --no-cookies \
-    --header "Cookie: oraclelicense=accept-securebackup-cookie" \
-    http://download.oracle.com/otn-pub/java/jdk/8u40-b26/$jdkrpm
-
-  sudo rpm -ivh --quiet $jrerpm &> /dev/null
-  sudo rpm -ivh --quiet $jdkrpm &> /dev/null
-  sudo $BINRM $jrerpm
-  sudo $BINRM $jdkrpm
-
-  function jaltinstall {
-    if [ -f $1 ] ; then
-      sudo alternatives --install $@
-      if ! sudo alternatives --set $2 $3 &> /dev/null; then
-        if [ -f /usr/bin/$2 ] ; then
-          sudo rm /usr/bin/$2
-        fi
-
-        if [ -f /var/lib/alternatives/$2 ] ; then
-          sudo rm /var/lib/alternatives/$2
-        fi
-
-        sudo alternatives --set $2 $3
-      fi
-    fi
-  }
-
-  jaltinstall /usr/bin/java java /usr/java/latest/bin/java 200000
-  #jaltinstall /usr/bin/javaws javaws /usr/java/latest/bin/javaws 200000
-  jaltinstall /usr/lib/mozilla/plugins/libjavaplugin.so libjavaplugin.so /usr/java/latest/lib/i386/libnpjp2.so 200000
-  jaltinstall /usr/lib64/mozilla/plugins/libjavaplugin.so libjavaplugin.so.x86_64 /usr/java/latest/lib/amd64/libnpjp2.so 200000
-  jaltinstall /usr/bin/javac javac /usr/java/latest/bin/javac 200000
-  jaltinstall /usr/bin/jar jar /usr/java/latest/bin/jar 200000
-
-  spopd
-}
 
 menv_function create_yum_dnf_repos
 function create_yum_dnf_repos {
-  cat << EOF | sudo tee /etc/yum.repos.d/google-chrome.repo &> /dev/null
-[google-chrome]
-name=google-chrome-\$basearch
-baseurl=http://dl.google.com/linux/chrome/rpm/stable/\$basearch
-enabled=1
-gpgcheck=1
-gpgkey=https://dl-ssl.google.com/linux/linux_signing_key.pub
-EOF
-
-  cat << EOF | sudo tee /etc/yum.repos.d/adobe-linux-x86_64.repo &> /dev/null
-[adobe-linux-x86_64]
-name=Adobe Systems Incorporated
-baseurl=http://linuxdownload.adobe.com/linux/x86_64/
-enabled=1
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-adobe-linux
-EOF
-
-  cat << EOF | sudo tee /etc/yum.repos.d/google-earth.repo &> /dev/null
-[google-earth]
-name=google-earth
-baseurl=http://dl.google.com/linux/earth/rpm/stable/x86_64
-enabled=1
-gpgcheck=1
-EOF
-
-  cat << EOF | sudo tee /etc/yum.repos.d/jitsi.repo &> /dev/null
-[jitsi]
-name=Jitsi
-baseurl=https://download.jitsi.org/jitsi/rpm/
-enabled=1
-gpgcheck=0
-EOF
-
-  cat << EOF | sudo tee /etc/yum.repos.d/bintray-resin-io-redhat.repo &> /dev/null
-[bintray-resin-io-redhat]
-name=bintray-resin-io-redhat
-baseurl=https://resin-io.bintray.com/redhat
-gpgcheck=0
-repo_gpgcheck=0
-enabled=1
-EOF
+  create_yum_dnf_repo google-chrome \
+    http://dl.google.com/linux/chrome/rpm/stable/\$basearch \
+    https://dl-ssl.google.com/linux/linux_signing_key.pub
+  create_yum_dnf_repo adobe-linux-x86_64 \
+    http://linuxdownload.adobe.com/linux/\$basearch \
+    file:///etc/pki/rpm-gpg/RPM-GPG-KEY-adobe-linux
+  create_yum_dnf_repo google-earth \
+    http://dl.google.com/linux/earth/rpm/stable/\$basearch
+  create_yum_dnf_repo jitsi \
+    https://download.jitsi.org/jitsi/rpm/
+  create_yum_dnf_repo bintray-resin-io-redhat \
+    https://resin-io.bintray.com/redhat norepo
 }
 
 menv_function install_rpmfusion
@@ -126,28 +48,6 @@ function install_skype {
 fedora_desktop_pkgs="libXv libXScrnSaver qt qt-x11 pulseaudio-libs
   pulseaudio-libs-glib2 alsa-plugins-pulseaudio qtwebkit"
 
-perl_pkgs="perl-List-AllUtils perl-List-UtilsBy perl-File-chdir
-  perl-Devel-Profiler perl-JSON perl-Text-SpellChecker perl-Sysadm-Install
-  perl-Clone perl-Storable perl-Path-Class perl-Image-ExifTool perl-DateTime
-  perl-DateTime-Format-Strptime"
-
-tex_pkgs="texlive-scheme-full texlive-glossaries"
-
-desktop_pkgs="powertop ntpdate wireshark-gnome openssh-clients python-fabulous
-  gdmap gimp vlc google-chrome-stable cmatrix eclipse-jdt inkscape dbus-x11
-  festival speech-dispatcher-utils espeak rdesktop simple-mtpfs libmtp fuse
-  fuse-libs gvfs-mtp screen npm sil-gentium-fonts sil-gentium-fonts-common gem
-  ruby-devel twin python-matplotlib xxdiff go sensors youtube-dl mplayer
-  audacity-freeworld sox-plugins-freeworld sox-plugins-nonfree python3-pyusb
-  pyusb chirp xclip k4dirstat brasero lm_sensors firefox etcher-electron
-  $perl_pkgs $tex_pkgs"
-
-root_pkgs="patchutils ntpdate wireshark wget bleachbit lynx time psmisc smem
-  htop fbterm clang clang-devel tmux cscope vim wemux bc sloccount cloc perltidy
-  strace meld cpulimit dig nslookup gitk gitstats colordiff tig nmap uncrustify
-  vagrant iftop dsniff plantuml graphviz socat hwloc jhead ImageMagick
-  libcap-ng-utils pwgen xmlstarlet bash-completion"
-
 read -t 60 -p "Do you want to install packages MENV might use? " -n 1 -r
 echo
 REPLY_PKGS=$REPLY
@@ -157,19 +57,11 @@ if [[ $REPLY_PKGS =~ ^[Yy]$ ]] ; then
 
   if [ $MENV_DESKTOP -ne 0 ] ; then
     if [ $DIST == "fedora" ] ; then
-      install_simple_packages $fedora_desktop_pkgs
-
       create_yum_dnf_repos
-
-      if [ "$PKG_MGMT" == "yum" ] ; then
-        install_simple_package yum-utils
-      fi
-
       update_packages
 
+      install_simple_packages $fedora_desktop_pkgs
       install_simple_package plymouth-theme*
-
-      #install_java
 
       if [ "$PKG_MGMT" == "dnf" ] ; then
         cmd="dnf"
@@ -181,50 +73,19 @@ if [[ $REPLY_PKGS =~ ^[Yy]$ ]] ; then
       #  | grep -v "No debuginfo packages available to install"
     fi
 
-    install_simple_packages $desktop_pkgs
+    parse_and_install_pkgs_file desktop
+    parse_and_install_pkgs_file tex
+    parse_and_install_pkgs_file perl
 
     local_install_package http://d-rats.com/yum/f11/d-rats-repo-0.1.3-1.fc12.noarch.rpm
 
-    menv_function npm_install_package
-    function npm_install_package {
-      local pkg=$1
-      echo "Installing npm package '$pkg'"
-      npm install --loglevel error -g $pkg &> /dev/null
-    }
-
     npm config set prefix ${menv_cache_npm_dir}
     menv_export PATH=$PATH:${menv_cache_npm_bin_dir}
-    npm_install_package git-stats
-    npm_install_package git-stats-importer
-    npm_install_package http-server
-    npm_install_package svgexport
-    npm_install_package forever
 
-    menv_function gem_install_package
-    function gem_install_package {
-      local pkg=$1
-
-      echo "Installing gem package '$pkg'"
-      gem install -q --install-dir=${menv_cache_bin_dir} -n ${menv_cache_bin_dir} $pkg &> /dev/null
-    }
-
-    gem_install_package git_stats
-    gem_install_package slackcat
-    gem_install_package git_fame
-
-    menv_function pip_install_package
-    function pip_install_package {
-      local pkg=$1
-
-      echo "Installing pip package '$pkg'"
-      pip -q install $pkg &> /dev/null
-    }
-
-     pip_install_package gdbgui
-     pip_install_package pyang
-     pip_install_package terminaltables
-
+    npm_install_packages git-stats git-stats-importer http-server svgexport forever
+    gem_install_packages git_stats slackcat git_fame
+    pip_install_packages gdbgui pyang terminaltables
   fi
 
-  install_simple_packages $root_pkgs
+  parse_and_install_pkgs_file root
 fi

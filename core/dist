@@ -111,3 +111,99 @@ function install_simple_packages {
     install_simple_package $package
   done
 }
+
+menv_function npm_install_package
+function npm_install_package {
+  local pkg=$1
+  echo "Installing npm package '$pkg'"
+  npm install --loglevel error -g $pkg &> /dev/null
+}
+
+menv_function npm_install_packages
+function npm_install_packages {
+  for package in "$@" ; do
+    npm_install_package $package
+  done
+}
+
+menv_function gem_install_package
+function gem_install_package {
+  local pkg=$1
+
+  echo "Installing gem package '$pkg'"
+  gem install -q --install-dir=${menv_cache_bin_dir} -n ${menv_cache_bin_dir} $pkg &> /dev/null
+}
+
+menv_function gem_install_packages
+function gem_install_packages {
+  for package in "$@" ; do
+    gem_install_package $package
+  done
+}
+
+menv_function pip_install_package
+function pip_install_package {
+  local pkg=$1
+
+  echo "Installing pip package '$pkg'"
+  pip -q install $pkg &> /dev/null
+}
+
+menv_function pip_install_packages
+function pip_install_packages {
+  for package in "$@" ; do
+    pip_install_package $package
+  done
+}
+
+menv_function create_yum_dnf_repo
+function create_yum_dnf_repo {
+  repo=$1
+  url=$2
+  key=$3
+
+  if [ -z ${key+x} ]; then
+    key="\ngpgcheck=0"
+  elif [ "$key" == "norepo" ]; then
+    key="\ngpgcheck=0\nrepo_gpgcheck=0"
+  else
+    key="\ngpgcheck=1\ngpgkey=${key}"
+  fi
+
+
+  cat << EOF | sudo tee /etc/yum.repos.d/${repo}.repo &> /dev/null
+[${repo}]
+name=${repo}
+baseurl=${url}/\$basearch
+enabled=1${key}
+EOF
+}
+
+menv_function parse_and_install_pkgs_file
+function parse_and_install_pkgs_file {
+  local pkg=$1
+
+  while read -r fedora_pkg debian_pkg ubuntu_pkg centos_pkg; do
+    if [ -z "$debian_pkg" ] ; then
+      debian_pkg=$fedora_pkg
+    fi
+
+    if [ -z "$ubuntu_pkg" ] ; then
+      ubuntu_pkg=$debian_pkg
+    fi
+
+    if [ -z "$centos_pkg" ] ; then
+      centos_pkg=$fedora_pkg
+    fi
+
+    pkg_arr=(
+      [fedora]="$fedora_pkg"
+      [centos]="$centos_pkg"
+      [debian]="$debian_pkg"
+      [ubuntu]="$ubuntu_pkg"
+    )
+
+    install_package pkg_arr
+
+  done < ${menv_pkgs_dir}/${pkg}.pkgs
+}
