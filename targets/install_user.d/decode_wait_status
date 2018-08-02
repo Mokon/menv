@@ -1,0 +1,4 @@
+#!/bin/bash
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+
+clang++ ${menv_bin_dir}/decode_wait_status.cpp -o ${menv_cache_bin_dir}/decode_wait_status

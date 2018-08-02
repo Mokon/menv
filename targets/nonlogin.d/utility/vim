@@ -1,0 +1,62 @@
+#!/bin/bash
+# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+
+# Function that allows vim to open files given a :linenumber argument.
+menv_function vim
+function vim {
+  case $1 in
+    *:*:*)
+      local one=(${1//:/ })
+      vin ${one[@]:0:2} ${@:2:$#}
+      ;;
+    *:*)
+      vin ${1/:/ } ${@:2:$#}
+      ;;
+    *)
+      if [ ! -f $1 ] ; then
+        if [[ $1 =~ .*\.jpp ]] ; then
+          set -- "${1/.jpp/.hpp}" ${@:2:$#}
+        elif [[ $1 =~ ^[a|b]\/.*\.[c|h]pp ]] ; then
+          set -- "${1:2}" ${@:2:$#}
+        else
+          local initial=$1
+          local path=".."
+          set -- "../${1}" ${@:2:$#}
+          local rpath=`realpath $path`
+          while [ $rpath != "/" ] && [ ! -f "$1" ] ; do
+            set -- "../${1}" ${@:2:$#}
+            path="../$path"
+            rpath=`realpath $path`
+          done
+
+          if [ ! -f "$1" ] ; then
+            set -- "$initial" ${@:2:$#}
+          fi
+        fi
+      fi
+
+      PARAMS=""
+      for PARAM in "$@" ; do
+          PARAMS="${PARAMS} \"${PARAM}\""
+        done
+      bash -c "/usr/bin/vim $PARAMS"
+      ;;
+  esac
+}
+
+# Function that opens vim at a given line number.
+menv_function vin
+function vin {
+  if [ ! -f $1 ] ; then
+    if [[ $1 =~ .*\.jpp ]] ; then
+      set -- ${1/.jpp/.hpp} ${@:2:$#}
+    fi
+  fi
+
+  /usr/bin/vim +$2 $1
+}
+
+menv_function binvim
+function binvim {
+  vim $(which $1)
+}

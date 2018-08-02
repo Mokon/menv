@@ -46,3 +46,6 @@ firefox firefox firefox firefox
 etcher-electron skip skip etcher-electron
 openshot openshot openshot openshot
 google-earth-pro-stable skip skip google-earth-pro-stable
+valgrind valgrind valgrind valgrind
+valgrind-devel valgrind-dev valgrind-dev valgrind-devel
+kcachegrind kcachegrind kcachegrind skip
