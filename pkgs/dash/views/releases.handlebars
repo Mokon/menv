@@ -1,0 +1,74 @@
+<script>
+  function renderer(states, object){
+    if (object.value in states) {
+      color = states[object.value].color;
+    } else {
+      color = 'green';
+    }
+
+    object.style = {
+      background: color,
+      color: 'black'
+    };
+
+    return object;
+  }
+
+  function cellTip(states, object){
+    if (object.value in states) {
+      return states[object.value].cellTip;
+    } else {
+      return false;
+    }
+  }
+
+  var statusStates = {
+    'jenkins':  {'color': 'yellow',
+                 'cellTip': 'This is a jenkins related bug that has not been started.'},
+    'future':   {'color': 'red',
+                 'cellTip': 'This task is for the future'},
+  };
+
+  var releaseColumns = [{
+        index: 'id',
+        title: 'id',
+        type: 'string',
+        width: 100
+      },{
+        index: 'branch',
+        title: 'Branch',
+        type: 'string',
+        width: 100
+      },{
+        index: 'code_complete',
+        title: 'Code Complete',
+        type: 'date',
+        cellTip: function (o) { return cellTip(statusStates, o); },
+        render: function (o) { return renderer(statusStates, o); },
+        width: 100
+      },{
+        index: 'release_date',
+        title: 'Release Date',
+        type: 'date',
+        cellTip: function (o) { return cellTip(statusStates, o); },
+        render: function (o) { return renderer(statusStates, o); },
+        width: 100
+      },{
+        index: '',
+        title: '',
+        type: 'string',
+        flex: 1
+      }];
+
+  var releases = {{{json releases}}};
+
+  var title = 'Releases'
+  tabs.push({
+    title: 'Releases',
+    type: 'grid',
+    selModel: 'row',
+    data: releases,
+    defaults: defaults,
+    columns: releaseColumns
+  })
+</script>

@@ -10,12 +10,25 @@ engine.get('/dash', (request, response) => {
   })
 })
 
+engine.get('/releases', (request, response) => {
+  response.render('releases', {
+    releases: db.releases(),
+    nav_bar: query_nav_bar(queries, 'releases')
+  })
+})
+
 function query_nav_bar(queries, current_query) {
   var dActive = ""
   if ('dash' == current_query) {
     dActive = 'class="active" '
   }
   var nav_bar = '<a ' + dActive + ' href="dash"><i class="fa fa-tachometer-alt"></i><br />dash</a>'
+
+  var rActive = ""
+  if ('releases' == current_query) {
+    rActive = 'class="active" '
+  }
+  nav_bar += '<a ' + rActive + ' href="releases"><i class="fa fa-tachometer-alt"></i><br />releases</a>'
   queries.forEach(function(query) {
     var post_data = ""
     if (query.params.length != 0) {

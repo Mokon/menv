@@ -77,3 +77,7 @@ module.exports.query = function(query) {
 module.exports.dash = function() {
   return config.groups
 }
+
+module.exports.releases = function() {
+  return config.releases
+}
