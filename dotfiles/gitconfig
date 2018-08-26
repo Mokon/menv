@@ -38,11 +38,18 @@
   ignoreSubmodules = dirty
   renames = true
   renameLimit = 99999
+  tool = meld
   guitool = meld
 [merge]
-  conflictstyle = diff3
+  tool = meld
+[mergetool "bettermeld"]
+  cmd = meld --diff $BASE $LOCAL --diff $BASE $REMOTE --diff $LOCAL $BASE $REMOTE $MERGED
+[mergetool "meld"]
+  cmd = meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"
 [difftool]
   prompt = false
+[difftool "meld"]
+  cmd = meld "$LOCAL" "$REMOTE"
 [pager]
   difftool = true
 [rerere]

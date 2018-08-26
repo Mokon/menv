@@ -51,7 +51,7 @@ function getNewToken(oAuth2Client, callback) {
 function processSheet(callback, auth) {
   const sheets = google.sheets({version: 'v4', auth});
   sheets.spreadsheets.values.get({
-    spreadsheetId: 'TODO',
+    spreadsheetId: '17zFROiQrXDe5HdZr8f0Bvy7vclVqnxdCuW4laiGSi_4',
     range: 'stats',
   }, (err, {data}) => {
     if (err) return console.log('The API returned an error: ' + err);

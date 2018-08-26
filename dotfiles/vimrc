@@ -131,7 +131,6 @@ function s:FrrFormatting()
 
   highlight default link FrrError ErrorMsg
 
-  syn match FrrError /\t/
   syn match FrrError /\%81v.\+/
 endfunction
 
