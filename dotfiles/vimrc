@@ -83,6 +83,15 @@ function s:YangFormatting()
   set cino+=N-s
 endfunction
 
+autocmd BufRead,BufNewFile *gitconfig call s:GitFormatting()
+
+function s:GitFormatting()
+  setlocal noexpandtab
+  set tabstop=4
+  set shiftwidth=4
+  set softtabstop=4
+endfunction
+
 autocmd BufRead,BufNewFile *.tex call s:JsonFormatting()
 
 function s:JsonFormatting()
@@ -125,8 +134,8 @@ autocmd BufRead,BufNewFile */frr/* call s:FrrFormatting()
 
 function s:FrrFormatting()
   setlocal tabstop=8
-  setlocal softtabstop=2
-  setlocal shiftwidth=2
+  setlocal softtabstop=8
+  setlocal shiftwidth=8
   setlocal noexpandtab
 
   highlight default link FrrError ErrorMsg

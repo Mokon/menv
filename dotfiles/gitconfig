@@ -1,56 +1,56 @@
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
-
+# (C) 2013-2018 David 'Mokon' Bond, All Rights Reserved
 [user]
-  name = David Bond
-  email = mokon@mokon.net
+name = David Bond
+	email = mokon@mokon.net
+	login = mokon
 [core]
-  pager = less -FRSX
-  editor = vim
+	pager = less -FRSX
+	editor = vim
 [color]
-  ui = true
-  filemode = false
-  diff = true
-  status = auto
-  branch = auto
-  pager = true
+	ui = true
+	filemode = false
+	diff = true
+	status = auto
+	branch = auto
+	pager = true
 [push]
-  default = simple
+	default = simple
 [credential "https://github.com"]
-  helper = cache --timeout 3600
-  name = David Bond
-  email = mokon@mokon.net
+	helper = cache --timeout 3600
+	name = David Bond
+	email = mokon@mokon.net
 [credential]
-  helper = cache --timeout 3600
+	helper = cache --timeout 3600
 [alias]
-  squash = !"f() { NL=$1; GIT_EDITOR=\"sed -i '2,$NL s/pick/squash/;/# This is the 2nd commit message:/,$ {d}'\"; git rebase -i HEAD~$NL; }; f"
-  prstash = "!f() { git fetch $1 refs/pull-requests/$2/from:$3; } ; f"
-  gdiff = "difftool -t meld -y"
-  tduff = "difftool --extcmd='colordiff -ydw --suppress-common-lines -C 10' -y "
-  wdiff = "diff --color-words"
-  whitespaceerrors = "diff-index --check --cached HEAD"
-  co = "checkout"
-  br = "branch"
-  ci = "commit"
-  st = "status"
-  unstage = "reset HEAD --"
-  last = "log -1 HEAD"
+	squash = !"f() { NL=$1; GIT_EDITOR=\"sed -i '2,$NL s/pick/squash/;/# This is the 2nd commit message:/,$ {d}'\"; git rebase -i HEAD~$NL; }; f"
+	prstash = "!f() { git fetch $1 refs/pull-requests/$2/from:$3; } ; f"
+	gdiff = "difftool -t meld -y"
+	tduff = "difftool --extcmd='colordiff -ydw --suppress-common-lines -C 10' -y "
+	wdiff = "diff --color-words"
+	whitespaceerrors = "diff-index --check --cached HEAD"
+	co = checkout
+	br = branch
+	ci = commit
+	st = status
+	unstage = reset HEAD --
+	last = log -1 HEAD
 [diff]
-  ignoreSubmodules = dirty
-  renames = true
-  renameLimit = 99999
-  tool = meld
-  guitool = meld
+	ignoreSubmodules = dirty
+	renames = true
+	renameLimit = 99999
+	tool = meld
+	guitool = meld
 [merge]
-  tool = meld
+	tool = meld
 [mergetool "bettermeld"]
-  cmd = meld --diff $BASE $LOCAL --diff $BASE $REMOTE --diff $LOCAL $BASE $REMOTE $MERGED
+	cmd = meld --diff $BASE $LOCAL --diff $BASE $REMOTE --diff $LOCAL $BASE $REMOTE $MERGED
 [mergetool "meld"]
-  cmd = meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"
+	cmd = meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"
 [difftool]
-  prompt = false
+	prompt = false
 [difftool "meld"]
-  cmd = meld "$LOCAL" "$REMOTE"
+	cmd = meld "$LOCAL" "$REMOTE"
 [pager]
-  difftool = true
+	difftool = true
 [rerere]
-  enabled = true
+	enabled = true
