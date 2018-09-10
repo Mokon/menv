@@ -9,7 +9,7 @@ function install_module {
   local cache_vimrc_style=${menv_cache_vimrc_style_dir}/${module_name}.vim
   local module_vimrc_style=${pkgs_module_dir}/dotfiles/${module_name}.vim
 
-  if [ ! -d ${pkgs_module_dir} ] ; then
+  if [ ! -d ${pkgs_module_dir}/.git ] ; then
     spushd .
     cd ${menv_pkgs_dir}
     echo "Installing module ${module_name}. Git Hub login may be required."

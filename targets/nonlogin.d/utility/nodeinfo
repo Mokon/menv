@@ -15,8 +15,10 @@ function nodeinfo {
     grep '^vendor_id' | awk '{print $3}' | head -1`
   local PNUMS=`cat /proc/cpuinfo | \
     grep '^processor' | wc -l | awk '{print $1}' | head -1`
+  local CPUTMP=`sensors|grep CPU: | sed 's/^.*: *//'`
 
-  echo "OS............: `uname -o`"
+  os=`uname -o`
+  echo "OS............: ${os/GNU\//}"
   echo "Distribution..: $DIST"
   echo "Pkt Mgmt......: $PKG_MGMT"
   echo "Hostname......: `uname -n`"
@@ -36,7 +38,8 @@ function nodeinfo {
                                     | awk {'print $3'}`"
   echo "Username......: `whoami`"
   echo "Groups........:`groups $(whoami) | cut -f2 -d':'`"
-  echo "Processor(s)..: $PNUMS $PVENDOR ${PMHZ} MHz ${PMODEL}"
+  echo "Processor(s)..: $PNUMS $PVENDOR ${PMHZ} MHz ${PMODEL} ${CPUTMP}"
+
   echo "SELinux.......: `/usr/sbin/getenforce`"
   echo "last login....: $(last -1 -R  $USER | head -1 | cut -c 20-| awk '{$1=$1};1')"
   echo "menv version..: $(menv_version)"

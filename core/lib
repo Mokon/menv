@@ -78,6 +78,7 @@ menv_export menv_pkgs_dir=${menv_dir}/pkgs
 menv_export menv_cloud_dir=${menv_dir}/cloud
 menv_export menv_install_opts_file=$menv_cache_dir/install_opts
 menv_export menv_last_no_update_file=$menv_cache_dir/last_no_update
+menv_export menv_pkg_install_log=$menv_cache_dir/pkgs_install.log
 
 menv_export menv_user=dbond
 

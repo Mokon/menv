@@ -86,14 +86,18 @@ function install_package {
 
   echo "Installing package '$pkg'"
 
-  dist_install $pkg  2>&1 | grep -v "already installed"
+  dist_install $pkg 2>&1 | \
+    tee -a ${menv_pkg_install_log} | \
+    grep -v "already installed"
 }
 
 menv_function local_install_package
 function local_install_package {
   pkg=$1
 
-  dist_local_install $pkg  2>&1 | grep -v "already installed\|kB/s"
+  dist_local_install $pkg 2>&1 | \
+    tee -a ${menv_pkg_install_log} | \
+    grep -v "already installed\|kB/s"
 }
 
 menv_function install_simple_package
@@ -120,7 +124,8 @@ menv_function npm_install_package
 function npm_install_package {
   local pkg=$1
   echo "Installing npm package '$pkg'"
-  npm install --loglevel error -g $pkg &> /dev/null
+  npm install --loglevel error -g $pkg 2>&1 | \
+    tee -a ${menv_pkg_install_log} > /dev/null
 }
 
 menv_function npm_install_packages
@@ -135,7 +140,8 @@ function gem_install_package {
   local pkg=$1
 
   echo "Installing gem package '$pkg'"
-  gem install -q --install-dir=${menv_cache_bin_dir} -n ${menv_cache_bin_dir} $pkg &> /dev/null
+  gem install -q --install-dir=${menv_cache_bin_dir} -n ${menv_cache_bin_dir} $pkg 2>&1 | \
+    tee -a ${menv_pkg_install_log} > /dev/null
 }
 
 menv_function gem_install_packages
@@ -150,7 +156,8 @@ function pip_install_package {
   local pkg=$1
 
   echo "Installing pip package '$pkg'"
-  pip -q install $pkg &> /dev/null
+  pip -q install $pkg 2>&1 | \
+    tee -a ${menv_pkg_install_log} > /dev/null
 }
 
 menv_function pip_install_packages

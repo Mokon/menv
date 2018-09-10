@@ -82,7 +82,8 @@ if [[ $REPLY_PKGS =~ ^[Yy]$ ]] ; then
     npm config set prefix ${menv_cache_npm_dir}
     menv_export PATH=$PATH:${menv_cache_npm_bin_dir}
 
-    npm_install_packages git-stats git-stats-importer http-server svgexport forever
+    npm_install_packages git-stats git-stats-importer http-server svgexport \
+      forever xml2json-command
     gem_install_packages git_stats slackcat git_fame
     pip_install_packages gdbgui pyang terminaltables
   fi
