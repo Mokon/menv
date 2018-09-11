@@ -15,10 +15,6 @@ $BINMV clang_complete/bin .
 $BINMV clang_complete/plugin .
 $BINRM -rf clang_complete
 
-github_fetch tpope/vim-fugitive
-$BINMV vim-fugitive/plugin/* plugin/
-$BINRM -rf vim-fugitive
-
 cd ~/.vim/plugin
 
 fetch http://cscope.sourceforge.net/cscope_maps.vim
