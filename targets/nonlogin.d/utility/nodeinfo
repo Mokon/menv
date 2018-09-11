@@ -15,7 +15,7 @@ function nodeinfo {
     grep '^vendor_id' | awk '{print $3}' | head -1`
   local PNUMS=`cat /proc/cpuinfo | \
     grep '^processor' | wc -l | awk '{print $1}' | head -1`
-  local CPUTMP=`sensors|grep CPU: | sed 's/^.*: *//'`
+  local CPUTMP=`sensors 2> /dev/null|grep CPU: | sed 's/^.*: *//'`
 
   os=`uname -o`
   echo "OS............: ${os/GNU\//}"
