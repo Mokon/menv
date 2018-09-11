@@ -24,7 +24,9 @@ fi
 
 cd $menv_cache_bin_dir
 
-curl -Os https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
+gitv=$(git --version)
+gitv=${gitv/git version/}
+curl -Os  https://raw.githubusercontent.com/git/git/v${gitv}/contrib/completion/git-completion.bash
 
 mkdir git
 cd git
