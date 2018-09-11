@@ -429,3 +429,8 @@ function what_file_in_transfer {
   local last_file=$2
   ls -R $dir|grep "$last_file" -B 10000000 |wc -l
 }
+
+menv_function open_all_files_in_dir
+function open_all_files_in_dir {
+  find . -xtype f -exec vim {} +
+}

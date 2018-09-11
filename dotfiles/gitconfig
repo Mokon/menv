@@ -1,6 +1,6 @@
 # (C) 2013-2018 David 'Mokon' Bond, All Rights Reserved
 [user]
-name = David Bond
+	name = David Bond
 	email = mokon@mokon.net
 	login = mokon
 [core]

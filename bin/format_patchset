@@ -1,0 +1,117 @@
+#!/bin/bash
+
+################################################################################
+# inputs
+
+working_branch="develop"
+fork_branch="stable/2.0"
+rebase_branch="stable/5.0"
+repo="frr"
+formatted_patches_dir="../formatted_patches"
+
+function format {
+  cp ../.clang-format .
+  ../indent.py `git ls-files | pcregrep '\.[ch]$' \
+    | pcregrep -v '^(ldpd|babeld|nhrpd)/'`
+  /bin/rm -f .clang-format
+}
+
+################################################################################
+# functions
+
+function label {
+  echo -n "${1}:${index} -> "
+  git --no-pager log --pretty=format:"%s%n" ${ref} -1
+}
+
+function checkout_working_branch {
+  git checkout ${working_branch} -q
+}
+
+function compute_patchset_between_fork_and_working_branch {
+  ref_range="${fork_branch}~1..${working_branch}"
+  refs=$(git log --pretty=format:"%H" ${ref_range} --reverse)
+}
+
+function compute_previous_and_current_branches {
+  ((previous_index=index-1))
+  previous_branch=${working_branch}_formatted_${previous_index}
+  current_branch=${working_branch}_formatted_${index}
+}
+
+function delete_current_branch_if_exists {
+  if git show-ref --verify --quiet "refs/heads/${current_branch}"; then
+    git branch -D ${current_branch} -q
+  fi
+}
+
+function create_formatted_branch {
+  label "Formatting"
+
+  compute_previous_and_current_branches
+
+  git checkout ${ref} -q
+  delete_current_branch_if_exists
+  git checkout -b ${current_branch} -q
+
+  format
+
+  git commit -q -a -m "formatted commit"
+}
+
+function create_formatted_branch_foreach_ref_in_patchset {
+  index=0
+  for ref in ${refs}; do
+    create_formatted_branch
+    ((index++))
+  done
+}
+
+function create_formatted_patch {
+  label "Diffing"
+
+  compute_previous_and_current_branches
+  padded_index=$(printf "%04d" $index)
+
+  patch_file="${formatted_patches_dir}/${padded_index}.patch"
+  git show --summary --pretty=email --stat HEAD > ${patch_file}
+  echo "" >> ${patch_file}
+
+  git diff ${previous_branch}..${current_branch} >> ${patch_file}
+}
+
+function create_formatted_patch_foreach_formatted_branch {
+  /bin/rm -rf ${formatted_patches_dir}
+  mkdir -p ${formatted_patches_dir}
+
+  index=0
+  for ref in ${refs}; do
+    if [ "$index" -ne "0" ]; then
+      git checkout ${ref} -q
+
+      create_formatted_patch
+    fi
+    ((index++))
+  done
+}
+
+function delete_format_branches {
+  index=0
+  for ref in ${refs}; do
+    compute_previous_and_current_branches
+    delete_current_branch_if_exists
+    ((index++))
+  done
+}
+
+################################################################################
+# main
+reset
+pushd ${repo} &> /dev/null
+checkout_working_branch
+compute_patchset_between_fork_and_working_branch
+create_formatted_branch_foreach_ref_in_patchset
+create_formatted_patch_foreach_formatted_branch
+checkout_working_branch
+delete_format_branches
+popd &> /dev/null
