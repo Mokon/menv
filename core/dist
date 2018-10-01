@@ -104,10 +104,12 @@ menv_function install_simple_package
 function install_simple_package {
   local pkg_name=$1
 
+  declare -A pkg_arr
   pkg_arr=(
-    [debian]="$pkg_name"
     [fedora]="$pkg_name"
     [centos]="$pkg_name"
+    [debian]="$pkg_name"
+    [ubuntu]="$pkg_name"
   )
 
   install_package pkg_arr
@@ -207,6 +209,7 @@ function parse_and_install_pkgs_file {
       centos_pkg=$fedora_pkg
     fi
 
+    declare -A pkg_arr
     pkg_arr=(
       [fedora]="$fedora_pkg"
       [centos]="$centos_pkg"
