@@ -50,3 +50,4 @@ valgrind valgrind valgrind valgrind
 valgrind-devel valgrind-dev valgrind-dev valgrind-devel
 kcachegrind kcachegrind kcachegrind skip
 retext retext retext retext
+conky conky conky conky

@@ -1,4 +1,3 @@
-
 <select id="inds">
 		<option value="Weight" selected="selected">Weight</option>
 		<option value="WeightAge">Weight/Age</option>
@@ -8,11 +7,12 @@
 		<option value="Head">Head</option>
 		<option value="HeadAge">Head/Age</option>
 </select>
+
 <div id="legendContainer" class="legendContainer">
 	<svg id="legend"></svg>
 </div>
-<script>
 
+<script>
 function filterJSON(json, key, value) {
   var result = [];
   json.forEach(function(val,idx,arr){
@@ -25,7 +25,7 @@ function filterJSON(json, key, value) {
 }
 
 var margin = {top: 50, right: 20, bottom: 30, left: 160},
-    width = 1000 - margin.left - margin.right,
+    width = 800 - margin.left - margin.right,
     height = 550 - margin.top - margin.bottom;
 
 var x = d3.scale.linear().range([0, width]);
@@ -41,7 +41,7 @@ var stateline = d3.svg.line()
     .x(function(d) { return x(d.age); })
     .y(function(d) { return y(d.value); });
 
-var svg = d3.select("body")
+var svg = d3.select("#content")
     .append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
@@ -160,7 +160,6 @@ function updateGraph(data) {
 					
 			})
 		        
-    // Add the Legend text
     legend.enter().append("text")
       .attr("x", 15)
       .attr("y", function(d,i){return 10 +i*15;})
@@ -174,13 +173,11 @@ function updateGraph(data) {
 
 		svg.selectAll(".axis").remove();
 
-    // Add the X Axis
     svg.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
         .call(xAxis);
 
-    // Add the Y Axis
     svg.append("g")
         .attr("class", "y axis")
         .call(yAxis);

@@ -19,6 +19,7 @@
     "node-rest-client": "^3.1.0",
     "oauth": "^0.9.15",
     "request": "^2.83.0",
-    "serve-index": "^1.9.1"
+    "serve-index": "^1.9.1",
+    "showdown": "^1.8.7"
   }
 }

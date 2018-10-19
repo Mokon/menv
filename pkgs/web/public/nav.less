@@ -1,78 +1,151 @@
 @import url("palette.less");
 
-.icon-bar {
+@offwhite1: #E1E1E1;
+@offwhite2: #EAEAEA;
+@olddg: #336600;
+
+/* ## Global ############################################################### */
+
+body {
+    font-family:'Bellefair', Helvetica, serif;
+    background: @offwhite2 url(bg.png);
+    color: @color-secondary-1-0;
+    margin: 0;
+    padding: 0;
+}
+
+/* ## Header ############################################################### */
+
+.navbar {
     width: 100%;
     overflow: auto;
 }
 
-.icon-bar a {
-    float: left;
+.socialbar {
+    width: 100%;
+    overflow: auto;
+}
+
+.navbar i {
+    font-size: 20px;
+}
+
+.navbar a {
+    float: right;
     text-align: center;
-    width: 12%;
+    width: 7%;
+    margin: 1px;
     padding: 12px 0;
     transition: all 0.3s ease;
-    font-size: 28px;
+    font-size: 15px;
+    color: @color-secondary-1-0;
+    text-decoration: none;
 }
 
-.icon-bar a:hover {
+.socialbar a {
+    float: right;
+    text-align: center;
+    width: 2%;
+    padding: 1px 0;
+    transition: all 0.3s ease;
+    font-size: 10px;
+    color: @color-secondary-1-0;
+    text-decoration: none;
 }
 
-.active {
-}
-
-body {
-    font-family:'Bellefair', Helvetica, serif;
-    background: #EAEAEA url(public/bg.png);
-    margin: 0;
-    padding: 0;
-}
-
-.header {
+.navbar .heading {
+    width: 50%;
+    margin-top: 1px;
+    margin-bottom: auto;
+    margin-left: 0;
+    margin-right: 0;
+    text-align: center;
     font-size: 48px;
+    color: @color-secondary-1-0;
+}
+
+.navbar a:hover {
+    background-color: @color-secondary-2-0;
+    color: @color-secondary-1-1;
+}
+
+.navbar .active {
+    background-color: @color-secondary-2-0;
+}
+
+/* ## Content ############################################################## */
+
+.contentwrap {
+    background: @color-primary-0;
+    border-bottom: 1px solid @offwhite2;
+    padding: 0;
+    border: 0;
+    vertical-align: baseline;
+    width: 100%;
+    margin: 0 auto;
+    clear: both;
+}
+
+.contentpad {
+    padding-top: 30px;
+    padding-bottom: 30px;
+    padding-right: 100px;
+    padding-left: 100px;
 }
 
 .content {
-    background: #336600;
-    border-bottom: 1px solid #E1E1E1;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    font: inherit;
-    vertical-align: baseline;
-    width: 100%;
-    height: 400px;
-    margin: 0 auto;
+    background: @offwhite2 url(bg.png);
+    color: @color-secondary-1-0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 10px;
+    padding-left: 10px;
+    min-height: 400px;
+}
+
+/* ## Footer ############################################################### */
+
+.footer {
 }
 
 .quote {
     font-size: 20px;
     font-weight: 400;
-    color: #444;
-    padding: 25px 0px 20px 0px;
-    height: 100px;
+    color: @color-secondary-1-0;
+    padding: 25px 10px 20px 10px;
 }
 
-.footer {
-    height: 100px;
-    background: #336600;
+.foundation {
+    background: @color-primary-0;
+    overflow: auto;
+    padding: 10px;
 }
 
+.disclaimer {
+    float: right;
+    width: 30%;
+    color: @color-secondary-1-0;
+}
 
+.gpg {
+    float: right;
+    width: 40%;
+    text-align: center;
+    color: @color-secondary-1-0;
+}
 
+.gpg a {
+    text-decoration: none;
+}
 
+.copyright {
+    text-align: right;
+    float: right;
+    width: 30%;
+    color: @color-secondary-1-0;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
+/* ## Graphs ############################################################### */
 
 path {
     stroke: #ccc;
@@ -87,74 +160,25 @@ path {
     stroke-width: 1;
     shape-rendering: crispEdges;
 }
-#legendContainer{
-	position:absolute;
-	top:60px;
-	left:10px;
-	overflow: auto;
-	height:490px;
-	width:110px;
-}
-#legend{
-	width:90px;
-	height:200px;
-}
+
 .legend {
     font-size: 12px;
     font-weight: normal;
     text-anchor: left;
 }
+
 .legendcheckbox{
-	cursor: pointer;
+	  cursor: pointer;
 }
-#showAll{
-	position:absolute;
-	top:600px;
-	left:880px;
-}
-#clearAll{
-	position:absolute;
-	top:600px;
-	left:950px;
-}
-input{
+
+input {
 	border-radius:5px;
 	padding:5px 10px;
-	background:#999;
 	border:0;
 	color:#fff;
 }
-#inds{
-	position:absolute;
-	top:10px;
-	left:10px;
-}
-#header {
-    border-top: 4px solid #e1e1e1;
-    border-bottom: 4px solid #e1e1e1;
-    min-height: 80px;
-    background: #eaeaea url(../../images/headerbg.png);
-}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* ## Fancy Theme ########################################################## */
 
 .fancy-theme-dash .fancy-panel {
 }

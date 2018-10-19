@@ -1,5 +1,5 @@
 -- adapted from https://daviddavioblue.deviantart.com/art/haxOS-Conky-454353060
--- ┤┤└└┴┴┐┐││┘┘┌┌├├┬┬┼┼┴┴── ││ ▽▼△▲▵▴▾▿─────● ▷ ● 
+-- ┤┤└└┴┴┐┐││┘┘┌┌├├┬┬┼┼┴┴── ││ ▽▼△▲▵▴▾▿─────● ▷ ●
 
 conky.config = {
   color3 = 'AC143C',
@@ -9,11 +9,11 @@ conky.config = {
   background = true,
   double_buffer = true,
   use_xft = yes,
-  font = 'monospace:pixelsize=11',
+  font = 'monospace:pixelsize=14',
   xftalpha = 1,
   use_xft = true,
   alignment = 'top_left',
-  gap_x = 0,
+  gap_x = 1920,
   gap_y = 0,
   update_interval = 5.0,
   cpu_avg_samples = 2,
@@ -40,71 +40,72 @@ conky.config = {
   own_window_type = 'normal',
   own_window_hints = 'undecorated,below,skip_taskbar,skip_pager,sticky',
   own_window_transparent = false,
+  display = ':1.0',
 }
 
 conky.text = [[
   ${goto 0}${voffset 0}
   ${hr}
   ${image /home/dbond/menv/desktop/logo.png -p 0,0 -s 1366x768}
-  ${alignr}${offset -60}${voffset -10}${font DejaVu Sans:pixelsize=70}${color2}mokon${color}OS${font} 
-  ${alignr}${offset -91}▲   
-  ${alignr}${offset 7}└─────────────┐   
-  ${alignr}$font │  
-  ${alignr}$font ${nodename} -─┤  
-  ${alignr}$font ${color3}${color3}[${color}${color} ${exec uname -r | cut -c 1-14} ${color3}]${color} kernel -─┤    │  
-  ${alignr}$font ${color3}[${color} $machine ${color3}]${color}   arch -─┤    │  
-  ${alignr}$font ${color3}[${color} $uptime ${color3}]${color} uptime -─┘    │  
-  ${alignr}$font ${color3}[${color} ${battery BAT0} ${color3}]${color} battery -─┘    │  
-  ${alignr}$font │  
-  ${alignr}$font system -${color3}─┤${color}  
-  ${alignr}$font cpu -─┤    │  
-  ${alignr}$font used -─┤    │    │  
-  ${alignr}${color2}[${cpu 1}%]${color} CPU1 ${color2}[${color}${color2}${cpu 2}%]${color} CPU2 -─┤    │    │    │  
-  ${alignr}$font ${color2}[${cpu 3}%]${color} CPU3 ${color2}[${color}${color2}${cpu 4}%]${color} CPU4 -─┘    │    │    │  
-  ${alignr}$font freq -─┤    │    │  
-  ${alignr}$font ${color3}[${color} ${freq 1}mhz ${color3}]${color} cpu1 -─┤    │    │    │  
-  ${alignr}$font ${color3}[${color} ${freq 2}mhz ${color3}]${color} cpu2 -─┘    │    │    │  
-  ${alignr}$font ${color3}[${color} $loadavg ${color3}]${color} load -─┤    │    │  
-  ${alignr}$font ${color2}[${color} ${top name 1}  ${top cpu 1} ${color2}]${color} -─┤    │    │  
-  ${alignr}$font ${color2}[${color} ${top name 2}  ${top cpu 2} ${color2}]${color} -─┤    │    │  
-  ${alignr}$font ${color2}[${color} ${top name 3}  ${top cpu 3} ${color2}]${color} -─┤    │    │  
-  ${alignr}$font ${color2}[${color} ${top name 4}  ${top cpu 4} ${color2}]${color} -─┤    │    │  
-  ${alignr}$font ${color2}[${color} ${top name 5}  ${top cpu 5} ${color2}]${color} -─┘    │    │  
-  ${alignr}$font processes -─┤    │  
-  ${alignr}$font ${color3}[${color} $processes ${color3}]${color}   total -─┤    │    │  
-  ${alignr}$font ${color3}[${color} $running_processes ${color3}]${color} running -─┘    │    │  
-  ${alignr}$font temperature -─┘    │  
-  ${alignr}$font ${color3}[${color} ${exec sensors | grep -m 1 temp1 | cut -c 16-17} ${color3}]${color} tmp1 -─┘         │  
-  #${alignr}$font ${color3}[${color} ${if_match ${exec sensors | grep -m 1 temp1 | awk '{print $2}' | cut -c 2-3}>=65}${color2}${exec sensors | grep -m 1 temp1 | awk '{print $2}' | cut -c 2-3}${else}${color3}${exec sensors | grep -m 1 temp1 | awk '{print $2}' | cut -c 2-3}${endif}${color}${color} ${color3}]${color} tmp1 -─┘         │  
-  ${alignr}$font │  
-  ${alignr}$font resources -─┤  
-  ${alignr}$font ${color3}[${color} $diskio_read ${color3}]${color}  read -─┤    │  
-  ${alignr}$font ${color3}[${color} $diskio_write ${color3}]${color} write -─┤    │  
-  ${alignr}$font ram -─┤    │  
-  ${alignr}$font ${color3}[${color} $memperc% ${color3}]${color} used -─┤    │    │  
-  ${alignr}$font ${color3}[${color} $mem/$memmax ${color3}]${color} -─┘    │    │    │  
-  ${alignr}$font ${color2}[${color} ${top_mem name 1}  ${top_mem mem 1} ${color2}]${color} -─┤    │    │  
-  ${alignr}$font ${color2}[${color} ${top_mem name 2}  ${top_mem mem 2} ${color2}]${color} -─┤    │    │  
-  ${alignr}$font ${color2}[${color} ${top_mem name 3}  ${top_mem mem 3} ${color2}]${color} -─┤    │    │  
-  ${alignr}$font ${color2}[${color} ${top_mem name 4}  ${top_mem mem 4} ${color2}]${color} -─┤    │    │  
-  ${alignr}$font ${color2}[${color} ${top_mem name 5}  ${top_mem mem 5} ${color2}]${color} -─┘    │    │  
-  ${alignr}$font ${color3}[${color} $swapperc% - $swap/$swapmax ${color3}]${color} swap -─┤    │  
-  ${alignr}$font ${color3}[${color} ${swapbar 5,120} ${color3}]${color} -─┘    │    │  
-  ${alignr}$font ${color3}[${color} ${fs_used /}/${fs_size /} ${color3}]${color} root -─┤    │  
-  ${alignr}$font ${color3}[${color} ${fs_bar 5,120 /} ${color3}]${color} -─┘    │    │  
-  ${alignr}$font ${color3}[${color} ${fs_used /home}/${fs_size /home} ${color3}]${color} home -─┤    │  
-  ${alignr}$font ${color3}[${color} ${fs_bar 5,120 /home/dbond/} ${color3}]${color} -─┘    │    │  
-  #${alignr}$font ${color3}[${color} ${fs_used /usr/local}/${fs_size /usr/local} ${color3}]${color} local -─┘    │  
-  #${alignr}$font ${color3}[${color} ${fs_bar 5,120 /home/Container/} ${color3}]${color} -─┘         │  
-  ${alignr}$font │  
-  ${alignr}$font net -─┘  
-  ${alignr}$font ${color3}[${color} ${tcp_portmon 1 65535 count} ${color3}]${color} connections -─┤       
-  ${alignr}$font ${color3}[${color} ${tcp_portmon 1 32767 count} ${color3}]${color} in / locale -─┤       
-  ${alignr}$font ${color3}[${color} ${tcp_portmon 32768 61000 count} ${color3}]${color} out / remote -─┤       
-  ${alignr}$font ${color3}[${color} ${upspeed wlp7s0} k/s ${color3}]${color}   up -─┤       
-  ${alignr}$font ${color3}${color} ${upspeedgraph wlp7s0 8,120 DC143C DC143C} ${color3}${color} -─┘    │       
-  ${alignr}$font ${color3}[${color} ${downspeed wlp7s0} k/s ${color3}]${color} down -─┘       
-  ${alignr}$font ${color3}${color} ${downspeedgraph wlp7s0 8,120 DC143C DC143C} ${color3}${color} -─┘            
+  ${alignr}${offset -60}${voffset -10}${font DejaVu Sans:pixelsize=70}${color2}mokon${color}OS${font}
+  ${alignr}$font                              ▲                   │
+  ${alignr}$font┌─────────────────────────────┴─────────────┐     │
+  ${alignr}$font│                                           │     │
+  ${alignr}$font│                         ${nodename} -─┤     │
+  ${alignr}$font│                         ${exec uname -r | cut -c 1-14}  -─┤     │
+  ${alignr}$font│                           $machine   arch -─┤     │
+  ${alignr}$font│                       $uptime  uptime -─┘     │
+  ${alignr}$font│                        ${battery BAT0}  battery -─┘     │
+  ${alignr}$font│                                           │     │
+  ${alignr}$font system -${color3}─┤${color}
+  ${alignr}$font cpu -─┤    │
+  ${alignr}$font used -─┤    │    │
+  ${alignr}${color2}[${cpu 1}%]${color} CPU1 ${color2}[${color}${color2}${cpu 2}%]${color} CPU2 -─┤    │    │    │
+  ${alignr}$font ${color2}[${cpu 3}%]${color} CPU3 ${color2}[${color}${color2}${cpu 4}%]${color} CPU4 -─┘    │    │    │
+  ${alignr}$font freq -─┤    │    │
+  ${alignr}$font ${color3}[${color} ${freq 1}mhz ${color3}]${color} cpu1 -─┤    │    │    │
+  ${alignr}$font ${color3}[${color} ${freq 2}mhz ${color3}]${color} cpu2 -─┘    │    │    │
+  ${alignr}$font ${color3}[${color} $loadavg ${color3}]${color} load -─┤    │    │
+  ${alignr}$font ${color2}[${color} ${top name 1}  ${top cpu 1} ${color2}]${color} -─┤    │    │
+  ${alignr}$font ${color2}[${color} ${top name 2}  ${top cpu 2} ${color2}]${color} -─┤    │    │
+  ${alignr}$font ${color2}[${color} ${top name 3}  ${top cpu 3} ${color2}]${color} -─┤    │    │
+  ${alignr}$font ${color2}[${color} ${top name 4}  ${top cpu 4} ${color2}]${color} -─┤    │    │
+  ${alignr}$font ${color2}[${color} ${top name 5}  ${top cpu 5} ${color2}]${color} -─┘    │    │
+  ${alignr}$font processes -─┤    │
+  ${alignr}$font ${color3}[${color} $processes ${color3}]${color}   total -─┤    │    │
+  ${alignr}$font ${color3}[${color} $running_processes ${color3}]${color} running -─┘    │    │
+  ${alignr}$font temperature -─┘    │
+  ${alignr}$font ${color3}[${color} ${exec sensors | grep -m 1 temp1 | cut -c 16-17} ${color3}]${color} tmp1 -─┘         │
+  #${alignr}$font ${color3}[${color} ${if_match ${exec sensors | grep -m 1 temp1 | awk '{print $2}' | cut -c 2-3}>=65}${color2}${exec sensors | grep -m 1 temp1 | awk '{print $2}' | cut -c 2-3}${else}${color3}${exec sensors | grep -m 1 temp1 | awk '{print $2}' | cut -c 2-3}${endif}${color}${color} ${color3}]${color} tmp1 -─┘         │
+  ${alignr}$font │
+  ${alignr}$font resources -─┤
+  ${alignr}$font ${color3}[${color} $diskio_read ${color3}]${color}  read -─┤    │
+  ${alignr}$font ${color3}[${color} $diskio_write ${color3}]${color} write -─┤    │
+  ${alignr}$font ram -─┤    │
+  ${alignr}$font ${color3}[${color} $memperc% ${color3}]${color} used -─┤    │    │
+  ${alignr}$font ${color3}[${color} $mem/$memmax ${color3}]${color} -─┘    │    │    │
+  ${alignr}$font ${color2}[${color} ${top_mem name 1}  ${top_mem mem 1} ${color2}]${color} -─┤    │    │
+  ${alignr}$font ${color2}[${color} ${top_mem name 2}  ${top_mem mem 2} ${color2}]${color} -─┤    │    │
+  ${alignr}$font ${color2}[${color} ${top_mem name 3}  ${top_mem mem 3} ${color2}]${color} -─┤    │    │
+  ${alignr}$font ${color2}[${color} ${top_mem name 4}  ${top_mem mem 4} ${color2}]${color} -─┤    │    │
+  ${alignr}$font ${color2}[${color} ${top_mem name 5}  ${top_mem mem 5} ${color2}]${color} -─┘    │    │
+  ${alignr}$font ${color3}[${color} $swapperc% - $swap/$swapmax ${color3}]${color} swap -─┤    │
+  ${alignr}$font ${color3}[${color} ${swapbar 5,120} ${color3}]${color} -─┘    │    │
+  ${alignr}$font ${color3}[${color} ${fs_used /}/${fs_size /} ${color3}]${color} root -─┤    │
+  ${alignr}$font ${color3}[${color} ${fs_bar 5,120 /} ${color3}]${color} -─┘    │    │
+  ${alignr}$font ${color3}[${color} ${fs_used /home}/${fs_size /home} ${color3}]${color} home -─┤    │
+  ${alignr}$font ${color3}[${color} ${fs_bar 5,120 /home/dbond/} ${color3}]${color} -─┘    │    │
+  #${alignr}$font ${color3}[${color} ${fs_used /usr/local}/${fs_size /usr/local} ${color3}]${color} local -─┘    │
+  #${alignr}$font ${color3}[${color} ${fs_bar 5,120 /home/Container/} ${color3}]${color} -─┘         │
+  ${alignr}$font │
+  ${alignr}$font net -─┘
+  ${alignr}$font ${color3}[${color} ${tcp_portmon 1 65535 count} ${color3}]${color} connections -─┤
+  ${alignr}$font ${color3}[${color} ${tcp_portmon 1 32767 count} ${color3}]${color} in / locale -─┤
+  ${alignr}$font ${color3}[${color} ${tcp_portmon 32768 61000 count} ${color3}]${color} out / remote -─┤
+  ${alignr}$font ${color3}[${color} ${upspeed wlp7s0} k/s ${color3}]${color}   up -─┤
+  ${alignr}$font ${color3}${color} ${upspeedgraph wlp7s0 8,120 DC143C DC143C} ${color3}${color} -─┘    │
+  ${alignr}$font ${color3}[${color} ${downspeed wlp7s0} k/s ${color3}]${color} down -─┘
+  ${alignr}$font ${color3}${color} ${downspeedgraph wlp7s0 8,120 DC143C DC143C} ${color3}${color} -─┘
   ${hr}
 
 ${voffset -700}

@@ -381,6 +381,8 @@ if has('persistent_undo')
   set undoreload=10000
 endif
 
+packadd! matchit
+
 " =============================================================================
 " Some useful vimrc settings I don't want enabled by default.
 

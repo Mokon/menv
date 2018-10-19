@@ -48,10 +48,10 @@ function getNewToken(oAuth2Client, callback) {
   });
 }
 
-function processSheet(callback, auth) {
+function processSheet(callback, spreadsheet, auth) {
   const sheets = google.sheets({version: 'v4', auth});
   sheets.spreadsheets.values.get({
-    spreadsheetId: '17zFROiQrXDe5HdZr8f0Bvy7vclVqnxdCuW4laiGSi_4',
+    spreadsheetId: spreadsheet,
     range: 'stats',
   }, (err, {data}) => {
     if (err) return console.log('The API returned an error: ' + err);
@@ -59,6 +59,6 @@ function processSheet(callback, auth) {
   });
 }
 
-module.exports.spreadsheet = function(callback) {
-  requestAuth(processSheet.bind(null, callback))
+module.exports.spreadsheet = function(callback, spreadsheet) {
+  requestAuth(processSheet.bind(null, callback, spreadsheet))
 }
