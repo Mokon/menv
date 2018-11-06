@@ -1,47 +1,66 @@
 const fs = require('fs');
 const showdown  = require('showdown');
-  			
+
 converter = new showdown.Converter();
 
-function uppercase_first(string)
-{
+gpath="/home/dbond/menv/pkgs/genealogy";
+
+function uppercaseFirst(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-function pretty_print(surname, id) {
+function prettyPrint(surname, id) {
     sid = id.split('_');
-    ret = ""
+    ret = "";
     birth = sid[sid.length-2];
     death = sid[sid.length-1];
     sid.length = sid.length - 2;
 
-    sid.forEach(function (item, index) 
-    { 
-      ret += uppercase_first(item) + " ";
+    sid.forEach(function (item, index) {
+        ret += uppercaseFirst(item) + " ";
     });
-    return ret + uppercase_first(surname) + " (" + birth + "-" + death + ")";
+    return ret + uppercaseFirst(surname) + " (" + birth + "-" + death + ")";
 }
 
-module.exports.person = function(dir, surname, id) {
-    file = dir + "/people/" + surname + "/" + id + "/description.txt";
-    return "<h1>" + pretty_print(surname, id) + "</h1>" + 
-      converter.makeHtml(fs.readFileSync(file, "utf8"));
+function person(surname, id) {
+    file = gpath + "/people/" + surname + "/" + id + "/description.txt";
+    var person = {
+        id: id,
+        surname: surname,
+        name: prettyPrint(surname, id),
+        description: converter.makeHtml(fs.readFileSync(file, "utf8"))
+    };
+    return person;
 }
 
-module.exports.people = function(dir) {
-    peopledir = dir + "/people";
+function people() {
+    peopledir = gpath + "/people";
 
-    page="<ul>"
-	  files = fs.readdirSync(peopledir);
-		files.forEach(function(surname) {
+    ppl = [];
+    files = fs.readdirSync(peopledir);
+    files.forEach(function(surname) {
         if (fs.statSync(peopledir + '/' + surname).isDirectory()) {
-	        pfiles = fs.readdirSync(peopledir + '/' + surname);
-		      pfiles.forEach(function(id) {
-              page += "<li><a href='/genealogy/person/" + surname  + "/"
-              + id + "'>" + pretty_print(surname, id) + "</a></li>";
-          });
+            pfiles = fs.readdirSync(peopledir + '/' + surname);
+            pfiles.forEach(function(id) {
+                var person = {
+                    id: id,
+                    surname: surname,
+                    name: prettyPrint(surname, id)
+                };
+                ppl.push(person);
+            });
         }
-		});
-    page+="</ul>"
-    return page;
+    });
+    return ppl;
+}
+
+module.exports.generateRoutes = function(engine) {
+    engine.get('/genealogy/people', (request, response) => {
+        response.render('genealogy/people', {people: people()});
+    })
+
+    engine.get('/genealogy/person/:surname/:id', (request, response) => {
+        response.render('genealogy/person',
+            {person: person(request.params.surname, request.params.id)})
+    })
 }

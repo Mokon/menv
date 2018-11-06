@@ -25,7 +25,7 @@ set autoread " Watch for file changes.
 set showmatch " Show the matching bracket.
 set cmdheight=2 " Cmdline two high.
 set ruler " Show the current pos. at the bottom.
-set tabstop=2 shiftwidth=2 expandtab " My default indentation.
+set tabstop=4 shiftwidth=4 expandtab " My default indentation.
 set number " Number lines.
 set laststatus=2 " Always show the last status msg.
 set clipboard=unnamed
@@ -381,7 +381,9 @@ if has('persistent_undo')
   set undoreload=10000
 endif
 
-packadd! matchit
+if has('packages')
+    packadd! matchit
+endif
 
 " =============================================================================
 " Some useful vimrc settings I don't want enabled by default.

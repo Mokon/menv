@@ -51,3 +51,5 @@ valgrind-devel valgrind-dev valgrind-dev valgrind-devel
 kcachegrind kcachegrind kcachegrind skip
 retext retext retext retext
 conky conky conky conky
+rpmfusion-free-release-tainted skip skip rpmfusion-free-release-tainted
+libdvdcss skip skip libdvdcss

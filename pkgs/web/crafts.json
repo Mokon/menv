@@ -1,0 +1,37 @@
+[
+  {
+      "name": "Keepsake Box",
+      "imgs": ["wooden-box-1"],
+      "description": "This is a keepsake box I made for Amanda. It uses purple heart and black palm wood with brass hardware."
+  },
+  {
+      "name": "Spoons",
+      "imgs": ["wooden-spoon-1"],
+      "description": "Here is a maple spoon I carved."
+  },
+  {
+      "name": "Patriots End Table",
+      "imgs": ["patriots-endtable-1", "patriots-endtable-2"],
+      "description": "This is a poplar end table I made for Bill with a patriots logo burned into it."
+  },
+  {
+      "name": "Nerf Rack",
+      "imgs": ["nerf-rack-2", "nerf-rack-1"],
+      "description": "Here is the Bond family Nerf Rack with a maple sign with the Nerf logo burned into it."
+  },
+  {
+      "name": "Lego Table",
+      "imgs": ["lego-table-4", "lego-table-3", "lego-table-2", "lego-table-1"],
+      "description": "This is a Lego table used in our living room. It is made of maple and birch plywood."
+  },
+  {
+      "name": "Hannah&#8217;s Necklace",
+      "imgs": ["hannah-neckless-3", "hannah-neckless-2", "hannah-neckless-1"],
+      "description": "This is a necklace I carved for Hannah from maple. It has a secret compartment inside it to store items."
+  },
+  {
+      "name": "Dinosaur Table",
+      "imgs": ["dino-table-3", "dino-table-2.jpg", "dino-table-1"],
+      "description": "This is a maple table I wood burnt and stained with a dinosaur scene with a brontosaurus."
+  }
+]

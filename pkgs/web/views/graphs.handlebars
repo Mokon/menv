@@ -1,27 +1,27 @@
 <select id="inds">
-		<option value="Weight" selected="selected">Weight</option>
-		<option value="WeightAge">Weight/Age</option>
-		<option value="Height">Height</option>
-		<option value="HeightAge">Height/Age</option>
-		<option value="WeightHeight">Weight/Height</option>
-		<option value="Head">Head</option>
-		<option value="HeadAge">Head/Age</option>
+<option value="Weight" selected="selected">Weight</option>
+<option value="WeightAge">Weight/Age</option>
+<option value="Height">Height</option>
+<option value="HeightAge">Height/Age</option>
+<option value="WeightHeight">Weight/Height</option>
+<option value="Head">Head</option>
+<option value="HeadAge">Head/Age</option>
 </select>
 
 <div id="legendContainer" class="legendContainer">
-	<svg id="legend"></svg>
+<svg id="legend"></svg>
 </div>
 
 <script>
 function filterJSON(json, key, value) {
-  var result = [];
-  json.forEach(function(val,idx,arr){
-    if(val[key] == value){
-    
-      result.push(val)
-    }
-  })
-  return result;
+    var result = [];
+    json.forEach(function(val,idx,arr){
+            if(val[key] == value){
+
+            result.push(val)
+            }
+            })
+    return result;
 }
 
 var margin = {top: 50, right: 20, bottom: 30, left: 160},
@@ -37,54 +37,54 @@ var yAxis = d3.svg.axis().scale(y)
     .orient("left").ticks(5);
 
 var stateline = d3.svg.line()
-		.interpolate("cardinal")
+    .interpolate("cardinal")
     .x(function(d) { return x(d.age); })
     .y(function(d) { return y(d.value); });
 
-var svg = d3.select("#content")
+    var svg = d3.select("#content")
     .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
     .append("g")
-        .attr("transform",
-              "translate(" + margin.left + "," + margin.top + ")");
+    .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")");
 var data;
 var json = {{{json data}}};
 
 json.forEach(function(d) {
-  d.value = +d.value;
-});
+        d.value = +d.value;
+        });
 
 d3.select('#inds')
-    .on("change", function () {
-      var sect = document.getElementById("inds");
-      var section = sect.options[sect.selectedIndex].value;
+.on("change", function () {
+        var sect = document.getElementById("inds");
+        var section = sect.options[sect.selectedIndex].value;
 
-      data = filterJSON(json, 'statistic', section);
-      
-      //debugger
-      
-      data.forEach(function(d) {
-        d.value = +d.value;
-        d.active = true;
-      });
-      
-      
-      //debugger
-      updateGraph(data);
+        data = filterJSON(json, 'statistic', section);
+
+        //debugger
+
+        data.forEach(function(d) {
+                d.value = +d.value;
+                d.active = true;
+                });
 
 
-      jQuery('h1.page-header').html(section);
-    });
+        //debugger
+        updateGraph(data);
+
+
+        jQuery('h1.page-header').html(section);
+        });
 
 data = filterJSON(json, 'statistic', 'Weight');
 updateGraph(data);
 
 function updateGraph(data) {
     var color = d3.scale.ordinal().range([
-      "#0096ff",
-      "#48A36D",
-      "#ff007e"
+            "#0096ff",
+            "#48A36D",
+            "#ff007e"
     ]);
     x.domain(d3.extent(data, function(d) { return d.age; }));
     y.domain([d3.min(data, function(d) { return d.value; }), d3.max(data, function(d) { return d.value; })]);
@@ -93,85 +93,85 @@ function updateGraph(data) {
         .key(function(d) {return d.person;})
         .entries(data);
 
- 		var result = dataNest.filter(function(val,idx, arr){
-				  return $("." + val.key).attr("fill") != "#ccc" 
-				  // matching the data with selector status
-				})
-				
- 		var person = svg.selectAll(".line")
-      .data(result, function(d){return d.key});
+    var result = dataNest.filter(function(val,idx, arr){
+            return $("." + val.key).attr("fill") != "#ccc" 
+            // matching the data with selector status
+            })
 
-		person.enter().append("path")
-			.attr("class", "line");
+    var person = svg.selectAll(".line")
+        .data(result, function(d){return d.key});
 
-		person.transition()
-			.style("stroke", function(d,i) { return d.color = color(d.key); })
-			.attr("id", function(d){ return 'tag'+d.key.replace(/\s+/g, '');}) // assign ID
-			.attr("d", function(d){
-		
-				return stateline(d.values)
-			});
+    person.enter().append("path")
+        .attr("class", "line");
 
-		person.exit().remove();
-
-		var legend = d3.select("#legend")
-			.selectAll("text")
-			.data(dataNest, function(d){return d.key});
-
-		//checkboxes
-		legend.enter().append("rect")
-		  .attr("width", 10)
-		  .attr("height", 10)
-		  .attr("x", 0)
-		  .attr("y", function (d, i) { return 0 +i*15; })  // spacing
-		  .attr("fill",function(d) { 
-		    return color(d.key);
-		    
-		  })
-		  .attr("class", function(d,i){return "legendcheckbox " + d.key})
-			.on("click", function(d){
-			  d.active = !d.active;
-			  
-			  d3.select(this).attr("fill", function(d){
-			    if(d3.select(this).attr("fill")  == "#ccc"){
-			      return color(d.key);
-			    }else {
-			      return "#ccc";
-			    }
-			  })
-			  
-			  
-			 var result = dataNest.filter(function(val,idx, arr){
-         return $("." + val.key).attr("fill") != "#ccc" 
-       // matching the data with selector status
-      })
-      
-       // Hide or show the lines based on the ID
-       svg.selectAll(".line").data(result, function(d){return d.key})
-         .enter()
-         .append("path")
-         .attr("class", "line")
-         .style("stroke", function(d,i) { return d.color = color(d.key); })
+    person.transition()
+        .style("stroke", function(d,i) { return d.color = color(d.key); })
+        .attr("id", function(d){ return 'tag'+d.key.replace(/\s+/g, '');}) // assign ID
         .attr("d", function(d){
-                return stateline(d.values);
-         });
- 
-      svg.selectAll(".line").data(result, function(d){return d.key}).exit().remove()  
-					
-			})
-		        
+
+                return stateline(d.values)
+                });
+
+    person.exit().remove();
+
+    var legend = d3.select("#legend")
+        .selectAll("text")
+        .data(dataNest, function(d){return d.key});
+
+    //checkboxes
+    legend.enter().append("rect")
+        .attr("width", 10)
+        .attr("height", 10)
+        .attr("x", 0)
+        .attr("y", function (d, i) { return 0 +i*15; })  // spacing
+        .attr("fill",function(d) { 
+                return color(d.key);
+
+                })
+    .attr("class", function(d,i){return "legendcheckbox " + d.key})
+        .on("click", function(d){
+                d.active = !d.active;
+
+                d3.select(this).attr("fill", function(d){
+                        if(d3.select(this).attr("fill")  == "#ccc"){
+                        return color(d.key);
+                        }else {
+                        return "#ccc";
+                        }
+                        })
+
+
+                var result = dataNest.filter(function(val,idx, arr){
+                        return $("." + val.key).attr("fill") != "#ccc" 
+                        // matching the data with selector status
+                        })
+
+                // Hide or show the lines based on the ID
+                svg.selectAll(".line").data(result, function(d){return d.key})
+                .enter()
+                .append("path")
+                .attr("class", "line")
+                .style("stroke", function(d,i) { return d.color = color(d.key); })
+                .attr("d", function(d){
+                        return stateline(d.values);
+                        });
+
+                svg.selectAll(".line").data(result, function(d){return d.key}).exit().remove()  
+
+        })
+
     legend.enter().append("text")
-      .attr("x", 15)
-      .attr("y", function(d,i){return 10 +i*15;})
-      .attr("class", "legend");
+        .attr("x", 15)
+        .attr("y", function(d,i){return 10 +i*15;})
+        .attr("class", "legend");
 
-		legend.transition()
-      .style("fill", "#777" )
-      .text(function(d){return d.key;});
+    legend.transition()
+        .style("fill", "#777" )
+        .text(function(d){return d.key;});
 
-		legend.exit().remove();
+    legend.exit().remove();
 
-		svg.selectAll(".axis").remove();
+    svg.selectAll(".axis").remove();
 
     svg.append("g")
         .attr("class", "x axis")

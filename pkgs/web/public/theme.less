@@ -28,6 +28,7 @@ body {
 
 .navbar i {
     font-size: 20px;
+    color: @color-complement-0;
 }
 
 .navbar a {
@@ -77,7 +78,6 @@ body {
 
 .contentwrap {
     background: @color-primary-0;
-    border-bottom: 1px solid @offwhite2;
     padding: 0;
     border: 0;
     vertical-align: baseline;
@@ -101,7 +101,81 @@ body {
     padding-right: 10px;
     padding-left: 10px;
     min-height: 400px;
+    border-radius: 10px;
+    border: 1px solid @color-complement-0;
+    box-shadow: 10px 10px 5px @color-secondary-1-0;
+    width: 100%;
 }
+
+/* ## Content Pages ######################################################## */
+
+.content .blurb i {
+    color: @color-secondary-2-0;
+}
+
+.content .blurb a {
+    color: @color-complement-0;
+    text-decoration: none;
+}
+
+.blurb .cpolaroid {
+    margin-top: 0px;
+    margin-bottom: 10px;
+    margin-right: 30px;
+    margin-left: 5px;
+}
+
+.crafts {
+    width: 100%;
+    height: auto;
+    margin: 0 20%;
+    position: relative;
+}
+
+.crafts .cpolaroid {
+    text-align: center;
+    width: 60%;
+}
+
+.crafts .cpolaroid img {
+    width: 80%;
+    height: auto;
+}
+
+div .polaroid {
+    padding: 10px 10px 10px 10px;
+    border: 1px solid #BFBFBF;
+    background-color: white;
+    box-shadow: 10px 10px 5px #aaaaaa;
+}
+
+div .rotate_right_float {
+    float: left;
+    -ms-transform: rotate(7deg); /* IE 9 */
+    -webkit-transform: rotate(7deg); /* Safari */
+    transform: rotate(7deg);
+}
+
+div .rotate_left_float {
+    float: left;
+    -ms-transform: rotate(-8deg); /* IE 9 */
+    -webkit-transform: rotate(-8deg); /* Safari */
+    transform: rotate(-8deg);
+}
+
+div .rotate_right {
+    -ms-transform: rotate(7deg); /* IE 9 */
+    -webkit-transform: rotate(7deg); /* Safari */
+    transform: rotate(7deg);
+}
+
+div .rotate_left {
+    -ms-transform: rotate(-8deg); /* IE 9 */
+    -webkit-transform: rotate(-8deg); /* Safari */
+    transform: rotate(-8deg);
+}
+
+div .crafts 
 
 /* ## Footer ############################################################### */
 
@@ -111,12 +185,13 @@ body {
 .quote {
     font-size: 20px;
     font-weight: 400;
-    color: @color-secondary-1-0;
+    color: @color-complement-0;
     padding: 25px 10px 20px 10px;
 }
 
 .foundation {
     background: @color-primary-0;
+    color: @color-secondary-1-0;
     overflow: auto;
     padding: 10px;
 }
@@ -124,17 +199,16 @@ body {
 .disclaimer {
     float: right;
     width: 30%;
-    color: @color-secondary-1-0;
 }
 
 .gpg {
     float: right;
     width: 40%;
     text-align: center;
-    color: @color-secondary-1-0;
 }
 
 .gpg a {
+    color: @color-secondary-1-0;
     text-decoration: none;
 }
 
@@ -142,7 +216,6 @@ body {
     text-align: right;
     float: right;
     width: 30%;
-    color: @color-secondary-1-0;
 }
 
 /* ## Graphs ############################################################### */
