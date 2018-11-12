@@ -1,0 +1,19 @@
+<style>
+  #map {
+    height: 600px;
+    width: 100%;
+   }
+</style>
+
+<script src="/realestate.js">
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key={{{key}}}&callback=initMap">
+</script>
+
+<div id="map"></div>
+<div>
+  <h1>Nearest Places to Address</h1>
+  {{#each nearestPlacesOfInterest}}
+    {{{name}}} {{{duration}}}<br />
+  {{/each}}
+</div>

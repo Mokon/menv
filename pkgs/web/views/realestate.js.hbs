@@ -1,0 +1,53 @@
+var geocoder;
+function initMap() {
+    var style = {{{realestate_map_style}}};
+    var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 10,
+        center: {lat: 0, lng: 0},
+        streetViewControl: false,
+        mapTypeControl: false,
+        mapTypeId: 'terrain',
+        styles: style
+    });
+    geocoder = new google.maps.Geocoder();
+    geocoder.geocode({'address': '{{{house}}}' }, function(results, status) {
+        if (status === 'OK') {
+            map.setCenter(results[0].geometry.location);
+            var marker = new google.maps.Marker({
+                map: map,
+                position: results[0].geometry.location
+            });
+        }
+    });
+
+    var bounds = new google.maps.LatLngBounds;
+    var markersArray = [];
+    var nearestPlacesOfInterest = {{{json nearestPlacesOfInterest}}}
+    var showGeocodedAddressOnMap = function(place) {
+        return function(results, status) {
+            if (status === 'OK') {
+                map.fitBounds(bounds.extend(results[0].geometry.location));
+
+                var image = {
+                    url: place.icon,
+                    scaledSize: new google.maps.Size(20, 32),
+                    origin: new google.maps.Point(0, 0),
+                    anchor: new google.maps.Point(0, 32),
+                    labelOrigin: new google.maps.Point(0, 25),
+                };
+
+                markersArray.push(new google.maps.Marker({
+                    map: map,
+                    position: results[0].geometry.location,
+                    label: place.dest + " " + place.duration,
+                    icon: image
+                }));
+            }
+        };
+    };
+
+    nearestPlacesOfInterest.forEach(function(place) {
+        geocoder.geocode({'address': place.address},
+            showGeocodedAddressOnMap(place));
+    });
+}

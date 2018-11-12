@@ -209,7 +209,8 @@ function! StripTrailingWhitespaceConfirm()
     call <SID>StripTrailingWhitespace()
   endif
 endfunction
-
+au BufRead,BufNewFile *.hbs set filetype=html
+au BufRead,BufNewFile *.js.hbs set filetype=javascript
 autocmd BufWrite *.cpp,*.hpp call StripTrailingWhitespaceConfirm()
 
 function JsonFormat(...)

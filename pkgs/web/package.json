@@ -9,6 +9,7 @@
   "author": "David Bond",
   "license": "",
   "dependencies": {
+    "@google/maps": "^0.5.5",
     "@okta/oidc-middleware": "0.0.14",
     "express": "^4.16.2",
     "express-handlebars": "^3.0.0",

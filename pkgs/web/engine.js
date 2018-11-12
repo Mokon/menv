@@ -21,7 +21,7 @@ var hbs = exphbs.create({
 
 const app = express();
 app.engine('handlebars', hbs.engine);
-app.set('view engine', 'handlebars');
+app.set('view engine', 'hbs');
 
 module.exports.get = function() {
     console.log(`Creating page route ${arguments[0]}`);
