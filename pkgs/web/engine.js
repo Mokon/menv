@@ -16,11 +16,12 @@ var hbs = exphbs.create({
             }
         }
     },
-    defaultLayout: 'mokon_net'
+    defaultLayout: 'mokon_net',
+    extname: '.hbs'
 });
 
 const app = express();
-app.engine('handlebars', hbs.engine);
+app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
 
 module.exports.get = function() {

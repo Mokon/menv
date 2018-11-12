@@ -123,7 +123,8 @@ module.exports.generateRoutes = function(engine) {
         });
 
         engine.get('/realestate.js', (request, response) => {
-            response.render('realestate.js', {
+            response.render('realestate_js', {
+                layout: false,
                 'nearestPlacesOfInterest': nearestPlacesOfInterest,
                 'house': house,
                 'key': secret,
