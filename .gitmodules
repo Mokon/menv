@@ -1,0 +1,3 @@
+[submodule "pkgs/genealogy"]
+	path = pkgs/genealogy
+	url = https://github.com/Mokon/genealogy
