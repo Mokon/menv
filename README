@@ -6,6 +6,9 @@ itself. You can do this with:
 
   source <(curl -sL https://raw.githubusercontent.com/Mokon/menv/master/core/remote_install)
 
+On a mac you may need to:
+  curl -sL https://raw.githubusercontent.com/Mokon/menv/master/core/remote_install > /tmp/mi ; source /tmp/mi
+
 This script will setup dotfiles and so much more: installing menv.
 
 From then on to update the script call:
