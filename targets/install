@@ -19,14 +19,16 @@ else
   if [[ $REPLY =~ ^[Yy]$ ]] ; then
     echo "root" >> $menv_install_opts_file
 
-    read -t 60 -p "Please provide a hostname: " -r
-    export MENV_HOSTNAME="$REPLY"
+    if [ $DIST != "darwin" ] ; then
+      read -t 60 -p "Please provide a hostname: " -r
+      export MENV_HOSTNAME="$REPLY"
 
-    local u=`whoami`
-    echo "$u ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers &> /dev/null
-    echo "$u ALL=(root) NOPASSWD: /sbin/reboot" | sudo tee -a /etc/sudoers &> /dev/null
-    ${menv_bin_dir}/exesudo delete_line_in_file "\tDefaults    env_reset" /etc/sudoers
-    ${menv_bin_dir}/exesudo delete_line_in_file "\tDefaults    secure_path = *" /etc/sudoers
+      local u=`whoami`
+      echo "$u ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers &> /dev/null
+    ec  ho "$u ALL=(root) NOPASSWD: /sbin/reboot" | sudo tee -a /etc/sudoers &> /dev/null
+      ${menv_bin_dir}/exesudo delete_line_in_file "\tDefaults    env_reset" /etc/sudoers
+      ${menv_bin_dir}/exesudo delete_line_in_file "\tDefaults    secure_path = *" /etc/sudoers
+    fi
   else
     echo "nodesktop" >> $menv_install_opts_file
     echo "noroot" >> $menv_install_opts_file
