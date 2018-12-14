@@ -109,7 +109,9 @@ function local_install_package {
 function install_simple_package {
   local pkg_name=$1
 
-  declare -A pkg_arr
+  if [ $DIST != "darwin" ] ; then
+    declare -A pkg_arr
+  fi
   pkg_arr=(
     [fedora]="$pkg_name"
     [centos]="$pkg_name"

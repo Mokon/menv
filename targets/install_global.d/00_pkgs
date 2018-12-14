@@ -49,7 +49,9 @@ echo
 REPLY_PKGS=$REPLY
 
 if [[ $REPLY_PKGS =~ ^[Yy]$ ]] ; then
-  install_rpmfusion
+  if [ $PKG_TYPE == "rpm" ] ; then
+    install_rpmfusion
+  fi
 
   if [ $MENV_DESKTOP -ne 0 ] ; then
     if [ $DIST == "fedora" ] ; then
