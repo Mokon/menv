@@ -45,9 +45,11 @@ else
 
   # Link the bash targets.
   cd ~
+  echo "Linking bash dotfiles"
   safe_symlink $bashrc $menv_target_handler
   safe_symlink $bash_profile $menv_target_handler
   safe_symlink $bash_logout $menv_target_handler
+  echo "Done linking bash dotfiles"
 
   if [ -d ~/backup ] ; then
     echo "Restoring backup dir!"
