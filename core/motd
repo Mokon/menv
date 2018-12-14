@@ -47,7 +47,7 @@ echo ${TC_RESET} >> $tmp
 sed ":a;N;\$!ba;s/\\n/${CLREOL}\\n/g" $tmp
 }
 
-if [ "$TERM" = "screen" ] && [ -n "$TMUX" ]; then
+if [ "$TERM" = "screen" ] && [ -n "$TMUX" ] || [ $DIST == "darwin" ] ; then
   motd | sed -e :a -e 's/^.\{1,78\}$/& /;ta'
 else
   motd
