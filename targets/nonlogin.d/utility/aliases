@@ -19,7 +19,11 @@ alias e="exit"
 alias ex="exit"
 alias exi="exit"
 alias xit="exit"
-alias ls="ls --color"
+if [ $DIST != "darwin" ] ; then
+  alias ls="ls --color"
+else
+  alias ls="ls -G"
+fi
 alias bx="source ~/$bashrc"
 alias mv="$BINMV_BCK -i"
 alias cp="$BINCP_BCK"
