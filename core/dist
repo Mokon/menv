@@ -212,7 +212,9 @@ function parse_and_install_pkgs_file {
       darwin_pkg="skip"
     fi
 
-    declare -A pkg_arr
+    if [ $DIST != "darwin" ] ; then
+      declare -A pkg_arr
+    fi
     pkg_arr=(
       [fedora]="$fedora_pkg"
       [centos]="$centos_pkg"
