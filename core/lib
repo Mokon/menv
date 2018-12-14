@@ -29,8 +29,8 @@ export menv_user=dbond
 export menv_gen_tag="menv_generated"
 
 # Absolute paths for lsb commands.
-export BINMV=/bin/mv
-export BINCP=/bin/cp
+export BINMV="/bin/mv"
+export BINCP="/bin/cp"
 if [ $DIST != "darwin" ] ; then
   export $BINMV_BCK="$BINMV --backup=numbered"
   export $BINCP_BCK="$BINCP --backup=numbered"

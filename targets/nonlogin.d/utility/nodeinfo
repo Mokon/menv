@@ -4,26 +4,34 @@
 function nodeinfo {
   local TC_RED="[0;31;42m"
   local TC_RESET="[0m"
-  local MEMT=`cat /proc/meminfo | grep MemTotal`
-  local SWAT=`cat /proc/meminfo | grep '^SwapTotal:'`
-  local PMODEL=`cat /proc/cpuinfo | \
-    grep '^model name' | awk '{print $4 $5 $6}' | head -1`
-  local PMHZ=`cat /proc/cpuinfo | \
-    grep '^cpu MHz' | awk '{print $4}'| sed -e 's/\.[0-9]*//g' | head -1`
-  local PVENDOR=`cat /proc/cpuinfo | \
-    grep '^vendor_id' | awk '{print $3}' | head -1`
-  local PNUMS=`cat /proc/cpuinfo | \
-    grep '^processor' | wc -l | awk '{print $1}' | head -1`
-  local CPUTMP=`sensors 2> /dev/null|grep CPU: | sed 's/^.*: *//'`
+  if [ $DIST != "darwin" ] ; then
+    local MEMT=`cat /proc/meminfo | grep MemTotal`
+    local SWAT=`cat /proc/meminfo | grep '^SwapTotal:'`
+    local PMODEL=`cat /proc/cpuinfo | \
+      grep '^model name' | awk '{print $4 $5 $6}' | head -1`
+    local PMHZ=`cat /proc/cpuinfo | \
+      grep '^cpu MHz' | awk '{print $4}'| sed -e 's/\.[0-9]*//g' | head -1`
+    local PVENDOR=`cat /proc/cpuinfo | \
+      grep '^vendor_id' | awk '{print $3}' | head -1`
+    local PNUMS=`cat /proc/cpuinfo | \
+      grep '^processor' | wc -l | awk '{print $1}' | head -1`
+    local CPUTMP=`sensors 2> /dev/null|grep CPU: | sed 's/^.*: *//'`
+  fi
 
-  os=`uname -o`
+  if [ $DIST != "darwin" ] ; then
+    os=`uname -o`
+  else
+    os="Mac OSX"
+  fi
   echo "OS............: ${os/GNU\//}"
   echo "Distribution..: $DIST"
   echo "Pkt Mgmt......: $PKG_MGMT"
   echo "Hostname......: `uname -n`"
-  echo "Address(es)...: `/sbin/ip address | grep "inet" \
-                           | grep -v '127.\|::1\|fe80::' | awk '{print $2}' \
-                           | sed ':a;N;$!ba;s/\n/\n..............: /g'` "
+  if [ $DIST != "darwin" ] ; then
+    echo "Address(es)...: `/sbin/ip address | grep "inet" \
+                             | grep -v '127.\|::1\|fe80::' | awk '{print $2}' \
+                             | sed ':a;N;$!ba;s/\n/\n..............: /g'` "
+  fi
   echo "Kernel........: `uname -s ` `uname -r`"
   echo "Machine HW....: `uname -m`"
   if uptime -p &> /dev/null ; then
@@ -31,15 +39,19 @@ function nodeinfo {
   else
     echo "Uptime........: `uptime | sed 's/.*up ([^,]*), .*/1/' | cut -c 1-79`"
   fi
-  echo "Memory........: `echo $MEMT | awk {'print $2'}` `echo $MEMT \
-                                    | awk {'print $3'}`"
-  echo "SWAP..........: `echo $SWAT | awk {'print $2'}` `echo $SWAT \
-                                    | awk {'print $3'}`"
+  if [ $DIST != "darwin" ] ; then
+    echo "Memory........: `echo $MEMT | awk {'print $2'}` `echo $MEMT \
+                                      | awk {'print $3'}`"
+    echo "SWAP..........: `echo $SWAT | awk {'print $2'}` `echo $SWAT \
+                                      | awk {'print $3'}`"
+  fi
   echo "Username......: `whoami`"
   echo "Groups........:`groups $(whoami) | cut -f2 -d':'`"
-  echo "Processor(s)..: $PNUMS $PVENDOR ${PMHZ} MHz ${PMODEL} ${CPUTMP}"
+  if [ $DIST != "darwin" ] ; then
+    echo "Processor(s)..: $PNUMS $PVENDOR ${PMHZ} MHz ${PMODEL} ${CPUTMP}"
 
-  echo "SELinux.......: `/usr/sbin/getenforce`"
-  echo "last login....: $(last -1 -R  $USER | head -1 | cut -c 20-| awk '{$1=$1};1')"
+    echo "SELinux.......: `/usr/sbin/getenforce`"
+    echo "last login....: $(last -1 -R  $USER | head -1 | cut -c 20-| awk '{$1=$1};1')"
+  fi
   echo "menv version..: $(menv_version)"
 }

@@ -47,7 +47,9 @@ else
 fi
 
 if [ -d ~/Desktop/ ] ; then
-  rmdir --ignore-fail-on-non-empty ~/Desktop/
+  if [ $DIST != "darwin" ] ; then
+    rmdir --ignore-fail-on-non-empty ~/Desktop/
+  fi
 fi
 
 for dir in pics docs code; do

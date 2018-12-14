@@ -2,9 +2,11 @@
 # (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 if [ $MENV_DESKTOP -ne 0 ] ; then
-  export GOPATH=$menv_cache_go_dir
-  export PATH="$PATH:$menv_cache_go_bin_dir"
-  go get github.com/schachmat/wego
+  if [ $DIST != "darwin" ] ; then
+    export GOPATH=$menv_cache_go_dir
+    export PATH="$PATH:$menv_cache_go_bin_dir"
+    go get github.com/schachmat/wego
 
-  safe_symlink .wegorc $menv_dotfiles_dir/wegorc
+    safe_symlink .wegorc $menv_dotfiles_dir/wegorc
+  fi
 fi

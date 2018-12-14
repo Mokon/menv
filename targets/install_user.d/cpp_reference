@@ -7,5 +7,5 @@ file=http://upload.cppreference.com/mwiki/images/1/1d/html_book_20180311.tar.xz
 
 fetch $file
 
-extract $(basename $file)
+tar xf $(basename $file)
 $BINRM -f $(basename $file)
