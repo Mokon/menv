@@ -471,4 +471,4 @@ function! WhatFunction()
 endfunction
 
 let g:licenses_copyright_holders_name = "David 'Mokon' Bond <mokon@mokon.net>"
-lt g:licenses_authors_name = "David 'Mokon' Bond <mokon@mokon.net>"
+let g:licenses_authors_name = "David 'Mokon' Bond <mokon@mokon.net>"
