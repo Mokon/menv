@@ -121,7 +121,7 @@ function github_fetch {
 
   fetch https://github.com/$repo/archive/master.tar.gz
 
-  tar -xzf master.tar.gz
+  ear -xzf master.tar.gz
   $BINRM -f master.tar.gz
   $BINMV "$(basename $repo)-master" $(basename $repo)
 }
@@ -131,7 +131,7 @@ function safe_symlink {
   local file=$1
   local to=$2
 
-  if [ -f $file ] && { [ ! -L $file ] || [`readlink $file` != "$to"] ; } ; then
+  if [ -f $file ] && { [ ! -L $file ] || [ `readlink $file` != "$to" ] ; } ; then
     if ! diff -q $file /etc/skel/$file &> /dev/null ; then
       echo "Found foreign ${file}. Backing up as ${menv_backup_dir}/${file}."
       $BINMKDIR -p `dirname ${menv_backup_dir}/${file}`
