@@ -1,10 +1,7 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
-menv_function install_java
 function install_java {
-  spushd
-
   local jrerpm=jre-8u40-linux-x64.rpm
   local jdkrpm=jdk-8u40-linux-x64.rpm
   local jrepkg=jre1.8.0_40-1.8.0_40-fcs.x86_64
@@ -46,6 +43,4 @@ function install_java {
   jaltinstall /usr/lib64/mozilla/plugins/libjavaplugin.so libjavaplugin.so.x86_64 /usr/java/latest/lib/amd64/libnpjp2.so 200000
   jaltinstall /usr/bin/javac javac /usr/java/latest/bin/javac 200000
   jaltinstall /usr/bin/jar jar /usr/java/latest/bin/jar 200000
-
-  spopd
 }

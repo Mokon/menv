@@ -1,7 +1,7 @@
 #!/usr/bin/perl
-# (C) 2016 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
-# A simple script to extract an diff the text coming from a google test expect
+# A simple script to extract an diff the text coming from a google test expected
 # output.
 
 if (

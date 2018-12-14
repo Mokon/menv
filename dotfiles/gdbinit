@@ -1,4 +1,4 @@
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 set $SETCOLOR1STLINE = 1
 set $USECOLOR = 1
 set history filename ~/menv/cache/history/.gdb_history

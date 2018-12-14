@@ -1,7 +1,6 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
-menv_function senddiff
 function senddiff {
   subject=${1:-diff}
   to=${2:-mokon@mokon.net}
@@ -11,7 +10,6 @@ function senddiff {
   rm $tmpfile
 }
 
-menv_function sendemail
 function sendemail {
   file=$1
   subject=${2:-$file}

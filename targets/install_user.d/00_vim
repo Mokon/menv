@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 if [ -d ~/.vim ] ; then
   if [ -f ~/.vim/.$menv_gen_tag ] ; then
@@ -14,10 +14,6 @@ touch ~/.vim/.$menv_gen_tag
 
 $BINMKDIR -p ~/.vim/plugin
 
-spushd .
-
 cd ~
 
 safe_symlink .vimrc $menv_dotfiles_dir/vimrc
-
-spopd

@@ -1,4 +1,5 @@
 #!/bin/bash
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 #
 # This file contains functionality to create and store a virtual topology.
 #
@@ -596,4 +597,3 @@ function vt_vint_default_all {
     vt_link $vm default
   done
 }
-

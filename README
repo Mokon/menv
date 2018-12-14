@@ -1,20 +1,12 @@
-(C) 2013-2017 David 'Mokon' Bond, All Rights Reserved
+(C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
-Welcome, to menv: a specialized script to setup a linux environment just the
-way I like it. With a single remote execution of a bash script menv will
-install itself. You can do this with:
+Welcome, to menv: a specialized script to setup a computer environment just the
+way I like it. With a single remote execution of a bash script menv will install
+itself. You can do this with:
 
   source <(curl -sL https://raw.githubusercontent.com/Mokon/menv/master/core/remote_install)
 
-This script will setup things such as your bashrc file and bash_profile. It
-also setups a .vimrc file and installs a bunch of plugins for vim. It is
-basically a set of bash scripts which creates a bunch of links to the
-various dotfiles (or in the case of non-bash rc files it downloads a file from
-git). In general it is very modular and if you don't want to use vim (for
-instance if you are an emacs person) you can configure it to work how you want.
-
-When you run the remote install script essentially it does a wget on the menv
-repo and then runs an installation script.
+This script will setup dotfiles and so much more: installing menv.
 
 From then on to update the script call:
   menv_update
@@ -31,61 +23,8 @@ and
   ~/menv/local/menv_local_nonlogin
 These will be sourced in the correct location (bashrc or bash_profile).
 
-There are also several useful functions relating to menv. The first is:
-  menv_stage
-This command works assuming you have menv cloned from github at ~/git/menv. It
-copies the files from that folder and installs them on the system. This allows
-me to test a script before I push it out to github. Once menv has been staged
-it will not be updated automatically with github.
-
-The command:
-  menv_help
-Displays this README file on the terminal.
-
-The command:
-  menv_refresh
-Executes ~/.bash_profile to execute any additions to the local menv files. This
-s useful to get the additions into you envirnment without having to relauch
-the terminal.
-
-menv does not require internet connectivity to run on a daily basis but to
-install or update it you do need the internet. This means if you do not have
-internet connectivity menv will not automatically update.
-
 menv tries to be a good citizen, backing up files not belonging to it and
 giving you a good way to uninstall it.
-
-Never edit any of the menv files directly. Always edit in the git repo. If you
-wish to use this I suggest forking my github repo and then editing the file
-menv/local/menv_config to exclude the functionality you wish to exclude.
-In general for each of the target (install, login, update, logout, nonlogin,
-and uninstall) they have ${target}.d/ folder where all the files in this
-directory are included by the parent script. If you want to add your own
-aliases etc this is the place to do it. If you want to for instance exclude my
-git configuations these are the folders that the exclude patterns in your
-config will operate on.
-
-In general I like my home laid out as follows:
-  code --> menv/local/ode
-  docs --> menv/local/docs
-  pics --> menv/local/pics
-  menv
-
-The menv dir has the following layout:
-  menv/backup
-  menv/bin
-  menv/cache
-  menv/cache/downloads
-  menv/cache/logs
-  menv/core
-  menv/dotfiles
-  menv/local
-  menv/local/docs
-  menv/local/code
-  menv/local/pics
-  menv/pkgs
-  menv/targets
-  menv/trash
 
 The local folder is where all the users data is stored. The backup folder is
 where various menv utilities store things that they don't think should be
@@ -97,9 +36,8 @@ still has the final say on whether or not to delete them.
 The cache dir contains various temporary files that are safe to delete. The
 core, targets, pkgs, and dotfiles contains what really makes menv. pkgs are
 portions of code that are designed such that they don't rely on menv as a whole.
-The dotfiles are exzactly what the folder founds like. Normally these are sym
+The dotfiles are exzactly what the folder sounds like. Normally these are sym
 linked in the correct program location.
 
 The trash is of course a trash directory. The bin dir is for user local compiled
 and installed programs.
-

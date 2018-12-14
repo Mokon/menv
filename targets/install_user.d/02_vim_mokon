@@ -1,7 +1,5 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
-
-spushd .
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 cd ~/.vim/bundle
 github_fetch scrooloose/nerdtree
@@ -26,5 +24,3 @@ cd ~/.vim
 github_fetch antoyo/vim-licenses
 $BINMV vim-licenses/licenses .
 $BINRM -rf vim-licenses
-
-spopd

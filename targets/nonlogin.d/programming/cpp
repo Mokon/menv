@@ -1,18 +1,17 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
-menv_function cpp_class
 function cpp_class {
   local class=$1
 
   local year=`date +"%Y"`
   
   cat << EOF > ${class}.hpp
-/* Copyright (C) $year TODO,  All Rights Reserved */
+/* Copyright (C) $year David 'Mokon' Bond,  All Rights Reserved */
 
 #pragma once
 
-namespace TODO {
+namespace mnet {
 
 class $class
 {
@@ -30,11 +29,11 @@ class $class
 EOF
 
   cat << EOF > ${class}.cpp
-/* Copyright (C) $year TODO,  All Rights Reserved */
+/* Copyright (C) $year David 'Mokon' Bond,  All Rights Reserved */
 
 #include "${class}.hpp"
 
-namespace TODO {
+namespace mnet {
 
 $class::$class() {
 }
@@ -44,6 +43,6 @@ $class::$class() {
 EOF
 }
 
-menv_alias playground="git clone https://github.com/mokon/playground ; cd playgrround"
-menv_alias fcgi_install="sudo make install && sudo service lighttpd restart"
-menv_alias remake="make clean-purge && ./bootstrap && ./configure && make"
+alias playground="git clone https://github.com/mokon/playground ; cd playgrround"
+alias fcgi_install="sudo make install && sudo service lighttpd restart"
+alias remake="make clean-purge && ./bootstrap && ./configure && make"

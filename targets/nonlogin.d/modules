@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) 2017 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 function install_module {
   local module_name=$1
@@ -21,7 +21,7 @@ function install_module {
     mkdir -p ${menv_cache_vimrc_style_dir}
     ln -s ${module_vimrc_style} ${cache_vimrc_style}
   fi
-  menv_export CODING_STYLE=${module_name}
+  export CODING_STYLE=${module_name}
 
   source ${pkgs_module_dir}/dotfiles/bashrc
   export PATH=$PATH:${pkgs_module_dir}/bin/

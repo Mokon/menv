@@ -1,10 +1,6 @@
 #!/bin/bash
-# (C) 2013-2017 David 'Mokon' Bond, All Rights Reserved
-
-spushd .
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 cd ~
   
 safe_symlink .htoprc $menv_dotfiles_dir/htoprc
-
-spopd

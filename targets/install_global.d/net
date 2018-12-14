@@ -1,12 +1,8 @@
 #!/bin/bash
-# (C) 2018 David 'Mokon' Bond, All Rights Reserved
-
-spushd .
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 github_fetch luismartingarcia/protocol
 cd protocol
 sudo ./setup.py install &> /dev/null
 cd ..
 sudo $BINRM -rf protocol
-
-spopd

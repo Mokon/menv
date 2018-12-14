@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) 2013-2016 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 if [ -n "${DBUS_SESSION_BUS_PID}"  ] ; then
   kill -9 ${DBUS_SESSION_BUS_PID}

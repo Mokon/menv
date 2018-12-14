@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 echo "Uninstalling menv"
 
@@ -43,21 +43,6 @@ $BINRM -rf $menv_dir
 
 spopd
 
-for menv_export in "${menv_exports[@]}" ; do
-  unset "$( echo $menv_export | cut -f1 -d "=")"
-done
-unset menv_exports
-
-for menv_alias in "${menv_aliases[@]}" ; do
-  unalias "$( echo $menv_alias | cut -f 1 -d "=")"
-done
-unset menv_aliases
-
-for menv_func in "${menv_funcs[@]}" ; do
-  unset $menv_func
-done
-unset menv_funcs
-
 if [ -f /etc/skel/.bashrc ] ; then
   cp /etc/skel/.bashrc .
 fi
@@ -72,5 +57,4 @@ fi
 
 /bin/rm -f ~/menv/.lock
 
-echo "Uninstalling menv done"
-
+echo "Uninstalling menv done, please exit the terminal"

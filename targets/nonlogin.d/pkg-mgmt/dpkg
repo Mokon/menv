@@ -1,8 +1,8 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 if [ $PKG_TYPE == "dpkg" ] ; then 
-  menv_alias dpkg_what_provides="sudo dpkg --search"
-  #menv_alias dpkg_what_provides="sudo dpkg-query -S"
-  menv_alias dpkg_provides_what="sudo dpkg-query -L"
+  alias dpkg_what_provides="sudo dpkg --search"
+  #alias dpkg_what_provides="sudo dpkg-query -S"
+  alias dpkg_provides_what="sudo dpkg-query -L"
 fi

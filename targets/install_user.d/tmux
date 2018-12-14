@@ -1,10 +1,6 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
-
-spushd .
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 cd ~
   
 safe_symlink .tmux.conf $menv_dotfiles_dir/tmux.conf
-
-spopd

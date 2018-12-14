@@ -1,6 +1,5 @@
 #!/bin/bash
-
-# (C) 2017 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 if [ -z ${1+x} ]; then
   echo "please give an interval"

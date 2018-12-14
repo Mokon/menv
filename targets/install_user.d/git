@@ -1,7 +1,5 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
-
-spushd .
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 cd ~
 
@@ -41,5 +39,3 @@ ln -s git/cliist/cliist.py cliist
 
 fetch https://raw.githubusercontent.com/Mokon/git_get/master/git_get
 chmod +x git_get
-
-spopd

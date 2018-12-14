@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) 2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 files=`find . -name "*.[ch]pp"`
 
 uc_dir=uncrustify_out

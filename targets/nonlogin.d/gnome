@@ -1,17 +1,15 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 if test -x "$(command -v "gnome-terminal")" ; then
 # Only run gnome for gnome <= 3.8.4
 gnomeVersion="$(expr "$(gnome-terminal --version)" : '.* \(.*[.].*[.].*\)$')"
 if version_ge $gnomeVersion "3.8.4" ; then
 
-menv_function gstart
 function gstart {
   source $menv_bin_dir/gnome_start
 }
 
-menv_function gnome_add_tab
 function gnome_add_tab {
   WID=$(xprop -root | grep "_NET_ACTIVE_WINDOW(WINDOW)"| awk '{print $5}')
   xdotool windowfocus $WID
@@ -19,7 +17,6 @@ function gnome_add_tab {
   wmctrl -i -a $WID
 }
 
-menv_function gnome_list_all_settings
 function gnome_list_all_settings {
   for schema in $(gsettings list-schemas | sort) ; do
     for key in $(gsettings list-keys $schema | sort) ; do
@@ -33,12 +30,11 @@ if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
   eval `dbus-launch --close-stderr --sh-syntax --exit-with-session`
 fi
 
-menv_alias rd="rdesktop -g 1600x900 -u admin -p -"
+alias rd="rdesktop -g 1600x900 -u admin -p -"
 
-menv_alias mount_phone="simple-mtpfs $menv_local_dir/phone"
-menv_alias unmount_phone="fusermount -u $menv_local_dir/phone"
+alias mount_phone="simple-mtpfs $menv_local_dir/phone"
+alias unmount_phone="fusermount -u $menv_local_dir/phone"
 
-menv_function gnome_autostart_script
 function gnome_autostart_script {
   local script=$1
 
@@ -51,10 +47,6 @@ X-GNOME-Autostart-enabled=true
 Name=$script
 EOF
 }
-
-if [ -d ~/Desktop/ ] ; then
-  rmdir --ignore-fail-on-non-empty ~/Desktop/
-fi
 
 fi
 

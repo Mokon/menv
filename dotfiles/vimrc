@@ -1,4 +1,4 @@
-" (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+" (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 " Load plugins
 
@@ -10,7 +10,7 @@ if v:version < '703' || !has('python')
       " clang_complete
 endif
 
-execute pathogen#infect()
+"execute pathogen#infect()
 
 filetype plugin indent on " Enable lang dep. indenting
 syntax on " We want syntax coloring
@@ -114,20 +114,6 @@ function s:TexFormatting()
   :match
   "set mouse=a
   set spell
-endfunction
-
-autocmd BufRead,BufNewFile */quagga/* call s:QuaggaFormatting()
-
-function s:QuaggaFormatting()
-  setlocal tabstop=8
-  setlocal softtabstop=2
-  setlocal shiftwidth=2
-  setlocal noexpandtab
-
-  highlight default link QuaggaError ErrorMsg
-
-  syn match QuaggaError /\t/
-  syn match QuaggaError /\%81v.\+/
 endfunction
 
 autocmd BufRead,BufNewFile */frr/* call s:FrrFormatting()
@@ -485,4 +471,4 @@ function! WhatFunction()
 endfunction
 
 let g:licenses_copyright_holders_name = "David 'Mokon' Bond <mokon@mokon.net>"
-let g:licenses_authors_name = "David 'Mokon' Bond <mokon@mokon.net>"
+lt g:licenses_authors_name = "David 'Mokon' Bond <mokon@mokon.net>"

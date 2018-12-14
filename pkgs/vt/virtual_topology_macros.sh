@@ -1,4 +1,5 @@
 #!/bin/bash
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 #
 # This file contains some configuration file macros useful to create large
 # topologies.
@@ -190,4 +191,3 @@ function virtual_topology_commands {
     vt_vm_commands $vm "$cmds"
   done
 }
-

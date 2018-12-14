@@ -1,37 +1,36 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
-menv_alias gd="git difftool -t meld -y -M50"
-menv_alias gits="git status -s"
-menv_alias gitic="git commit -m \"Initial Commit\""
-menv_alias gitc="git commit -am "
-menv_alias gitpush="git push origin master"
-menv_alias gitamendauthor="git commit --amend --reset-author"
-menv_alias gitdo="git diff origin"
-menv_alias gitdh="git diff HEAD"
-menv_alias git_cleanup_repo="$BINRM \`git ls-files --other\`"
-menv_alias gitcp="git cherry-pick -x"
-menv_alias gitcdiff="git diff --staged --color-words --word-diff-regex=\"[^[:space:]]|([[:alnum:]]|UTF_8_GUARD)+\""
-menv_alias git_mk_branch="git checkout -b"
-menv_alias git_push_local_branch="git push -u origin"
-menv_alias git_graphical_diff_xxdiff="git difftool -t xxdiff -y"
-menv_alias git_graphical_diff_meld="git difftool -t meld -y"
-menv_alias git_graphical_diff_kdiff3="git difftool -t kdiff3 -y"
-menv_alias git_graphical_diff_kompare="git difftool -t kompare -y"
-menv_alias git_graphical_diff="git difftool -t meld -y &> /dev/null"
-menv_alias git_stash_keep_index="git stash -k"
-menv_alias git_text_colordiff="git difftool --extcmd='colordiff -ydw --suppress-common-lines -C 10' -y"
-menv_alias git_text_diff="git difftool --extcmd='colordiff -ydw \$LOCAL \$REMOTE | grep -E -C3 \'^.{123} [|<>]( |$)\'  ' -y"
-menv_alias git_tree="git log --graph --all --pretty=oneline"
-menv_alias git_log_fuller="git log --pretty=fuller"
-menv_alias git_log_t="git log --pretty=\"format:%C(yellow)%h %ad%Cred%d %Creset%s%Cblue [%cn]\" --decorate --date=relative"
-menv_alias git_files="git show --name-only --oneline"
-menv_alias git_label="git show --pretty=format:'%h %<(20,trunc)%an %ad %<(20,trunc)%s' --date=short --quiet"
-menv_alias git_stash_non_staged="git stash -k -u"
-menv_alias show_git_urls="find . -maxdepth 1 -type d -execdir git --git-dir {}/.git config --get remote.origin.url \;"
-menv_alias git_stats="git diff --numstat"
+alias gd="git difftool -t meld -y -M50"
+alias gits="git status -s"
+alias gitic="git commit -m \"Initial Commit\""
+alias gitc="git commit -am "
+alias gitpush="git push origin master"
+alias gitamendauthor="git commit --amend --reset-author"
+alias gitdo="git diff origin"
+alias gitdh="git diff HEAD"
+alias git_cleanup_repo="$BINRM \`git ls-files --other\`"
+alias gitcp="git cherry-pick -x"
+alias gitcdiff="git diff --staged --color-words --word-diff-regex=\"[^[:space:]]|([[:alnum:]]|UTF_8_GUARD)+\""
+alias git_mk_branch="git checkout -b"
+alias git_push_local_branch="git push -u origin"
+alias git_graphical_diff_xxdiff="git difftool -t xxdiff -y"
+alias git_graphical_diff_meld="git difftool -t meld -y"
+alias git_graphical_diff_kdiff3="git difftool -t kdiff3 -y"
+alias git_graphical_diff_kompare="git difftool -t kompare -y"
+alias git_graphical_diff="git difftool -t meld -y &> /dev/null"
+alias git_stash_keep_index="git stash -k"
+alias git_text_colordiff="git difftool --extcmd='colordiff -ydw --suppress-common-lines -C 10' -y"
+alias git_text_diff="git difftool --extcmd='colordiff -ydw \$LOCAL \$REMOTE | grep -E -C3 \'^.{123} [|<>]( |$)\'  ' -y"
+alias git_tree="git log --graph --all --pretty=oneline"
+alias git_log_fuller="git log --pretty=fuller"
+alias git_log_t="git log --pretty=\"format:%C(yellow)%h %ad%Cred%d %Creset%s%Cblue [%cn]\" --decorate --date=relative"
+alias git_files="git show --name-only --oneline"
+alias git_label="git show --pretty=format:'%h %<(20,trunc)%an %ad %<(20,trunc)%s' --date=short --quiet"
+alias git_stash_non_staged="git stash -k -u"
+alias show_git_urls="find . -maxdepth 1 -type d -execdir git --git-dir {}/.git config --get remote.origin.url \;"
+alias git_stats="git diff --numstat"
 
-menv_function git_stash_diff
 function git_stash_diff {
   local index=${1:-0}
 
@@ -39,15 +38,13 @@ function git_stash_diff {
 }
 
 # Function to clone from github.
-menv_function githubc
 function githubc {
   local repo=$1
 
   git clone https://github.com/$repo
 }
 
-# Function to git blame a sigal line.
-menv_function git_blame_line
+# Function to git blame a single line.
 function git_blame_line {
   local file=$1
   local line=$2
@@ -55,7 +52,6 @@ function git_blame_line {
   git blame $file -L $line,$line -l
 }
 
-menv_function git_diff_moved_file
 function git_diff_moved_file {
   local from=$1
   local to=$2
@@ -63,7 +59,6 @@ function git_diff_moved_file {
   git diff HEAD:$from $to
 }
 
-menv_function git_find_and_replace_all
 function git_find_and_replace_all {
   local oldtext=$1
   local newtext=$2
@@ -71,7 +66,6 @@ function git_find_and_replace_all {
   grep -rl $oldtext . | xargs sed -i "s/$oldtext/$newtext/g"
 }
 
-menv_function stash_cmdline_install
 function stash_cmdline_install {
   gem install atlassian-stash
   stash configure
@@ -85,7 +79,6 @@ function stash_cmdline_install {
 
 # from
 # http://stackoverflow.com/questions/8259851/using-git-diff-how-can-i-get-added-and-modified-lines-numbers
-menv_function diff_lines
 function diff_lines {
     local path=
     local line=
@@ -106,18 +99,15 @@ function diff_lines {
     done
 }
 
-menv_function git_diff_annotate_lines
 function git_diff_annotate_lines {
   git diff $* | diff_lines
 }
 
-menv_function strip_trailing_whitespace
 function strip_trailing_whitespace {
   local filename=$1
   sed -i 's/ *$//' $filename
 }
 
-menv_function git_changes_strip_trailing_whitespace
 function git_changes_strip_trailing_whitespace {
   files=$(git diff --name-only $@)
   for file in $files ; do
@@ -125,14 +115,12 @@ function git_changes_strip_trailing_whitespace {
   done
 }
 
-menv_function show_git_origins
 function show_git_origins {
   for dir in */; do
     ( cd $dir && git config --get remote.origin.url)
   done
 }
 
-menv_function update_chain_link
 function update_chain_link {
   local rebase_branch=$1
   local commit_count=${2:-1}
@@ -142,7 +130,6 @@ function update_chain_link {
   git rebase --onto ${rebase_branch} ${current_branch}~${commit_count} ${current_branch}
 }
 
-menv_function update_chain
 function update_chain {(
   set -e
 
@@ -183,7 +170,6 @@ function update_chain {(
   done
 )}
 
-menv_function update_chain_example
 function update_chain_example {
   local start=develop
   local mode=${1:-none}
@@ -198,7 +184,6 @@ function update_chain_example {
   update_chain $start $mode "${links[@]}"
 }
 
-menv_function git_open_file_in_another_branch
 function git_open_file_in_another_branch {
   local file=$1
   local branch=$2
@@ -210,7 +195,6 @@ function git_open_file_in_another_branch {
   /bin/rm -f $cached_file
 }
 
-menv_function git_file_owners
 function git_file_owners {
   local file=$1
 

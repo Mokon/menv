@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# (C) 2017 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 use strict;
 use warnings;

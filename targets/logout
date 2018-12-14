@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 menv_load_install_opts
 
@@ -8,4 +8,3 @@ menv_target_children logout
 if [ -f $menv_local_logout ]; then
   source $menv_local_logout
 fi
-

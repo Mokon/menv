@@ -1,7 +1,8 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
-menv_function install_gateone
+# TODO rewrite this
+
 function install_gateone {
   spushd .
 
@@ -30,9 +31,8 @@ function install_gateone {
   spopd
 }
 
-menv_alias mcloud_vpn="vpn mokon $HOME/menv/local/sec/vpn.cloud.mokon.net.ovpn"
+alias mcloud_vpn="vpn mokon $HOME/menv/local/sec/vpn.cloud.mokon.net.ovpn"
 
-menv_function mcloud_enroll
 function mcloud_enroll {
   local myip=${1:-mobile.brocade.mokon.net}
   local myname=${2:-`hostname`}
@@ -112,4 +112,3 @@ SSHSCRIPT
     echo "$myname=$myip" >> ${HOME}/$membership_cfg
   fi
 }
-

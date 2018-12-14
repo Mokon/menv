@@ -1,11 +1,6 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
-
-spushd .
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 cd ~
 
 if_symlink_rm .gntrc
-
-spopd
-

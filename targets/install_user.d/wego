@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) 2015-2017 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 if [ $MENV_DESKTOP -ne 0 ] ; then
   export GOPATH=$menv_cache_go_dir

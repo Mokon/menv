@@ -1,30 +1,28 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
-menv_alias xval="valgrind --track-origins=yes --leak-check=full "\
+alias xval="valgrind --track-origins=yes --leak-check=full "\
   "--show-reachable=yes --num-callers=100"
-menv_alias rval="valgrind --tool=memcheck --leak-check=full "\
+alias rval="valgrind --tool=memcheck --leak-check=full "\
   "--show-reachable=no --undef-value-errors=no --track-origins=no "\
   "--child-silent-after-fork=no --trace-children=no --num-callers=100 --fair-sched=yes"
-menv_alias sval="xval --gen-suppressions=yes --demangle=no"
-menv_alias profvis="kcachegrind"
-menv_alias prof="valgrind --tool=callgrind"
-menv_alias visual_memcheck="valkyrie"
-menv_alias gdbv="valgrind --vgdb=yes --vgdb-error=0"
-menv_alias gval="rval --vgdb=yes --vgdb-error=0"
-menv_alias gdbr="(echo r ; cat) | gdb --args"
-menv_alias gdb_run="gdb --eval-command=run --args"
-menv_alias gdb_oneshot="gdb --eval-command=run --eval-command=quit --args"
-menv_alias xmlval="valgrind --tool=memcheck --leak-check=full  --show-reachable=no --undef-value-errors=no --track-origins=no  --child-silent-after-fork=no --trace-children=no --xml=yes --xml-file=xmlval.%p.memcheck"
+alias sval="xval --gen-suppressions=yes --demangle=no"
+alias profvis="kcachegrind"
+alias prof="valgrind --tool=callgrind"
+alias visual_memcheck="valkyrie"
+alias gdbv="valgrind --vgdb=yes --vgdb-error=0"
+alias gval="rval --vgdb=yes --vgdb-error=0"
+alias gdbr="(echo r ; cat) | gdb --args"
+alias gdb_run="gdb --eval-command=run --args"
+alias gdb_oneshot="gdb --eval-command=run --eval-command=quit --args"
+alias xmlval="valgrind --tool=memcheck --leak-check=full  --show-reachable=no --undef-value-errors=no --track-origins=no  --child-silent-after-fork=no --trace-children=no --xml=yes --xml-file=xmlval.%p.memcheck"
 
-menv_function gprof
 function gprof {
   gprof $1 gmon.out &> profileinfo.out
 }
 
-menv_alias list_core_dumps="ls -Alt /var/lib/systemd/coredump"
+alias list_core_dumps="ls -Alt /var/lib/systemd/coredump"
 
-menv_function find_newest_file
 function find_newest_file {
   local dir="$1"
   local name_pattern="$2"
@@ -32,7 +30,6 @@ function find_newest_file {
     | sort -n | sed -r 's/^[0-9.]+\s+//' | tail -n 1
 }
 
-menv_function extract_core_dump
 function extract_core_dump {
   local core=$1
   local bncore=$(basename $core)
@@ -42,7 +39,6 @@ function extract_core_dump {
   sudo chown $USER ${bncore}
 }
 
-menv_function extract_latest_core_dump
 function extract_latest_core_dump {
   local core=$(find_newest_file /var/lib/systemd/coredump/ "core.*.xz" \
                | rev | cut -f 2- -d '.' | rev)
@@ -51,7 +47,6 @@ function extract_latest_core_dump {
 
 alias delete_all_cores="sudo /bin/rm -rf /var/lib/systemd/coredump/core.*.xz"
 
-menv_function gdb_process
 function gdb_process {
   local pid=$1
 
@@ -68,15 +63,13 @@ function gdb_process {
   fi
 }
 
-menv_function get_process_stack
 function get_process_stack {
   local pid=$1
 
   gdb_process $1 -ex "thread apply all bt" -batch
 }
 
-menv_alias interactive_decode="addr2line -e "
-menv_function decode_stacktrace
+alias interactive_decode="addr2line -e "
 function decode_stacktrace {
   local stacktrace=${1}
   local symbol_file=${2}
@@ -98,6 +91,6 @@ END
   done < ${stacktrace}
 }
 
-menv_alias web_gdb="gdbgui -n --host 0.0.0.0 -p 1338 --args"
+alias web_gdb="gdbgui -n --host 0.0.0.0 -p 1338 --args"
 
-menv_alias show_core_dumps="coredumpctl list"
+alias show_core_dumps="coredumpctl list"

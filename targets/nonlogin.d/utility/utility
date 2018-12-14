@@ -1,16 +1,25 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
-menv_alias count_files_in_directory_r="find . -type f | wc -l"
+function empty_ru {
+  if [ -f ~/.local/share/recently-used.xbel ] ; then
+    sudo chattr -i ~/.local/share/recently-used.xbel
+  fi
+  echo "" | sudo tee ~/.local/share/recently-used.xbel > /dev/null
+  sudo chattr +i ~/.local/share/recently-used.xbel
+}
+
+function vim_recursive_open {
+    dir=$1
+    find $dir \( -name '.?*' -prune \) -o -type f -exec vim {} +
+}
 
 # A function to list a directory structure in a nice tree.
-menv_function tree_list
 function tree_list {
   ls -R $1 | grep ":$" \
     | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
 }
 
-menv_function start_vm
 function start_vm {
   local vm=$1
   if VBoxManage list runningvms |grep -q $vm ; then
@@ -20,39 +29,33 @@ function start_vm {
   fi
 }
 
-menv_function stop_vm
 function stop_vm {
   local vm = $1
   VBoxManage controlvm $vm poweroff
 }
 
 # A function to grep excluding something I normally don't care about.
-menv_function mgrep
 function mgrep {
   grep -rn $1 $2 |grep -v .svn |grep -v Binary |grep -v .git
 }
 
 # Finds a program in the path which contains part of the given string.
-menv_function findprogram
 function findprogram {
   ls $(echo $PATH:/sbin:/usr/sbin | sed "s/:/\ /g") | grep "$1" \
     | sort --unique
 }
 
-menv_function find_large_files
 function find_large_files {
   find / -type f -size +100000k -exec ls -lh {} \; | awk '{ print $9 ": " $5 }'
 }
 
 # Function that appends to the end of a file.
-menv_function append_to_file
 function append_to_file {
   echo $1 >> $2
 }
 
 # A fucntion to swap two files.
-menv_function swap
-function swap() {
+function swap {
   local tmp`mktemp`
   mv "$1" $tmp
   mv "$2" "$1"
@@ -60,7 +63,6 @@ function swap() {
 }
 
 # Diffs two urls/files.
-menv_function urldiff
 function urldiff {
   if [[ $1 == http* ]] ; then
     local file1=`mktemp`
@@ -90,13 +92,11 @@ function urldiff {
   return $ret
 }
 
-menv_function cat_all_files_in_dir
 function cat_all_files_in_dir {
   find $1 -type f -exec /bin/cat '{}' \;
 }
 
 # Simple hack function to diff the file contents recursively of two folders.
-menv_function lsdiff
 function lsdiff {
   ls -R $1 |grep -v "\/" &> /tmp/ls1.diff
   ls -R $2 |grep -v "\/" &> /tmp/ls2.diff
@@ -106,7 +106,6 @@ function lsdiff {
   $BINRM $tmp1 $tmp2
 }
 
-menv_function find_and_replace_all
 function find_and_replace_all {
   local search_pattern=$1
   local replace_pattern=$2
@@ -117,7 +116,6 @@ function find_and_replace_all {
 }
 
 # Opens a file based on its extension or hashbang.
-menv_function mopen
 function mopen {
   local file="$1"
 
@@ -146,14 +144,12 @@ function mopen {
   fi
 }
 
-menv_function dot_to_png
 function dot_to_png {
   local in=$1
   local out=$2
   dot $in -Tpng -o $2
 }
 
-menv_function convert_to_gif
 function convert_to_gif {
   local files=$1
   local output=$2
@@ -163,7 +159,6 @@ function convert_to_gif {
   convert -delay $delay -loop 0 $files $output
 }
 
-menv_function topen
 function topen {
   local file="$1"
 
@@ -185,7 +180,6 @@ function topen {
   fi
 }
 
-menv_function list_root_owned_files
 function list_root_owned_files {
   local dir=${1:-~}
 
@@ -195,7 +189,6 @@ function list_root_owned_files {
 # This function takes a patch file and splits it into new and exisiting
 # components. A new component is a sub patch which creates a new file. An
 # existing component is a sub patch which edits an existing file.
-menv_function split_patch_into_new_and_existing
 function split_patch_into_new_and_existing {
   local patch=$1
 
@@ -226,18 +219,15 @@ function split_patch_into_new_and_existing {
   popd
 }
 
-menv_function unix_epoch
 function unix_epoch {
   date +%s
 }
 
-menv_function set_brightness
 function set_brightness {
   local brightness=${1:-100}
   sudo bash -c "echo $brightness > /sys/class/backlight/intel_backlight/brightness"
 }
 
-menv_function pretty_print_json
 function pretty_print_json {
   local json=$1
   local tmp_file=`mktmp`
@@ -246,14 +236,12 @@ function pretty_print_json {
   mv -b $tmp_file $json
 }
 
-menv_function remove_empty_dirs
 function remove_empty_dirs {
   local dir=${1:-.}
 
   find $dir -type d -empty -exec rmdir {} \;
 }
 
-menv_function sum_transfer_size
 function sum_transfer_size {
   local file=$1
 
@@ -261,7 +249,6 @@ function sum_transfer_size {
     grep -v - | grep -v % | awk '{ sum += $1 } END { print sum }'
 }
 
-menv_function save
 function save {
   local savefile=${1:-$menv_local_save_dir/saveme}
 
@@ -274,16 +261,14 @@ function save {
   echo $input | tee $savefile
 }
 
-menv_alias dropboxd="~/.dropbox-dist/dropboxd"
+alias dropboxd="~/.dropbox-dist/dropboxd"
 
-menv_function determine_filesystem
 function determine_filesystem {
   local dev=${1:-sd1}
 
   sudo fdisk /dev/$dev -l
 }
 
-menv_function grep_exclude_list
 function grep_exclude_list {
   local pattern=$1
 
@@ -295,7 +280,6 @@ function grep_exclude_list {
   eval $cmd
 }
 
-menv_function what
 function what {
   local OUT=`which $@ 2> /dev/null`
   if [ $? -eq 0 ]; then
@@ -313,7 +297,6 @@ function what {
   fi
 }
 
-menv_function list_path_permissions
 function list_path_permissions {
   local file=$1
   local dir=$file
@@ -327,7 +310,6 @@ function list_path_permissions {
   done
 }
 
-menv_function find_ext
 function find_ext {
   local ext=$1
   local dir=${2:-.}
@@ -335,7 +317,6 @@ function find_ext {
   find $dir -iname "*.$ext"
 }
 
-menv_function talk
 function talk {
   local mode=$1
   local text=$2
@@ -347,7 +328,6 @@ function talk {
   esac
 }
 
-menv_function find_all_videos
 function find_all_videos {
   EXTS=(mov mp4 avi mpeg mkv flv wmv)
   for ext in "${EXTS[@]}" ; do
@@ -355,7 +335,6 @@ function find_all_videos {
   done
 }
 
-menv_function scp_all_videos
 function scp_all_videos {
   local dst=$1
 
@@ -367,12 +346,10 @@ function scp_all_videos {
   scp -r ~/mov $2
 }
 
-menv_function enumerate_output
 function enumerate_output {
 "$@" 2> >(sed 's/^/2: /') > >(sed 's/^/1: /')
 }
 
-menv_function sshp
 function sshp {
   local i=60
   while [[ $i -ne 0 ]] ; do
@@ -385,7 +362,6 @@ function sshp {
   done
 }
 
-menv_function cut_file_between
 function cut_file_between {
   local file=$1
   local start=$2
@@ -393,18 +369,15 @@ function cut_file_between {
   sed -n "${start},${end}p" $file
 }
 
-menv_function checksum_dir
 function checksum_dir {
   tar -cf - $1 | md5sum
 }
 
-menv_function frequency
 function frequency {
   local file=$1
   awk -F ' ' '{print $1}' $file | sort | uniq -c | sort -nr
 }
 
-menv_function run_remote_script
 function run_remote_script {
   local ip=$1
   local script=$2
@@ -415,7 +388,6 @@ function run_remote_script {
 EOF
 }
 
-menv_function merge_pdfs
 function merge_pdfs {
   local out=$1
   shift
@@ -423,19 +395,16 @@ function merge_pdfs {
   gs -q -sPAPERSIZE=letter -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=$out.pdf $@
 }
 
-menv_function what_file_in_transfer
 function what_file_in_transfer {
   local dir=$1
   local last_file=$2
   ls -R $dir|grep "$last_file" -B 10000000 |wc -l
 }
 
-menv_function open_all_files_in_dir
 function open_all_files_in_dir {
   find . -xtype f -exec vim {} +
 }
 
-menv_function ls_numerica
 function ls_numeric {
   ls -l $1 | \
     awk '{k=0;for(i=0;i<=8;i++)k+=((substr($1,i+2,1)~/[rwx]/) \ *2^(8-i));if(k)printf("%0o ",k);print}'

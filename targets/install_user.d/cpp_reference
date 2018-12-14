@@ -1,7 +1,5 @@
 #!/bin/bash
-# (C) 2018 David 'Mokon' Bond, All Rights Reserved
-
-spushd .
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 cd $menv_cache_dir
 
@@ -11,5 +9,3 @@ fetch $file
 
 extract $(basename $file)
 $BINRM -f $(basename $file)
-
-spopd

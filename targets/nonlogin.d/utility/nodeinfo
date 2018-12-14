@@ -1,7 +1,6 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
-menv_function nodeinfo {
 function nodeinfo {
   local TC_RED="[0;31;42m"
   local TC_RESET="[0m"

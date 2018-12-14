@@ -1,9 +1,9 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 if [ $MENV_DESKTOP -ne 0 ] ; then
 
-spushd .
+if [ $DIST != "darwin" ] ; then
 
 if [ -f /etc/selinux/config ] ; then
   sudo cp /etc/selinux/config $menv_sysbackup_dir
@@ -16,6 +16,6 @@ SELINUX=disabled
 SELINUXTYPE=targeted
 HEREDOC
 
-spopd
+fi
 
 fi

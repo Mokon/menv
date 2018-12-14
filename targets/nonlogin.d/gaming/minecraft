@@ -1,37 +1,35 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
-menv_export MENV_GAMING=0
+export MENV_GAMING=0
 if [ $MENV_GAMING -ne 0 ] ; then
 
-menv_export MCHOME=~/.minecraft
+export MCHOME=~/.minecraft
 
-menv_alias mc="java -Xmx2048M -Xms512M -cp i"\
+alias mc="java -Xmx2048M -Xms512M -cp i"\
   "minecraft.jar net.minecraft.LauncherFrame"
-menv_alias mcs="java -Xmx2048M -Xms1024M -jar i"\
+alias mcs="java -Xmx2048M -Xms1024M -jar i"\
   "minecraft_server.jar nogui"
 
 # This just works for my epsom box... The only box I play minecraft on.
-menv_export LD_LIBRARY_PATH="/lib/jvm/java-1.7.0-openjdk-1.7.0.9.x86_64/jre/lib/amd64/"
+export LD_LIBRARY_PATH="/lib/jvm/java-1.7.0-openjdk-1.7.0.9.x86_64/jre/lib/amd64/"
 
 # A function which downloads the minecraft jar launcher file.
-menv_function mclauncher
 function mclauncher {
   echo "Downloading Minecraft jar."
   wget -O minecraft.jar \
     "https://s3.amazonaws.com/MinecraftDownload/launcher/minecraft.jar"
 }
 
-menv_alias mcdv="rm ${MCHOME}/bin/version"
-menv_alias mcjarspc="ln -s ${MCHOME}/bin/minecraftspc.jar \
+alias mcdv="rm ${MCHOME}/bin/version"
+alias mcjarspc="ln -s ${MCHOME}/bin/minecraftspc.jar \
   ${MCHOME}/bin/minecraft.jar"
-menv_alias mcjarmc=" ln -s ${MCHOME}/bin/minecraftmc.jar \
+alias mcjarmc=" ln -s ${MCHOME}/bin/minecraftmc.jar \
   ${MCHOME}/bin/minecraft.jar"
 
 # NOTE: I can set the mc homedir with this arg: mc -Duser.home=$DIR
  
 # Function to install single player commands into minecraft.
-menv_function mcspc
 function mcspc {
   $BINRM -rf mc
   mkdir mc
@@ -66,7 +64,6 @@ function mcspc {
   $BINRM -rf mc
 }
 
-menv_function mclib
 function mclib {
   $BINRM -rf mc
   mkdir mc
@@ -103,7 +100,6 @@ function mclib {
 }
 
 # Function to backup my ii map in mc.
-menv_function mcbkii
 function mcbkii {
   local ii="${HOME}/.minecraft/saves/Imperium Infinitus"
 

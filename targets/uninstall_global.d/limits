@@ -1,11 +1,7 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
-
-spushd .
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 if sudo grep -q backup /etc/security/limits.conf &> /dev/null ; then
   exesudo delete_line_in_file "\\* soft nofile 4096" /etc/security/limits.conf
   exesudo delete_line_in_file "\\* hard nofile 4096" /etc/security/limits.conf
 fi
-
-spopd

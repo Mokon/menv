@@ -1,8 +1,8 @@
 #!/bin/bash
-# (C) 2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 export WEGORC=~/.wegorc
 export GOPATH=$HOME/menv/go
 export PATH="$PATH:$GOPATH/bin"
 
-menv_alias weather="telnet rainmaker.wunderground.com"
+alias weather="telnet rainmaker.wunderground.com"

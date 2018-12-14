@@ -1,7 +1,6 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
-menv_function wemux_init
 function wemux_init {
   sudo useradd -c "Wemux Guest" -e 1986-10-06 -f 0 -p $(crypt guest) -m -s /bin/bash guest
   sudo cp $menv_bin_dir/wemux_bash_profile ~guest/.bash_profile
@@ -9,7 +8,6 @@ function wemux_init {
   sudo chgrp guest ~guest/.bash_profile
 }
 
-menv_function wemux_open
 function wemux_open {
   local ndays=${1:-1}
 

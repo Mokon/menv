@@ -1,10 +1,8 @@
 #!/bin/bash
-# (C) 2018 David 'Mokon' Bond, All Rights Reserved
-
-spushd .
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 if [ $MENV_DESKTOP -ne 0 ] ; then
-  sudo usermod -a -G wireshark $USER
+  if [ $DIST != "darwin" ] ; then
+    sudo usermod -a -G wireshark $USER
+  fi
 fi
-
-spopd

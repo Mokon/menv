@@ -1,8 +1,6 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
-
-menv_function create_yum_dnf_repos
 function create_yum_dnf_repos {
   create_yum_dnf_repo google-chrome \
     http://dl.google.com/linux/chrome/rpm/stable/\$basearch \
@@ -18,7 +16,6 @@ function create_yum_dnf_repos {
     https://resin-io.bintray.com/redhat norepo
 }
 
-menv_function install_rpmfusion
 function install_rpmfusion {
   local rpmfusion_org=http://download1.rpmfusion.org
   local ver=$(rpm -E %${DIST})
@@ -38,7 +35,6 @@ function install_rpmfusion {
   local_install_package $nonfree_url
 }
 
-menv_function install_skype
 function install_skype {
   fetch http://www.skype.com/go/getskype-linux-beta-fc10 skype.rpm
   local_install_package skype.rpm
@@ -77,15 +73,19 @@ if [[ $REPLY_PKGS =~ ^[Yy]$ ]] ; then
     parse_and_install_pkgs_file tex
     parse_and_install_pkgs_file perl
 
-    local_install_package http://d-rats.com/yum/f11/d-rats-repo-0.1.3-1.fc12.noarch.rpm
+    if [ "$PKG_TYPE" == "rpm" ] ; then
+      local_install_package http://d-rats.com/yum/f11/d-rats-repo-0.1.3-1.fc12.noarch.rpm
+    fi
 
-    npm config set prefix ${menv_cache_npm_dir}
-    menv_export PATH=$PATH:${menv_cache_npm_bin_dir}
+    if [ $DIST != "darwin" ] ; then
+      npm config set prefix ${menv_cache_npm_dir}
+      export PATH=$PATH:${menv_cache_npm_bin_dir}
 
-    npm_install_packages git-stats git-stats-importer http-server svgexport \
-      forever xml2json-command
-    gem_install_packages git_stats slackcat git_fame
-    pip_install_packages gdbgui pyang terminaltables
+      npm_install_packages git-stats git-stats-importer http-server svgexport \
+        forever xml2json-command
+      gem_install_packages git_stats slackcat git_fame
+      pip_install_packages gdbgui pyang terminaltables
+    fi
   fi
 
   parse_and_install_pkgs_file root

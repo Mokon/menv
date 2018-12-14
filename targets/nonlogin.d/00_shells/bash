@@ -1,11 +1,10 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
-menv_function bash_cmd_exists
 function bash_cmd_exists {
     test -x "$(command -v "$1")"
 }
 
-menv_alias show_bash_functions="typeset -f"
-menv_alias show_bash_function="type"
-menv_alias list_bash_functions="typeset -F"
+alias show_bash_functions="typeset -f"
+alias show_bash_function="type"
+alias list_bash_functions="typeset -F"

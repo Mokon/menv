@@ -1,4 +1,5 @@
 #!/bin/bash
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 #
 # This file contains some wrappers around virsh.
 #
@@ -275,4 +276,3 @@ function virsh_vm_wait_until_pingable {
     if ping -c1 $vmip &> /dev/null ; then break ; fi
   done 
 }
-

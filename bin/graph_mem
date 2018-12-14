@@ -1,4 +1,5 @@
 #!/bin/env bash
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 trap ctrl_c INT
 

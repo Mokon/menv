@@ -1,4 +1,5 @@
 #!/bin/bash
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 #
 # virtual topology script for automatic vm and vnet configuration of virtual
 # topologies.
@@ -108,4 +109,3 @@ case $1 in
   h|help|-h|--help|usage|-help) usage ;;
   *) echo "Unknown Invocation" ; usage ; exit -1 ;;
 esac
-

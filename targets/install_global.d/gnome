@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 if [ $MENV_DESKTOP -ne 0 ] ; then
 
@@ -7,8 +7,6 @@ if test -x "$(command -v "gnome-terminal")" ; then
 # Only run gnome for gnome >= 3.8.4
 gnomeVersion="$(expr "$(gnome-terminal --version)" : '.* \(.*[.].*[.].*\)$')"
 if version_ge $gnomeVersion "3.8.4" ; then
-
-spushd .
 
 mkdir -p ~/.config/gtk-3.0/
 safe_symlink ~/.config/gtk-3.0/settings.ini $menv_dotfiles_dir/config/gtk-3.0/settings.ini
@@ -24,6 +22,7 @@ append_crontab "@hourly /home/$USER/menv/bin/rotate_background"
 
 ~/menv/bin/rotate_background
 
+# TODO move into repo
 avatar=david_bond_social_media.jpg
 fetch http://mokonphotography.com/wp-content/uploads/2015/01/$avatar
 
@@ -79,7 +78,7 @@ gsettings set org.gnome.gedit.preferences.ui max-recents "uint32 0"
 echo "Setting plymouth theme"
 sudo plymouth-set-default-theme solar -R &> /dev/null
 
-menv_alias record_screen="echo 'Type Ctrl + Shift + Alt + R'"
+alias record_screen="echo 'Type Ctrl + Shift + Alt + R'"
 
 PALETTE="['rgb(0,0,0)', 'rgb(205,0,0)', 'rgb(0,205,0)', 'rgb(205,205,0)', 'rgb(30,144,255)', 'rgb(205,0,205)', 'rgb(0,205,205)', 'rgb(229,229,229)', 'rgb(76,76,76)', 'rgb(255,0,0)', 'rgb(0,255,0)', 'rgb(255,255,0)', 'rgb(70,130,180)', 'rgb(255,0,255)', 'rgb(0,255,255)', 'rgb(255,255,255)']"
 BG_COLOR="rgb(0,0,0)"
@@ -122,12 +121,10 @@ if [ ! -z $MENV_HOSTNAME ] ; then
   sudo hostnamectl set-hostname --pretty "$MENV_HOSTNAME"
 fi
 
-spopd
 else
   echo "Unsupported Gnome Version [$gnomeVersion] detected."
 fi
-else
-  echo "Unsupported Gnome Not Installed."
+
 fi
 
 fi

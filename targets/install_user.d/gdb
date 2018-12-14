@@ -1,7 +1,5 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
-
-spushd .
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 cd ~
   
@@ -10,5 +8,3 @@ safe_symlink .gdbinit $menv_dotfiles_dir/gdbinit
 mkdir -p $menv_cache_dotfiles_dir/gdb
 cd $menv_cache_dotfiles_dir/gdb
 fetch https://sourceware.org/ml/gdb/2008-02/msg00064/stl-views.gdb
-
-spopd

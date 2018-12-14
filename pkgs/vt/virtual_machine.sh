@@ -1,4 +1,5 @@
 #!/bin/bash
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 #
 # This file contains functionality around generic vm specific interactions with
 # the virtual topology being generated. This file can be used as a template
@@ -102,4 +103,3 @@ function vm_vm_commands {
 
   echo "NOT IMPLEMENTED"
 }
-

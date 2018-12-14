@@ -1,14 +1,12 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
-
-spushd .
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 if [ $MENV_DESKTOP -ne 0 ] ; then
-  if grep -q backup /etc/fstab &> /dev/null ; then
-    echo "Backup already in fstab."
-  else
-    echo "LABEL=/backup /backup auto nosuid,nodev,nofail" | sudo tee -a /etc/fstab &> /dev/null
+  if [ $DIST != "darwin" ] ; then
+    if grep -q backup /etc/fstab &> /dev/null ; then
+      echo "Backup already in fstab."
+    else
+      echo "LABEL=/backup /backup auto nosuid,nodev,nofail" | sudo tee -a /etc/fstab &> /dev/null
+    fi
   fi
 fi
-
-spopd

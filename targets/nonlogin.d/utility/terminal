@@ -1,11 +1,9 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
-# A function to reset the terminal color.
-menv_function reset_tc
 function reset_tc {
   local TC_RESET="[0m"
   echo ${TC_RESET}
 }
 
-menv_alias remote_terminal_share="wemux"
+alias remote_terminal_share="wemux"

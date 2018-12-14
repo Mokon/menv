@@ -1,12 +1,12 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
-
-spushd .
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 cd ~
 
 if [ $MENV_DESKTOP -ne 0 ] ; then
-  sudo /sbin/chkconfig sshd on 2>&1 |grep -v Forwarding
+  if [ -x /sbin/chkconfig ] ; then
+    sudo /sbin/chkconfig sshd on 2>&1 |grep -v Forwarding
+  fi
 
   if ! sudo grep -q "UseDNS no" /etc/ssh/sshd_config &> /dev/null ; then
     echo "UseDNS no" | sudo tee -a /etc/ssh/sshd_config &> /dev/null
@@ -16,5 +16,3 @@ if [ $MENV_DESKTOP -ne 0 ] ; then
     echo "UseRoaming no" | sudo tee -a /etc/ssh/ssh_config &> /dev/null
   fi
 fi
-
-spopd

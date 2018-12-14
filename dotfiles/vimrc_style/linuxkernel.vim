@@ -1,4 +1,4 @@
-" (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+" (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 autocmd FileType c,cpp,pl call s:LinuxKernelFormatting()
 autocmd FileType diff,kconfig setlocal tabstop=8
@@ -24,4 +24,3 @@ function s:LinuxKernelFormatting()
   syn match LinuxError /\s\+$/
   syn match LinuxError /\%81v.\+/
 endfunction
-

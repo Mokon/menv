@@ -1,13 +1,11 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
-menv_function hash_dir
 function hash_dir {
   local dir=$1
   tar -cf - $dir | md5sum
 }
 
-menv_function backup
 function backup {
   local backup_location=${1:-/backup}
 
@@ -50,7 +48,6 @@ EOF
   spopd
 }
 
-menv_function restore_backup
 function restore_backup {
   local date=${1:-`date +"%m_%d_%Y"`}
   local backup_location=${2:-/backup}
@@ -70,7 +67,6 @@ function restore_backup {
   spopd
 }
 
-menv_function mclone
 function mclone {
   echo -n Password:
   read -s password
@@ -81,7 +77,6 @@ function mclone {
   done
 }
 
-menv_function mk_private
 function mk_private {
   dir=$1
 
@@ -94,7 +89,6 @@ function mk_private {
 alias shred="echo 'Are you sure you meant to shred? Call shred explicitly.'"
 alias scrub="echo 'Are you sure you meant to scrub? Call scrub explicitly.'"
 
-menv_function wipe_and_format_drive
 function wipe_and_format_drive {
   local device=$1
   local drive_id=`printf "%03d" $2`

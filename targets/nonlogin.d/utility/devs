@@ -1,18 +1,16 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
-menv_alias ni="nodeinfo"
-menv_alias list_block_devices="lsblk"
-menv_alias hdinfo="lsscsi ; lsblk ; df -h"
+alias ni="nodeinfo"
+alias list_block_devices="lsblk"
+alias hdinfo="lsscsi ; lsblk ; df -h"
 
-menv_function cp_cd
 function cp_cd {
   dd if=/dev/cdrom of=~/"$(cd-info |grep Volume |grep -v Set|awk '{print $3}').iso" bs=2048 conv=sync,notrunc && sync
 }
 
-menv_alias goto_usb="/run/media/`whoami`/"
+alias goto_usb="/run/media/`whoami`/"
 
-menv_function flash_image
 function flash_image {
   image_file=$1
   dev=${2:-/dev/sdb}

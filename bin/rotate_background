@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 source ~/menv/core/lib
 
@@ -7,40 +7,15 @@ if test -x "$(command -v "gnome-terminal")" ; then
 gnomeVersion="$(expr "$(gnome-terminal --version)" : '.* \(.*[.].*[.].*\)$')"
 if version_ge $gnomeVersion "3.8.4" ; then
 
-spushd .
 cd ${menv_cache_dir}
 
-for i in {1..1}; do
+if [ ! -d wallpapers ] ; then
+  dl_background
+fi
 
-mpwp="http://mokonphotography.com/wp-content/uploads"
-background_urls=(
-  "$mpwp/2013/11/ca_2013_8_1-205.jpg"
-  "$mpwp/2013/11/hannah-emb.jpg"
-  "$mpwp/2013/11/Formal209.jpg"
-  "$mpwp/2013/11/hannah-geek4.jpg"
-  "$mpwp/2013/11/ca_2013_8_1-066.jpg"
-  "$mpwp/2013/11/ca_2013_8_1-177.jpg"
-  "$mpwp/2012/08/SeacoastNov07-2951.jpg"
-  "$mpwp/2013/11/misc-007.jpg"
-  "$mpwp/2012/07/t1.jpg"
-  "$mpwp/2012/07/hi-629.jpg"
-  "$mpwp/2012/06/IMG_1058.jpg"
-  "$mpwp/2015/07/hannah_ames.jpg"
-  "$mpwp/2015/07/boat.jpg"
-  "$mpwp/2015/07/boat2.jpg"
-)
-i=$(($RANDOM % ${#background_urls[@]}))
-background_url=${background_urls[$i]}
+background_url=$(ls wallpapers|sort -R |tail -1)
 
 echo "Setting wallpaper to $background_url" &>> $menv_cache_dir/rotate_background.log
-
-if [ ! -d wallpapers ] ; then
-  mkdir wallpapers
-fi
-
-if [ ! -f  wallpapers/${i}.jpg ] ; then
-  fetch_w_timeout ${background_url} wallpapers/${i}.jpg 60 &> /dev/null
-fi
 
 PID=$(pgrep gnome-session -u $menv_user |head -n 1 | sed ':a;N;$!ba;s/\n/ /g')
 export DBUS_SESSION_BUS_ADDRESS=$(sudo grep -z DBUS_SESSION_BUS_ADDRESS /proc/$PID/environ|cut -d= -f2-)
@@ -50,8 +25,6 @@ gsettings set org.gnome.desktop.screensaver picture-uri "${menv_cache_dir}/wallp
 
 sleep 5
 done
-
-spopd
 
 else
   echo "Unsupported Gnome Version [$gnomeVersion] detected."

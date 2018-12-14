@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 # I like a large history size and I like a history that automatically saves
 # itself after each command so if my shell terminates without a proper exit I
@@ -26,23 +26,22 @@ fi
 if [ -f ~/.bash_history ] ; then
   cp ~/.bash_history ${menv_history_dir}/bash_history.${BASHPID}
 fi
-menv_export HISTCONTROL=ignoredups:erasedups
-menv_export HISTFILE=${menv_history_dir}/bash_history.${BASHPID}
-menv_export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'} history -a; history -c; history -r"
+export HISTCONTROL=ignoredups:erasedups
+export HISTFILE=${menv_history_dir}/bash_history.${BASHPID}
+export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'} history -a; history -c; history -r"
 
 shopt -s histappend
 
-menv_export HISTTIMEFORMAT='%F %T '
-menv_export HISTIGNORE="reset:clear:exit:shutdown*:reboot:*systemctl poweroff*:*systemctl reboot*"
-menv_export HISTSIZE=10000
-menv_export HISTFILESIZE=10000
-menv_alias search_history="history | grep "
-menv_alias sh=search_history
-menv_alias chistory="history | cut -c 8-"
+export HISTTIMEFORMAT='%F %T '
+export HISTIGNORE="reset:clear:exit:shutdown*:reboot:*systemctl poweroff*:*systemctl reboot*"
+export HISTSIZE=10000
+export HISTFILESIZE=10000
+alias search_history="history | grep "
+alias sh=search_history
+alias chistory="history | cut -c 8-"
 
-menv_function cd
 function cd {
-  default_dir=~
+  local default_dir=~
   if dir=`realpath "${1:-$default_dir}"` ; then
     dirstack=("${dirstack[@]}" $(pwd))
     builtin cd "$dir"
@@ -52,7 +51,7 @@ function cd {
 
   while [ `pwd` != "/" ] ; do
     if [ -f cscope.out ] ; then
-      menv_export CSCOPE_DB=`realpath cscope.out`
+      export CSCOPE_DB=`realpath cscope.out`
       break
     fi
     builtin cd ..
@@ -61,13 +60,11 @@ function cd {
   popd &> /dev/null
 }
 
-menv_function mpop
 function mpop {
   builtin cd ${dirstack[@]:(-1)}
   dirstack=(${dirstack[@]:0:$((${#dirstack[@]}-1))})
 }
 
-menv_function mdirs
 function mdirs {
   echo ${dirstack[@]}
 }

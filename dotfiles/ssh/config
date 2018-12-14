@@ -1,4 +1,4 @@
-# (C) 2013-2017 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 TCPKeepAlive yes
 ServerAliveInterval 30
 ServerAliveCountMax 4
@@ -17,7 +17,7 @@ Host 128technology.com
 Host epsom
   User mokon
   HostName 192.168.1.2
-#  ProxyCommand  ssh mokon@cloud.mokon.net nc %h %p 2> /dev/null
+#  ProxyCommand  ssh mokon@epsom.mokon.net nc %h %p 2> /dev/null
 
 #RSAAuthentication yes
 #PubkeyAuthentication yes

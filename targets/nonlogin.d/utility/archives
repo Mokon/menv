@@ -1,7 +1,6 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
-menv_function extract
 function extract {
   local file=$1
 
@@ -16,7 +15,6 @@ function extract {
   esac
 }
 
-menv_function compress
 function compress {
   local file=${1%/}
   local archive_type=${2:-tar}

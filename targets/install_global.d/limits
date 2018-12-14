@@ -1,13 +1,11 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
-
-spushd .
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 if [ $MENV_DESKTOP -ne 0 ] ; then
-  if ! grep -q "* soft nofile 4096" /etc/security/limits.conf &> /dev/null ; then
-    echo "* soft nofile 4096" | sudo tee -a /etc/security/limits.conf &> /dev/null
-    echo "* hard nofile 4096" | sudo tee -a /etc/security/limits.conf &> /dev/null
+  if [ $DIST != "darwin" ] ; then
+    if ! grep -q "* soft nofile 4096" /etc/security/limits.conf &> /dev/null ; then
+      echo "* soft nofile 4096" | sudo tee -a /etc/security/limits.conf &> /dev/null
+      echo "* hard nofile 4096" | sudo tee -a /etc/security/limits.conf &> /dev/null
+    fi
   fi
 fi
-
-spopd

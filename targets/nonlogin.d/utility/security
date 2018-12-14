@@ -1,8 +1,6 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
-# Sets up ssh priv keys
-menv_function add_priv_key
 function add_priv_key {
   local remoteserver=$1
   local remoteuser=${2:-`whoami`}
@@ -20,16 +18,14 @@ function add_priv_key {
   chmod 600 ~/.ssh/id_rsa
 }
 
-menv_function magic_open
 function magic_open {
   local dir=$1
 
   sudo chmod -R 777 $dir
 }
 
-menv_alias kill_vpn="sudo pkill -9 openvpn"
+alias kill_vpn="sudo pkill -9 openvpn"
 
-menv_function ovpn
 function ovpn {
   local username="$1"
   local ovpn_cfg="$2"
@@ -65,7 +61,6 @@ function ovpn {
 DONE
 }
 
-menv_function add_ca_trust_anchor
 function add_ca_trust_anchor {
   local site=$1
   openssl s_client -showcerts -connect ${site}:443 </dev/null 2>/dev/null |
@@ -74,4 +69,4 @@ function add_ca_trust_anchor {
   sudo update-ca-trust
 }
 
-menv_alias generate_password="pwgen  -N 1 15 -y"
+alias generate_password="pwgen  -N 1 15 -y"

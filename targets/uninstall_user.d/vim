@@ -1,7 +1,5 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
-
-spushd .
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 cd ~
 
@@ -12,6 +10,3 @@ if [ -f ~/.vim/.$menv_gen_tag ] ; then
 else
   echo "vim folder was not menv generated, not deleting!"
 fi
-
-spopd
-

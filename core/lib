@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 if [[ "$SHELL" != *bash* && ! -z $PS1 ]] ; then
   SHELLS=($(chsh -l |grep bash)) ;
@@ -22,91 +22,34 @@ if [[ "$SHELL" != *bash* && ! -z $PS1 ]] ; then
   echo "your shell has been changed to bash, please re-run menv"
   exit -1
 fi
-
-# A global array of functions used to unset funcs on cleanup and a function
-# which pushes to said array.
-menv_funcs=()
-function menv_function {
-  menv_funcs+=("$1")
-}
-menv_function menv_function
-
-# A global array of aliases used to unalias aliases on cleanup and a function
-# which pushes to said array.
-menv_aliases=()
-menv_function menv_alias
-function menv_alias {
-  alias "$*"
-  menv_aliases+=("$1")
-}
-
-# A global array of exports used to unset exports on cleanup and a function
-# which pushes to said array.
-menv_exports=()
-menv_function menv_export
-function menv_export {
-  export "$*"
-  menv_exports+=("$1")
-}
-
-# Directories on the local machine
-menv_export menv_dir=~/menv
-menv_export menv_backup_dir=$menv_dir/backup
-menv_export menv_trash_dir=$menv_dir/trash
-menv_export menv_cache_dir=$menv_dir/cache
-menv_export menv_downloads_dir=$menv_cache_dir/downloads
-menv_export menv_sysbackup_dir=$menv_cache_dir/sysbackup
-menv_export menv_screenshots_dir=$menv_cache_dir/screenshots
-menv_export menv_logs_dir=$menv_cache_dir/logs
-menv_export menv_history_dir=$menv_cache_dir/history
-menv_export menv_bin_dir=$menv_dir/bin
-menv_export menv_core_dir=$menv_dir/core
-menv_export menv_local_dir=$menv_dir/local
-menv_export menv_local_bin_dir=$menv_local_dir/bin
-menv_export menv_local_save_dir=$menv_local_dir/save
-menv_export menv_cache_bin_dir=$menv_cache_dir/bin
-menv_export menv_cache_npm_dir=$menv_cache_dir/npm
-menv_export menv_cache_npm_bin_dir=$menv_cache_npm_dir/bin
-menv_export menv_cache_go_dir=$menv_cache_dir/go
-menv_export menv_cache_go_bin_dir=$menv_cache_go_dir/bin
-menv_export menv_cache_dotfiles_dir=$menv_cache_dir/dotfiles
-menv_export menv_cache_vimrc_style_dir=$menv_cache_dotfiles_dir/vimrc_style
-menv_export menv_dotfiles_dir=$menv_dir/dotfiles
-menv_export menv_vimrc_style_dir=$menv_dotfiles_dir/vimrc_style
-menv_export menv_targets_dir=${menv_dir}/targets
-menv_export menv_pkgs_dir=${menv_dir}/pkgs
-menv_export menv_cloud_dir=${menv_dir}/cloud
-menv_export menv_install_opts_file=$menv_cache_dir/install_opts
-menv_export menv_last_no_update_file=$menv_cache_dir/last_no_update
-menv_export menv_pkg_install_log=$menv_cache_dir/pkgs_install.log
-
-menv_export menv_user=dbond
+. directories
+export menv_user=dbond
 
 # A tag to use to specify menv created the item in question
-menv_export menv_gen_tag="menv_generated"
+export menv_gen_tag="menv_generated"
 
 # Absolute paths for lsb commands.
-menv_export BINMV=/bin/mv
-menv_export BINLN=/bin/ln
-menv_export BINRM=/bin/rm
-menv_export BINCP=/bin/cp
-menv_export BINTAR=/bin/tar
-menv_export BINMKDIR=/bin/mkdir
+export BINMV=/bin/mv
+export BINLN=/bin/ln
+export BINRM=/bin/rm
+export BINCP=/bin/cp
+export BINTAR=/bin/tar
+export BINMKDIR=/bin/mkdir
 
 # Some files on the local machine
-menv_export menv_local_login=$menv_local_dir/login
-menv_export menv_local_nonlogin=$menv_local_dir/nonlogin
-menv_export menv_local_logout=$menv_local_dir/logout
-menv_export menv_target_handler=$menv_core_dir/target_handler
+export menv_local_login=$menv_local_dir/login
+export menv_local_nonlogin=$menv_local_dir/nonlogin
+export menv_local_logout=$menv_local_dir/logout
+export menv_target_handler=$menv_core_dir/target_handler
 
 # Some dotfile names
-menv_export bashrc=.bashrc
-menv_export bash_profile=.bash_profile
-menv_export bash_logout=.bash_logout
+export bashrc=.bashrc
+export bash_profile=.bash_profile
+export bash_logout=.bash_logout
 
-menv_alias menv_install="source ${menv_core_dir}/install"
-menv_alias menv_uninstall="source ${menv_core_dir}/uninstall"
-menv_alias menv_update="source ${menv_core_dir}/update"
+alias menv_install="source ${menv_core_dir}/install"
+alias menv_uninstall="source ${menv_core_dir}/uninstall"
+alias menv_update="source ${menv_core_dir}/update"
 
 # Load menv_config
 if [ -f $menv_local_dir/menv_config ]; then
@@ -116,18 +59,15 @@ elif [ -f $menv_core_dir/menv_config ]; then
 fi
 
 # Silent pushd and popd
-menv_function spushd
 function spushd {
   pushd $@ &> /dev/null
 }
 
-menv_function spopd
 function spopd {
   popd $@ &> /dev/null
 }
 
 # executes a target
-menv_function menv_target
 function menv_target {
   local file=$1
 
@@ -135,7 +75,6 @@ function menv_target {
 }
 
 # Executes all the target.d children.
-menv_function menv_target_children
 function menv_target_children {
   local file=$1
   local files=$(find $menv_targets_dir/${file}.d \
@@ -146,7 +85,10 @@ function menv_target_children {
       if [[ ! -z $MENV_MODULE_EXCLUDES && $f =~ $MENV_MODULE_EXCLUDES ]] ; then
         echo "Excluding $file module $f."
       else
+        spushd .
+        # TODO header with optional execution of code, darwin, desktop, gnome
         source $f
+        spopd
       fi
     done
   fi
@@ -154,7 +96,6 @@ function menv_target_children {
 
 # Aux function to wget a file. If the second param is set then this is the name
 # of the produced file.
-menv_function fetch
 function fetch {
   local url=$1
 
@@ -168,7 +109,6 @@ function fetch {
   wget -O $fname -q -N --timeout=10 --tries=3 --no-check-certificate ${url}
 }
 
-menv_function fetch_w_timeout
 function fetch_w_timeout {
   local url=$1
   local timeout=${3:-60}
@@ -184,7 +124,6 @@ function fetch_w_timeout {
 }
 
 # An aux function to grab a git repo
-menv_function github_fetch
 function github_fetch {
   local repo=$1
 
@@ -196,7 +135,6 @@ function github_fetch {
 }
 
 # Aux function to setup a symbolic link. Backing up w/e was there before.
-menv_function safe_symlink
 function safe_symlink {
   local file=$1
   local to=$2
@@ -220,7 +158,6 @@ function safe_symlink {
 }
 
 # A function to delete something if it is a symlink.
-menv_function if_symlink_rm
 function if_symlink_rm {
   local file=$1
 
@@ -230,7 +167,6 @@ function if_symlink_rm {
 }
 
 # A nasty little function which grabs the latest sha hash from github
-menv_function menv_latest_version
 function menv_latest_version {
   local j=`curl -m 1 -L --connect-timeout 1 -s https://api.github.com/repos/mokon/menv/git/refs/heads/master | \
     sed 's/\\\\\//\//g' | sed 's/[{}]//g' | \
@@ -244,7 +180,6 @@ function menv_latest_version {
 }
 
 # Shows the menv version or sets if set is the op.
-menv_function menv_version
 function menv_version {
   op=$1
 
@@ -255,7 +190,6 @@ function menv_version {
   esac
 }
 
-menv_function version_compare
 function version_compare {
   if [[ $1 == $2 ]] ; then
     return 0
@@ -279,7 +213,6 @@ function version_compare {
   return 0
 }
 
-menv_function version_le
 function version_le {
   version_compare $1 $2
   case $? in
@@ -290,7 +223,6 @@ function version_le {
   esac
 }
 
-menv_function version_ge
 function version_ge {
   version_compare $1 $2
   case $? in
@@ -301,19 +233,16 @@ function version_ge {
   esac
 }
 
-menv_function append_crontab
 function append_crontab {
   local cmd=$1
   (crontab -l ; echo "$cmd") 2>&1 | grep -v "no crontab" | sort | uniq | crontab -
 }
 
-menv_function delete_crontab
 function delete_crontab {
   local cmd=$1
   crontab -l |sed "/$cmd/d" |grep -v 'no crontab' | sort | uniq | crontab -
 }
 
-menv_function menv_lock
 function menv_lock {
   local lockfile=$1
 
@@ -330,7 +259,6 @@ function menv_lock {
   fi
 }
 
-menv_function menv_unlock
 function menv_unlock {
   local lockfile=$1
 
@@ -338,7 +266,6 @@ function menv_unlock {
   trap - INT TERM EXIT
 }
 
-menv_function delete_line_in_file
 function delete_line_in_file {
     local pattern=$1
     local file=$2
@@ -346,8 +273,6 @@ function delete_line_in_file {
     sed -i "/$pattern/d" $file
 }
 
-# A function to test if a connection exists to the given server.
-menv_function testconnection
 function testconnection {
   local server=$1
   local suc_msg=$2
@@ -370,26 +295,22 @@ function testconnection {
   fi
 }
 
-menv_function menv_load_install_opts
 function menv_load_install_opts {
   if [ ! -f $menv_install_opts_file ]; then
-    menv_export MENV_DESKTOP=0
+    export MENV_DESKTOP=0
   elif grep -v --quiet nodesktop $menv_install_opts_file ; then
-    menv_export MENV_DESKTOP=1
+    export MENV_DESKTOP=1
   else
-    menv_export MENV_DESKTOP=0
+    export MENV_DESKTOP=0
   fi
 
   if [ ! -f $menv_install_opts_file ]; then
-    menv_export MENV_DESKTOP=0
+    export MENV_DESKTOP=0
   elif grep -v --quiet noroot $menv_install_opts_file ; then
-    menv_export MENV_ROOT=1
+    export MENV_ROOT=1
   else
-    menv_export MENV_ROOT=0
+    export MENV_ROOT=0
   fi
 }
 
-# Include and set the distro core functionality.
 source $menv_core_dir/dist
-source $menv_core_dir/progress_bar
-

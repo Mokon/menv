@@ -1,27 +1,25 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
-menv_alias cscope="cscope -p100"
-menv_alias cscopeR="cscope -R -p100"
-menv_alias cscopeD="cscope -d -p100"
+alias cscope="cscope -p100"
+alias cscopeR="cscope -R -p100"
+alias cscopeD="cscope -d -p100"
 
 # Function to init a cscope database with absolute filenames.
-menv_function cscopeinit
 function cscopeinit {
   find `realpath .` -not '(' -path '*.pc*' ')' -and  '(' -name '*.c' -o -name '*.h' \
     -o -name '*.cpp' -o -name '*.hpp' ')' -execdir realpath {} \; > ./cscope.files 2> /dev/null
   cscope -b
-  menv_export CSCOPE_DB=`realpath cscope.out`
+  export CSCOPE_DB=`realpath cscope.out`
   /bin/rm ./cscope.files
 }
 
-menv_function cscope_update
 function cscope_update {
   pushd
 
   while [ `pwd` != "/" ] ; do
     if [ -f cscope.out ] ; then
-      menv_export CSCOPE_DB=`realpath cscope.out`
+      export CSCOPE_DB=`realpath cscope.out`
       break
     fi
     builtin cd ..
@@ -30,7 +28,6 @@ function cscope_update {
   popd
 }
 
-menv_function cscope_vim_help
 function cscope_vim_help {
    cat << HELP
      The following is a little help file to remind me how to use cscope with

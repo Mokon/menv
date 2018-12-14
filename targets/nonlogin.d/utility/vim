@@ -1,8 +1,7 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 # Function that allows vim to open files given a :linenumber argument.
-menv_function vim
 function vim {
   case $1 in
     *:*:*)
@@ -45,7 +44,6 @@ function vim {
 }
 
 # Function that opens vim at a given line number.
-menv_function vin
 function vin {
   if [ ! -f $1 ] ; then
     if [[ $1 =~ .*\.jpp ]] ; then
@@ -56,7 +54,6 @@ function vin {
   /usr/bin/vim +$2 $1
 }
 
-menv_function binvim
 function binvim {
   vim $(which $1)
 }

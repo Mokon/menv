@@ -1,10 +1,12 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 menv_target_children nonlogin
 
 if [[ $MENV_ROOT -ne 0 ]] ; then
-  (sudo ntpdate -s time.nist.gov &> /dev/null &)
+  if [ $DIST != "darwin" ] ; then
+    (sudo ntpdate -s time.nist.gov &> /dev/null &)
+  fi
 fi
 
 export PATH=$PATH:$HOME/bin:$menv_bin_dir:$menv_local_bin_dir:$menv_cache_bin_dir:${menv_cache_npm_bin_dir}
@@ -42,6 +44,10 @@ if [ $? ]; then
   fi
 else
   echo "Git Hub not reachable. Could not check if menv is up to date." | tee $menv_logs_dir/menv_status
+fi
+
+if [ -d ~/Desktop/ ] ; then
+  rmdir --ignore-fail-on-non-empty ~/Desktop/
 fi
 
 for dir in pics docs code; do

@@ -1,0 +1,31 @@
+#!/bin/bash
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
+
+source ~/menv/core/lib
+
+cd ${menv_cache_dir}
+
+mpwp="http://mokonphotography.com/wp-content/uploads"
+background_urls=(
+  "$mpwp/2013/11/ca_2013_8_1-205.jpg"
+  "$mpwp/2013/11/hannah-emb.jpg"
+  "$mpwp/2013/11/Formal209.jpg"
+  "$mpwp/2013/11/hannah-geek4.jpg"
+  "$mpwp/2013/11/ca_2013_8_1-066.jpg"
+  "$mpwp/2013/11/ca_2013_8_1-177.jpg"
+  "$mpwp/2012/08/SeacoastNov07-2951.jpg"
+  "$mpwp/2013/11/misc-007.jpg"
+  "$mpwp/2012/07/t1.jpg"
+  "$mpwp/2012/07/hi-629.jpg"
+  "$mpwp/2012/06/IMG_1058.jpg"
+  "$mpwp/2015/07/hannah_ames.jpg"
+  "$mpwp/2015/07/boat.jpg"
+  "$mpwp/2015/07/boat2.jpg"
+)
+
+mkdir wallpapers
+for url in "${background_urls[@]}" ; do
+  if [ ! -f  wallpapers/${i}.jpg ] ; then
+     fetch_w_timeout ${url} wallpapers/$(basename ${url}) 60 &> /dev/null
+  fi
+done

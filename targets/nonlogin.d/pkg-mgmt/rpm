@@ -1,10 +1,9 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 if [ $PKG_TYPE == "rpm" ] ; then
-  menv_alias rpm_list_deps="rpm -qpR"
+  alias rpm_list_deps="rpm -qpR"
 
-  menv_function rpm_what_provides
   function rpm_what_provides {
     echo "exzact:"
     rpm -q --whatprovides "$@"
@@ -13,6 +12,6 @@ if [ $PKG_TYPE == "rpm" ] ; then
     rpm -q --whatprovides `which "$@"`
   }
 
-  menv_alias largest_pkgs="rpm -qa --queryformat '%10{size} - %-25{name} \t %{version}\n' | sort -n"
-  menv_alias installed_pkgs_size="largest_pkgs | awk '{ sum += $1 } END { print sum }'"
+  alias largest_pkgs="rpm -qa --queryformat '%10{size} - %-25{name} \t %{version}\n' | sort -n"
+  alias installed_pkgs_size="largest_pkgs | awk '{ sum += $1 } END { print sum }'"
 fi

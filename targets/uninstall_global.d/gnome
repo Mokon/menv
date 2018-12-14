@@ -1,12 +1,10 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 if test -x "$(command -v "gnome-terminal")" ; then
 # Only run gnome for gnome <= 3.8.4
 gnomeVersion="$(expr "$(gnome-terminal --version)" : '.* \(.*[.].*[.].*\)$')"
 if version_ge $gnomeVersion "3.8.4" ; then
-
-spushd .
 
 cd ~
 
@@ -34,9 +32,6 @@ unset rm_app
 
 if_symlink_rm ~/.config/gtk-3.0/settings.ini
 
-spopd
-
 fi
 
 fi
-

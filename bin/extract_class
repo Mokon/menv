@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# (C) 2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 # This is a simple perl script to extract a c++ class from a header file.
 # There are no guarentees it will work 100% of the time. It takes a file and a

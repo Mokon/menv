@@ -1,4 +1,5 @@
 #!/bin/bash
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 #
 # This file creation of a map of the virtual topology.
 #
@@ -77,4 +78,3 @@ function virtual_topology_generate_map {
   dot $in -Tpng -o $out
   rm $in
 }
-

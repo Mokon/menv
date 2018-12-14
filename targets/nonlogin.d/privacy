@@ -1,7 +1,5 @@
 #!/bin/bash
-# (C) 2017 David 'Mokon' Bond, All Rights Reserved
-
-menv_function randomize_mac
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 function randomize_mac {
   local hex=$(dd if=/dev/random bs=2 count=3 2>/dev/null \

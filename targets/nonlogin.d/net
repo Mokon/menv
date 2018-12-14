@@ -1,15 +1,14 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 # Networking aliases and functions
-menv_alias arp_flush="ip -s -s neigh flush all"
-menv_alias amialone="ping 8.8.8.8"
-menv_alias amialonedns="ping google.com"
-menv_alias tcp="sudo netstat -tanp"
+alias arp_flush="ip -s -s neigh flush all"
+alias amialone="ping 8.8.8.8"
+alias amialonedns="ping google.com"
+alias tcp="sudo netstat -tanp"
 
-menv_export HOSTALIASES=$menv_cache_dir/hosts
+export HOSTALIASES=$menv_cache_dir/hosts
 
-menv_function add_host
 function add_host {
   echo "$alias $url" >> $HOSTALIASES
 }
@@ -18,7 +17,6 @@ function convert_hex_to_ip {
   printf '%d.%d.%d.%d\n' `echo $@ | sed -r 's/(..)/0x\1 /g'`
 }
 
-menv_function kill_frr
 function kill_frr {
   sudo pkill -9 -f bgpd
   sudo pkill -9 -f zebra
@@ -31,15 +29,13 @@ function kill_frr {
   sudo /bin/rm -f /var/run/zserv.api
 }
 
-menv_function launch_frr
 function launch_frr {
-  kill_quagga
+  kill_frr
   sudo zebra &
   sudo bgpd &
   sudo vtysh
 }
 
-menv_function emulate_traffic
 function emulate_traffic {
   local dst_addr=${1:-224.0.0.9}
   local src_addr=${2:-172.16.1.5}
@@ -49,14 +45,12 @@ function emulate_traffic {
   sudo nc $dst_addr $dst_port -vu -s $src_addr -p $src_port
 }
 
-menv_function find_subnet_devices
 function find_subnet_devices {
   local subnet=${1:-192.168.1.0/24}
 
   nmap -v -sn $subnet |grep -B 1 --no-group-separator "Host is up"
 }
 
-menv_function tcp_client
 function tcp_client {
   local port=$1
 
@@ -64,7 +58,6 @@ function tcp_client {
 }
 
 # A function which looks up a ethertype
-menv_function ethertype
 function ethertype {
   local etypein_dec=`printf %d $1`
   local etypein_hex=`printf %03x $1`
@@ -87,7 +80,6 @@ function ethertype {
   IFS=$OLDIFS
 }
 
-menv_function port
 function port {
   local port=$1
 
@@ -104,7 +96,6 @@ function port {
   grep " $port/" /etc/services
 }
 
-menv_function dec_to_ip
 function dec_to_ip {
   local ip dec=$@
   for e in {3..0} ; do
@@ -116,14 +107,12 @@ function dec_to_ip {
   printf '%s\n' "$ip"
 }
 
-menv_function ip_to_dec
 function ip_to_dec {
   local a b c d ip=$@
   IFS=. read -r a b c d <<< "$ip"
   printf '%d\n' "$((a * 256 ** 3 + b * 256 ** 2 + c * 256 + d))"
 }
 
-menv_function ip_subtraction
 function ip_substraction {
   local ipa=$1
   local ipb=$2
@@ -134,19 +123,16 @@ function ip_substraction {
   calc $ipa_d - $ipb_d
 }
 
-menv_function hex_to_ip
 function hex_to_ip {
   printf '%d.%d.%d.%d\n' `echo $@ | sed -r 's/(..)/0x\1 /g'`
 }
 
-menv_function ip_to_hex
 function ip_to_hex {
   printf '%.2X%.2X%.2X%.2X\n' `echo $@ | sed -e 's/\./ /g'`
 }
 
-menv_alias mcast_route_cache="cat /proc/net/ip_mr_cache"
+alias mcast_route_cache="cat /proc/net/ip_mr_cache"
 
-menv_function mcast_ip6_join_ssm
 function mcast_ip6_join {
   local interface=$1
   local group=$2
@@ -155,7 +141,6 @@ function mcast_ip6_join {
   vlc -vvv udp://[$src]@[$group] --miface=$interface
 }
 
-menv_function mcast_ip6_join
 function mcast_ip6_join {
   local interface=$1
   local group=$2
@@ -163,7 +148,6 @@ function mcast_ip6_join {
   vlc -vvv udp://@[$group] --miface=$interface
 }
 
-menv_function mcast_ip6_joins
 function mcast_ip6_joins {
   local path=/proc/net/igmp6
   while read index intname address refcnt flags timer ; do
@@ -173,7 +157,6 @@ function mcast_ip6_joins {
 
 # A function to download an rfc and store it on the localhost. If the -l
 # option is given the rfc will be opened in lynx.
-menv_function rfc
 function rfc {
   local ietf=http://tools.ietf.org
   local rfcdir=$menv_cache_dir/rfc
@@ -209,7 +192,6 @@ function rfc {
   fi
 }
 
-menv_function update_host
 function update_host {
   local hostname=$1
   local ip=$2
@@ -222,7 +204,6 @@ function update_host {
   sudo bash -c " echo '$ip $hostname' >> /etc/hosts"
 }
 
-menv_function convert_to_pcap
 function convert_to_pcap {
   local file=$1
   local encap=${2:-tcp}
@@ -242,7 +223,6 @@ function convert_to_pcap {
   mopen ${file}.pcap
 }
 
-menv_function capture_on_interfaces
 function capture_on_interfaces {
   interfaces=$1
   trace_length=${2:-420}
@@ -255,21 +235,18 @@ function capture_on_interfaces {
   sleep $trace_length
 }
 
-menv_function netbios_scan
 function netbios_scan {
   local dns=${1}
 
   sudo nbtscan -r $dns/24
 }
 
-menv_function netbios_ip
 function netbios_ip {
   local dns=${1}
 
   nmblookup $dns | cut -f 1 -d \" \"
 }
 
-menv_function netbios_ssh
 function netbios_ssh {
   local dns=${1}
   local username=${2:-$USER}
@@ -277,7 +254,6 @@ function netbios_ssh {
   ssh $username@`netbios_ip $dns`
 }
 
-menv_function multicast_ipv6_traffic
 function multicast_ipv6_traffic {
   local int1=$1
   local int2=$2
@@ -291,7 +267,6 @@ function multicast_ipv6_traffic {
 END
 }
 
-menv_function multicast_ipv4_traffic
 function multicast_ipv4_traffic {
   local int1=$1
   local int2=$2
@@ -313,9 +288,8 @@ function multicast_ipv4_traffic {
 END
 }
 
-menv_alias show_multicast_joins="ip maddr show"
+alias show_multicast_joins="ip maddr show"
 
-menv_function join_multicast_group
 function join_multicast_group {
   local group=$1
   local ip=$2
@@ -325,7 +299,6 @@ function join_multicast_group {
   socat -T ${timeout} STDIO UDP4-DATAGRAM:${group}:${port},ip-add-membership=${group}:${ip}
 }
 
-menv_function change_igmp_version
 function change_igmp_version {
   local version=$1
   local interface=$2
@@ -333,7 +306,6 @@ function change_igmp_version {
     sudo tee /proc/sys/net/ipv4/conf/${interface}/force_igmp_version > /dev/null
 }
 
-menv_function echo_many_routes
 function echo_many_routes {
   local max=${1:-100}
 
@@ -342,10 +314,9 @@ function echo_many_routes {
   done
 }
 
-menv_alias iptables_stop="sudo systemctl stop firewalld.service"
-menv_alias networking_restart="sudo systemctl restart NetworkManager"
+alias iptables_stop="sudo systemctl stop firewalld.service"
+alias networking_restart="sudo systemctl restart NetworkManager"
 
-menv_function convert_yang_to_png_uml
 function convert_yang_to_png_uml {
   local infile=$1
 
@@ -355,7 +326,6 @@ function convert_yang_to_png_uml {
   mopen ${infile}.png
 }
 
-menv_function decode_hex_frame
 function decode_hex_frame {
   local hex="$1"
 

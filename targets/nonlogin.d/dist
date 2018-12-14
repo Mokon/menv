@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
-menv_alias what_provides=${PKG_TYPE}_what_provides
-menv_alias dist_empty_trash=${DIST}_empty_trash
+alias what_provides=${PKG_TYPE}_what_provides
+alias dist_empty_trash=${DIST}_empty_trash

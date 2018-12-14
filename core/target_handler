@@ -1,10 +1,10 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 shopt -s expand_aliases
 source ~/menv/core/lib
 
-[[ $- == *i* ]] && menv_export MENV_INTERACTIVE=1
+[[ $- == *i* ]] && export MENV_INTERACTIVE=1
 
 # Multiplex to the correct menv target
 case ${BASH_SOURCE[0]} in

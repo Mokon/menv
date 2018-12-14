@@ -1,12 +1,12 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 if [ -f $menv_cache_dir/.$menv_gen_tag ] ; then
   echo "menv is already installed on this computer. Not installing."
 else
   echo "Installing menv!"
 
-  menv_export MENV_INTERACTIVE=1
+  export MENV_INTERACTIVE=1
 
   menv_lock $menv_dir/.lock
 
@@ -20,7 +20,7 @@ else
     echo "root" >> $menv_install_opts_file
 
     read -t 60 -p "Please provide a hostname: " -r
-    menv_export MENV_HOSTNAME="$REPLY"
+    export MENV_HOSTNAME="$REPLY"
 
     local u=`whoami`
     echo "$u ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers &> /dev/null
@@ -89,4 +89,3 @@ else
 
   echo "Done installing menv!"
 fi
-

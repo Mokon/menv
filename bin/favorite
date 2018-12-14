@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) 2017 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 if [ ! -e $menv_cache_dir/favorites/ ]; then
   mkdir -p $menv_cache_dir/favorites/

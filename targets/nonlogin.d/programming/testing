@@ -1,7 +1,6 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
-menv_function run_all_tests
 function run_all_tests {
   local dir=${1:-.}
   local pattern=${2:-"*Test*"}
@@ -9,7 +8,6 @@ function run_all_tests {
   find $dir -type f -executable -name $pattern -and -not -name "*\.so*" -exec '{}' \;
 }
 
-menv_function sum_gtest_times
 function sum_gtest_times {
     local log=$1
 

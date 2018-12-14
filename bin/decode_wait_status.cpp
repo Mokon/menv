@@ -1,3 +1,4 @@
+// (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 #include <string>
 #include <stdio.h>
 #include <stdlib.h>

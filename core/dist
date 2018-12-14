@@ -1,8 +1,6 @@
 #!/bin/bash
-# (C) 2013-2016 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
-# A function to determine the distribution and pkg management tool
-menv_function determine_dist
 function determine_dist {
   if type lsb_release &> /dev/null ; then
     DIST=$(lsb_release -a | grep "Distributor ID" | awk {'print tolower($3)'})
@@ -28,6 +26,10 @@ function determine_dist {
     DIST="unknown"
   fi
 
+  if [ -z $DIST ] ; then
+    DIST=$(uname -a)
+  fi
+
   case $DIST in
     *fedora*|*centos*)
       PKG_TYPE=rpm ;
@@ -40,43 +42,48 @@ function determine_dist {
       fi
       ;;
     *redhat*) PKG_TYPE=rpm ; PKG_MGMT=yum ;;
+    *Darwin*) DIST=darwin ; PKG_TYPE=pkg ; PKG_MGMT=brew ;;
     *debian*|*ubuntu*) PKG_TYPE=dpkg ; PKG_MGMT=apt ;;
     *) PKG_TYPE=unknown ; PKG_MGMT=unknown ; echo "Unknown Distribution" ;;
   esac
 
-  menv_export DIST
-  menv_export PKG_TYPE
-  menv_export PKG_MGMT
+  export DIST
+  export PKG_TYPE
+  export PKG_MGMT
 }
 
 determine_dist
 
-menv_alias dist_install=${DIST}_install
-menv_alias dist_local_install=${DIST}_local_install
-menv_alias ins=dist_install
-menv_alias ${DIST}_install=${PKG_MGMT}_install
-menv_alias ${DIST}_local_install=${PKG_MGMT}_local_install
+alias dist_install=${DIST}_install
+alias dist_local_install=${DIST}_local_install
+alias ins=dist_install
+alias ${DIST}_install=${PKG_MGMT}_install
+alias ${DIST}_local_install=${PKG_MGMT}_local_install
 
-menv_alias dist_update=${DIST}_update
-menv_alias ${DIST}_update=${PKG_MGMT}_update
+alias dist_update=${DIST}_update
+alias ${DIST}_update=${PKG_MGMT}_update
 
-menv_alias yum_install="sudo yum install -q -y"
-menv_alias dnf_install="sudo dnf install -q -y"
-menv_alias apt_install="sudo apt-get --yes --force-yes install -qq"
+alias yum_install="sudo yum install -q -y"
+alias dnf_install="sudo dnf install -q -y"
+alias brew_install="sudo brew install -q -y"
+alias apt_install="sudo apt-get --yes --force-yes install -qq"
 
-menv_alias yum_update="sudo yum update -q -y"
-menv_alias dnf_update="sudo dnf update -q -y"
+alias yum_update="sudo yum update -q -y"
+alias dnf_update="sudo dnf update -q -y"
+alias brew_update="sudo brew upgrade -q -y"
+alias apt_update="sudo apt-get update ; sudo apt-get upgrade -q -y"
 
-menv_alias yum_local_install="sudo yum localinstall -q -y --nogpgcheck"
-menv_alias dnf_local_install="sudo dnf install -q -y"
+alias yum_local_install="sudo yum localinstall -q -y --nogpgcheck"
+alias dnf_local_install="sudo dnf install -q -y"
+alias brew_local_install="echo 'I don't know how to local install with brew'"
+alias apt_local_install="sudo apt-get install -q -y"
 
-menv_alias global_install_package="install_package"
+alias global_install_package="install_package"
 
-menv_alias update_packages=dist_update
+alias update_packages=dist_update
 
-menv_function install_package
 function install_package {
-  dist_to_pkg=$1
+  local dist_to_pkg=$1
 
   eval "local pkg=\${$dist_to_pkg[$DIST]}"
 
@@ -91,16 +98,14 @@ function install_package {
     grep -v "already installed"
 }
 
-menv_function local_install_package
 function local_install_package {
-  pkg=$1
+  local pkg=$1
 
   dist_local_install $pkg 2>&1 | \
     tee -a ${menv_pkg_install_log} | \
     grep -v "already installed\|kB/s"
 }
 
-menv_function install_simple_package
 function install_simple_package {
   local pkg_name=$1
 
@@ -115,45 +120,41 @@ function install_simple_package {
   install_package pkg_arr
 }
 
-menv_function install_simple_packages
 function install_simple_packages {
   for package in "$@" ; do
     install_simple_package $package
   done
 }
 
-menv_function npm_install_package
 function npm_install_package {
   local pkg=$1
+
   echo "Installing npm package '$pkg'"
   npm install --loglevel error -g $pkg 2>&1 | \
     tee -a ${menv_pkg_install_log} > /dev/null
 }
 
-menv_function npm_install_packages
 function npm_install_packages {
   for package in "$@" ; do
     npm_install_package $package
   done
 }
 
-menv_function gem_install_package
 function gem_install_package {
   local pkg=$1
 
   echo "Installing gem package '$pkg'"
-  gem install -q --install-dir=${menv_cache_bin_dir} -n ${menv_cache_bin_dir} $pkg 2>&1 | \
+  gem install -q --install-dir=${menv_cache_bin_dir} \
+    -n ${menv_cache_bin_dir} $pkg 2>&1 | \
     tee -a ${menv_pkg_install_log} > /dev/null
 }
 
-menv_function gem_install_packages
 function gem_install_packages {
   for package in "$@" ; do
     gem_install_package $package
   done
 }
 
-menv_function pip_install_package
 function pip_install_package {
   local pkg=$1
 
@@ -162,18 +163,16 @@ function pip_install_package {
     tee -a ${menv_pkg_install_log} > /dev/null
 }
 
-menv_function pip_install_packages
 function pip_install_packages {
   for package in "$@" ; do
     pip_install_package $package
   done
 }
 
-menv_function create_yum_dnf_repo
 function create_yum_dnf_repo {
-  repo=$1
-  url=$2
-  key=$3
+  local repo=$1
+  local url=$2
+  local key=$3
 
   if [ -z ${key+x} ]; then
     key="\ngpgcheck=0"
@@ -183,7 +182,6 @@ function create_yum_dnf_repo {
     key="\ngpgcheck=1\ngpgkey=${key}"
   fi
 
-
   cat << EOF | sudo tee /etc/yum.repos.d/${repo}.repo &> /dev/null
 [${repo}]
 name=${repo}
@@ -192,11 +190,10 @@ enabled=1${key}
 EOF
 }
 
-menv_function parse_and_install_pkgs_file
 function parse_and_install_pkgs_file {
   local pkg=$1
 
-  while read -r fedora_pkg debian_pkg ubuntu_pkg centos_pkg; do
+  while read -r fedora_pkg debian_pkg ubuntu_pkg centos_pkg darwin_pkg; do
     if [ -z "$debian_pkg" ] ; then
       debian_pkg=$fedora_pkg
     fi
@@ -208,6 +205,10 @@ function parse_and_install_pkgs_file {
     if [ -z "$centos_pkg" ] ; then
       centos_pkg=$fedora_pkg
     fi
+    
+    if [ -z "$darwin_pkg" ] ; then
+      darwin_pkg="skip"
+    fi
 
     declare -A pkg_arr
     pkg_arr=(
@@ -215,6 +216,7 @@ function parse_and_install_pkgs_file {
       [centos]="$centos_pkg"
       [debian]="$debian_pkg"
       [ubuntu]="$ubuntu_pkg"
+      [darwin]="$darwin_pkg"
     )
 
     install_package pkg_arr

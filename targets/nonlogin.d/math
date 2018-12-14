@@ -1,7 +1,6 @@
 #!/bin/bash
-# (C) 2013-2015 David 'Mokon' Bond, All Rights Reserved
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
-menv_function convert_base
 function convert_base {
   local from=$1
   local to=$2
@@ -10,12 +9,11 @@ function convert_base {
   echo "obase=$to; ibase=$from; $number" | bc
 }
 
-menv_alias dec_to_binary="convert_base 10 2 "
-menv_alias binary_to_dec="convert_base 2 10 "
-menv_alias dec_to_hex="convert_base 10 16 "
-menv_alias hex_to_dec="convert_base 16 10 "
+alias dec_to_binary="convert_base 10 2 "
+alias binary_to_dec="convert_base 2 10 "
+alias dec_to_hex="convert_base 10 16 "
+alias hex_to_dec="convert_base 16 10 "
 
-menv_function hex_endian_conversion
 function hex_endian_conversion {
   local hex=$1
 
@@ -26,19 +24,16 @@ function hex_endian_conversion {
   echo ${hex:6:2}${hex:4:2}${hex:2:2}${hex:0:2}
 }
 
-menv_alias endian_conversion_hex="hex_endian_conversion"
+alias endian_conversion_hex="hex_endian_conversion"
 
-menv_function dec_endian_conversion
 function dec_endian_conversion {
   hex_endian_conversion `dec_to_hex $1`
 }
 
-menv_function binary_endian_conversion
 function binary_endian_conversion {
   hex_endian_conversion `binary_to_hex $1`
 }
 
-menv_function binary_to_hex
 function binary_to_hex {
   local binary=$1
 
@@ -47,12 +42,10 @@ function binary_to_hex {
   dec_to_hex $dec
 }
 
-menv_function a2b
 function a2b {
  local in=$1
  python -c "import binascii ; print binascii.a2b_hex(\"$1\")"
 }
-menv_function hex_to_binary
 function hex_to_binary {
   local hex=$1
 
@@ -61,21 +54,18 @@ function hex_to_binary {
   dec_to_binary $hex
 }
 
-menv_function to_lower
 function to_lower {
   local input=$1
 
   echo $input | awk '{print tolower($0)}'
 }
 
-menv_function to_upper
 function to_upper {
   local input=$1
 
   echo $input | awk '{print toupper($0)}'
 }
 
-menv_function calc
 function calc {
   echo "scale=2; $*" | bc
 }
