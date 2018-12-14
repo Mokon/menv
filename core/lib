@@ -22,7 +22,7 @@ if [[ "$SHELL" != *bash* && ! -z $PS1 ]] ; then
   echo "your shell has been changed to bash, please re-run menv"
   exit -1
 fi
-. directories
+. ~/menv/core/directories
 export menv_user=dbond
 
 # A tag to use to specify menv created the item in question
