@@ -9,7 +9,7 @@ file=`mktemp`
 curl -L -o $file -s \
   https://github.com/mokon/menv/archive/master.tar.gz
 
-/bin/tar -xzf $file
+tar -xzf $file
 /bin/rm -f $file
 /bin/mv menv-master menv
 
