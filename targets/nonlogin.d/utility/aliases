@@ -4,7 +4,13 @@
 alias logs_since_boot="journalctl --boot"
 alias count_files_in_directory_r="find . -type f | wc -l"
 alias sudo='sudo ' # Allow sudo to be used on aliases.
-alias rm="$BINMV --target-directory ${menv_trash_dir}" # Safe delete
+if [ $DIST != "darwin" ] ; then
+  alias rm="$BINMV --target-directory ${menv_trash_dir}" # Safe delete
+else
+  function rm {
+    $BINMV $@ ${menv_trash_dir}
+  }
+fi
 alias delete_immediately="$BINRM -rf"
 alias di="$BINRM -rf"
 alias empty_logs="$BINRM -rf ${menv_logs_dir}/*"
