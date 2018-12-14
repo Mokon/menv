@@ -253,7 +253,7 @@ function save {
   local savefile=${1:-$menv_local_save_dir/saveme}
 
   if [ -f $savefile ] ; then
-    $BINCP --backup=numbered ${savefile}{,.bak}
+    $BINCP_BCK ${savefile}{,.bak}
   fi
 
   local input=$(cat)

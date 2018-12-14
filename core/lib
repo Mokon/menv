@@ -30,9 +30,16 @@ export menv_gen_tag="menv_generated"
 
 # Absolute paths for lsb commands.
 export BINMV=/bin/mv
+export BINCP=/bin/cp
+if [ $DIST != "darwin" ] ; then
+  export $BINMV_BCK="$BINMV --backup=numbered"
+  export $BINCP_BCK="$BINCP --backup=numbered"
+else
+  export $BINMV_BCK="$BINMV"
+  export $BINCP_BCK="$BINCP"
+fi
 export BINLN=/bin/ln
 export BINRM=/bin/rm
-export BINCP=/bin/cp
 export BINTAR=/bin/tar
 export BINMKDIR=/bin/mkdir
 
@@ -143,7 +150,7 @@ function safe_symlink {
     if ! diff -q $file /etc/skel/$file &> /dev/null ; then
       echo "Found foreign ${file}. Backing up as ${menv_backup_dir}/${file}."
       $BINMKDIR -p `dirname ${menv_backup_dir}/${file}`
-      $BINMV --backup=numbered $file ${menv_backup_dir}/${file}
+      $BINMV_BCK $file ${menv_backup_dir}/${file}
     else
       # Found valid $file which is in the skel folder. Removing
       $BINRM $file

@@ -75,7 +75,7 @@ alias apt_update="sudo apt-get update ; sudo apt-get upgrade -q -y"
 
 alias yum_local_install="sudo yum localinstall -q -y --nogpgcheck"
 alias dnf_local_install="sudo dnf install -q -y"
-alias brew_local_install="echo 'I don't know how to local install with brew'"
+alias brew_local_install="echo 'I dont know how to local install with brew'"
 alias apt_local_install="sudo apt-get install -q -y"
 
 alias global_install_package="install_package"
