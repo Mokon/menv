@@ -38,7 +38,7 @@ ${TC_SKY}
 
 ${TC_GRD}" >> $tmp
 
-echo -e "\n                           Welcome to Mokon's Linux!\n" >> $tmp
+echo -e "\n                           Welcome to Mokon's Computer!\n" >> $tmp
 
 echo -n "${TC_GRD}" >> $tmp
 nodeinfo >> $tmp

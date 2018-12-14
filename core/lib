@@ -28,21 +28,6 @@ export menv_user=dbond
 # A tag to use to specify menv created the item in question
 export menv_gen_tag="menv_generated"
 
-# Absolute paths for lsb commands.
-export BINMV="/bin/mv"
-export BINCP="/bin/cp"
-if [ $DIST != "darwin" ] ; then
-  export $BINMV_BCK="$BINMV --backup=numbered"
-  export $BINCP_BCK="$BINCP --backup=numbered"
-else
-  export $BINMV_BCK="$BINMV"
-  export $BINCP_BCK="$BINCP"
-fi
-export BINLN=/bin/ln
-export BINRM=/bin/rm
-export BINTAR=/bin/tar
-export BINMKDIR=/bin/mkdir
-
 # Some files on the local machine
 export menv_local_login=$menv_local_dir/login
 export menv_local_nonlogin=$menv_local_dir/nonlogin
@@ -321,3 +306,18 @@ function menv_load_install_opts {
 }
 
 source $menv_core_dir/dist
+
+# Absolute paths for lsb commands.
+export BINMV=/bin/mv
+export BINCP=/bin/cp
+if [ $DIST != "darwin" ] ; then
+  export BINMV_BCK="/bin/mv --backup=numbered"
+  export BINCP_BCK="/bin/cp --backup=numbered"
+else
+  export BINMV_BCK=/bin/mv
+  export BINCP_BCK=/bin/cp
+fi
+export BINLN=/bin/ln
+export BINRM=/bin/rm
+export BINTAR=/bin/tar
+export BINMKDIR=/bin/mkdir
