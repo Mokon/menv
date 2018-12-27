@@ -25,7 +25,9 @@ background_urls=(
 
 mkdir wallpapers
 for url in "${background_urls[@]}" ; do
-  if [ ! -f  wallpapers/${i}.jpg ] ; then
-     fetch_w_timeout ${url} wallpapers/$(basename ${url}) 60 &> /dev/null
+  fname=$(basename ${url})
+  if [ ! -f  wallpapers/${fname}.jpg ] ; then
+    #fetch_w_timeout ${url} wallpapers/$${fname} 60 &> /dev/null
+    curl ${url} > wallpapers/$fname
   fi
 done

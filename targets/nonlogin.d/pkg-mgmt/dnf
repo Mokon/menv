@@ -1,12 +1,11 @@
 #!/bin/bash
 # (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
+# requirements pkg_mgmt == dnf
 
-if [ $PKG_MGMT == "dnf" ] ; then
-  function dnf_what_provides {
-    echo "exzact:"
-    sudo dnf whatprovides "$@"
+function dnf_what_provides {
+  echo "exzact:"
+  sudo dnf whatprovides "$@"
 
-    echo "fuzzy:"
-    sudo dnf whatprovide "*/`which "$@"`"
-  }
-fi
+  echo "fuzzy:"
+  sudo dnf whatprovide "*/`which "$@"`"
+}

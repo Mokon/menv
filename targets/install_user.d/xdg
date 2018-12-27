@@ -1,12 +1,6 @@
 #!/bin/bash
 # (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
-
-if [ $MENV_DESKTOP -ne 0 ] ; then
-
-if test -x "$(command -v "gnome-terminal")" ; then
-# Only run gnome for gnome >= 3.8.4
-gnomeVersion="$(expr "$(gnome-terminal --version)" : '.* \(.*[.].*[.].*\)$')"
-if version_ge $gnomeVersion "3.8.4" ; then
+# requirements gnome <= 3.8.4, desktop != 0
 
 cd ~
 
@@ -14,9 +8,3 @@ safe_symlink .config/user-dirs.conf $menv_dotfiles_dir/config/user-dirs.conf
 safe_symlink .config/user-dirs.dirs $menv_dotfiles_dir/config/user-dirs.dirs
 
 xdg-settings set default-web-browser google-chrome.desktop
-
-fi
-
-fi
-
-fi

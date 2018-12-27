@@ -1,11 +1,8 @@
 #!/bin/bash
 # (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
+# requirements dist != darwin, desktop != 0
 
-if [ $MENV_DESKTOP -ne 0 ] ; then
-  if [ $DIST != "darwin" ] ; then
-    macroSecurityLevelXPath='//oor:items/item[@oor:path="/org.openoffice.Office.Common/Security/Scripting"]/prop[@oor:name="MacroSecurityLevel"]'
-    ooconfig=/home/$USER/.config/libreoffice/4/user/registrymodifications.xcu
+macroSecurityLevelXPath='//oor:items/item[@oor:path="/org.openoffice.Office.Common/Security/Scripting"]/prop[@oor:name="MacroSecurityLevel"]'
+ooconfig=/home/$USER/.config/libreoffice/4/user/registrymodifications.xcu
 
-    xmlstarlet ed -L -u  ${macroSecurityLevelXPath} -v 2 ${ooconfig}
-  fi
-fi
+xmlstarlet ed -L -u  ${macroSecurityLevelXPath} -v 2 ${ooconfig}

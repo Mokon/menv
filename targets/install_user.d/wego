@@ -1,12 +1,9 @@
 #!/bin/bash
 # (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
+# requirements dist != darwin, desktop != 0
 
-if [ $MENV_DESKTOP -ne 0 ] ; then
-  if [ $DIST != "darwin" ] ; then
-    export GOPATH=$menv_cache_go_dir
-    export PATH="$PATH:$menv_cache_go_bin_dir"
-    go get github.com/schachmat/wego
+export GOPATH=$menv_cache_go_dir
+export PATH="$PATH:$menv_cache_go_bin_dir"
+go get github.com/schachmat/wego
 
-    safe_symlink .wegorc $menv_dotfiles_dir/wegorc
-  fi
-fi
+safe_symlink .wegorc $menv_dotfiles_dir/wegorc

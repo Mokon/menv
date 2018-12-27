@@ -46,8 +46,8 @@ function nodeinfo {
                                       | awk {'print $3'}`"
   fi
   echo "Username......: `whoami`"
-  echo "Groups........:`groups $(whoami) | cut -f2 -d':'`"
   if [ $DIST != "darwin" ] ; then
+    echo "Groups........:`groups $(whoami) | cut -f2 -d':'`"
     echo "Processor(s)..: $PNUMS $PVENDOR ${PMHZ} MHz ${PMODEL} ${CPUTMP}"
 
     echo "SELinux.......: `/usr/sbin/getenforce`"

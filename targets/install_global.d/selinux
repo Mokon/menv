@@ -1,9 +1,6 @@
 #!/bin/bash
 # (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
-
-if [ $MENV_DESKTOP -ne 0 ] ; then
-
-if [ $DIST != "darwin" ] ; then
+# requirements dist != darwin, desktop != 0
 
 if [ -f /etc/selinux/config ] ; then
   sudo cp /etc/selinux/config $menv_sysbackup_dir
@@ -15,7 +12,3 @@ cat <<HEREDOC | sudo tee /etc/selinux/config &> /dev/null
 SELINUX=disabled
 SELINUXTYPE=targeted
 HEREDOC
-
-fi
-
-fi

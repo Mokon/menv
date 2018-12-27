@@ -1,8 +1,6 @@
 #!/bin/bash
 # (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
-
-export MENV_GAMING=0
-if [ $MENV_GAMING -ne 0 ] ; then
+# requirements gaming != 0
 
 export MCHOME=~/.minecraft
 
@@ -99,12 +97,9 @@ function mclib {
   $BINRM -rf mc
 }
 
-# Function to backup my ii map in mc.
 function mcbkii {
   local ii="${HOME}/.minecraft/saves/Imperium Infinitus"
 
   tar czf ii.tgz "${ii}"
   $BINMV_BCK ii.tgz ~/backup/
 }
-
-fi

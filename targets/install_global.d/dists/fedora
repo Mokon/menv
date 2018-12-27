@@ -1,16 +1,15 @@
 #!/bin/bash
 # (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
+# requirements dist == fedora
 
-if [ $DIST == "fedora" ] ; then
-  if [ $PKG_MGMT == "dnf" ] ; then
-    install_simple_package dnf-automatic
+if [ $PKG_MGMT == "dnf" ] ; then
+  install_simple_package dnf-automatic
 
-    sudo sed -i "s@^apply_updates = no\$@apply_updates = yes@" /etc/dnf/automatic.conf
+  sudo sed -i "s@^apply_updates = no\$@apply_updates = yes@" /etc/dnf/automatic.conf
 
-    sudo systemctl enable dnf-automatic.timer && sudo systemctl start dnf-automatic.timer
-  elif [ $PKG_MGMT == "yum" ] ; then
-    install_simple_package yum-cron
+  sudo systemctl enable dnf-automatic.timer && sudo systemctl start dnf-automatic.timer
+elif [ $PKG_MGMT == "yum" ] ; then
+  install_simple_package yum-cron
 
-    sudo sed -i "s@^apply_updates = no\$@apply_updates = yes@" /etc/yum/yum-cron.conf
-  fi
+  sudo sed -i "s@^apply_updates = no\$@apply_updates = yes@" /etc/yum/yum-cron.conf
 fi

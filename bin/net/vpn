@@ -2,7 +2,7 @@
 # (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 #
 # This is a script which installs an ipsec/l2tp or cisco/ipsec based vpn on a
-# Fedora (21) system. It may work on other systems but it has not been tested.
+# Fedora (29) system. It may work on other systems but it has not been tested.
 # This vpn can be started, run, or stopped from the command line It also allows
 # one to uninstall said vpn configuration.
 

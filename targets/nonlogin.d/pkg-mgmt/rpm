@@ -1,17 +1,16 @@
 #!/bin/bash
 # (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
+# requirements pkg_type == rpm
 
-if [ $PKG_TYPE == "rpm" ] ; then
-  alias rpm_list_deps="rpm -qpR"
+alias rpm_list_deps="rpm -qpR"
 
-  function rpm_what_provides {
-    echo "exzact:"
-    rpm -q --whatprovides "$@"
+function rpm_what_provides {
+  echo "exzact:"
+  rpm -q --whatprovides "$@"
 
-    echo "which:"
-    rpm -q --whatprovides `which "$@"`
-  }
+  echo "which:"
+  rpm -q --whatprovides `which "$@"`
+}
 
-  alias largest_pkgs="rpm -qa --queryformat '%10{size} - %-25{name} \t %{version}\n' | sort -n"
-  alias installed_pkgs_size="largest_pkgs | awk '{ sum += $1 } END { print sum }'"
-fi
+alias largest_pkgs="rpm -qa --queryformat '%10{size} - %-25{name} \t %{version}\n' | sort -n"
+alias installed_pkgs_size="largest_pkgs | awk '{ sum += $1 } END { print sum }'"

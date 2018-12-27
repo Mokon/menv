@@ -1,11 +1,8 @@
 #!/bin/bash
 # (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
+# requirements dist != darwin, desktop != 0
 
-if [ $MENV_DESKTOP -ne 0 ] ; then
-  if [ $DIST != "darwin" ] ; then
-    if ! grep -q "* soft nofile 4096" /etc/security/limits.conf &> /dev/null ; then
-      echo "* soft nofile 4096" | sudo tee -a /etc/security/limits.conf &> /dev/null
-      echo "* hard nofile 4096" | sudo tee -a /etc/security/limits.conf &> /dev/null
-    fi
-  fi
+if ! grep -q "* soft nofile 4096" /etc/security/limits.conf &> /dev/null ; then
+  echo "* soft nofile 4096" | sudo tee -a /etc/security/limits.conf &> /dev/null
+  echo "* hard nofile 4096" | sudo tee -a /etc/security/limits.conf &> /dev/null
 fi

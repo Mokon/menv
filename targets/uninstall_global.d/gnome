@@ -1,10 +1,6 @@
 #!/bin/bash
 # (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
-
-if test -x "$(command -v "gnome-terminal")" ; then
-# Only run gnome for gnome <= 3.8.4
-gnomeVersion="$(expr "$(gnome-terminal --version)" : '.* \(.*[.].*[.].*\)$')"
-if version_ge $gnomeVersion "3.8.4" ; then
+# requirements gnome <= 3.8.4, desktop != 0
 
 cd ~
 
@@ -15,11 +11,9 @@ function rm_app {
   fi
 }
 
-if [ $MENV_DESKTOP -ne 0 ] ; then
-  if [ -f ~/.local/share/recently-used.xbel ] ; then
-    sudo chattr -i ~/.local/share/recently-used.xbel
-    sudo $BINRM ~/.local/share/recently-used.xbel
-  fi
+if [ -f ~/.local/share/recently-used.xbel ] ; then
+  sudo chattr -i ~/.local/share/recently-used.xbel
+  sudo $BINRM ~/.local/share/recently-used.xbel
 fi
 
 delete_crontab rotate_background
@@ -31,7 +25,3 @@ gsettings set org.gnome.shell favorite-apps "['gnome-terminal.desktop']"
 unset rm_app
 
 if_symlink_rm ~/.config/gtk-3.0/settings.ini
-
-fi
-
-fi

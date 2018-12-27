@@ -1,14 +1,13 @@
 #!/bin/bash
 # (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
+# requirements pkg_mgmt == yum
 
-if [ $PKG_MGMT == "yum" ] ; then
-  alias install-build-essentials="yum groupinstall 'Development Tools'"
+alias install-build-essentials="yum groupinstall 'Development Tools'"
 
-  function yum_what_provides {
-    echo "exzact:"
-    sudo yum whatprovides "$@"
+function yum_what_provides {
+  echo "exzact:"
+  sudo yum whatprovides "$@"
 
-    echo "fuzzy:"
-    sudo yum whatprovide "*/`which "$@"`"
-  }
-fi
+  echo "fuzzy:"
+  sudo yum whatprovide "*/`which "$@"`"
+}

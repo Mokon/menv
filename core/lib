@@ -22,19 +22,18 @@ if [[ "$SHELL" != *bash* && ! -z $PS1 ]] ; then
   echo "your shell has been changed to bash, please re-run menv"
   exit -1
 fi
+
 . ~/menv/core/directories
-export menv_user=dbond
+export menv_user=$USER
 
 # A tag to use to specify menv created the item in question
 export menv_gen_tag="menv_generated"
 
-# Some files on the local machine
 export menv_local_login=$menv_local_dir/login
 export menv_local_nonlogin=$menv_local_dir/nonlogin
 export menv_local_logout=$menv_local_dir/logout
 export menv_target_handler=$menv_core_dir/target_handler
 
-# Some dotfile names
 export bashrc=.bashrc
 export bash_profile=.bash_profile
 export bash_logout=.bash_logout
@@ -43,7 +42,6 @@ alias menv_install="source ${menv_core_dir}/install"
 alias menv_uninstall="source ${menv_core_dir}/uninstall"
 alias menv_update="source ${menv_core_dir}/update"
 
-# Load menv_config
 if [ -f $menv_local_dir/menv_config ]; then
   source $menv_local_dir/menv_config
 elif [ -f $menv_core_dir/menv_config ]; then
@@ -78,12 +76,119 @@ function menv_target_children {
         echo "Excluding $file module $f."
       else
         spushd .
-        # TODO header with optional execution of code, darwin, desktop, gnome
-        source $f
+        if should_source_file $f; then
+            source $f
+        fi
         spopd
       fi
     done
   fi
+}
+
+function should_source_file {
+  local file=$1
+  file_header=$(sed -n '3p'<$file)
+
+  header_regex="# requirements (.*)"
+  if [[ "$file_header" =~ $header_regex ]]; then
+    IFS=',' read -ra requirements <<< "${BASH_REMATCH[1]}"
+    for requirement in "${requirements[@]}"; do
+      if [[ "$requirement" =~ ^(.*)(==|!=|<=)(.*)$ ]]; then
+        LValue=${BASH_REMATCH[1]//[[:blank:]]/}
+        Op=${BASH_REMATCH[2]//[[:blank:]]/}
+        RValue=${BASH_REMATCH[3]//[[:blank:]]/}
+
+        case "$LValue" in
+          dist)
+            case "$Op" in
+              !=)
+                if [ "$DIST" == "$RValue" ] ; then
+                  echo "dist is $RValue, so not sourceing $file"
+                  return 1
+                fi
+                ;;
+              ==)
+                if [ "$DIST" != "$RValue" ] ; then
+                  echo "dist is not $RValue, so not sourceing $file"
+                  return 1
+                fi
+                ;;
+            esac
+            ;;
+          pkg_mgmt)
+            case "$Op" in
+              !=)
+                if [ "$PKG_MGMT" == "$RValue" ] ; then
+                  echo "pkg_mgmt is $RValue, so not sourceing $file"
+                  return 1
+                fi
+                ;;
+              ==)
+                if [ "$PKG_MGMT" != "$RValue" ] ; then
+                  echo "pkg_mgmt is not $RValue, so not sourceing $file"
+                  return 1
+                fi
+                ;;
+            esac
+            ;;
+          pkg_type)
+            case "$Op" in
+              !=)
+                if [ "$PKG_TYPE" == "$RValue" ] ; then
+                  echo "pkg_type is $RValue, so not sourceing $file"
+                  return 1
+
+                ;;
+              ==)
+                if [ "$PKG_TYPE" != "$RValue" ] ; then
+                  echo "pkg_type is not $RValue, so not sourceing $file"
+                  return 1
+                fi
+                ;;
+            esac
+            ;;
+          gaming)
+            echo "gaming is disabled so not sourcing $file"
+            return 1
+            ;;
+          gnome)
+            if ! test -x "$(command -v "gnome-terminal")" ; then
+              echo "gnome not found so not sourcing $file"
+              return 1
+            fi
+
+            if [ "$Op" != ">=" ] ; then
+              echo "Corrupt requirement line Op '$Op' on file $file"
+              return 1
+            fi
+            gnomeVersion="$(expr "$(gnome-terminal --version)" : '.* \(.*[.].*[.].*\)$')"
+            if ! version_ge $gnomeVersion "$RValue" ; then
+              echo "gnome version too old '$gnomeVersion' so not sourcing $file"
+              return 1
+            fi
+            ;;
+          desktop)
+            if [ "$Op" != "!=" ] ; then
+              echo "Corrupt requirement line Op '$Op' on file $file"
+              return 1
+            fi
+
+            if [ $MENV_DESKTOP -eq $RValue ] ; then
+              echo "not a desktop system so not sourcing $file"
+              return 1
+            fi
+            ;;
+          *)
+            echo "Corrupt requirement line LValue '$LValue' on file $file"
+            ;;
+        esac
+      else
+        echo "Corrupt requirement line '$requirement'"
+        return 1
+      fi
+    done
+  fi
+  return 0
 }
 
 # Aux function to wget a file. If the second param is set then this is the name

@@ -1,10 +1,6 @@
 #!/bin/bash
 # (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
-
-if test -x "$(command -v "gnome-terminal")" ; then
-# Only run gnome for gnome <= 3.8.4
-gnomeVersion="$(expr "$(gnome-terminal --version)" : '.* \(.*[.].*[.].*\)$')"
-if version_ge $gnomeVersion "3.8.4" ; then
+# requirements gnome <= 3.8.4
 
 function gstart {
   source $menv_bin_dir/gnome_start
@@ -47,7 +43,3 @@ X-GNOME-Autostart-enabled=true
 Name=$script
 EOF
 }
-
-fi
-
-fi

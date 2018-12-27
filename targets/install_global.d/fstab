@@ -1,12 +1,9 @@
 #!/bin/bash
 # (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
+# requirements dist != darwin, desktop != 0
 
-if [ $MENV_DESKTOP -ne 0 ] ; then
-  if [ $DIST != "darwin" ] ; then
-    if grep -q backup /etc/fstab &> /dev/null ; then
-      echo "Backup already in fstab."
-    else
-      echo "LABEL=/backup /backup auto nosuid,nodev,nofail" | sudo tee -a /etc/fstab &> /dev/null
-    fi
-  fi
+if grep -q backup /etc/fstab &> /dev/null ; then
+  echo "Backup already in fstab."
+else
+  echo "LABEL=/backup /backup auto nosuid,nodev,nofail" | sudo tee -a /etc/fstab &> /dev/null
 fi

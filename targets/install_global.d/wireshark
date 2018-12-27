@@ -1,8 +1,5 @@
 #!/bin/bash
 # (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
+# requirements dist != darwin, desktop != 0
 
-if [ $MENV_DESKTOP -ne 0 ] ; then
-  if [ $DIST != "darwin" ] ; then
-    sudo usermod -a -G wireshark $USER
-  fi
-fi
+sudo usermod -a -G wireshark $USER

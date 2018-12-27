@@ -1,12 +1,6 @@
 #!/bin/bash
 # (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
-
-if [ $MENV_DESKTOP -ne 0 ] ; then
-
-if test -x "$(command -v "gnome-terminal")" ; then
-# Only run gnome for gnome >= 3.8.4
-gnomeVersion="$(expr "$(gnome-terminal --version)" : '.* \(.*[.].*[.].*\)$')"
-if version_ge $gnomeVersion "3.8.4" ; then
+# requirements gnome <= 3.8.4, desktop != 0
 
 mkdir -p ~/.config/gtk-3.0/
 safe_symlink ~/.config/gtk-3.0/settings.ini $menv_dotfiles_dir/config/gtk-3.0/settings.ini
@@ -119,12 +113,4 @@ fi
 if [ ! -z $MENV_HOSTNAME ] ; then
   sudo hostnamectl set-hostname --static "$MENV_HOSTNAME"
   sudo hostnamectl set-hostname --pretty "$MENV_HOSTNAME"
-fi
-
-else
-  echo "Unsupported Gnome Version [$gnomeVersion] detected."
-fi
-
-fi
-
 fi
