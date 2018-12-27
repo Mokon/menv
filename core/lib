@@ -137,7 +137,7 @@ function should_source_file {
                 if [ "$PKG_TYPE" == "$RValue" ] ; then
                   echo "pkg_type is $RValue, so not sourceing $file"
                   return 1
-
+                fi
                 ;;
               ==)
                 if [ "$PKG_TYPE" != "$RValue" ] ; then
