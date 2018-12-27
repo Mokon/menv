@@ -53,4 +53,5 @@ retext retext retext retext
 conky conky conky conky
 rpmfusion-free-release-tainted skip skip rpmfusion-free-release-tainted
 libdvdcss skip skip libdvdcss
-blueman blueman blueman blueman 
+blueman blueman blueman blueman
+snapd snapd snapd snapd

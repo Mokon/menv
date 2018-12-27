@@ -148,12 +148,12 @@ function should_source_file {
             esac
             ;;
           gaming)
-            echo "gaming is disabled so not sourcing $file"
+            echo "gaming is disabled so not sourceing $file"
             return 1
             ;;
           gnome)
             if ! test -x "$(command -v "gnome-terminal")" ; then
-              echo "gnome not found so not sourcing $file"
+              echo "gnome not found so not sourceing $file"
               return 1
             fi
 
@@ -163,7 +163,7 @@ function should_source_file {
             fi
             gnomeVersion="$(expr "$(gnome-terminal --version)" : '.* \(.*[.].*[.].*\)$')"
             if ! version_ge $gnomeVersion "$RValue" ; then
-              echo "gnome version too old '$gnomeVersion' so not sourcing $file"
+              echo "gnome version too old '$gnomeVersion' so not sourceing $file"
               return 1
             fi
             ;;
@@ -174,7 +174,7 @@ function should_source_file {
             fi
 
             if [ $MENV_DESKTOP -eq $RValue ] ; then
-              echo "not a desktop system so not sourcing $file"
+              echo "not a desktop system so not sourceing $file"
               return 1
             fi
             ;;

@@ -345,3 +345,8 @@ function decode_hex_frame {
 
   printf "$hexdump\n" | text2pcap -q - - | tshark -V -r -
 }
+
+function taildump {
+  local file=$1
+  tail -c +1 -f $file | tcpdump -l -r -
+}
