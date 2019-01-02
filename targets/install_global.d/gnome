@@ -49,6 +49,8 @@ gsettings set org.gnome.gnome-screenshot auto-save-directory $menv_screenshots_d
 gsettings set org.gnome.desktop.interface clock-format '12h'
 gsettings set org.gnome.SessionManager logout-prompt false
 gsettings set org.gnome.desktop.interface clock-show-date true
+
+gnomeVersion="$(expr "$(gnome-terminal --version)" : '.* \(.*[.].*[.].*\)$')"
 if ! version_ge $gnomeVersion "3.22.1" ; then
   gsettings set org.gnome.shell.calendar show-weekdate true
 fi

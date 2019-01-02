@@ -13,6 +13,7 @@
     "@okta/oidc-middleware": "0.0.14",
     "express": "^4.16.2",
     "express-handlebars": "^3.0.0",
+    "express-session": "^1.15.6",
     "forever": "^0.15.3",
     "googleapis": "^27.0.0",
     "jira-client": "^6.4.1",

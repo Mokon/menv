@@ -9,17 +9,6 @@ if version_le $gitVersion "1.7.11" ; then
   git config --global push.default upstream
 fi
 
-# Let's install these cool ruby scripts for working with git!
-#   http://git-wt-commit.rubyforge.org/
-
-#git clone https://gitorious.org/willgit/mainline.git &> /dev/null
-
-#$BINCP mainline/bin/* $menv_cache_bin_dir
-
-#if [ -d mainline ] ; then
-#  $BINRM -rf mainline
-#fi
-
 cd $menv_cache_bin_dir
 
 gitv=$(git --version)
@@ -36,6 +25,3 @@ cd ..
 
 ln -s git/gitinsepctor/gitinspector/gitinspector.py gitinspector
 ln -s git/cliist/cliist.py cliist
-
-fetch https://raw.githubusercontent.com/Mokon/git_get/master/git_get
-chmod +x git_get

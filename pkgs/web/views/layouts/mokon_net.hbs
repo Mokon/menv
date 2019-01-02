@@ -12,9 +12,9 @@
 
   <title>David &#039;Mokon&#039; Bond - my musings</title>
 
-  <script src="http://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/highcharts.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="https://d3js.org/d3.v3.min.js"></script>
 
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/solid.css" integrity="sha384-osqezT+30O6N/vsMqwW8Ch6wKlMofqueuia2H7fePy42uC05rm1G+BUPSd2iBSJL" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/fontawesome.css" integrity="sha384-BzCy2fixOYd0HObpx3GMefNqdbA7Qjcc91RgYeDjrHTIEXqiF00jKvgQG0+zY/7I" crossorigin="anonymous">
@@ -24,13 +24,57 @@
   <script src="https://cdn.fancygrid.com/fancy.min.js"></script>
 
   <link rel="stylesheet/less" type="text/css" href="/theme.less" />
-  <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/3.0.0/less.min.js" ></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/3.0.0/less.min.js" ></script>
 
-  <link href='http://fonts.googleapis.com/css?family=Bellefair' rel='stylesheet' type='text/css' />
-  <link href='http://fonts.googleapis.com/css?family=EB+Garamond' rel='stylesheet' type='text/css' />
+  <link href='https://fonts.googleapis.com/css?family=Bellefair' rel='stylesheet' type='text/css' />
+  <link href='https://fonts.googleapis.com/css?family=EB+Garamond' rel='stylesheet' type='text/css' />
 </head>
 
 <body>
+  <script>
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId      : '218827175668802',
+        cookie     : true,
+        xfbml      : true,
+        version    : 'v3.2'
+      });
+
+      FB.AppEvents.logPageView();
+
+      checkLoginState();
+    };
+
+    (function(d, s, id){
+       var js, fjs = d.getElementsByTagName(s)[0];
+       if (d.getElementById(id)) {return;}
+       js = d.createElement(s); js.id = id;
+       js.src = "https://connect.facebook.net/en_US/sdk.js";
+       fjs.parentNode.insertBefore(js, fjs);
+     }(document, 'script', 'facebook-jssdk'));
+
+    function checkLoginState() {
+      FB.getLoginStatus(function(response) {
+        if (response.status == 'connected' && {{access_token}} != response.authResponse.accessToken) {
+          if (!window.location.pathname.startsWith("/login/")) {
+            window.location = "login/" + response.authResponse.accessToken;
+          }
+        } else {
+          FB.login();
+        }
+      });
+    }
+
+  </script>
+
+  <div class="fb-login-button"
+    data-size="small"
+    data-button-type="continue_with"
+    data-show-faces="false"
+    data-auto-logout-link="true"
+    data-use-continue-as="true"
+    onlogin="checkLoginState()"></div>
+
   <div class="header">
     <div class="navbar">
       <a href="/contact"><i class="fas fa-concierge-bell"></i><br />Contact</a>

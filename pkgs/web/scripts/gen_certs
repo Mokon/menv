@@ -1,0 +1,3 @@
+#!/bin/bash
+cd ~/menv/local/secrets
+openssl req  -nodes -new -x509  -keyout server.key -out server.cert
