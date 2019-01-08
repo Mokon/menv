@@ -1,0 +1,6 @@
+#!/bin/bash
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
+
+cd ~
+
+safe_symlink .inputrc $menv_dotfiles_dir/inputrc

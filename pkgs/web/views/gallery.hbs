@@ -1,0 +1,15 @@
+<div id="nanoGallery3">
+{{#each data}}
+  {{#each imgs}}
+  <a href="{{{this}}}.jpg" data-ngthumb="{{{this}}}.jpg" data-ngdesc="{{{description}}}">{{{this}}}</a>
+  {{/each}}
+{{/each}}
+</div>
+
+    <script>
+  $(document).ready(function () {
+      $("#nanoGallery3").nanoGallery({
+          itemsBaseURL:''
+      });
+  });
+    </script>

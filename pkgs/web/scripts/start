@@ -1,7 +1,6 @@
 #!/bin/bash
-cd /home/$USER/menv/pkgs/web
 dir=`pwd`
 echo "Starting Website in $dir"
 /bin/rm -f /home/$USER/.forever/forever.log
 forever start -v --minUptime 1000ms --spinSleepTime 1000ms \
-  -l forever.log -o ~/menv/cache/logs/out.log -e ~/menv/cache/logs/err.log index.js
+  -l forever.log -o ~/menv/cache/logs/out.log -e ~/menv/cache/logs/err.log src/index.js

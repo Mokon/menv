@@ -1,0 +1,31 @@
+<script>
+  var data = {{{json data}}}
+  var columns = {{{json columns}}}
+  var title = "{{{name}}}"
+
+  tabs.push({
+    title: title,
+    type: 'grid',
+    selModel: 'row',
+    data: data,
+    defaults: defaults,
+    columns: columns
+  })
+</script>
+
+<div id="tabs"></div>
+
+  <script>
+    window.onload = function(){
+      new FancyTab({
+        renderTo: 'tabs',
+        title: title,
+        height: 'fit',
+        activeTab: 0,
+        resizable: true,
+        editable: true,
+        theme: "blue",
+        items: tabs
+      })
+    }
+  </script>

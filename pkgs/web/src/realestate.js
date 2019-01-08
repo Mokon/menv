@@ -2,7 +2,7 @@ const { google } = require('googleapis');
 const fs = require('fs');
 
 var secret = fs.readFileSync('secrets/api_key', 'utf8').replace(/(\r\n\t|\n|\r\t)/gm,"");
-var realestateMapStyle = fs.readFileSync('realestateMapStyle.json');
+var realestateMapStyle = fs.readFileSync('data/realestateMapStyle.json');
 
 const gClient = require('@google/maps').createClient({
     key: secret
