@@ -10,7 +10,7 @@ if [[ $MENV_ROOT -ne 0 ]] ; then
 fi
 
 export PATH=$PATH:$HOME/bin:$menv_bin_dir:$menv_local_bin_dir:$menv_cache_bin_dir:${menv_cache_npm_bin_dir}
-export PATH=$PATH$(find $menv_bin_dir/bin -type d -print0 | xargs -0 printf ":%s")
+export PATH=$PATH$(find $menv_bin_dir -type d -print0 | xargs -0 printf ":%s")
 
 if [[ "$MENV_INTERACTIVE" == 1 ]] ; then
 
