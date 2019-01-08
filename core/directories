@@ -29,3 +29,4 @@ export menv_pkgs_dir=${menv_dir}/pkgs
 export menv_install_opts_file=$menv_cache_dir/install_opts
 export menv_last_no_update_file=$menv_cache_dir/last_no_update
 export menv_pkg_install_log=$menv_cache_dir/pkgs_install.log
+export menv_source_log=$menv_cache_dir/sourced_children_target.log

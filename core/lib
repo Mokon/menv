@@ -70,6 +70,7 @@ function menv_target_children {
   local files=$(find $menv_targets_dir/${file}.d \
     -type f -and -not -name .gitkeep | sort )
 
+  /bin/rm -f $menv_source_log
   if [ ! -z "$files" ] ; then
     for f in $files ; do
       if [[ ! -z $MENV_MODULE_EXCLUDES && $f =~ $MENV_MODULE_EXCLUDES ]] ; then
@@ -103,13 +104,13 @@ function should_source_file {
             case "$Op" in
               !=)
                 if [ "$DIST" == "$RValue" ] ; then
-                  echo "dist is $RValue, so not sourceing $file"
+                  echo "dist is $RValue, so not sourceing $file" >> $menv_source_log
                   return 1
                 fi
                 ;;
               ==)
                 if [ "$DIST" != "$RValue" ] ; then
-                  echo "dist is not $RValue, so not sourceing $file"
+                  echo "dist is not $RValue, so not sourceing $file" >> $menv_source_log
                   return 1
                 fi
                 ;;
@@ -119,13 +120,13 @@ function should_source_file {
             case "$Op" in
               !=)
                 if [ "$PKG_MGMT" == "$RValue" ] ; then
-                  echo "pkg_mgmt is $RValue, so not sourceing $file"
+                  echo "pkg_mgmt is $RValue, so not sourceing $file" >> $menv_source_log
                   return 1
                 fi
                 ;;
               ==)
                 if [ "$PKG_MGMT" != "$RValue" ] ; then
-                  echo "pkg_mgmt is not $RValue, so not sourceing $file"
+                  echo "pkg_mgmt is not $RValue, so not sourceing $file" >> $menv_source_log
                   return 1
                 fi
                 ;;
@@ -135,25 +136,25 @@ function should_source_file {
             case "$Op" in
               !=)
                 if [ "$PKG_TYPE" == "$RValue" ] ; then
-                  echo "pkg_type is $RValue, so not sourceing $file"
+                  echo "pkg_type is $RValue, so not sourceing $file" >> $menv_source_log
                   return 1
                 fi
                 ;;
               ==)
                 if [ "$PKG_TYPE" != "$RValue" ] ; then
-                  echo "pkg_type is not $RValue, so not sourceing $file"
+                  echo "pkg_type is not $RValue, so not sourceing $file" >> $menv_source_log
                   return 1
                 fi
                 ;;
             esac
             ;;
           gaming)
-            echo "gaming is disabled so not sourceing $file"
+            echo "gaming is disabled so not sourceing $file" >> $menv_source_log
             return 1
             ;;
           gnome)
             if ! test -x "$(command -v "gnome-terminal")" ; then
-              echo "gnome not found so not sourceing $file"
+              echo "gnome not found so not sourceing $file" >> $menv_source_log
               return 1
             fi
 
@@ -163,7 +164,7 @@ function should_source_file {
             fi
             gnomeVersion="$(expr "$(gnome-terminal --version)" : '.* \(.*[.].*[.].*\)$')"
             if ! version_ge $gnomeVersion "$RValue" ; then
-              echo "gnome version too old '$gnomeVersion' so not sourceing $file"
+              echo "gnome version too old '$gnomeVersion' so not sourceing $file" >> $menv_source_log
               return 1
             fi
             ;;
@@ -174,7 +175,7 @@ function should_source_file {
             fi
 
             if [ $MENV_DESKTOP -eq $RValue ] ; then
-              echo "not a desktop system so not sourceing $file"
+              echo "not a desktop system so not sourceing $file" >> $menv_source_log
               return 1
             fi
             ;;
