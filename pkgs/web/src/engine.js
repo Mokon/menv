@@ -128,8 +128,8 @@ module.exports.generateRoutes = function(staticPages, staticDataPages) {
                     request.session.access_token = request.params.access_token
                 }
             });
-        })
-    };
+        });
+    });
 };
 
 var httpsServer = https.createServer(credentials, app);

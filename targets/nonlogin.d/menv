@@ -2,22 +2,22 @@
 # (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 alias menv_help="cat ${menv_dir}/README | less"
-function menv_local_refresh {
+function menv_vault_refresh {
   source ~/.bash_profile
 }
 
 # Simple function for my dev box which has menv checked out in git. This
 # allows me to test menv on the box before I push it to github.
-if [ -d ~/menv/local/code/menv ]; then
+if [ -d ~/menv/vault/code/menv ]; then
   function menv_stage {
     spushd .
 
     menv_uninstall
 
     cd ~
-    /bin/cp -R  ~/local/code/menv ~
+    /bin/cp -R  ~/vault/code/menv ~
     /bin/rm -rf ~/menv/.git
-    find menv/ -not -path "menv/local/*/*" -and -not -path "menv/backup/*/*" -and -name .gitkeep -exec rm -rf {} \;
+    find menv/ -not -path "menv/vault/*/*" -and -not -path "menv/backup/*/*" -and -name .gitkeep -exec rm -rf {} \;
 
     source ~/menv/core/target_handler
 
@@ -31,8 +31,8 @@ fi
 
 function make_menv_home_dirs {
   for dir in pics docs code; do
-    mkdir $menv_local_dir/$dir
-    safe_symlink ~/$dir $menv_local_dir/$dir
+    mkdir $menv_vault_dir/$dir
+    safe_symlink ~/$dir $menv_vault_dir/$dir
   done
 }
 
@@ -57,5 +57,5 @@ function menv_clone_coderef {
   spopd
 }
 
-alias menv_grep="grep --exclude-dir trash --exclude-dir local --exclude-dir backup --exclude-dir cache"
+alias menv_grep="grep --exclude-dir trash --exclude-dir vault --exclude-dir backup --exclude-dir cache"
 alias menv_line_count="find . -type f -exec file {} + | awk -F: '/ASCII text/ {print $1}'|xargs wc -l"

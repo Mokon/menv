@@ -250,7 +250,7 @@ function sum_transfer_size {
 }
 
 function save {
-  local savefile=${1:-$menv_local_save_dir/saveme}
+  local savefile=${1:-$menv_vault_save_dir/saveme}
 
   if [ -f $savefile ] ; then
     $BINCP_BCK ${savefile}{,.bak}

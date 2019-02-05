@@ -13,8 +13,8 @@ function start {
 
   # tmux new-window -t $SESSION:$((++WI)) -n 'msger' "finch"
 
-  if [ -f $menv_local_dir/tmux_start ] ; then
-    source $menv_local_dir/tmux_start
+  if [ -f $menv_vault_dir/tmux_start ] ; then
+    source $menv_vault_dir/tmux_start
   fi
 
   tmux select-window -t $SESSION:$SELECTED_WINDOW

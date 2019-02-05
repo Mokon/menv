@@ -1,0 +1,10 @@
+#!/bin/bash
+core_file_name=$1
+binary=$2
+source_dir=$3
+machine=$4
+
+scp $machine:/var/lib/systemd/coredump/${core_file_name}.xz .
+xz -d ${core_file_name}.xz 
+gdb ${binary} -c ${core_file_name} -d ${source_dir} \
+    --eval-command="thread apply all bt" --eval-command=quit

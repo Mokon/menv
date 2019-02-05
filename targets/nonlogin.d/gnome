@@ -28,8 +28,8 @@ fi
 
 alias rd="rdesktop -g 1600x900 -u admin -p -"
 
-alias mount_phone="simple-mtpfs $menv_local_dir/phone"
-alias unmount_phone="fusermount -u $menv_local_dir/phone"
+alias mount_phone="simple-mtpfs $menv_vault_dir/phone"
+alias unmount_phone="fusermount -u $menv_vault_dir/phone"
 
 function gnome_autostart_script {
   local script=$1

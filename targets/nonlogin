@@ -9,7 +9,7 @@ if [[ $MENV_ROOT -ne 0 ]] ; then
   fi
 fi
 
-export PATH=$PATH:$HOME/bin:$menv_bin_dir:$menv_local_bin_dir:$menv_cache_bin_dir:${menv_cache_npm_bin_dir}
+export PATH=$PATH:$HOME/bin:$menv_bin_dir:$menv_vault_bin_dir:$menv_cache_bin_dir:${menv_cache_npm_bin_dir}
 export PATH=$PATH$(find $menv_bin_dir -type d -print0 | xargs -0 printf ":%s")
 
 if [[ "$MENV_INTERACTIVE" == 1 ]] ; then
@@ -27,7 +27,10 @@ if [ $? ]; then
     echo "menv script up to date." &> $menv_logs_dir/menv_status
   else
     if [ -f $menv_last_no_update_file ] ; then
-      find $menv_last_no_update_file -mtime +10 -type f -delete
+      spushd .
+      cd $(dirname $menv_last_no_update_file)
+      find $(basename $menv_last_no_update_file) -mtime +10 -type f -delete
+      spopd
     fi
     if [ ! -f $menv_last_no_update_file ] ; then
       read -t 5 -p "menv script different than github. update? " -n 1 -r
@@ -54,23 +57,23 @@ if [ -d ~/Desktop/ ] ; then
 fi
 
 for dir in pics docs code; do
-  if [ -d $menv_local_dir/$dir ] ; then
-    if ! find $menv_local_dir/$dir -mindepth 1 -print -quit | grep -q .; then
+  if [ -d $menv_vault_dir/$dir ] ; then
+    if ! find $menv_vault_dir/$dir -mindepth 1 -print -quit | grep -q .; then
       echo "Deleting empty $dir directory."
-      $BINRM -rf $menv_local_dir/$dir
+      $BINRM -rf $menv_vault_dir/$dir
       if_symlink_rm ~/$dir
     elif [ ! -L ~/$dir ] ; then
       echo "Symlinking $dir directory."
-      safe_symlink ~/$dir $menv_local_dir/$dir
+      safe_symlink ~/$dir $menv_vault_dir/$dir
     fi
   elif [ -L ~/$dir ] ; then
     if_symlink_rm ~/$dir
   fi
 done
 
-# Source a local nonlogin script if one exists.
-if [ -f $menv_local_nonlogin ]; then
-  source $menv_local_nonlogin
+# Source a vault nonlogin script if one exists.
+if [ -f $menv_vault_nonlogin ]; then
+  source $menv_vault_nonlogin
 fi
 
 fi

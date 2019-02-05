@@ -1,5 +1,0 @@
-#!/bin/bash
-./scripts/stop
-./scripts/start
-sleep 1
-./scripts/logs

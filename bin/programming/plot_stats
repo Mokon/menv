@@ -1,0 +1,22 @@
+#!/bin/bash
+infile=${1}
+outfile=${2:-`mktemp --suffix .png`}
+plotfile=`mktemp`
+
+cat <<-EOF > $plotfile
+  set xlabel "Date"
+  set timefmt "%s"
+  set format x "%Y-%m-%d %H:%M:%S"
+  set xdata time
+  set ylabel "Memory"
+  set term png
+  set output "${outfile}"
+
+  set yrange [0:1000000]
+  set xrange [1548787201-946684800:1548791184-946684800]
+
+  plot "$infile" using 3:2 title 'RSS' with lines,\
+       "$infile" using 3:1 title 'VSZ' with lines
+EOF
+
+gnuplot $plotfile

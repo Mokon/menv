@@ -1,0 +1,8 @@
+#!/bin/bash
+proc=$1
+while :
+do
+  sleep 1
+  ps x -o vsz,rss,cmd|grep $proc|head -n 1 |awk '{printf $1" "$2" "}' >> /var/log/${proc}mem.log
+  date +%s >> /var/log/${proc}mem.log
+done

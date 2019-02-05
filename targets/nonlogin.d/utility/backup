@@ -27,9 +27,9 @@ function backup {
   cd ..
 
   # Add --info=progress2 once rsync in distos is 3.1.0
-  rsync -ar ~/menv/local .
+  rsync -ar ~/menv/vault .
 
-  local_hash=$(hash_dir local)
+  vault_hash=$(hash_dir vault)
   git_hash=$(hash_dir git)
 
   cp ~/.config/google-chrome/Default/Bookmarks .
@@ -40,7 +40,7 @@ function backup {
   cat << EOF > metadata
 start time = ${start}
 end time = ${end}
-local dir hash = ${local_hash}
+local dir hash = ${vault_hash}
 git dir hash = ${git_hash}
 EOF
 
@@ -58,10 +58,10 @@ function restore_backup {
   spushd .
   echo "Starting Resoration of Backup"
 
-  rsync -ar $backup_dir ~/menv/local
+  rsync -ar $backup_dir ~/menv/vault
 
-  chown -R $USER ~/menv/local
-  chgrp -R $USER ~/menv/local
+  chown -R $USER ~/menv/vault
+  chgrp -R $USER ~/menv/vault
 
   echo "Restoration of Backup Complete"
   spopd

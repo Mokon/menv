@@ -27,9 +27,9 @@ export GLOG_minloglevel=0
 
 export vt_install_dir="$menv_pkgs_dir/vt"
 export vt_logs_dir="$menv_logs_dir"
-export vt_config_dir="$menv_local_dir"
+export vt_config_dir="$menv_vault_dir"
 alias v="sudo -E $menv_pkgs_dir/vt/v"
-alias fin="mopen ~/menv/local/Database.ods"
+alias fin="mopen ~/menv/vault/Database.ods"
 
 # TODO fix xset
 #xset r rate 300 20 2> /dev/null

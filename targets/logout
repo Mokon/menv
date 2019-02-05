@@ -5,6 +5,6 @@ menv_load_install_opts
 
 menv_target_children logout
 
-if [ -f $menv_local_logout ]; then
-  source $menv_local_logout
+if [ -f $menv_vault_logout ]; then
+  source $menv_vault_logout
 fi

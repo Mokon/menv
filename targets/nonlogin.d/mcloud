@@ -31,7 +31,7 @@ function install_gateone {
   spopd
 }
 
-alias mcloud_vpn="vpn mokon $HOME/menv/local/sec/vpn.cloud.mokon.net.ovpn"
+alias mcloud_vpn="vpn mokon $HOME/menv/vault/sec/vpn.cloud.mokon.net.ovpn"
 
 function mcloud_enroll {
   local myip=${1:-mobile.brocade.mokon.net}
@@ -41,7 +41,7 @@ function mcloud_enroll {
   local enrolled="false"
   local user=`whoami`
 
-  sudo bash -c "echo \"/home/mokon/menv/local/export *(rw)\" >> /etc/exports"
+  sudo bash -c "echo \"/home/mokon/menv/vault/export *(rw)\" >> /etc/exports"
   sudo bash -c "echo \"files.cloud.mokon.net:/home/mokon/files /home/mokon/menv/cloud nfs defaults 0 0\" >> /etc/fstab"
 
   spushd .

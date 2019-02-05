@@ -10,7 +10,7 @@ counter=0
 for item in $files ; do
   dn=$(dirname $item)
   mkdir -p $uc_dir/$dn
-  uncrustify -f $item -c $menv_local_dir/uncrustify.cfg > $uc_dir/$item
+  uncrustify -f $item -c $menv_vault_dir/uncrustify.cfg > $uc_dir/$item
   if ! diff -q $item $uc_dir/$item > /dev/null ; then
     xxdiff $item $uc_dir/$item
     #cp $uc_dir/$item $item

@@ -29,9 +29,9 @@ export menv_user=$USER
 # A tag to use to specify menv created the item in question
 export menv_gen_tag="menv_generated"
 
-export menv_local_login=$menv_local_dir/login
-export menv_local_nonlogin=$menv_local_dir/nonlogin
-export menv_local_logout=$menv_local_dir/logout
+export menv_vault_login=$menv_vault_dir/login
+export menv_vault_nonlogin=$menv_vault_dir/nonlogin
+export menv_vault_logout=$menv_vault_dir/logout
 export menv_target_handler=$menv_core_dir/target_handler
 
 export bashrc=.bashrc
@@ -42,8 +42,8 @@ alias menv_install="source ${menv_core_dir}/install"
 alias menv_uninstall="source ${menv_core_dir}/uninstall"
 alias menv_update="source ${menv_core_dir}/update"
 
-if [ -f $menv_local_dir/menv_config ]; then
-  source $menv_local_dir/menv_config
+if [ -f $menv_vault_dir/menv_config ]; then
+  source $menv_vault_dir/menv_config
 elif [ -f $menv_core_dir/menv_config ]; then
   source $menv_core_dir/menv_config
 fi

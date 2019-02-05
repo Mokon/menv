@@ -55,7 +55,7 @@ alias nonkernel_top="top -U \!2"
 alias watch="watch "
 alias vum="vim"
 alias vun="vim"
-alias show_common_files="ls -R ~/ ~/menv/local --hide='*menv*' --hide='*git*'"
+alias show_common_files="ls -R ~/ ~/menv/vault --hide='*menv*' --hide='*git*'"
 alias limit_program_one_percent_cpu="cpulimit -l 1 -i"
 alias merge="rsync -a" # from to
 alias sudo_preserve_env="sudo -E sh -c"

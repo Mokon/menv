@@ -58,27 +58,27 @@ else
     $BINMV ~/backup $menv_backup_dir
   fi
 
-  if [ -d ~/local ] ; then
-    echo "Restoring local dir!"
-    $BINRM -rf $menv_local_dir
-    $BINMV ~/local $menv_local_dir
+  if [ -d ~/vault ] ; then
+    echo "Restoring vault dir!"
+    $BINRM -rf $menv_vault_dir
+    $BINMV ~/vault $menv_vault_dir
   fi
 
-  if [ ! -f $menv_local_nonlogin ]; then
-    echo "Didn't find ${menv_local_nonlogin}."
+  if [ ! -f $menv_vault_nonlogin ]; then
+    echo "Didn't find ${menv_vault_nonlogin}."
   fi
 
   # Link some files and dirs to the user home.
-  safe_symlink ~/code $menv_local_dir/code
-  safe_symlink ~/docs $menv_local_dir/docs
+  safe_symlink ~/code $menv_vault_dir/code
+  safe_symlink ~/docs $menv_vault_dir/docs
 
   if [ $MENV_DESKTOP -ne 0 ] ; then
-    safe_symlink ~/pics $menv_local_dir/pics
+    safe_symlink ~/pics $menv_vault_dir/pics
   fi
 
-  $BINRM -f $menv_local_dir/code/.gitkeep
-  $BINRM -f $menv_local_dir/docs/.gitkeep
-  $BINRM -f $menv_local_dir/pics/.gitkeep
+  $BINRM -f $menv_vault_dir/code/.gitkeep
+  $BINRM -f $menv_vault_dir/docs/.gitkeep
+  $BINRM -f $menv_vault_dir/pics/.gitkeep
   mkdir ${menv_cache_bin_dir}
 
   spopd

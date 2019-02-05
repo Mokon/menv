@@ -1,0 +1,27 @@
+#!/bin/bash
+
+dira=$1
+dirb=$2
+
+declare -A differences
+while IFS= read -r -d '' -u 9 file; do
+  if [ -f ${dirb}/${file} ] ; then
+    if ! diff -q ${dira}/${file} ${dirb}/${file} &> /dev/null ; then
+      differences[${file}]="file differs"
+      #diff ${dira}/${file} ${dirb}/${file}
+    fi
+  else
+      differences[${file}]="file does not exist in dirb"
+  fi
+done 9< <( find ${dira} -type f -printf '%P\0' )
+
+
+while IFS= read -r -d '' -u 9 file; do
+  if [ ! -f ${dira}/${file} ] ; then
+      differences[${file}]="file does not exist in dira"
+  fi
+done 9< <( find ${dirb} -type f -printf '%P\0' )
+
+for file in "${!differences[@]}" ; do
+  echo "${file}: ${differences[$file]}"
+done
