@@ -94,7 +94,7 @@ function should_source_file {
   if [[ "$file_header" =~ $header_regex ]]; then
     IFS=',' read -ra requirements <<< "${BASH_REMATCH[1]}"
     for requirement in "${requirements[@]}"; do
-      if [[ "$requirement" =~ ^(.*)(==|!=|<=)(.*)$ ]]; then
+      if [[ "$requirement" =~ ^(.*)(==|!=|<=|>=)(.*)$ ]]; then
         LValue=${BASH_REMATCH[1]//[[:blank:]]/}
         Op=${BASH_REMATCH[2]//[[:blank:]]/}
         RValue=${BASH_REMATCH[3]//[[:blank:]]/}
