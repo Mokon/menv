@@ -1,6 +1,6 @@
 #!/bin/bash
 # (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
-# requirements gnome <= 3.8.4
+# requirements gnome >= 3.8.4
 
 function gstart {
   source $menv_bin_dir/gnome_start

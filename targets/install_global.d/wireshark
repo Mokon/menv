@@ -2,4 +2,6 @@
 # (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 # requirements dist != darwin, desktop != 0
 
-sudo usermod -a -G wireshark $USER
+if grep -q wireshark /etc/group ; then
+  sudo usermod -a -G wireshark $USER
+fi

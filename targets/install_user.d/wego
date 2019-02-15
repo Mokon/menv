@@ -4,6 +4,8 @@
 
 export GOPATH=$menv_cache_go_dir
 export PATH="$PATH:$menv_cache_go_bin_dir"
-go get github.com/schachmat/wego
+if ! test -x "$(command -v "go")" ; then
+  go get github.com/schachmat/wego
+fi
 
 safe_symlink .wegorc $menv_dotfiles_dir/wegorc

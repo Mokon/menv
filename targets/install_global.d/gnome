@@ -1,6 +1,6 @@
 #!/bin/bash
 # (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
-# requirements gnome <= 3.8.4, desktop != 0
+# requirements gnome >= 3.8.4, desktop != 0
 
 mkdir -p ~/.config/gtk-3.0/
 safe_symlink ~/.config/gtk-3.0/settings.ini $menv_dotfiles_dir/config/gtk-3.0/settings.ini
