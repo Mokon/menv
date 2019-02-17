@@ -1,5 +1,6 @@
 #!/bin/bash
 # (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
+# requirements pkgs != 0
 
 github_fetch luismartingarcia/protocol
 cd protocol
