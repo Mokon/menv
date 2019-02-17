@@ -77,7 +77,6 @@ function menv_target_children {
         echo "Excluding $file module $f."
       else
         spushd .
-        echo "'$MENV_PKGS'!"
         if should_source_file $f; then
             source $f
         fi
@@ -175,7 +174,7 @@ function should_source_file {
               return 1
             fi
 
-            if [ "$MENV_DESKTOP" != "$RValue" ] ; then
+            if [ "$MENV_DESKTOP" == "$RValue" ] ; then
               echo "not a desktop system so not sourceing $file" >> $menv_source_log
               return 1
             fi
@@ -186,7 +185,7 @@ function should_source_file {
               return 1
             fi
 
-            if [ "$MENV_PKGS" != "$RValue" ] ; then
+            if [ "$MENV_PKGS" == "$RValue" ] ; then
               echo "'$MENV_PKGS' '$RValue' not set to install pkgs so not sourceing $file" >> $menv_source_log
               return 1
             fi
@@ -429,7 +428,6 @@ function menv_load_install_opts {
       export MENV_PKGS=1
     fi
   fi
-  echo "'$MENV_PKGS'"
 }
 
 source $menv_core_dir/dist
