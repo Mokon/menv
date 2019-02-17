@@ -40,7 +40,7 @@ function mcspc {
   $BINRM -f spc.zip
 
   echo "Backing up MCHOME"
-  $BINCP_BCK -R ${MCHOME} ~/backup/
+  $BINCP_BCK -R ${MCHOME} ${menv_vault_dir}
 
   echo "Extracting minecraft.jar"
   unzip -qq -d minecraftjar ${MCHOME}/bin/minecraft.jar
@@ -95,11 +95,4 @@ function mclib {
 
   cd ..
   $BINRM -rf mc
-}
-
-function mcbkii {
-  local ii="${HOME}/.minecraft/saves/Imperium Infinitus"
-
-  tar czf ii.tgz "${ii}"
-  $BINMV_BCK ii.tgz ~/backup/
 }

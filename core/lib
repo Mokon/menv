@@ -174,7 +174,7 @@ function should_source_file {
               return 1
             fi
 
-            if [ $MENV_DESKTOP -eq $RValue ] ; then
+            if [ $MENV_DESKTOP -ne $RValue ] ; then
               echo "not a desktop system so not sourceing $file" >> $menv_source_log
               return 1
             fi

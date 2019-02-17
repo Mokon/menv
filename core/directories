@@ -2,19 +2,17 @@
 # (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 export menv_dir=~/menv
-export menv_backup_dir=$menv_dir/backup
 export menv_trash_dir=$menv_dir/trash
 export menv_cache_dir=$menv_dir/cache
 export menv_downloads_dir=$menv_cache_dir/downloads
-export menv_sysbackup_dir=$menv_cache_dir/sysbackup
 export menv_screenshots_dir=$menv_cache_dir/screenshots
 export menv_logs_dir=$menv_cache_dir/logs
 export menv_history_dir=$menv_cache_dir/history
 export menv_bin_dir=$menv_dir/bin
 export menv_core_dir=$menv_dir/core
 export menv_vault_dir=$menv_dir/vault
+export menv_backup_dir=$menv_vault_dir/backup
 export menv_vault_bin_dir=$menv_vault_dir/bin
-export menv_vault_save_dir=$menv_vault_dir/save
 export menv_cache_bin_dir=$menv_cache_dir/bin
 export menv_cache_npm_dir=$menv_cache_dir/npm
 export menv_cache_npm_bin_dir=$menv_cache_npm_dir/bin

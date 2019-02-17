@@ -3,7 +3,7 @@
 # requirements dist != darwin, desktop != 0
 
 if [ -f /etc/selinux/config ] ; then
-  sudo cp /etc/selinux/config $menv_sysbackup_dir
+  sudo cp /etc/selinux/config $menv_backup_dir
 fi
 
 sudo setenforce 0 &> /dev/null

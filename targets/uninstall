@@ -30,14 +30,8 @@ if_symlink_rm ~/pics
 
 $BINCP /etc/hosts $menv_backup_dir
 
-echo "Saving the menv backup and vault directories."
-$BINMV $menv_backup_dir ~
+echo "Saving the menv vault directory."
 $BINMV $menv_vault_dir ~
-
-if ! find ~/backup -mindepth 1 -print -quit | grep -q .; then
-  echo "Deleting empty backup directory."
-  $BINRM -rf ~/backup
-fi
 
 $BINRM -rf $menv_dir
 

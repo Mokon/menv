@@ -1,0 +1,8 @@
+#!/bin/bash
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
+pkg=$1
+
+while read -r fedora_pkg debian_pkg ubuntu_pkg centos_pkg darwin_pkg; do
+  echo -n "$fedora_pkg ="
+  dnf install --assumeno ${fedora_pkg} 2>&1 | grep "Installed size:"| cut -f2 -d:
+done < ${menv_pkgs_dir}/${pkg}.pkgs

@@ -13,7 +13,7 @@ tar -xzf $file
 /bin/rm -f $file
 /bin/mv menv-master menv
 
-find menv/ -not -path "menv/vault/*/*" -and -not -path "menv/backup/*/*" -and -name .gitkeep -exec rm -rf {} \;
+find menv/ -not -path "menv/vault/*/*" -and -name .gitkeep -exec rm -rf {} \;
 
 source ~/menv/core/target_handlers/install
 

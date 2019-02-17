@@ -17,7 +17,7 @@ if [ -d ~/menv/vault/code/menv ]; then
     cd ~
     /bin/cp -R  ~/vault/code/menv ~
     /bin/rm -rf ~/menv/.git
-    find menv/ -not -path "menv/vault/*/*" -and -not -path "menv/backup/*/*" -and -name .gitkeep -exec rm -rf {} \;
+    find menv/ -not -path "menv/vault/*/*" -and -name .gitkeep -exec rm -rf {} \;
 
     source ~/menv/core/target_handler
 
@@ -57,5 +57,5 @@ function menv_clone_coderef {
   spopd
 }
 
-alias menv_grep="grep --exclude-dir trash --exclude-dir vault --exclude-dir backup --exclude-dir cache"
+alias menv_grep="grep --exclude-dir trash --exclude-dir vault --exclude-dir cache"
 alias menv_line_count="find . -type f -exec file {} + | awk -F: '/ASCII text/ {print $1}'|xargs wc -l"

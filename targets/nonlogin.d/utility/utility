@@ -242,23 +242,16 @@ function remove_empty_dirs {
   find $dir -type d -empty -exec rmdir {} \;
 }
 
+function tail_log {
+  local unit=$1
+  journalctl -u $unit -f --since $(date +%H:%M:%S)
+}
+
 function sum_transfer_size {
   local file=$1
 
   awk '{print $3}' $file | sed 's/KB/000/' | sed 's/MB/000000/' | \
     grep -v - | grep -v % | awk '{ sum += $1 } END { print sum }'
-}
-
-function save {
-  local savefile=${1:-$menv_vault_save_dir/saveme}
-
-  if [ -f $savefile ] ; then
-    $BINCP_BCK ${savefile}{,.bak}
-  fi
-
-  local input=$(cat)
-
-  echo $input | tee $savefile
 }
 
 alias dropboxd="~/.dropbox-dist/dropboxd"
