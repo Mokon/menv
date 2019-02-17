@@ -30,7 +30,6 @@ else
       ${menv_bin_dir}/exesudo delete_line_in_file "\tDefaults    secure_path = *" /etc/sudoers
     fi
   else
-    echo "nodesktop" >> $menv_install_opts_file
     echo "noroot" >> $menv_install_opts_file
   fi
 
