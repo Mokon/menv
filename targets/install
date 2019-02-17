@@ -43,6 +43,15 @@ else
     echo "nodesktop" >> $menv_install_opts_file
   fi
 
+  read -t 60 -p "Do you want to install packages MENV might use? " -n 1 -r
+  echo
+
+  if [[ $REPLY =~ ^[Yy]$ ]] ; then
+    echo "pkgs" >> $menv_install_opts_file
+  else
+    echo "nopkgs" >> $menv_install_opts_file
+  fi
+
   menv_load_install_opts
 
   # Link the bash targets.

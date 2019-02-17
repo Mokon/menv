@@ -70,7 +70,7 @@ function menv_target_children {
   local files=$(find $menv_targets_dir/${file}.d \
     -type f -and -not -name .gitkeep | sort )
 
-  /bin/rm -f $menv_source_log
+  echo "=====" >> $menv_source_log
   if [ ! -z "$files" ] ; then
     for f in $files ; do
       if [[ ! -z $MENV_MODULE_EXCLUDES && $f =~ $MENV_MODULE_EXCLUDES ]] ; then
@@ -176,6 +176,17 @@ function should_source_file {
 
             if [ $MENV_DESKTOP -ne $RValue ] ; then
               echo "not a desktop system so not sourceing $file" >> $menv_source_log
+              return 1
+            fi
+            ;;
+          pkgs)
+            if [ "$Op" != "!=" ] ; then
+              echo "Corrupt requirement line Op '$Op' on file $file"
+              return 1
+            fi
+
+            if [ $MENV_PKGS -ne $RValue ] ; then
+              echo "not set to install pkgs so not sourceing $file" >> $menv_source_log
               return 1
             fi
             ;;
@@ -396,18 +407,26 @@ function testconnection {
 function menv_load_install_opts {
   if [ ! -f $menv_install_opts_file ]; then
     export MENV_DESKTOP=0
-  elif grep -v --quiet nodesktop $menv_install_opts_file ; then
-    export MENV_DESKTOP=1
+    export MENV_ROOt=0
+    export MENV_PKGS=0
   else
-    export MENV_DESKTOP=0
-  fi
-
-  if [ ! -f $menv_install_opts_file ]; then
-    export MENV_DESKTOP=0
-  elif grep -v --quiet noroot $menv_install_opts_file ; then
-    export MENV_ROOT=1
-  else
-    export MENV_ROOT=0
+    if grep -v --quiet noroot $menv_install_opts_file ; then
+      export MENV_ROOT=1
+    else
+      export MENV_ROOT=0
+    fi
+    
+    if grep -v --quiet nodesktop $menv_install_opts_file ; then
+      export MENV_DESKTOP=1
+    else
+      export MENV_DESKTOP=0
+    fi
+    
+    if grep -v --quiet nopkgs $menv_install_opts_file ; then
+      export MENV_PKGS=1
+    else
+      export MENV_PKGS=0
+    fi
   fi
 }
 

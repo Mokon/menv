@@ -1,5 +1,6 @@
 #!/bin/bash
 # (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
+# requirements pkgs != 0
 
 function create_yum_dnf_repos {
   create_yum_dnf_repo google-chrome \
@@ -44,51 +45,45 @@ function install_skype {
 fedora_desktop_pkgs="libXv libXScrnSaver qt qt-x11 pulseaudio-libs
   pulseaudio-libs-glib2 alsa-plugins-pulseaudio qtwebkit"
 
-read -t 60 -p "Do you want to install packages MENV might use? " -n 1 -r
-echo
-REPLY_PKGS=$REPLY
-
-if [[ $REPLY_PKGS =~ ^[Yy]$ ]] ; then
-  if [ $PKG_TYPE == "rpm" ] ; then
-    install_rpmfusion
-  fi
-
-  if [ $MENV_DESKTOP -ne 0 ] ; then
-    if [ $DIST == "fedora" ] ; then
-      create_yum_dnf_repos
-      update_packages
-
-      install_simple_packages $fedora_desktop_pkgs
-      install_simple_package plymouth-theme*
-
-      if [ "$PKG_MGMT" == "dnf" ] ; then
-        cmd="dnf"
-      fi
-
-      # redirect to dev null for now as there is a bug in fedora
-      sudo $cmd debuginfo-install -q -y glibc kernel &> /dev/null
-      #  | grep -v "already installed" \
-      #  | grep -v "No debuginfo packages available to install"
-    fi
-
-    parse_and_install_pkgs_file desktop
-    parse_and_install_pkgs_file tex
-    parse_and_install_pkgs_file perl
-
-    if [ "$PKG_TYPE" == "rpm" ] ; then
-      local_install_package http://d-rats.com/yum/f11/d-rats-repo-0.1.3-1.fc12.noarch.rpm
-    fi
-
-    if [ $DIST != "darwin" ] ; then
-      npm config set prefix ${menv_cache_npm_dir}
-      export PATH=$PATH:${menv_cache_npm_bin_dir}
-
-      npm_install_packages git-stats git-stats-importer http-server svgexport \
-        forever xml2json-command
-      gem_install_packages git_stats slackcat git_fame
-      pip_install_packages gdbgui pyang terminaltables
-    fi
-  fi
-
-  parse_and_install_pkgs_file root
+if [ $PKG_TYPE == "rpm" ] ; then
+  install_rpmfusion
 fi
+
+if [ $MENV_DESKTOP -ne 0 ] ; then
+  if [ $DIST == "fedora" ] ; then
+    create_yum_dnf_repos
+    update_packages
+
+    install_simple_packages $fedora_desktop_pkgs
+    install_simple_package plymouth-theme*
+
+    if [ "$PKG_MGMT" == "dnf" ] ; then
+      cmd="dnf"
+    fi
+
+    # redirect to dev null for now as there is a bug in fedora
+    sudo $cmd debuginfo-install -q -y glibc kernel &> /dev/null
+    #  | grep -v "already installed" \
+    #  | grep -v "No debuginfo packages available to install"
+  fi
+
+  parse_and_install_pkgs_file desktop
+  parse_and_install_pkgs_file tex
+  parse_and_install_pkgs_file perl
+
+  if [ "$PKG_TYPE" == "rpm" ] ; then
+    local_install_package http://d-rats.com/yum/f11/d-rats-repo-0.1.3-1.fc12.noarch.rpm
+  fi
+
+  if [ $DIST != "darwin" ] ; then
+    npm config set prefix ${menv_cache_npm_dir}
+    export PATH=$PATH:${menv_cache_npm_bin_dir}
+
+    npm_install_packages git-stats git-stats-importer http-server svgexport \
+      forever xml2json-command
+    gem_install_packages git_stats slackcat git_fame
+    pip_install_packages gdbgui pyang terminaltables
+  fi
+fi
+
+parse_and_install_pkgs_file root

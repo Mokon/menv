@@ -22,7 +22,7 @@ git clone --bare https://github.com/mokon/menv .git &> /dev/null
 git config --unset core.bare > /dev/null
 git reset > /dev/null
 git ls-files --deleted -z | git update-index --assume-unchanged -z --stdin > /dev/null
-git push --set-upstream origin master > /dev/null
+git branch --set-upstream origin master > /dev/null
 cd ..
 
 source ~/menv/core/target_handlers/login
