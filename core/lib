@@ -410,22 +410,22 @@ function menv_load_install_opts {
     export MENV_ROOt=0
     export MENV_PKGS=0
   else
-    if grep -v --quiet noroot $menv_install_opts_file ; then
-      export MENV_ROOT=1
-    else
+    if grep --quiet noroot $menv_install_opts_file ; then
       export MENV_ROOT=0
+    else
+      export MENV_ROOT=1
     fi
     
-    if grep -v --quiet nodesktop $menv_install_opts_file ; then
-      export MENV_DESKTOP=1
-    else
+    if grep --quiet nodesktop $menv_install_opts_file ; then
       export MENV_DESKTOP=0
+    else
+      export MENV_DESKTOP=1
     fi
     
-    if grep -v --quiet nopkgs $menv_install_opts_file ; then
-      export MENV_PKGS=1
-    else
+    if grep --quiet nopkgs $menv_install_opts_file ; then
       export MENV_PKGS=0
+    else
+      export MENV_PKGS=1
     fi
   fi
 }
