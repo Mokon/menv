@@ -13,6 +13,6 @@ The vault folder is where all the users data is stored and it is treated as
 sacred and should always be preserved even when menv is uninstalled.
 
 Sometimes I have private aliases, etc for work. For these I have the files:
-  ~/menv/vault/menv_vault_login
+  ~/menv/vault/login
 and
-  ~/menv/vault/menv_vault_nonlogin
+  ~/menv/vault/nonlogin
