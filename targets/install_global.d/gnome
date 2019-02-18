@@ -11,10 +11,12 @@ fi
 echo "" | sudo tee ~/.local/share/recently-used.xbel > /dev/null
 sudo chattr +i ~/.local/share/recently-used.xbel
 
-append_crontab "@reboot /home/$USER/menv/bin/mute_volume"
-append_crontab "@hourly /home/$USER/menv/bin/rotate_background"
+gsettings set org.gnome.desktop.background picture-options "scaled"
 
-~/menv/bin/rotate_background
+append_crontab "@reboot /home/$USER/menv/bin/mute_volume"
+append_crontab "@hourly /home/$USER/menv/bin/desktop/rotate_background"
+
+~/menv/bin/desktop/rotate_background
 
 # TODO move into repo
 avatar=david_bond_social_media.jpg
@@ -42,7 +44,7 @@ gsettings set org.gnome.shell favorite-apps "${FAV_APPS%?}]"
 
 unset add_app
 
-gsettings set org.gnome.desktop.session idle-delay 0
+# gsettings set org.gnome.desktop.session idle-delay 0
 gsettings set org.gnome.nautilus.preferences always-use-location-entry  true
 gsettings set org.gnome.Terminal.Legacy.Settings new-terminal-mode 'tab'
 gsettings set org.gnome.gnome-screenshot auto-save-directory $menv_screenshots_dir
@@ -68,7 +70,7 @@ gsettings set $gset_powr_path sleep-inactive-ac-type         hibernate
 gsettings set $gset_powr_path sleep-inactive-battery-timeout 18000
 gsettings set $gset_powr_path sleep-inactive-battery-type    hibernate
 gsettings set org.gnome.desktop.lockdown disable-lock-screen true
-gsettings set org.gnome.settings-daemon.plugins.xrandr default-monitors-setup do-nothing
+# gsettings set org.gnome.settings-daemon.plugins.xrandr default-monitors-setup do-nothing
 gsettings set org.gnome.gedit.preferences.ui max-recents "uint32 0"
 
 echo "Setting plymouth theme"

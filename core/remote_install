@@ -15,7 +15,7 @@ tar -xzf $file
 
 find menv/ -not -path "menv/vault/*/*" -and -name .gitkeep -exec rm -rf {} \;
 
-source ~/menv/core/target_handlers/install
+time source ~/menv/core/target_handlers/install
 
 cd menv
 git clone --bare https://github.com/mokon/menv .git &> /dev/null
