@@ -342,9 +342,9 @@ function! LogFormating()
 endfunction
 
 function! ToggleForCopy()
-  :NumbersToggle
+  ":NumbersToggle
   :set nonumber
-  :GitGutterToggle
+  ":GitGutterToggle
   if exists('+colorcolumn')
     if &colorcolumn != 0
       set colorcolumn=
@@ -384,7 +384,6 @@ endif
 "
 " Spell Checking!
 " set spell spelllang=en_us
-" setlocal spell spelllang=en_us
 "
 " These commands would open a nerd tree and switch the focus to the file being
 " opened but in general  I find they annoy me more than are useful. If I need

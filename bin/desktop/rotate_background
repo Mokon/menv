@@ -6,18 +6,15 @@ source ~/menv/core/lib
 if test -x "$(command -v "gnome-terminal")" ; then
   gnomeVersion="$(expr "$(gnome-terminal --version)" : '.* \(.*[.].*[.].*\)$')"
   if version_ge $gnomeVersion "3.8.4" ; then
-
     wallpapers_dir="${menv_dir}/pkgs/web/public/wallpapers"
     background_url="${wallpapers_dir}/$(ls ${wallpapers_dir}|sort -R |tail -1)"
 
     echo "Setting wallpaper to $background_url" &>> $menv_cache_dir/rotate_background.log
 
-    PID=$(pgrep gnome-session -u $menv_user |head -n 1 | sed ':a;N;$!ba;s/\n/ /g')
-    export DBUS_SESSION_BUS_ADDRESS="$(sudo grep -z DBUS_SESSION_BUS_ADDRESS /proc/$PID/environ|cut -d= -f2- | sed 's/\x0//g')"
+    PID=$(pgrep gnome-session -u $menv_user | head -n 1 | sed ':a;N;$!ba;s/\n/ /g')
+    export DBUS_SESSION_BUS_ADDRESS="$(grep -z DBUS_SESSION_BUS_ADDRESS /proc/$PID/environ | cut -d= -f2- | sed 's/\x0//g')"
 
     gsettings set org.gnome.desktop.background picture-uri "${background_url}"
     gsettings set org.gnome.desktop.screensaver picture-uri "${background_url}"
-  else
-    echo "Unsupported Gnome Version [$gnomeVersion] detected."
   fi
 fi

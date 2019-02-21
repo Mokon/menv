@@ -6,8 +6,22 @@ itself. You can do this with:
 
   source <(curl -sL https://raw.githubusercontent.com/Mokon/menv/master/core/remote_install)
 
-On certain systems you may need to:
-  curl -sL https://raw.githubusercontent.com/Mokon/menv/master/core/remote_install > /tmp/mi ; source /tmp/mi
+The base of this system are a set of targets that are executed at certain
+points.
+
+There are the menv life cycle targets of install, uninstall, and update. The
+install target is further broken into global and user installs. On install the
+system will ask a few questions including if the user has root access, if the
+user wishes to install standard menv packages, and whether or not the system is
+being used as a desktop system. Root access requiring target scripts go under
+install_global.d while ones which don't require root go under install_user.d.
+Additionally scripts can have a require line which makes it so they are executed
+in certain environments. Scripts should also not use curl, wget, git clone, etc
+(anything accessing the internet) as the core/lib provides functions to do this
+which are proxy aware.
+
+There are also the tty life cycle targets of login, nonlogin, and logout. These
+also can have requirement lines.
 
 The vault folder is where all the users data is stored and it is treated as
 sacred and should always be preserved even when menv is uninstalled.
@@ -16,3 +30,4 @@ Sometimes I have private aliases, etc for work. For these I have the files:
   ~/menv/vault/login
 and
   ~/menv/vault/nonlogin
+which are executed in the appropriate target.

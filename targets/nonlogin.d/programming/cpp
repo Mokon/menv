@@ -7,11 +7,11 @@ function cpp_class {
   local year=`date +"%Y"`
   
   cat << EOF > ${class}.hpp
-/* Copyright (C) $year David 'Mokon' Bond,  All Rights Reserved */
+/* Copyright (C) $year TODO,  All Rights Reserved */
 
 #pragma once
 
-namespace mnet {
+namespace TODO {
 
 class $class
 {
@@ -20,29 +20,29 @@ class $class
     virtual ~$class() = default;
     $class(const $class&) = delete;
     $class& operator=(const $class&) = delete;
-    $class(const $class&&) = delete;
-    $class& operator=(const $class&&) = delete;
+    $class($class&&) = delete;
+    $class& operator=($class&&) = delete;
 };
 
-}
+} // namespace TODO
 
 EOF
 
   cat << EOF > ${class}.cpp
-/* Copyright (C) $year David 'Mokon' Bond,  All Rights Reserved */
+/* Copyright (C) $year TODO,  All Rights Reserved */
 
 #include "${class}.hpp"
 
-namespace mnet {
+namespace TODO {
 
 $class::$class() {
 }
 
-}
+} // namespace TODO
 
 EOF
 }
 
-alias playground="git clone https://github.com/mokon/playground ; cd playgrround"
+alias playground="git clone https://github.com/mokon/playground ; cd playground"
 alias fcgi_install="sudo make install && sudo service lighttpd restart"
 alias remake="make clean-purge && ./bootstrap && ./configure && make"

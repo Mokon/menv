@@ -2,6 +2,6 @@
 Comment=
 Terminal=true
 Name=gnome_start
-Exec=bash -c "source /home/mokon/menv/bin/gnome_start"
+Exec=bash -c "source /home/davidmokonbond/menv/bin/gnome_start"
 Type=Application
 Icon=seahorse

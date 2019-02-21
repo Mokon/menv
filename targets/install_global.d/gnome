@@ -13,14 +13,12 @@ sudo chattr +i ~/.local/share/recently-used.xbel
 
 gsettings set org.gnome.desktop.background picture-options "scaled"
 
-append_crontab "@reboot /home/$USER/menv/bin/mute_volume"
-append_crontab "@hourly /home/$USER/menv/bin/desktop/rotate_background"
+append_crontab "@reboot systemd-cat -p info -t \"mute-volume\" /home/$USER/menv/bin/desktop/mute-volume"
+append_crontab "@hourly systemd-cat -p info -t \"rotate-background\" /home/$USER/menv/bin/desktop/rotate_background"
 
 ~/menv/bin/desktop/rotate_background
 
-# TODO move into repo
-avatar=david_bond_social_media.jpg
-fetch http://mokonphotography.com/wp-content/uploads/2015/01/$avatar
+avatar=${menv_dir}/pkgs/web/public/david_bond_social_media.jpg
 
 dbus-send --system --dest=org.freedesktop.Accounts  \
     --type=method_call --print-reply \
@@ -31,7 +29,7 @@ $BINRM $avatar
 
 cd ~
 
-FAV_APPS="['gnome-terminal.desktop', 'wireshark.desktop', 'virtualbox.desktop', 'virt-manager.desktop', 'nautilus.desktop', 'cheese.desktop', 'gedit.desktop', 'google-chrome.desktop', 'firefox.desktop', "
+FAV_APPS="['gnome-terminal.desktop', 'wireshark.desktop',  'nautilus.desktop', 'cheese.desktop', 'gedit.desktop', 'google-chrome.desktop', "
 function add_app {
   local app="${1}.desktop"
   cp $menv_dotfiles_dir/local/share/applications/${app} .local/share/applications/${app}
@@ -43,6 +41,9 @@ add_app gnome-start
 gsettings set org.gnome.shell favorite-apps "${FAV_APPS%?}]"
 
 unset add_app
+
+gsettings set org.gnome.desktop.screensaver idle-activation-enabled false
+gsettings set org.gnome.settings-daemon.plugins.power idle-dim false
 
 # gsettings set org.gnome.desktop.session idle-delay 0
 gsettings set org.gnome.nautilus.preferences always-use-location-entry  true
@@ -69,7 +70,7 @@ gsettings set $gset_powr_path sleep-inactive-ac-timeout      36000
 gsettings set $gset_powr_path sleep-inactive-ac-type         hibernate
 gsettings set $gset_powr_path sleep-inactive-battery-timeout 18000
 gsettings set $gset_powr_path sleep-inactive-battery-type    hibernate
-gsettings set org.gnome.desktop.lockdown disable-lock-screen true
+gsettings set org.gnome.desktop.lockdown disable-lock-screen false
 # gsettings set org.gnome.settings-daemon.plugins.xrandr default-monitors-setup do-nothing
 gsettings set org.gnome.gedit.preferences.ui max-recents "uint32 0"
 
@@ -118,3 +119,9 @@ if [ ! -z $MENV_HOSTNAME ] ; then
   sudo hostnamectl set-hostname --static "$MENV_HOSTNAME"
   sudo hostnamectl set-hostname --pretty "$MENV_HOSTNAME"
 fi
+
+github_fetch sunwxg/gnome-shell-extension-unblank
+cd gnome-shell-extension-unblank/
+make
+cd ..
+rm gnome-shell-extension-unblank

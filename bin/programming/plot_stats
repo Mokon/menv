@@ -1,4 +1,5 @@
 #!/bin/bash
+# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 infile=${1}
 outfile=${2:-`mktemp --suffix .png`}
 plotfile=`mktemp`

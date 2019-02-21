@@ -2,5 +2,7 @@
 # (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 if type clang++ &> /dev/null; then
-  clang++ ${menv_bin_dir}/programming/decode_wait_status.cpp -std=c++2a -o ${menv_cache_bin_dir}/decode_wait_status
+  if ! clang++ ${menv_bin_dir}/programming/decode_wait_status.cpp -std=c++2a -o ${menv_cache_bin_dir}/decode_wait_status ; then
+    g++ ${menv_bin_dir}/programming/decode_wait_status.cpp -std=c++2a -o ${menv_cache_bin_dir}/decode_wait_status
+  fi
 fi

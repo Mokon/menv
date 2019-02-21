@@ -7,11 +7,3 @@ cd ~
 if [ -x /sbin/chkconfig ] ; then
   sudo /sbin/chkconfig sshd on 2>&1 |grep -v Forwarding
 fi
-
-if ! sudo grep -q "UseDNS no" /etc/ssh/sshd_config &> /dev/null ; then
-  echo "UseDNS no" | sudo tee -a /etc/ssh/sshd_config &> /dev/null
-fi
-
-if ! sudo grep -q "UseRoaming no" /etc/ssh/ssh_config &> /dev/null ; then
-  echo "UseRoaming no" | sudo tee -a /etc/ssh/ssh_config &> /dev/null
-fi

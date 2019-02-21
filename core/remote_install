@@ -6,7 +6,7 @@ pushd . &> /dev/null
 cd ~
 
 file=`mktemp`
-curl -L -o $file -s \
+time curl -L -o $file -s \
   https://github.com/mokon/menv/archive/master.tar.gz
 
 tar -xzf $file

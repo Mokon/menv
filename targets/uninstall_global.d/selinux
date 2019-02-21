@@ -1,8 +1,0 @@
-#!/bin/bash
-# (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
-
-if [ -f $menv_backup_dir/config ] ; then
-  if [ -d /etc/selinux ] ; then
-    sudo cp -f $menv_backup_dir/config /etc/selinux/config
-  fi
-fi

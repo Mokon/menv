@@ -58,7 +58,7 @@ cat << BASHRC > $main_viewer
   tmux_start main_viewer
 BASHRC
 
-if ! vboxmanage list runningvms|grep -q build-machine ; then
+if ! vboxmanage list runningvms | grep -q build-machine ; then
   vboxmanage startvm build-machine --type headless
 fi
 

@@ -65,7 +65,7 @@ function ethertype {
   local file=${menv_cache_dir}/ethertype
   if [ ! -f $file ]; then
     local url=https://www.iana.org/assignments/ieee-802-numbers/ieee-802-numbers-1.csv
-    wget -O $file -q $url
+    fetch $url $file
   fi
 
   local OLDIFS=$IFS
@@ -86,7 +86,7 @@ function port {
   local file=${menv_cache_dir}/ports
   if [ ! -f $file ]; then
     local url=http://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.csv
-    wget -O $file -q $url
+    fetch $url $file
   fi
 
   echo "According to IANA"
@@ -175,7 +175,7 @@ function rfc {
   fi
 
   if [ ! -f $rfcdir/$rfc.$extension ]; then
-    wget -q $url -O $rfcdir/$rfc.$extension
+    fetch $url $rfcdir/$rfc.$extension
     if [[ $? != 0 ]]; then
       $BINRM -f $rfcdir/$rfc.$extension
     fi

@@ -1,4 +1,3 @@
--- adapted from https://daviddavioblue.deviantart.com/art/haxOS-Conky-454353060
 -- ┤┤└└┴┴┐┐││┘┘┌┌├├┬┬┼┼┴┴── ││ ▽▼△▲▵▴▾▿─────● ▷ ●
 
 conky.config = {
@@ -46,7 +45,7 @@ conky.config = {
 conky.text = [[
   ${goto 0}${voffset 0}
   ${hr}
-  ${image /home/dbond/menv/desktop/logo.png -p 0,0 -s 1366x768}
+  ${image /home/davidmokonbond/menv/desktop/logo.png -p 0,0 -s 1366x768}
   ${alignr}${offset -60}${voffset -10}${font DejaVu Sans:pixelsize=70}${color2}mokon${color}OS${font}
   ${alignr}$font                              ▲                   │
   ${alignr}$font┌─────────────────────────────┴─────────────┐     │
@@ -94,7 +93,7 @@ conky.text = [[
   ${alignr}$font ${color3}[${color} ${fs_used /}/${fs_size /} ${color3}]${color} root -─┤    │
   ${alignr}$font ${color3}[${color} ${fs_bar 5,120 /} ${color3}]${color} -─┘    │    │
   ${alignr}$font ${color3}[${color} ${fs_used /home}/${fs_size /home} ${color3}]${color} home -─┤    │
-  ${alignr}$font ${color3}[${color} ${fs_bar 5,120 /home/dbond/} ${color3}]${color} -─┘    │    │
+  ${alignr}$font ${color3}[${color} ${fs_bar 5,120 /home/davidmokonbond/} ${color3}]${color} -─┘    │    │
   #${alignr}$font ${color3}[${color} ${fs_used /usr/local}/${fs_size /usr/local} ${color3}]${color} local -─┘    │
   #${alignr}$font ${color3}[${color} ${fs_bar 5,120 /home/Container/} ${color3}]${color} -─┘         │
   ${alignr}$font │

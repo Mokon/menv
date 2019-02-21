@@ -13,13 +13,13 @@ cd $menv_cache_bin_dir
 
 gitv=$(git --version)
 gitv=${gitv/git version /}
-curl -Os  https://raw.githubusercontent.com/git/git/v${gitv}/contrib/completion/git-completion.bash
+fetch https://raw.githubusercontent.com/git/git/v${gitv}/contrib/completion/git-completion.bash
 
 mkdir git
 cd git
 
-git clone -q https://github.com/ejwa/gitinspector
-git clone -q https://github.com/ddksr/cliist
+github_fetch ejwa/gitinspector
+github_fetch ddksr/cliist
 
 cd ..
 

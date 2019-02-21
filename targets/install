@@ -20,14 +20,18 @@ else
     echo "root" >> $menv_install_opts_file
 
     if [ $DIST != "darwin" ] ; then
-      read -t 60 -p "Please provide a hostname: " -r
-      export MENV_HOSTNAME="$REPLY"
+      read -t 60 -p "Do you want to set the hostname on this system? " -n 1 -r
+      echo
+      if [[ $REPLY =~ ^[Yy]$ ]] ; then
+        read -t 60 -p "Please provide a hostname: " -r
+        export MENV_HOSTNAME="$REPLY"
+      fi
 
       local u=`whoami`
       echo "$u ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers &> /dev/null
       echo "$u ALL=(root) NOPASSWD: /sbin/reboot" | sudo tee -a /etc/sudoers &> /dev/null
-      ${menv_bin_dir}/thirdparty/exesudo delete_line_in_file "\tDefaults    env_reset" /etc/sudoers
-      ${menv_bin_dir}/thirdparty/exesudo delete_line_in_file "\tDefaults    secure_path = *" /etc/sudoers
+      sudo sed -i "/\tDefaults    env_reset/d" /etc/sudoers
+      sudo sed -i "/\tDefaults    secure_path = */d" /etc/sudoers
     fi
   else
     echo "noroot" >> $menv_install_opts_file

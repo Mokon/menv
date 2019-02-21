@@ -55,3 +55,6 @@ rpmfusion-free-release-tainted skip skip rpmfusion-free-release-tainted
 libdvdcss skip skip libdvdcss
 blueman blueman blueman blueman
 snapd snapd snapd snapd
+fuse-exfat skip skip fuse-exfat
+shotwell skip skip shotwell
+gnome-shell-extension-freon skip skip gnome-shell-extension-freon

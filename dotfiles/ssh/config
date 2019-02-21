@@ -3,6 +3,7 @@ TCPKeepAlive yes
 ServerAliveInterval 30
 ServerAliveCountMax 4
 Include configusers
+UseRoaming no
 Host *
   ForwardAgent yes
   ForwardX11 yes
@@ -12,16 +13,3 @@ Host *
 Host github.com
   ForwardX11 no
   Compression yes
-Host 128technology.com
-  ForwardX11 no
-Host epsom
-  User mokon
-  HostName 192.168.1.2
-#  ProxyCommand  ssh mokon@epsom.mokon.net nc %h %p 2> /dev/null
-
-#RSAAuthentication yes
-#PubkeyAuthentication yes
-#Match User root
-#PasswordAuthentication no
-#Match Group sudoers
-#PasswordAuthentication no

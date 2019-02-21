@@ -42,8 +42,6 @@ function install_skype {
   $BINRM skype.rpm
 }
 
-fedora_desktop_pkgs="libXv libXScrnSaver qt qt-x11 pulseaudio-libs
-  pulseaudio-libs-glib2 alsa-plugins-pulseaudio qtwebkit"
 
 if [ $PKG_TYPE == "rpm" ] ; then
   install_rpmfusion
@@ -53,6 +51,9 @@ if [ $MENV_DESKTOP -ne 0 ] ; then
   if [ $DIST == "fedora" ] ; then
     create_yum_dnf_repos
     update_packages
+
+    fedora_desktop_pkgs="libXv libXScrnSaver qt qt-x11 pulseaudio-libs
+      pulseaudio-libs-glib2 alsa-plugins-pulseaudio qtwebkit"
 
     install_simple_packages $fedora_desktop_pkgs
     install_simple_package plymouth-theme*

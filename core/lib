@@ -2,24 +2,7 @@
 # (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
 if [[ "$SHELL" != *bash* && ! -z $PS1 ]] ; then
-  SHELLS=($(chsh -l |grep bash)) ;
-  if [ -z "${SHELLS[0]}" ] ; then
-    if groups ${USER}|grep -q wheelx ; then
-      if type dnf > /dev/null ; then
-        sudo dnf -y install bash
-      elif type yum > /dev/null ; then
-        sudo yum -y install bash
-      elif type apt-get > /dev/null ; then
-        sudo apt-get -y install bash
-      fi
-    else
-      echo "your shell is not bash and you are not in the wheel group"
-      echo "please ask the system administrator to install bash"
-    fi
-  fi
-
-  chsh -s ${SHELLS[0]}
-  echo "your shell has been changed to bash, please re-run menv"
+  echo "your shell is not bash"
   exit -1
 fi
 
