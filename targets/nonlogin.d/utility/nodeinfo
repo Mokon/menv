@@ -1,6 +1,11 @@
 #!/bin/bash
 # (C) 2013-2019 David 'Mokon' Bond, All Rights Reserved
 
+function ni_line {
+    local line=$1
+    echo $line | cut -c 1-79
+}
+
 function nodeinfo {
   local TC_RED="[0;31;42m"
   local TC_RESET="[0m"
@@ -25,35 +30,37 @@ function nodeinfo {
   else
     os="Mac OSX"
   fi
-  echo "OS............: ${os/GNU\//}"
-  echo "Distribution..: $DIST"
-  echo "Pkt Mgmt......: $PKG_MGMT"
-  echo "Hostname......: `uname -n`"
+  ni_line "OS............: ${os/GNU\//}"
+  ni_line "Distribution..: $DIST"
+  ni_line "Pkt Mgmt......: $PKG_MGMT"
+  ni_line "Hostname......: `uname -n`"
   if [ $DIST != "darwin" ] ; then
-    echo "Address(es)...: `/sbin/ip address | grep "inet" \
+    ni_line "Address(es)...: `/sbin/ip address | grep "inet" \
                              | grep -v '127.\|::1\|fe80::' | awk '{print $2}' \
                              | sed ':a;N;$!ba;s/\n/\n..............: /g'` "
   fi
-  echo "Kernel........: `uname -s ` `uname -r`"
-  echo "Machine HW....: `uname -m`"
+  ni_line "Kernel........: `uname -s ` `uname -r`"
+  ni_line "Machine HW....: `uname -m`"
   if uptime -p &> /dev/null ; then
-    echo "Uptime........: `uptime -p | sed 's/.*up ([^,]*), .*/1/' | cut -c 1-79`"
+    ni_line "Uptime........: `uptime -p | sed 's/.*up ([^,]*), .*/1/'i`"
   else
-    echo "Uptime........: `uptime | sed 's/.*up ([^,]*), .*/1/' | cut -c 1-79`"
+    ni_line "Uptime........: `uptime | sed 's/.*up ([^,]*), .*/1/'`"
   fi
   if [ $DIST != "darwin" ] ; then
-    echo "Memory........: `echo $MEMT | awk {'print $2'}` `echo $MEMT \
+    ni_line "Memory........: `echo $MEMT | awk {'print $2'}` `echo $MEMT \
                                       | awk {'print $3'}`"
-    echo "SWAP..........: `echo $SWAT | awk {'print $2'}` `echo $SWAT \
+    ni_line "SWAP..........: `echo $SWAT | awk {'print $2'}` `echo $SWAT \
                                       | awk {'print $3'}`"
   fi
-  echo "Username......: `whoami`"
+  ni_line "Username......: `whoami`"
   if [ $DIST != "darwin" ] ; then
-    echo "Groups........:`groups $(whoami) | cut -f2 -d':'`"
-    echo "Processor(s)..: $PNUMS $PVENDOR ${PMHZ} MHz ${PMODEL} ${CPUTMP}"
+    virt=$(systemd-detect-virt)
+    ni_line "Virtual.......: $virt"
+    ni_line "Groups........:`groups $(whoami) | cut -f2 -d':'`"
+    ni_line "Processor(s)..: $PNUMS $PVENDOR ${PMHZ} MHz ${PMODEL} ${CPUTMP}"
 
-    echo "SELinux.......: `/usr/sbin/getenforce`"
-    echo "last login....: $(last -1 -R  $USER | head -1 | cut -c 20-| awk '{$1=$1};1')"
+    ni_line "SELinux.......: `/usr/sbin/getenforce`"
+    ni_line "last login....: $(last -1 -R  $USER | head -1 | cut -c 20-| awk '{$1=$1};1')"
   fi
-  echo "menv version..: $(menv_version)"
+  ni_line "menv version..: $(menv_version)"
 }

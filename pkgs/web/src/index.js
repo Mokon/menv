@@ -3,6 +3,7 @@ const board_game_collection = require('./board_game_collection.js');
 const genealogy = require('./genealogy.js');
 const health = require('./health.js');
 const realestate = require('./realestate.js');
+const plot = require('./plot.js');
 
 var staticPages = [
   "contact",
@@ -21,6 +22,7 @@ var staticDataPages = [
 
 genealogy.generateRoutes(engine);
 realestate.generateRoutes(engine);
+plot.generateRoutes(engine);
 health.generateRoutes(engine);
 board_game_collection.generateRoutes(engine);
 engine.generateRoutes(staticPages, staticDataPages);

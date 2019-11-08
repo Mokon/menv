@@ -1,0 +1,33 @@
+<style>
+  #map {
+    height: 600px;
+    width: 100%;
+   }
+</style>
+
+<script>
+function initMap() {
+    var latlng = new google.maps.LatLng(39.305, -76.617);
+    var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 30,
+        center: latlng,
+        streetViewControl: false,
+        mapTypeControl: false,
+        mapTypeId: 'satellite',
+    });
+    var kml = new google.maps.KmlLayer({
+        url: 'https://mokon.net/kml/nh_epsom_272_plot_mod.kml',
+        map: map
+    });
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode({'address': '276 North Rd. Epsom, NH' }, function(results, status) {
+        if (status === 'OK') {
+            map.setCenter(results[0].geometry.location);
+        }
+    });
+}
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key={{{key}}}&callback=initMap">
+</script>
+
+<div id="map"></div>

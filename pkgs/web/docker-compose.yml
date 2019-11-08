@@ -1,0 +1,41 @@
+version: "3.7"
+
+services:
+  mokonnet:
+    image: mokonnet
+    restart: always
+    networks:
+      - public
+    ports:
+      - "8443:8443"
+    build:
+      dockerfile: Dockerfile
+      context: .
+    secrets:
+      - facebook_api.secret
+      - api_key
+      - cert.pem
+      - client_secret.json
+      - cookie.secret
+      - key.pem
+      - server.cert
+      - server.key
+secrets:
+  facebook_api.secret:
+    file: ../../vault/secrets/facebook_api.secret
+  api_key:
+    file: ../../vault/secrets/api_key
+  cert.pem:
+    file: ../../vault/secrets/cert.pem          
+  client_secret.json:
+    file: ../../vault/secrets/client_secret.json
+  cookie.secret:
+    file: ../../vault/secrets/cookie.secret
+  key.pem:
+    file: ../../vault/secrets/key.pem
+  server.cert:
+    file: ../../vault/secrets/server.cert
+  server.key:
+    file: ../../vault/secrets/server.key
+networks:
+  public:

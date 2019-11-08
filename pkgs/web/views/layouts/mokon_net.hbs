@@ -91,7 +91,7 @@
               console.log(response.authResponse.accessToken)
               console.log(response)
               console.log(session_access_token)
-              window.location = "login/" + response.authResponse.accessToken;
+              window.location = "/login/" + response.authResponse.accessToken;
             }
           } else {
             console.log("doing login")
@@ -147,7 +147,7 @@
     </div>
     <div class="foundation">
       <div class="copyright">
-        © 2018 David Bond
+        © 2019 David Bond
       </div>
       <div class="gpg">
         <a href="https://raw.githubusercontent.com/Mokon/menv/master/pubkeys/mokon-pubkey.asc">my GPG public key</a>

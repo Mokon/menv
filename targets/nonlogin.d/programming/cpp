@@ -6,7 +6,7 @@ function cpp_class {
 
   local year=`date +"%Y"`
   
-  cat << EOF > ${class}.hpp
+  cat << EOF > ${class}.h
 /* Copyright (C) $year TODO,  All Rights Reserved */
 
 #pragma once

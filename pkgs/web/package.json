@@ -4,10 +4,9 @@
   "description": "Mokon Net",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "David Bond",
-  "license": "",
+  "license": "UNLICENSED",
   "dependencies": {
     "@google/maps": "^0.5.5",
     "@okta/oidc-middleware": "0.0.14",

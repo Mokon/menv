@@ -4,10 +4,10 @@ const { google } = require('googleapis');
 const OAuth2Client = google.auth.OAuth2;
 
 const SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly'];
-const TOKEN_PATH = 'secrets/credentials.json';
+const TOKEN_PATH = '/run/secrets/credentials.json';
 
 function requestAuth(callback) {
-    fs.readFile('secrets/client_secret.json', (err, content) => {
+    fs.readFile('/run/secrets/client_secret.json', (err, content) => {
         if (err) {
             return console.log('Error loading client secret file:', err);
         }

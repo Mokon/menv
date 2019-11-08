@@ -10,7 +10,7 @@ if v:version < '703' || !has('python')
       " clang_complete
 endif
 
-"execute pathogen#infect()
+execute pathogen#infect()
 
 filetype plugin indent on " Enable lang dep. indenting
 syntax on " We want syntax coloring
@@ -342,9 +342,9 @@ function! LogFormating()
 endfunction
 
 function! ToggleForCopy()
-  ":NumbersToggle
+  :NumbersToggle
   :set nonumber
-  ":GitGutterToggle
+  :GitGutterToggle
   if exists('+colorcolumn')
     if &colorcolumn != 0
       set colorcolumn=

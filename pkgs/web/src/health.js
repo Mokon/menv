@@ -3,7 +3,7 @@ const google = require('./google.js');
 module.exports.generateRoutes = function(engine) {
     engine.get('/health', (request, response) => {
         google.processRangeFromSpreadsheet(
-            '17zFROiQrXDe5HdZr8f0Bvy7vclVqnxdCuW4laiGSi_4', 'stats', 
+            '17zFROiQrXDe5HdZr8f0Bvy7vclVqnxdCuW4laiGSi_4', 'kids_health_stats', 
             function (rows) {
                 if (rows.length) {
                     var data = []

@@ -58,4 +58,4 @@ function menv_clone_coderef {
 }
 
 alias menv_grep="grep --exclude-dir trash --exclude-dir vault --exclude-dir cache"
-alias menv_line_count="find . -type f -exec file {} + | awk -F: '/ASCII text/ {print $1}'|xargs wc -l"
+alias menv_line_count="find . -type f -exec file {} + | grep -v "./cache\|npm_modules\|./trash\|./cache\|./git" | awk -F: '/ASCII text/ {print \$1}'|xargs wc -l"

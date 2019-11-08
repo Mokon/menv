@@ -8,11 +8,11 @@ const request = require('request');
 const FB = require('fb').default;
 
 const port = 8443;
-var privateKey  = fs.readFileSync('secrets/server.key');
-var certificate = fs.readFileSync('secrets/server.cert');
+var privateKey  = fs.readFileSync('/run/secrets/server.key');
+var certificate = fs.readFileSync('/run/secrets/server.cert');
 var credentials = {key: privateKey, cert: certificate};
-var cookie_secret = fs.readFileSync('secrets/cookie.secret').toString();
-var facebook_api_secret = fs.readFileSync('secrets/facebook_api.secret').toString();
+var cookie_secret = fs.readFileSync('/run/secrets/cookie.secret').toString();
+var facebook_api_secret = fs.readFileSync('/run/secrets/facebook_api.secret').toString();
 console.log(facebook_api_secret);
 var facebook_app_id = '218827175668802';
 
@@ -92,7 +92,7 @@ module.exports.generateRoutes = function(staticPages, staticDataPages) {
 
     staticDataPages.forEach(function(page) {
         module.exports.get('/' + page, (request, response) => {
-            modules.exports.render(request, response, page, {
+            module.exports.render(request, response, page, {
                 data: JSON.parse(fs.readFileSync('data/' + page + '.json', 'utf8'))}) });
     });
 

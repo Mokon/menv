@@ -7,6 +7,11 @@ alias amialone="ping 8.8.8.8"
 alias amialonedns="ping google.com"
 alias tcp="sudo netstat -tanp"
 
+alias snmpwalk1="snmpwalk -v1 -c public"
+alias snmpwalk2="snmpwalk -v2c -c public"
+alias snmpwalk3="snmpwalk -v3 -c public"
+alias snmpwalk1_local="snmpwalk1 127.0.0.1"
+
 export HOSTALIASES=$menv_cache_dir/hosts
 
 function add_host {
@@ -153,6 +158,13 @@ function mcast_ip6_joins {
   while read index intname address refcnt flags timer ; do
     echo "$intname is joined on group $address $refcnt times with flags $flags and timer $timer."
   done < $path
+}
+
+function prefer_wifi {
+  local wifi=$1
+
+  nmcli connect modify ${wifi} ipv4.route-metric 50
+  nmcli connect modify ${wifi} ipv6.route-metric 50
 }
 
 # A function to download an rfc and store it on the localhost. If the -l

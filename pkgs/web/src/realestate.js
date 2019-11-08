@@ -1,7 +1,7 @@
 const { google } = require('googleapis');
 const fs = require('fs');
 
-var secret = fs.readFileSync('secrets/api_key', 'utf8').replace(/(\r\n\t|\n|\r\t)/gm,"");
+var secret = fs.readFileSync('/run/secrets/api_key', 'utf8').replace(/(\r\n\t|\n|\r\t)/gm,"");
 var realestateMapStyle = fs.readFileSync('data/realestateMapStyle.json');
 
 const gClient = require('@google/maps').createClient({
@@ -118,7 +118,7 @@ module.exports.generateRoutes = function(engine) {
             response.render('realestate', {
                 'nearestPlacesOfInterest': nearestPlacesOfInterest,
                 'house': house,
-                'key': secret
+                'key': secret,
             });
         });
 

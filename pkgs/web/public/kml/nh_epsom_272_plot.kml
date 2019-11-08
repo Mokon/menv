@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document id="root_doc">
+<Schema name="OGRGeoJSON" id="OGRGeoJSON">
+	<SimpleField name="OBJECTID" type="int"></SimpleField>
+	<SimpleField name="NHGIS_ID" type="string"></SimpleField>
+	<SimpleField name="CURRENTTO" type="string"></SimpleField>
+	<SimpleField name="CAMA_LINK" type="string"></SimpleField>
+	<SimpleField name="TOWN_NAME" type="string"></SimpleField>
+	<SimpleField name="PID" type="string"></SimpleField>
+	<SimpleField name="OID_1" type="string"></SimpleField>
+	<SimpleField name="County_Name" type="string"></SimpleField>
+	<SimpleField name="Map" type="string"></SimpleField>
+	<SimpleField name="Map_Cut" type="string"></SimpleField>
+	<SimpleField name="Block" type="string"></SimpleField>
+	<SimpleField name="Block_Cut" type="string"></SimpleField>
+	<SimpleField name="Lot" type="string"></SimpleField>
+	<SimpleField name="Lot_Cut" type="string"></SimpleField>
+	<SimpleField name="Unit_Cut" type="string"></SimpleField>
+	<SimpleField name="Sub" type="string"></SimpleField>
+	<SimpleField name="No_Cards" type="int"></SimpleField>
+	<SimpleField name="Address" type="string"></SimpleField>
+	<SimpleField name="SLUC" type="string"></SimpleField>
+	<SimpleField name="SLUM" type="string"></SimpleField>
+	<SimpleField name="SLU" type="string"></SimpleField>
+	<SimpleField name="Shape_Length" type="float"></SimpleField>
+	<SimpleField name="Shape_Area" type="float"></SimpleField>
+	<SimpleField name="OLD_ID" type="string"></SimpleField>
+	<SimpleField name="Town_Name_1" type="string"></SimpleField>
+	<SimpleField name="Unit_1" type="string"></SimpleField>
+</Schema>
+<Folder><name>OGRGeoJSON</name>
+  <Placemark>
+	<Style><LineStyle><color>ff0000ff</color></LineStyle><PolyStyle><fill>0</fill></PolyStyle></Style>
+	<ExtendedData><SchemaData schemaUrl="#OGRGeoJSON">
+		<SimpleData name="OBJECTID">375631</SimpleData>
+		<SimpleData name="NHGIS_ID">07070-000R15000002000002</SimpleData>
+		<SimpleData name="CURRENTTO">4/1/2018</SimpleData>
+		<SimpleData name="CAMA_LINK">Yes</SimpleData>
+		<SimpleData name="TOWN_NAME">Epsom</SimpleData>
+		<SimpleData name="PID">000R15000002000002</SimpleData>
+		<SimpleData name="OID_1">000R15-000002-000002</SimpleData>
+		<SimpleData name="County_Name">Merrimack</SimpleData>
+		<SimpleData name="Map">R15</SimpleData>
+		<SimpleData name="Map_Cut"></SimpleData>
+		<SimpleData name="Block"></SimpleData>
+		<SimpleData name="Block_Cut"></SimpleData>
+		<SimpleData name="Lot">2</SimpleData>
+		<SimpleData name="Lot_Cut"></SimpleData>
+		<SimpleData name="Unit_Cut"></SimpleData>
+		<SimpleData name="Sub">2</SimpleData>
+		<SimpleData name="No_Cards">1</SimpleData>
+		<SimpleData name="Address">272 NORTH ROAD</SimpleData>
+		<SimpleData name="SLUC">11</SimpleData>
+		<SimpleData name="SLUM"></SimpleData>
+		<SimpleData name="SLU">11</SimpleData>
+		<SimpleData name="Shape_Length">2561.10251175643</SimpleData>
+		<SimpleData name="Shape_Area">355923.851209996</SimpleData>
+		<SimpleData name="Town_Name_1">Epsom</SimpleData>
+		<SimpleData name="Unit_1"></SimpleData>
+	</SchemaData></ExtendedData>
+      <Polygon><outerBoundaryIs><LinearRing><coordinates>-71.295238118674774,43.239277836596521,0 -71.295910819066336,43.239413981181499,0 -71.298036711601441,43.238501026882368,0 -71.298701774568599,43.238292706215596,0 -71.298651609997918,43.238195929197495,0 -71.298606116686841,43.238097924991415,0 -71.298565350511851,43.23799881620176,0 -71.298456334059097,43.237759660848006,0 -71.296531943178479,43.237342011871149,0 -71.295882226859064,43.238307973658259,0 -71.295238118674774,43.239277836596521,0</coordinates></LinearRing></outerBoundaryIs></Polygon>
+  </Placemark>
+</Folder>
+</Document></kml>
