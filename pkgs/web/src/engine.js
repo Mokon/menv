@@ -97,7 +97,6 @@ module.exports.generateRoutes = function(staticPages, staticDataPages) {
     });
 
     module.exports.get('/login/:access_token', (request, user_response) => {
-        // TODO this is a long chain of callbacks which will have a large latency.
         FB.api('oauth/access_token', {
             client_id: facebook_app_id,
             client_secret: facebook_api_secret,

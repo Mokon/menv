@@ -11,15 +11,17 @@ services:
     build:
       dockerfile: Dockerfile
       context: .
-    secrets:
-      - facebook_api.secret
-      - api_key
-      - cert.pem
-      - client_secret.json
-      - cookie.secret
-      - key.pem
-      - server.cert
-      - server.key
+    volumes:
+      - ../../vault/secrets:/run/secrets
+        #secrets:
+        #      - facebook_api.secret
+        #      - api_key
+        #      - cert.pem
+        #      - client_secret.json
+        #      - cookie.secret
+        #      - key.pem
+        #      - server.cert
+        #      - server.key
 secrets:
   facebook_api.secret:
     file: ../../vault/secrets/facebook_api.secret

@@ -11,7 +11,7 @@ fi
 echo "" | sudo tee ~/.local/share/recently-used.xbel > /dev/null
 sudo chattr +i ~/.local/share/recently-used.xbel
 
-gsettings set org.gnome.desktop.background picture-options "scaled"
+gsettings set org.gnome.desktop.background picture-options "stretched"
 
 append_crontab "@reboot systemd-cat -p info -t \"mute-volume\" /home/$USER/menv/bin/desktop/mute-volume"
 append_crontab "@hourly systemd-cat -p info -t \"rotate-background\" /home/$USER/menv/bin/desktop/rotate_background"
@@ -50,6 +50,7 @@ unset add_app
 gsettings set org.gnome.Terminal.Legacy.Settings new-terminal-mode 'tab'
 gsettings set org.gnome.gnome-screenshot auto-save-directory $menv_screenshots_dir
 gsettings set org.gnome.desktop.interface clock-format '12h'
+gsettings set org.gnome.desktop.datetime automatic-timezone true
 #gsettings set org.gnome.SessionManager logout-prompt false
 gsettings set org.gnome.desktop.interface clock-show-date true
 

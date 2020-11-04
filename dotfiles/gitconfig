@@ -20,7 +20,7 @@
 	name = David Bond
 	email = mokon@mokon.net
 [credential]
-	helper = cache --timeout 3600
+	helper = store
 [alias]
 	squash = !"f() { NL=$1; GIT_EDITOR=\"sed -i '2,$NL s/pick/squash/;/# This is the 2nd commit message:/,$ {d}'\"; git rebase -i HEAD~$NL; }; f"
 	prstash = "!f() { git fetch $1 refs/pull-requests/$2/from:$3; } ; f"
