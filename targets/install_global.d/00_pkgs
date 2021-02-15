@@ -6,9 +6,6 @@ function create_yum_dnf_repos {
   create_yum_dnf_repo google-chrome \
     http://dl.google.com/linux/chrome/rpm/stable/\$basearch \
     https://dl-ssl.google.com/linux/linux_signing_key.pub
-  create_yum_dnf_repo adobe-linux-x86_64 \
-    http://linuxdownload.adobe.com/linux/\$basearch \
-    file:///etc/pki/rpm-gpg/RPM-GPG-KEY-adobe-linux
   create_yum_dnf_repo google-earth \
     http://dl.google.com/linux/earth/rpm/stable/\$basearch
   create_yum_dnf_repo jitsi \
