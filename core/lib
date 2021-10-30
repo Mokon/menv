@@ -145,7 +145,7 @@ function should_source_file {
               echo "Corrupt requirement line Op '$Op' on file $file"
               return 1
             fi
-            gnomeVersion="$(expr "$(gnome-terminal --version)" : '.* \(.*[.].*[.].*\)$')"
+            gnomeVersion="$(expr "$(gnome-terminal --version)" : '.*? \([0-9]*[.].[0-9]*[.][0-9]*\).*$')"
             if ! version_ge $gnomeVersion "$RValue" ; then
               echo "gnome version too old '$gnomeVersion' so not sourceing $file" >> $menv_source_log
               return 1

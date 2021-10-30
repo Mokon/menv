@@ -362,3 +362,8 @@ function taildump {
   local file=$1
   tail -c +1 -f $file | tcpdump -l -r -
 }
+
+function yang_tree {
+	local model=$1
+	find ~/docs/opensource/ -iname "*${model}*.yang" | xargs pyang -f tree
+}

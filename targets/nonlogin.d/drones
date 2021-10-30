@@ -1,0 +1,56 @@
+#!/bin/bash
+# (C) 2013-2021 David 'Mokon' Bond, All Rights Reserved
+
+function drone_to_png {
+	project="272nrd_epsom_3_2021"
+	podman run -ti --rm \
+		-v /home/${USER}/datasets:/datasets \
+		opendronemap/odm \
+		--project-path /datasets "${project}" \
+		--min-num-features 10000 \
+		--feature-type sift \
+		--feature-quality ultra \
+		--pc-quality high \
+		--mesh-size 200000 \
+		--mesh-octree-depth 12 \
+		--dtm \
+		--dsm \
+		--dem-resolution 1 \
+		--orthophoto-resolution 1 \
+		--orthophoto-png
+
+	# --ignore-gsd
+	# --dem-resolution 5
+	# --feature-type hahog
+
+    # stages
+    # dataset, split, merge, opensfm, openmvs, odm_filterpoints,
+    # odm_meshing, mvs_texturing, odm_georeferencing, odm_dem,
+    # odm_orthophoto, odm_report. Default: odm_report
+}
+
+function take_photo_and_strip {
+	local photo_dir="${1:-~/pics/menv}"
+	local pause="${2:-5}"
+
+	mkdir -p "${photo_dir}"
+	pushd "${photo_dir}"
+
+	sleep "${pause}"
+
+	gphoto2 --capture-image-and-download
+
+	mogrify -strip *.jpg
+
+	/bin/rm *.CR2
+
+	popd
+}
+
+function start_webcam {
+	gphoto2 --stdout --capture-movie | \
+		ffmpeg -i - -vcodec rawvideo -pix_fmt yuv420p -threads 0 -f v4l2 /dev/video4
+}
+
+# v4l2-ctl -d /dev/video2 --list-ctrls
+# v4l2-ctl -d /dev/video2 --set-ctrl=focus_auto=1
